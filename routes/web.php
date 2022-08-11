@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DokumenController;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaguController;
@@ -38,6 +39,11 @@ Route::controller(RoleUserController::class)->group(function(){
     Route::post('/role-user/{role}/{user}', 'create')->middleware('auth');
     Route::delete('/role-user/{role}/{user}', 'destroy')->middleware('auth');
 });
+
+Route::resource('/dokumen', DokumenController::class)->middleware('auth');
+
+
+
 
 Route::get('/sign-in', function(){
     return view('sign-in');
