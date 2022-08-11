@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\bulan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorebulanRequest;
 use App\Http\Requests\UpdatebulanRequest;
-use Illuminate\Http\Request;
 
 class BulanController extends Controller
 {
@@ -16,6 +17,9 @@ class BulanController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('bulan.index',[
             'data'=>bulan::orderby('kodebulan')->get()
         ]);
@@ -28,6 +32,9 @@ class BulanController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('bulan.create');
     }
 
@@ -39,6 +46,9 @@ class BulanController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'kodebulan'=>'unique|required|min:2|max:2',
             'kodebulan'=>'numeric',
@@ -61,6 +71,9 @@ class BulanController extends Controller
      */
     public function show(bulan $bulan)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         //
     }
 
@@ -72,6 +85,9 @@ class BulanController extends Controller
      */
     public function edit(bulan $bulan)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('bulan.update',[
             'data'=>$bulan
         ]);
@@ -86,6 +102,9 @@ class BulanController extends Controller
      */
     public function update(Request $request, bulan $bulan)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'kodebulan'=>'unique|required|min:2|max:2',
             'kodebulan'=>'numeric',
@@ -108,6 +127,9 @@ class BulanController extends Controller
      */
     public function destroy(bulan $bulan)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $bulan->delete();
         return redirect('/bulan');
     }

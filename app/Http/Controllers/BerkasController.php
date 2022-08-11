@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\berkas;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreberkasRequest;
 use App\Http\Requests\UpdateberkasRequest;
-use Illuminate\Http\Request;
 
 class BerkasController extends Controller
 {
@@ -16,6 +17,9 @@ class BerkasController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('berkas.index',[
             'data'=>berkas::orderby('kodeberkas')->get()
         ]);
@@ -28,6 +32,9 @@ class BerkasController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('berkas.create');
     }
 
@@ -39,6 +46,9 @@ class BerkasController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'kode'=>'required|unique|min:2|max:2',
             'kode'=>'numeric',
@@ -61,6 +71,9 @@ class BerkasController extends Controller
      */
     public function show(berkas $berkas)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
 
     }
 
@@ -72,6 +85,9 @@ class BerkasController extends Controller
      */
     public function edit(berkas $berka)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('berkas.update',[
             'data'=>$berka
         ]);
@@ -86,6 +102,9 @@ class BerkasController extends Controller
      */
     public function update(Request $request, berkas $berka)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'kode'=>'required|min:2|max:2',
             'kode'=>'numeric',
@@ -108,6 +127,9 @@ class BerkasController extends Controller
      */
     public function destroy(berkas $berka)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $berka->delete();
         return redirect('/berkas');
     }

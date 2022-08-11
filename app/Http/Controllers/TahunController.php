@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\tahun;
-use App\Http\Requests\StoretahunRequest;
-use App\Http\Requests\UpdatetahunRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TahunController extends Controller
 {
@@ -16,6 +15,9 @@ class TahunController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('tahun.index',[
             'data'=>tahun::orderby('tahun')->get()
         ]);
@@ -28,6 +30,9 @@ class TahunController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('tahun.create');
     }
 
@@ -39,6 +44,9 @@ class TahunController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'tahun'=>'required|numeric|min:2020'
         ]);
@@ -58,6 +66,9 @@ class TahunController extends Controller
      */
     public function show(tahun $tahun)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         //
     }
 
@@ -69,6 +80,9 @@ class TahunController extends Controller
      */
     public function edit(tahun $tahun)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('tahun.update',[
             'data'=>$tahun
         ]);
@@ -83,6 +97,9 @@ class TahunController extends Controller
      */
     public function update(Request $request, tahun $tahun)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'tahun'=>'required|numeric|min:2020'
         ]);
@@ -102,6 +119,9 @@ class TahunController extends Controller
      */
     public function destroy(tahun $tahun)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $tahun->delete();
     }
 }

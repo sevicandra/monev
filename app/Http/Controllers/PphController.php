@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\pph;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PphController extends Controller
 {
@@ -14,6 +15,9 @@ class PphController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('pph.index',[
             'data'=>pph::orderby('kodegolongan', 'DESC')->get()
         ]);
@@ -26,6 +30,9 @@ class PphController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('pph.create');
     }
 
@@ -37,6 +44,9 @@ class PphController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'kodegolongan'=>'required|unique|min:1|max:1',
             'kodegolongan'=>'numeric',
@@ -58,6 +68,9 @@ class PphController extends Controller
      */
     public function show(pph $pph)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         //
     }
 
@@ -69,6 +82,9 @@ class PphController extends Controller
      */
     public function edit(pph $pph)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('pph.update',[
             'data'=>$pph
         ]);
@@ -83,6 +99,9 @@ class PphController extends Controller
      */
     public function update(Request $request, pph $pph)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'kodegolongan'=>'required|unique|min:1|max:1',
             'kodegolongan'=>'numeric',
@@ -104,6 +123,9 @@ class PphController extends Controller
      */
     public function destroy(pph $pph)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $pph->delete();
         return redirect('/pph');
     }
