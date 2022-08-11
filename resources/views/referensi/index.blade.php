@@ -71,7 +71,7 @@
                                 <td>Tahun Anggaran</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                        <a href="/tahun" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                     </div>
                                 </td>
                             </tr>
@@ -80,7 +80,7 @@
                                 <td>Berkas</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                        <a href="/berkas" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                     </div>
                                 </td>
                             </tr>
@@ -91,7 +91,7 @@
                             <td>PPH</td>
                             <td class="pb-0 pr-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    <a href="/pph" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                 </div>
                             </td>
                         </tr>
@@ -126,7 +126,7 @@
                             <td>Bulan</td>
                             <td class="pb-0 pr-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    <a href="/bulan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                 </div>
                             </td>
                         </tr>

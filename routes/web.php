@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BerkasController;
+use App\Http\Controllers\BulanController;
 use App\Http\Controllers\DokumenController;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -7,8 +9,10 @@ use App\Http\Controllers\PaguController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PphController;
 use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\SatkerController;
+use App\Http\Controllers\TahunController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +46,13 @@ Route::controller(RoleUserController::class)->group(function(){
 
 Route::resource('/dokumen', DokumenController::class)->middleware('auth');
 
+Route::resource('/tahun', TahunController::class)->middleware('auth');
 
+Route::resource('/berkas', BerkasController::class)->middleware('auth');
 
+Route::resource('/pph', PphController::class)->middleware('auth');
+
+Route::resource('/bulan', BulanController::class)->middleware('auth');
 
 Route::get('/sign-in', function(){
     return view('sign-in');
