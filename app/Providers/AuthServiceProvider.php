@@ -61,5 +61,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('Validator', function (User $user) {
             return $user->is('09') === true;
         });
+
+        Gate::define('tahun', function ($key) {
+            return $key === session()->get('tahun');
+        });
+
+        Gate::define('satker', function ($key) {
+            return auth()->user()->satker === $key;
+        });
+
     }
 }

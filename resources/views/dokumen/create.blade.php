@@ -29,10 +29,17 @@
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="">Status:</label>
-                        <select class="form-select form-select-sm mb-3" name="status">
+                        <label for="">Status DNP:</label>
+                        <select class="form-select form-select-sm mb-3" name="statusdnp">
                             <option value="0">Non DNP</option>
                             <option value="1">DNP</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Status PPH:</label>
+                        <select class="form-select form-select-sm mb-3" name="statuspph">
+                            <option value="0">Non PPH</option>
+                            <option value="1">PPh</option>
                         </select>
                     </div>
                 </div>

@@ -14,6 +14,7 @@ class dokumen extends Model
     protected $fillable = [
         'kodedokumen',
         'namadokumen',
-        'status'
+        'statusdnp',
+        'statuspph'
     ];
 }

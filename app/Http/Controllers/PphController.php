@@ -49,8 +49,11 @@ class PphController extends Controller
         }
         $request->validate([
             'kodegolongan'=>'required|unique|min:1|max:1',
-            'kodegolongan'=>'numeric',
             'tarifpph'=>'required|numeric'
+        ]);
+
+        $request->validate([
+            'kodegolongan'=>'numeric',
         ]);
 
         pph::create([
@@ -104,8 +107,11 @@ class PphController extends Controller
         }
         $request->validate([
             'kodegolongan'=>'required|unique|min:1|max:1',
-            'kodegolongan'=>'numeric',
             'tarifpph'=>'required|numeric'
+        ]);
+
+        $request->validate([
+            'kodegolongan'=>'numeric',
         ]);
 
         $pph->update([

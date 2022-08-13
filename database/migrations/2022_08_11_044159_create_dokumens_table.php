@@ -17,7 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('kodedokumen', 2);
             $table->string('namadokumen');
-            $table->string('status', 1);
+            $table->string('statusdnp', 1);
+            $table->string('statuspph', 1);
             $table->timestamps();
         });
     }

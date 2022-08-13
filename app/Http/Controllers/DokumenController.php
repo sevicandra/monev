@@ -51,15 +51,23 @@ class DokumenController extends Controller
         }
         $request->validate([
             'kode'=>'required|min:2|max:2',
-            'kode'=>'numeric',
             'nama'=>'required',
-            'status'=>'required|min:1|max:1',
-            'status'=>'numeric'
+            'statusdnp'=>'required|min:1|max:1',
+            'statuspph'=>'required|min:1|max:1',
         ]);
+
+        
+        $request->validate([
+            'statusdnp'=>'numeric',
+            'statuspph'=>'numeric',
+            'kode'=>'numeric',
+        ]);
+
         dokumen::create([
             'kodedokumen'=>$request->kode,
             'namadokumen'=>$request->nama,
-            'status'=>$request->status,
+            'statusdnp'=>$request->statusdnp,
+            'statuspph'=>$request->statuspph,
         ]);
         return redirect('/dokumen');
     }
@@ -108,15 +116,22 @@ class DokumenController extends Controller
         }
         $request->validate([
             'kode'=>'required|min:2|max:2',
-            'kode'=>'numeric',
             'nama'=>'required',
-            'status'=>'required|min:1|max:1',
-            'status'=>'numeric'
+            'statusdnp'=>'required|min:1|max:1',
+            'statuspph'=>'required|min:1|max:1',
+        ]);
+
+        
+        $request->validate([
+            'statusdnp'=>'numeric',
+            'statuspph'=>'numeric',
+            'kode'=>'numeric',
         ]);
         $dokuman->update([
             'kodedokumen'=>$request->kode,
             'namadokumen'=>$request->nama,
-            'status'=>$request->status,
+            'statusdnp'=>$request->statusdnp,
+            'statuspph'=>$request->statuspph,
         ]);
         return redirect('/dokumen');
     }

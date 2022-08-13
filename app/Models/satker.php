@@ -20,4 +20,9 @@ class satker extends Model
     public function user(){
         return $this->hasMany(User::class, 'satker', 'kodesatker');
     }
+
+    public function unit()
+    {
+        return $this->hasMany(unit::class, 'kodesatker', 'kodesatker');
+    }
 }

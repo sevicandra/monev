@@ -30,10 +30,17 @@
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="">Status:</label>
-                        <select class="form-select form-select-sm mb-3" name="status">
-                            <option value="0" @if ($data->status === '0') selected @endif>Non DNP</option>
-                            <option value="1" @if ($data->status === '1') selected @endif>DNP</option>
+                        <label for="">Status DNP:</label>
+                        <select class="form-select form-select-sm mb-3" name="statusdnp">
+                            <option value="0" @if ($data->statusdnp === '0') selected @endif>Non DNP</option>
+                            <option value="1" @if ($data->statusdnp === '1') selected @endif>DNP</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Status PPH:</label>
+                        <select class="form-select form-select-sm mb-3" name="statuspph">
+                            <option value="0" @if ($data->statuspph === '0') selected @endif>Non PPH</option>
+                            <option value="1" @if ($data->statuspph === '1') selected @endif>PPH</option>
                         </select>
                     </div>
                 </div>

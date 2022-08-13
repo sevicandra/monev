@@ -38,7 +38,7 @@
                                 <td>Unit</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                        <a href="/unit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                     </div>
                                 </td>
                             </tr>

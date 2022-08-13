@@ -37,7 +37,8 @@
                             <th>No</th>
                             <th>Kode Dokumen</th>
                             <th>Nama Dokumen</th>
-                            <th>Status</th>
+                            <th>Status DNP</th>
+                            <th>Status PPh</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -50,7 +51,8 @@
                             <td class="text-center">{{ $i }}</td>
                             <td>{{ $item->kodedokumen }}</td>
                             <td>{{ $item->namadokumen }}</td>
-                            <td>{{ $item->status }}</td>
+                            <td>{{ $item->statusdnp }}</td>
+                            <td>{{ $item->statuspph }}</td>
                             <td class="pb-0 pr-0">
                                 <div class="btn-group btn-group-sm" role="group">
                                     <a href="/dokumen/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Ubah</a>

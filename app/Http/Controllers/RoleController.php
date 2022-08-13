@@ -49,8 +49,11 @@ class RoleController extends Controller
         }
         $request->validate([
             'koderole'=>'required|min:2|max:2',
-            'koderole'=>'numeric',
             'role'=>'required'
+        ]);
+
+        $request->validate([
+            'koderole'=>'numeric',
         ]);
 
         role::create([
@@ -105,8 +108,11 @@ class RoleController extends Controller
 
         $request->validate([
             'koderole'=>'required|min:2|max:2',
-            'koderole'=>'numeric',
             'role'=>'required'
+        ]);
+
+        $request->validate([
+            'koderole'=>'numeric',
         ]);
 
         $role->update([
