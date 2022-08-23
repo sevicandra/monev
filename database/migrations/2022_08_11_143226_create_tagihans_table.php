@@ -19,7 +19,7 @@ return new class extends Migration
             $table->uuid('jnstagihan');
             $table->uuid('kodeunit');
             $table->uuid('kodedokumen');
-            $table->string('status', 1);
+            $table->tinyInteger('status');
             $table->date('tgltagihan');
             $table->string('kodesatker',6);
             $table->string('tahun',4);

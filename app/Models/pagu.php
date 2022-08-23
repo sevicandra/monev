@@ -43,4 +43,9 @@ class pagu extends Model
     {
         return $this->hasMany(realisasi::class);
     }
+
+    public function sspb()
+    {
+        return $this->hasMany(sspb::class);
+    }
 }

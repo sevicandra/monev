@@ -6,7 +6,7 @@
         <h1 class="h2">Upload Tagihan</h1>
     </div>
 
-    <form action="/tagihan/{{ $data->id }}/upload" method="post" autocomplete="off" enctype="multipart/form-data">
+    <form action="{{ $upload }}" method="post" autocomplete="off" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
         <div class="row">
@@ -42,7 +42,7 @@
         <div class="row mt-3">
             <div class="col">
                 <div class="form-group">
-                    <a href="/tagihan/{{ $data->id }}/detail" class="btn btn-sm btn-outline-secondary">Batal</a>
+                    <a href="{{ $back }}" class="btn btn-sm btn-outline-secondary">Batal</a>
                     <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
                 </div>
             </div>

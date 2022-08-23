@@ -11,6 +11,18 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <style>
+        #message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+#inner-message {
+    margin: 0 auto;
+}
+    </style>
     @section('head')
         
     @show

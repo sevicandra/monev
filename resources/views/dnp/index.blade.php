@@ -6,30 +6,15 @@
         </div>
         <div class="row">
             <div class="col">
-                {{-- <?php if ($this->session->flashdata('kurang')) : ?>
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Perhatian!</strong> <?= $this->session->flashdata('kurang'); ?>
-                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php elseif ($this->session->flashdata('lebih')) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Perhatian!</strong> <?= $this->session->flashdata('lebih'); ?>
-                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php elseif ($this->session->flashdata('sama')) : ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Selamat!</strong> <?= $this->session->flashdata('sama'); ?>
-                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif; ?> --}}
+                @include('layout.flashmessage')
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-lg-7">
                 <a href="/tagihan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
                 <a href="/tagihan/{{ $data->id }}/dnp/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Data Gaji</a>
-                <a href="" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Data Pegawai Non DJKN</a>
-                <a href="" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2" target="_blank">Cetak</a>
+                <a href="/tagihan/{{ $data->id }}/dnp-non-djkn/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Data Pegawai Non DJKN</a>
+                <a href="/tagihan/{{ $data->id }}/dnp/cetak" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2" target="_blank">Cetak</a>
             </div>
             <div class="col-lg-5">
                 <form action="" method="post" autocomplete="off">
@@ -69,9 +54,9 @@
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->kodegolongan }}</td>
                                 @if ($item->nominal) 
-                                <td class="text-right">{{ $item->nominal->bruto }}</td>
-                                <td class="text-right">{{ $item->nominal->pph }}</td>
-                                <td class="text-right">{{ $item->nominal->netto }}</td>
+                                <td class="text-right">{{  number_format($item->nominal->bruto, 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($item->nominal->pph, 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($item->nominal->netto, 2, ',', '.') }}</td>
                                 @else 
                                 <td class="text-right"></td>
                                 <td class="text-right"></td>

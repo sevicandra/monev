@@ -131,13 +131,13 @@
                             </td>
                         </tr>
                         @endcan
-                        @can('admin_satker', auth()->user()->id)
+                        @canany(['sys_admin','admin_satker'], auth()->user()->id)
                         <tr>
                             <td>12</td>
                             <td>Nomor</td>
                             <td class="pb-0 pr-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    <a href="/nomor" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                 </div>
                             </td>
                         </tr>

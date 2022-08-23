@@ -15,4 +15,19 @@ class berkas extends Model
         'kodeberkas',
         'namaberkas',
     ];
+
+    public function scopePpk()
+    {
+        return $this->where('kodeberkas', '01')->orwhere('kodeberkas', '02');
+    }
+
+    public function scopeKeuangan()
+    {
+        return $this->where('kodeberkas', '03')->orwhere('kodeberkas', '04');
+    }
+
+    public function scopeBendahara()
+    {
+        return $this->where('kodeberkas', '03')->orwhere('kodeberkas', '04')->orwhere('kodeberkas', '05');
+    }
 }

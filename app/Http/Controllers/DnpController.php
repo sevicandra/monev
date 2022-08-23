@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\dnp;
 use App\Models\tagihan;
+use Spipu\Html2Pdf\Html2Pdf;
+use App\Models\pegawainondjkn;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\UpdatednpRequest;
@@ -17,9 +19,6 @@ class DnpController extends Controller
      */
     public function index(tagihan $tagihan)
     {
-        if ($tagihan->dokumen->statusdnp != '1') {
-            abort(403);
-        }
         return view('dnp.index',[
             'data'=>$tagihan
         ]);
@@ -32,6 +31,9 @@ class DnpController extends Controller
      */
     public function create(tagihan $tagihan)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         if ($tagihan->dokumen->statusdnp != '1') {
             abort(403);
         }
@@ -54,6 +56,20 @@ class DnpController extends Controller
         }
     }
 
+    public function create_non_djkn(tagihan $tagihan)
+    {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
+        if ($tagihan->dokumen->statusdnp != '1') {
+            abort(403);
+        }
+        return view('dnp.tarik_pegawai_nondjkn',[
+            'data'=>pegawainondjkn::all(),
+            'tagihan'=>$tagihan
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -62,6 +78,9 @@ class DnpController extends Controller
      */
     public function store(tagihan $tagihan, $nip)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         if ($tagihan->dokumen->statusdnp != '1') {
             abort(403);
         }
@@ -85,7 +104,29 @@ class DnpController extends Controller
             ]);
         }
 
-        return redirect('/tagihan/'.$tagihan->id.'/dnp');
+        return redirect('/tagihan/'.$tagihan->id.'/dnp')->with('berhasil', 'Data Pegawai Berhasil Di Tambahkan');
+    }
+
+    public function store_non_djkn(tagihan $tagihan,pegawainondjkn $pegawainondjkn)
+    {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
+        if ($tagihan->dokumen->statusdnp != '1') {
+            abort(403);
+        }
+        $kdgol = substr($pegawainondjkn->kodegolongan, 0, 1);
+        dnp::create([
+            'tagihan_id'=>$tagihan->id,
+            'nip'=>$pegawainondjkn->nip,
+            'nama'=>$pegawainondjkn->nama,
+            'kodegolongan'=>$kdgol,
+            'rekening'=>$pegawainondjkn->rekening,
+            'namabank'=>$pegawainondjkn->namabank,
+            'namarekening'=>$pegawainondjkn->namarekening,
+        ]);
+
+        return redirect('/tagihan/'.$tagihan->id.'/dnp')->with('berhasil', 'Data Pegawai Berhasil Di Tambahkan');
     }
 
     /**
@@ -130,7 +171,22 @@ class DnpController extends Controller
      */
     public function destroy(tagihan $tagihan, dnp $dnp)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         $dnp->delete();
-        return redirect('/tagihan/'.$tagihan->id.'/dnp');
+        return redirect('/tagihan/'.$tagihan->id.'/dnp')->with('berhasil', 'Data Pegawai Berhasil Di Hapus');
+    }
+
+    public function cetak(tagihan $tagihan)
+    {
+        ob_start();
+        $html2pdf = ob_get_clean();
+        $html2pdf = new Html2Pdf('P', 'A4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
+        $html2pdf->addFont('Arial');
+        $html2pdf->writeHTML(view('dnp.cetak',[
+            'data'=>$tagihan,
+        ]));
+        $html2pdf->output('register_tagihan.pdf');
     }
 }

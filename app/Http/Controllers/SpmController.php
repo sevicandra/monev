@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\berkasupload;
-use App\Http\Requests\StoreberkasuploadRequest;
-use App\Http\Requests\UpdateberkasuploadRequest;
+use App\Models\spm;
+use App\Http\Requests\StorespmRequest;
+use App\Http\Requests\UpdatespmRequest;
 
-class BerkasuploadController extends Controller
+class SpmController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class BerkasuploadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreberkasuploadRequest  $request
+     * @param  \App\Http\Requests\StorespmRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreberkasuploadRequest $request)
+    public function store(StorespmRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class BerkasuploadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\berkasupload  $berkasupload
+     * @param  \App\Models\spm  $spm
      * @return \Illuminate\Http\Response
      */
-    public function show(berkasupload $berkasupload)
+    public function show(spm $spm)
     {
         //
     }
@@ -53,10 +53,10 @@ class BerkasuploadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\berkasupload  $berkasupload
+     * @param  \App\Models\spm  $spm
      * @return \Illuminate\Http\Response
      */
-    public function edit(berkasupload $berkasupload)
+    public function edit(spm $spm)
     {
         //
     }
@@ -64,11 +64,11 @@ class BerkasuploadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateberkasuploadRequest  $request
-     * @param  \App\Models\berkasupload  $berkasupload
+     * @param  \App\Http\Requests\UpdatespmRequest  $request
+     * @param  \App\Models\spm  $spm
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateberkasuploadRequest $request, berkasupload $berkasupload)
+    public function update(UpdatespmRequest $request, spm $spm)
     {
         //
     }
@@ -76,10 +76,10 @@ class BerkasuploadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\berkasupload  $berkasupload
+     * @param  \App\Models\spm  $spm
      * @return \Illuminate\Http\Response
      */
-    public function destroy(berkasupload $berkasupload)
+    public function destroy(spm $spm)
     {
         //
     }

@@ -41,6 +41,7 @@ class tagihan extends Model
     {
         return $this->hasMany(realisasi::class);
     }
+    
 
     public function dnp()
     {
@@ -52,4 +53,38 @@ class tagihan extends Model
         return $this->hasManyThrough(nominaldnp::class, dnp::class);
     }
 
+    public function register()
+    {
+        return $this->hasOne(register_tagihan::class);
+    }
+
+    public function scopeNotregistered($data)
+    {
+        return $data->where('status', 1)->doesntHave('register');
+    }
+
+    public function scopeUnverified($data)
+    {
+        return $data->where('status', 2);
+    }
+
+    public function scopePpspm($data)
+    {
+        return $data->where('status', 3);
+    }
+
+    public function scopeBendahara($data)
+    {
+        return $data->where('status', 4);
+    }
+
+    public function scopeArsip($data)
+    {
+        return $data->where('status', 5);
+    }
+
+    public function spm()
+    {
+        return $this->hasOne(spm::class);
+    }
 }

@@ -72,7 +72,7 @@ class TagihanController extends Controller
             'bruto'=>0
         ]);
 
-        return redirect('/tagihan');
+        return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Dibuat.');
     }
 
     /**
@@ -94,6 +94,9 @@ class TagihanController extends Controller
      */
     public function edit(tagihan $tagihan)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         return view('tagihan.update',[
             'data'=>$tagihan,
             'dokumen'=>dokumen::orderby('kodedokumen')->get(),
@@ -110,6 +113,9 @@ class TagihanController extends Controller
      */
     public function update(Request $request, tagihan $tagihan)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         $request->validate([
             'notagihan'=>'required|min:5|max:5',
             'tgltagihan'=>'required',
@@ -135,7 +141,7 @@ class TagihanController extends Controller
             'kodesatker'=>auth()->user()->satker,
         ]);
 
-        return redirect('/tagihan');
+        return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Di Ubah.');;
     }
 
     /**
@@ -146,6 +152,10 @@ class TagihanController extends Controller
      */
     public function destroy(tagihan $tagihan)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
+        
         foreach ($tagihan->berkasupload as $berkas) {
             Storage::delete($berkas->file);
             $berkas->delete();
@@ -153,17 +163,28 @@ class TagihanController extends Controller
         foreach ($tagihan->realisasi as $item) {
             $item->delete();
         }
+        foreach ($tagihan->dnp as $item) {
+            $item->nominal->delete(); 
+            $item->delete();
+        }
         $tagihan->delete();
-        return redirect('/tagihan');
+        return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Di Hapus.');;
     }
 
     public function uploadindex(tagihan $tagihan){
         return view('uploadberkas.index',[
-            'data'=>$tagihan
+            'data'=>$tagihan,
+            'back'=>'/tagihan',
+            'upload'=>'/tagihan/'.$tagihan->id.'/upload/create',
+            'delete'=>'/tagihan/'.$tagihan->id.'/upload/'
         ]);
     }
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas){
+        if ($tagihan->status != 0) {
+            return abort(403);
+        }
+        
         if ($request->_method === 'PATCH') {
             $request->validate([
                 'berkas'=>'required',
@@ -172,33 +193,42 @@ class TagihanController extends Controller
             ]);
 
             $file = $request->file('fileupload')->store('berkas');
-
+            
             berkasupload::create([
                 'tagihan_id'=>$tagihan->id,
                 'berkas_id'=>$request->berkas,
                 'uraian'=>$request->uraian,
                 'file'=>$file
             ]);
-            return redirect('/tagihan/'.$tagihan->id.'/upload');
+            return redirect('/tagihan/'.$tagihan->id.'/upload')->with('berhasil', 'Dokumen Berhasil Di Upload.');;
         }
 
         if ($request->_method === 'DELETE') {
             if ($tagihan->id != $berkas->tagihan_id) {
                 abort(403);
             }
-            Storage::delete($berkas->file);
-            $berkas->delete();
-            return redirect('/tagihan/'.$tagihan->id.'/detail');
+            if ($berkas->berkas->kodeberkas === '01' || $berkas->berkas->kodeberkas === '02') {
+                Storage::delete($berkas->file);
+                $berkas->delete();
+                return redirect('/tagihan/'.$tagihan->id.'/upload')->with('berhasil', 'Dokumen Berhasil Di Hapus.');;
+            }else{
+                abort(403);
+            }
         }
 
         return view('uploadberkas.upload',[
-            'berkas'=>berkas::orderby('kodeberkas')->get(),
-            'data'=>$tagihan
+            'berkas'=>berkas::ppk()->orderby('kodeberkas')->get(),
+            'data'=>$tagihan,
+            'back'=>'/tagihan/'.$tagihan->id.'/upload',
+            'upload'=>'/tagihan/'.$tagihan->id.'/upload',
         ]);
     }
 
     public function kirim(tagihan $tagihan)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         if ($tagihan->realisasi->first() === null) {
             return back()->with('gagal','Data tidak dapat dikirim karena belum dilakukan input realisasi.');    
         }

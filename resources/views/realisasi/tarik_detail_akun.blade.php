@@ -60,8 +60,8 @@
                                 <td>{{ $item->subkomponen }}</td>
                                 <td>{{ $item->akun }}</td>
                                 <td class="text-right">Rp{{ number_format($item->anggaran, 2, ',', '.') }}</td>
-                                <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
-                                <td class="text-right">Rp{{ number_format($item->anggaran-$item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
+                                <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi')-$item->sspb->sum('nominal_sspb'), 2, ',', '.') }}</td>
+                                <td class="text-right">Rp{{ number_format($item->anggaran-$item->realisasi->sum('realisasi')+$item->sspb->sum('nominal_sspb'), 2, ',', '.') }}</td>
                                 <td class="pb-0">
                                     <div class="btn-group btn-group-sm" role="group">
                                         <form action="/tagihan/{{ $data->id }}/realisasi/{{ $item->id }}" method="post">

@@ -40,4 +40,18 @@ class berkasupload extends Model
             $val->where('kodeberkas', '02');
         });
     }
+
+    public function scopeCekberkas3($data)
+    {
+        $data->wherehas('berkas', function($val){
+            $val->where('kodeberkas', '03');
+        });
+    }
+
+    public function scopeCekberkas5($data)
+    {
+        $data->wherehas('berkas', function($val){
+            $val->where('kodeberkas', '05');
+        });
+    }
 }

@@ -40,12 +40,15 @@ class RealisasiController extends Controller
      */
     public function store(tagihan $tagihan, pagu $pagu)
     {
+        if ($tagihan->status != 0) {
+            return abort(403);
+        }
         realisasi::create([
             'pagu_id'=>$pagu->id,
             'tagihan_id'=>$tagihan->id,
             'realisasi'=>0
         ]);
-        return redirect('/tagihan/'.$tagihan->id.'/realisasi');
+        return redirect('/tagihan/'.$tagihan->id.'/realisasi')->with('berhasil', 'Realisasi Berhasil Di Tambahkan');
     }
 
     /**
@@ -70,6 +73,9 @@ class RealisasiController extends Controller
      */
     public function edit(realisasi $realisasi)
     {
+        if ($realisasi->tagihan->status != 0) {
+            return abort(403);
+        }
         return view('realisasi.update',[
             'data'=>$realisasi,
         ]);
@@ -84,6 +90,10 @@ class RealisasiController extends Controller
      */
     public function update(Request $request, realisasi $realisasi)
     {
+        if ($realisasi->tagihan->status != 0) {
+            return abort(403);
+        }
+
         $request->validate([
             'realisasi'=>'required'
         ]);
@@ -92,7 +102,7 @@ class RealisasiController extends Controller
             'realisasi'=>$request->realisasi
         ]);
 
-        return redirect('/tagihan/'.$realisasi->tagihan->id.'/realisasi');
+        return redirect('/tagihan/'.$realisasi->tagihan->id.'/realisasi')->with('berhasil', 'Realisasi Berhasil Di Ubah.');
     }
 
     /**
@@ -103,9 +113,12 @@ class RealisasiController extends Controller
      */
     public function destroy(realisasi $realisasi)
     {
+        if ($realisasi->tagihan->status > 0) {
+            return abort(403);
+        }
         $tagihan=$realisasi->tagihan;
         $realisasi->delete();
-        return redirect('/tagihan/'.$tagihan->id.'/realisasi');
+        return redirect('/tagihan/'.$tagihan->id.'/realisasi')->with('berhasil', 'Realisasi Berhasil Di Hapus');
     }
     
 }

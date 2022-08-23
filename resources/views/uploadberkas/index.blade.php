@@ -7,23 +7,13 @@
     </div>
     <div class="row">
         <div class="col-lg-8">
-            {{-- <?php if ($this->session->flashdata('pesan')) : ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Selamat!</strong> <?= $this->session->flashdata('pesan'); ?>
-                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php elseif ($this->session->flashdata('pesan_gagal')) : ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Gagal!</strong> <?= $this->session->flashdata('pesan_gagal'); ?>
-                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php endif; ?> --}}
+            @include('layout.flashmessage')
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-lg-5">
-            <a href="/tagihan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-            <a href="/tagihan/{{ $data->id }}/upload/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
+            <a href="{{ $back }}" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
+            <a href="{{ $upload }}" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
         </div>
         <div class="col-lg-3">
         </div>
@@ -59,7 +49,7 @@
                                 </td>
                                 <td class="text-center pb-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <form action="/tagihan/{{ $data->id }}/upload/{{ $item->id }}/delete" method="post">
+                                        <form action="{{ $delete }}{{ $item->id }}/delete" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>

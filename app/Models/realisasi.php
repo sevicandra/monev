@@ -25,4 +25,9 @@ class realisasi extends Model
     {
         return $this->belongsTo(pagu::class);
     }
+
+    public function sspb()
+    {
+        return $this->hasOne(sspb::class);
+    }
 }

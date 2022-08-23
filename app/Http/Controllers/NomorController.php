@@ -1,0 +1,117 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\nomor;
+use App\Http\Requests\StorenomorRequest;
+use App\Http\Requests\UpdatenomorRequest;
+use Illuminate\Http\Request;
+
+class NomorController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('nomor.index',[
+            'data'=>nomor::all()
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('nomor.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StorenomorRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nomor'=>'required|numeric',
+            'tahun'=>'required|min:4|max:4',
+            'kodesatker'=>'required|min:6|max:6'
+        ]);
+
+        $request->validate([
+            'kodesatker'=>'numeric',
+            'tahun'=>'numeric',
+        ]);
+
+        nomor::create([
+            'nomor'=>$request->nomor,
+            'ekstensi'=>'/'.$request->kodesatker.'/',
+            'kodesatker'=>$request->kodesatker,
+            'tahun'=>$request->tahun,
+        ]);
+
+        return redirect('/nomor');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\nomor  $nomor
+     * @return \Illuminate\Http\Response
+     */
+    public function show(nomor $nomor)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\nomor  $nomor
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(nomor $nomor)
+    {
+        return view('nomor.update',[
+            'data'=>$nomor
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdatenomorRequest  $request
+     * @param  \App\Models\nomor  $nomor
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, nomor $nomor)
+    {
+        $request->validate([
+            'nomor'=>'required|numeric'
+        ]);
+
+        $nomor->update([
+            'nomor'=>$request->nomor
+        ]);
+        return redirect('/nomor');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\nomor  $nomor
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(nomor $nomor)
+    {
+        $nomor->delete();
+        return redirect('/nomor');
+    }
+}

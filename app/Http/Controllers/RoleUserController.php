@@ -62,7 +62,7 @@ class RoleUserController extends Controller
     public function edit(User $role_user)
     {
         return view('role_user.create',[
-            'data'=>role::orderby('koderole')->ofUser($role_user),
+            'data'=>role::orderby('koderole')->get(),
             'user'=>$role_user
         ]);
     }

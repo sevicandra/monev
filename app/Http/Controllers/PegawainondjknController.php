@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\pegawainondjkn;
+use App\Http\Requests\StorepegawainondjknRequest;
+use App\Http\Requests\UpdatepegawainondjknRequest;
+use Illuminate\Http\Request;
+
+class PegawainondjknController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('pegawai_nondjkn.index',[
+            'data'=>pegawainondjkn::all()
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('pegawai_nondjkn.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StorepegawainondjknRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nip'=>'required|numeric',
+            'nama'=>'required',
+            'kodegolongan'=>'required|min:2|max:2',
+            'rekening'=>'required|numeric',
+            'namabank'=>'required',
+            'namarekening'=>'required'
+        ]);
+        pegawainondjkn::create([
+            'nip'=>$request->nip,
+            'nama'=>$request->nama,
+            'kodegolongan'=>$request->kodegolongan,
+            'rekening'=>$request->rekening,
+            'namabank'=>$request->namabank,
+            'namarekening'=>$request->namarekening
+        ]);
+        return redirect('/pegawai-nondjkn')->with('berhasil', 'Data Berhasil Ditambahkan');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\pegawainondjkn  $pegawainondjkn
+     * @return \Illuminate\Http\Response
+     */
+    public function show(pegawainondjkn $pegawainondjkn)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\pegawainondjkn  $pegawainondjkn
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(pegawainondjkn $pegawai_nondjkn)
+    {
+        return view('pegawai_nondjkn.update',[
+            'data'=>$pegawai_nondjkn
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdatepegawainondjknRequest  $request
+     * @param  \App\Models\pegawainondjkn  $pegawainondjkn
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, pegawainondjkn $pegawai_nondjkn)
+    {
+        $request->validate([
+            'nip'=>'required|numeric',
+            'nama'=>'required',
+            'kodegolongan'=>'required|min:2|max:2',
+            'rekening'=>'required|numeric',
+            'namabank'=>'required',
+            'namarekening'=>'required'
+        ]);
+        $pegawai_nondjkn->update([
+            'nip'=>$request->nip,
+            'nama'=>$request->nama,
+            'kodegolongan'=>$request->kodegolongan,
+            'rekening'=>$request->rekening,
+            'namabank'=>$request->namabank,
+            'namarekening'=>$request->namarekening
+        ]);
+        return redirect('/pegawai-nondjkn')->with('berhasil', 'Data Berhasil Diubah');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\pegawainondjkn  $pegawainondjkn
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(pegawainondjkn $pegawai_nondjkn)
+    {
+        $pegawai_nondjkn->delete();
+        return redirect('/pegawai-nondjkn')->with('berhasil', 'Data Berhasil Di Hapus');
+    }
+}

@@ -6,12 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "barryvdh/laravel-dompdf": "^2.0",
+        "endroid/qr-code": "^4.4",
         "guzzlehttp/guzzle": "^7.4",
         "laravel/framework": "^9.24",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
-        "phpoffice/phpspreadsheet": "dev-NumberFormatMask-Helpers"
+        "phpoffice/phpspreadsheet": "dev-NumberFormatMask-Helpers",
+        "spipu/html2pdf": "^5.2",
+        "tecnickcom/tcpdf": "^6.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -29,7 +29,9 @@ class NominaldnpController extends Controller
      */
     public function create(tagihan $tagihan, $dnp)
     {
-
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         return view('nominal_dnp.index',[
             'tagihan'=>$tagihan->id,
             'dnp'=>$dnp
@@ -44,6 +46,9 @@ class NominaldnpController extends Controller
      */
     public function store(Request $request,tagihan $tagihan,dnp $dnp)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         $request->validate([
             'bruto'=>'required|numeric'
         ]);
@@ -61,8 +66,10 @@ class NominaldnpController extends Controller
             'netto'=>$request->bruto-$pph,
             'dnp_id'=>$dnp->id,
         ]);
-
-        return redirect('/tagihan/'.$tagihan->id.'/dnp/');
+        if ($tagihan->nominaldnp->sum('bruto') != $tagihan->realisasi->sum('realisasi')) {
+            return redirect('/tagihan/'.$tagihan->id.'/dnp/')->with('pesan', 'Nilai DNP Tidak Sama Dengan Realisasi');
+        }
+        return redirect('/tagihan/'.$tagihan->id.'/dnp/')->with('berhasil', 'Nilai DNP Telah Sesuai Dengan Realisasi');
     }
 
     /**
@@ -84,6 +91,9 @@ class NominaldnpController extends Controller
      */
     public function edit(tagihan $tagihan,  $dnp ,nominaldnp $nominaldnp)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         return view('nominal_dnp.update',[
             'data'=>$nominaldnp,
             'tagihan'=>$tagihan->id,
@@ -100,6 +110,9 @@ class NominaldnpController extends Controller
      */
     public function update(Request $request,tagihan $tagihan,dnp  $dnp ,nominaldnp $nominaldnp)
     {
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
         $request->validate([
             'bruto'=>'required|numeric'
         ]);
@@ -117,7 +130,10 @@ class NominaldnpController extends Controller
             'netto'=>$request->bruto-$pph,
         ]);
 
-        return redirect('/tagihan/'.$tagihan->id.'/dnp/');
+        if ($tagihan->nominaldnp->sum('bruto') != $tagihan->realisasi->sum('realisasi')) {
+            return redirect('/tagihan/'.$tagihan->id.'/dnp/')->with('pesan', 'Nilai DNP Tidak Sama Dengan Realisasi');
+        }
+        return redirect('/tagihan/'.$tagihan->id.'/dnp/')->with('berhasil', 'Nilai DNP Telah Sesuai Dengan Realisasi');
     }
 
     /**
