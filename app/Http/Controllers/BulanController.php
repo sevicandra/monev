@@ -20,7 +20,7 @@ class BulanController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('bulan.index',[
+        return view('referensi.bulan.index',[
             'data'=>bulan::orderby('kodebulan')->get()
         ]);
     }
@@ -35,7 +35,7 @@ class BulanController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('bulan.create');
+        return view('referensi.bulan.create');
     }
 
     /**
@@ -88,7 +88,7 @@ class BulanController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('bulan.update',[
+        return view('referensi.bulan.update',[
             'data'=>$bulan
         ]);
     }

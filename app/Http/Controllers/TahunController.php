@@ -18,7 +18,7 @@ class TahunController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('tahun.index',[
+        return view('referensi.tahun.index',[
             'data'=>tahun::orderby('tahun')->get()
         ]);
     }
@@ -33,7 +33,7 @@ class TahunController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('tahun.create');
+        return view('referensi.tahun.create');
     }
 
     /**
@@ -83,7 +83,7 @@ class TahunController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('tahun.update',[
+        return view('referensi.tahun.update',[
             'data'=>$tahun
         ]);
     }

@@ -14,6 +14,7 @@ use Endroid\QrCode\Logo\Logo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Endroid\QrCode\Encoding\Encoding;
 use Illuminate\Support\Facades\Storage;
@@ -41,8 +42,11 @@ class RegisterController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('register_tagihan.index',[
-            'data'=>register::where('status', '<', 1)->get()
+            'data'=>register::registerppk()->where('status' , 0)->get()
         ]);
     }
 
@@ -53,6 +57,9 @@ class RegisterController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('register_tagihan.create');
     }
 
@@ -64,11 +71,23 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            $ppk_id = auth()->user()->id;
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            $ppk_id = auth()->user()->mapingstafppk->ppk_id;
+        }
+
         $nomor=nomor::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->first();
         register::create([
             'tahun'=>session()->get('tahun'),
             'kodesatker'=>auth()->user()->satker,
-            'ppk'=>auth()->user()->nip,
+            'ppk_id'=>$ppk_id,
             'nomor'=>$nomor->nomor,
             'ekstensi'=>$nomor->ekstensi,
             'status'=>0,
@@ -88,6 +107,22 @@ class RegisterController extends Controller
      */
     public function show(register $register)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+
         return view('register_tagihan.detail',[
             'data'=>$register->tagihan,
             'register'=>$register
@@ -125,6 +160,21 @@ class RegisterController extends Controller
      */
     public function destroy(register $register)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
         foreach ($register->register_tagihan as $key) {
             $key->delete();
         }
@@ -134,6 +184,20 @@ class RegisterController extends Controller
 
     public function detailcreate(register $register)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
         return view('register_tagihan.create_detail',[
         'data'=>tagihan::notregistered()->get(),
         'register'=>$register
@@ -141,7 +205,22 @@ class RegisterController extends Controller
     }
     public function preview(register $register)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+            $ppk=auth()->user()->nama;
+        }
 
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+            $ppk=auth()->user()->mapingstafppk->ppk->nama;
+        }
         ob_start();
         $html2pdf = ob_get_clean();
         $html2pdf = new Html2Pdf('P', 'A4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
@@ -150,14 +229,24 @@ class RegisterController extends Controller
         $html2pdf->writeHTML(view('register_tagihan.surat',[
             'data'=>$register->tagihan,
             'register'=>$register,
-            'logo'=>$image
+            'logo'=>$image,
+            'ppk'=>$ppk,
         ]));
         $html2pdf->output('register_tagihan.pdf');
     }
 
     public function esign(Request $request, register $register)
     {
-        
+        if (! Gate::allows('PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($register->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+            $ppk=auth()->user()->nama;
+        }
+
         if ($request->_method === 'POST') {
             $request->validate([
                 'passphrase'=>'required'
@@ -186,7 +275,8 @@ class RegisterController extends Controller
                 'data'=>$register->tagihan,
                 'register'=>$register,
                 'logo'=>$image,
-                'qrcode'=>$qrcode
+                'qrcode'=>$qrcode,
+                'ppk'=>$ppk
             ]);
             $content = $pdf->download()->getOriginalContent();
     

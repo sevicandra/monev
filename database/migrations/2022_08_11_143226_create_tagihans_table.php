@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tagihans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('notagihan',5);
+            $table->uuid('ppk_id');
             $table->uuid('jnstagihan');
             $table->uuid('kodeunit');
             $table->uuid('kodedokumen');

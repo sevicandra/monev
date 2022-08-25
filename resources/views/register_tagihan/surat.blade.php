@@ -233,7 +233,7 @@
         </tr>
         <tr>
             <td style="width: 65%;"></td>
-            <td style="width: 35%;"></td>
+            <td style="width: 35%;">{{ $ppk }}</td>
         </tr>
     </table>
 

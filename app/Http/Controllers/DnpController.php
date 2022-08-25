@@ -19,7 +19,10 @@ class DnpController extends Controller
      */
     public function index(tagihan $tagihan)
     {
-        return view('dnp.index',[
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        return view('tagihan.dnp.index',[
             'data'=>$tagihan
         ]);
     }
@@ -31,7 +34,10 @@ class DnpController extends Controller
      */
     public function create(tagihan $tagihan)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         if ($tagihan->dokumen->statusdnp != '1') {
@@ -44,12 +50,12 @@ class DnpController extends Controller
                 'offset' => 0,
                 'X-API-KEY'=>config('alika.api'),
             ]);
-            return view('dnp.tarik_pegawai_gaji',[
+            return view('tagihan.dnp.tarik_pegawai_gaji',[
                 'data'=>collect(json_decode($response->getBody()->getContents(), false)),
                 'tagihan'=>$tagihan
             ]);
         }else{
-            return view('dnp.tarik_pegawai_gaji',[
+            return view('tagihan.dnp.tarik_pegawai_gaji',[
                 'data'=>[],
                 'tagihan'=>$tagihan
             ]);
@@ -58,13 +64,16 @@ class DnpController extends Controller
 
     public function create_non_djkn(tagihan $tagihan)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         if ($tagihan->dokumen->statusdnp != '1') {
             abort(403);
         }
-        return view('dnp.tarik_pegawai_nondjkn',[
+        return view('tagihan.dnp.tarik_pegawai_nondjkn',[
             'data'=>pegawainondjkn::all(),
             'tagihan'=>$tagihan
         ]);
@@ -78,12 +87,21 @@ class DnpController extends Controller
      */
     public function store(tagihan $tagihan, $nip)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         if ($tagihan->dokumen->statusdnp != '1') {
             abort(403);
         }
+        
         $response = Http::withBasicAuth(config('alika.id'), config('alika.password'))->get(config('alika.uri').'data-pegawai',[
             'keyword' => $nip,
             'limit' => null,
@@ -109,7 +127,15 @@ class DnpController extends Controller
 
     public function store_non_djkn(tagihan $tagihan,pegawainondjkn $pegawainondjkn)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         if ($tagihan->dokumen->statusdnp != '1') {
@@ -171,7 +197,17 @@ class DnpController extends Controller
      */
     public function destroy(tagihan $tagihan, dnp $dnp)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         $dnp->delete();
@@ -180,11 +216,14 @@ class DnpController extends Controller
 
     public function cetak(tagihan $tagihan)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         ob_start();
         $html2pdf = ob_get_clean();
         $html2pdf = new Html2Pdf('P', 'A4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
-        $html2pdf->writeHTML(view('dnp.cetak',[
+        $html2pdf->writeHTML(view('tagihan.dnp.cetak',[
             'data'=>$tagihan,
         ]));
         $html2pdf->output('register_tagihan.pdf');

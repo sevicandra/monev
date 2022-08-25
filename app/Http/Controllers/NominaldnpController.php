@@ -29,10 +29,13 @@ class NominaldnpController extends Controller
      */
     public function create(tagihan $tagihan, $dnp)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('nominal_dnp.index',[
+        return view('tagihan.dnp.nominal_dnp.index',[
             'tagihan'=>$tagihan->id,
             'dnp'=>$dnp
         ]);
@@ -46,7 +49,10 @@ class NominaldnpController extends Controller
      */
     public function store(Request $request,tagihan $tagihan,dnp $dnp)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         $request->validate([
@@ -91,10 +97,13 @@ class NominaldnpController extends Controller
      */
     public function edit(tagihan $tagihan,  $dnp ,nominaldnp $nominaldnp)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->status != 0) {
             return abort(403);
         }
-        return view('nominal_dnp.update',[
+        return view('tagihan.dnp.nominal_dnp.update',[
             'data'=>$nominaldnp,
             'tagihan'=>$tagihan->id,
             'dnp'=>$dnp
@@ -110,7 +119,10 @@ class NominaldnpController extends Controller
      */
     public function update(Request $request,tagihan $tagihan,dnp  $dnp ,nominaldnp $nominaldnp)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         $request->validate([

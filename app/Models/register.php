@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Traits\Uuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class register extends Model
 {
@@ -14,7 +15,7 @@ class register extends Model
     protected $fillable = [
         'tahun',
         'kodesatker',
-        'ppk',
+        'ppk_id',
         'nomor',
         'ekstensi',
         'status',
@@ -31,5 +32,16 @@ class register extends Model
     public function tagihan()
     {
         return $this->BelongsToMany(tagihan::class, register_tagihan::class);
+    }
+
+    public function scopeRegisterppk($data)
+    {
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            return $data->where('ppk_id', auth()->user()->id);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            return $data->where('ppk_id', auth()->user()->mapingstafppk->ppk_id);
+        }
     }
 }

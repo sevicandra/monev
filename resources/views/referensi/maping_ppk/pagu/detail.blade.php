@@ -1,8 +1,9 @@
 @extends('layout.main')
+
 @section('content')
 <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Register Tagihan</h1>
+        <h1 class="h2">Pagu PPk {{ $ppk->nama }}</h1>
     </div>
     <div class="row">
         <div class="col">
@@ -11,15 +12,13 @@
     </div>
     <div class="row mb-3">
         <div class="col-lg-7">
-            <form action="/register" method="post">
-                @csrf
-                <button class="btn btn-sm btn-outline-secondary mt-1 mb-1" onclick="return confirm('Apakah Anda yakin akan menambah data?');"> Tambah Data</button>
-            </form>
+            <a href="/maping-ppk" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Kembali</a>
+            <a href="/maping-ppk/{{ $ppk->id }}/pagu/edit" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
         </div>
         <div class="col-lg-5">
             <form action="" method="post" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="nomor" class="form-control" placeholder="nomor">
+                    <input type="text" name="nmsatker" class="form-control" placeholder="Nama Satker">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -32,10 +31,15 @@
                     <thead class="text-center">
                         <tr class="align-middle">
                             <th>No</th>
-                            <th>Nomor Register</th>
-                            <th>Tanggal</th>
-                            <th>Jumlah</th>
-                            <th>Total</th>
+                            <th>Program</th>
+                            <th>Kegiatan</th>
+                            <th>KRO</th>
+                            <th>RO</th>
+                            <th>Komponen</th>
+                            <th>Subkomponen</th>
+                            <th>Akun</th>
+                            <th>Anggaran</th>
+                            <th>Unit</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -43,40 +47,31 @@
                         @php
                             $i=1;
                         @endphp
+
                         @foreach ($data as $item)
                         <tr>
                             <td class="text-center">{{ $i }}</td>
-                            <td>{{ $item->nomor }}</td>
-                            <td>{{ $item->created_at }} </td>
-                            <td class="text-center"></td>
-                            <td class="text-right">
-                                @php
-                                    $jumlah=0
-                                @endphp
-                                @foreach ($item->tagihan as $tagihan)
-                                    @php
-                                        $jumlah=$jumlah+$tagihan->realisasi->sum('realisasi')
-                                    @endphp
-                                @endforeach
-                                Rp{{ number_format($jumlah, 2, ',', '.') }}
-                            </td>
-                            <td class="pb-0 pr-0">
+                            <td class="text-center">{{ $item->program }}</td>
+                            <td class="text-center">{{ $item->kegiatan }}</td>
+                            <td class="text-center">{{ $item->kro }}</td>
+                            <td class="text-center">{{ $item->ro }}</td>
+                            <td class="text-center">{{ $item->komponen }}</td>
+                            <td class="text-center">{{ $item->subkomponen }}</td>
+                            <td class="text-center">{{ $item->akun }}</td>
+                            <td class="text-right">Rp{{ number_format($item->anggaran, 2, ',', '.') }}</td>
+                            <td class="text-center"> @if ($item->unit) {{ $item->unit->namaunit }} @endif </td>
+                            <td  class="pb-0 pr-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <form action="/register/{{ $item->id }}" method="post">
+                                    <form action="/maping-ppk/{{ $ppk->id }}/pagu/{{ $item->mapingppk->id }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                     </form>
-                                    <a href="/register/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                    <a href="/register/{{ $item->id }}/preview" class="btn btn-sm btn-outline-secondary pt-0 pb-0" target="_blank">Preview</a>
-                                    @can('ppk', auth()->user()->role)
-                                    <a href="/register/{{ $item->id }}/esign" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Kirim</a>
-                                    @endcan
                                 </div>
                             </td>
                         </tr>
                         @php
-                            $i++
+                            $i++;
                         @endphp
                         @endforeach
                     </tbody>
@@ -86,9 +81,9 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-
+            
         </div>
     </div>
 
-</main>
+</main>   
 @endsection

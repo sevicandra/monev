@@ -7,17 +7,12 @@
     </div>
     <div class="row">
         <div class="col">
-            {{-- <?php if ($this->session->flashdata('pesan')) : ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Selamat!</strong> <?= $this->session->flashdata('pesan'); ?>
-                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php endif; ?> --}}
+            @include('layout.flashmessage')
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-lg-7">
-            <a href="/tagihan/realisasi/{{ $data->id }}/index" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
+            <a href="/tagihan/{{ $data->id }}/realisasi" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
         </div>
         <div class="col-lg-5">
             <form action="" method="post" autocomplete="off"> 

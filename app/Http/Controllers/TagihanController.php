@@ -8,6 +8,7 @@ use App\Models\dokumen;
 use App\Models\tagihan;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdatetagihanRequest;
 
@@ -20,8 +21,11 @@ class TagihanController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('tagihan.index',[
-            'data'=>tagihan::where('status', 0)->get()
+            'data'=>tagihan::where('status', 0)->tagihanppk()->get()
         ]);
     }
 
@@ -32,6 +36,9 @@ class TagihanController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('tagihan.create',[
             'dokumen'=>dokumen::orderby('kodedokumen')->get(),
             'unit'=>unit::Myunit()
@@ -46,6 +53,9 @@ class TagihanController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'notagihan'=>'required|min:5|max:5',
             'tgltagihan'=>'required',
@@ -59,6 +69,8 @@ class TagihanController extends Controller
             'notagihan'=>'numeric',
         ]);
 
+        $ppk_id = auth()->user()->mapingstafppk->ppk_id;
+
         tagihan::create([
             'notagihan'=>$request->notagihan,
             'tgltagihan'=>$request->tgltagihan,
@@ -69,7 +81,8 @@ class TagihanController extends Controller
             'status'=>0,
             'tahun'=>session()->get('tahun'),
             'kodesatker'=>auth()->user()->satker,
-            'bruto'=>0
+            'bruto'=>0,
+            'ppk_id'=>$ppk_id
         ]);
 
         return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Dibuat.');
@@ -94,6 +107,15 @@ class TagihanController extends Controller
      */
     public function edit(tagihan $tagihan)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
         if ($tagihan->status > 0) {
             return abort(403);
         }
@@ -113,9 +135,20 @@ class TagihanController extends Controller
      */
     public function update(Request $request, tagihan $tagihan)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+
         if ($tagihan->status > 0) {
             return abort(403);
         }
+
         $request->validate([
             'notagihan'=>'required|min:5|max:5',
             'tgltagihan'=>'required',
@@ -152,7 +185,17 @@ class TagihanController extends Controller
      */
     public function destroy(tagihan $tagihan)
     {
-        if ($tagihan->status > 0) {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         
@@ -172,6 +215,15 @@ class TagihanController extends Controller
     }
 
     public function uploadindex(tagihan $tagihan){
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
         return view('uploadberkas.index',[
             'data'=>$tagihan,
             'back'=>'/tagihan',
@@ -181,6 +233,16 @@ class TagihanController extends Controller
     }
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas){
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+
         if ($tagihan->status != 0) {
             return abort(403);
         }
@@ -207,7 +269,7 @@ class TagihanController extends Controller
             if ($tagihan->id != $berkas->tagihan_id) {
                 abort(403);
             }
-            if ($berkas->berkas->kodeberkas === '01' || $berkas->berkas->kodeberkas === '02') {
+            if ($berkas->berkas->kodeberkas === '01' && $berkas->berkas->kodeberkas === '02') {
                 Storage::delete($berkas->file);
                 $berkas->delete();
                 return redirect('/tagihan/'.$tagihan->id.'/upload')->with('berhasil', 'Dokumen Berhasil Di Hapus.');;
@@ -226,6 +288,16 @@ class TagihanController extends Controller
 
     public function kirim(tagihan $tagihan)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+        
         if ($tagihan->status > 0) {
             return abort(403);
         }
@@ -248,7 +320,7 @@ class TagihanController extends Controller
 
         }
         
-        if (berkasupload::where('tagihan_id', $tagihan->id)->cekberkas1()->first() === null || berkasupload::where('tagihan_id', $tagihan->id)->cekberkas2()->first() === null) {
+        if (berkasupload::where('tagihan_id', $tagihan->id)->cekberkas1()->first() === null && berkasupload::where('tagihan_id', $tagihan->id)->cekberkas2()->first() === null) {
             return back()->with('gagal','Data tidak dapat dikirim karena berkas belum lengkap.');
         }
 

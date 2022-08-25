@@ -48,7 +48,7 @@ class RoleUserController extends Controller
      */
     public function show(User $role_user)
     {
-        return view('role_user.index',[
+        return view('referensi.user.role_user.index',[
             'data'=>$role_user
         ]);
     }
@@ -61,7 +61,7 @@ class RoleUserController extends Controller
      */
     public function edit(User $role_user)
     {
-        return view('role_user.create',[
+        return view('referensi.user.role_user.create',[
             'data'=>role::orderby('koderole')->get(),
             'user'=>$role_user
         ]);

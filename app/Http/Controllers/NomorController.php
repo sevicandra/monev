@@ -16,7 +16,7 @@ class NomorController extends Controller
      */
     public function index()
     {
-        return view('nomor.index',[
+        return view('referensi.nomor.index',[
             'data'=>nomor::all()
         ]);
     }
@@ -28,7 +28,7 @@ class NomorController extends Controller
      */
     public function create()
     {
-        return view('nomor.create');
+        return view('referensi.nomor.create');
     }
 
     /**
@@ -79,7 +79,7 @@ class NomorController extends Controller
      */
     public function edit(nomor $nomor)
     {
-        return view('nomor.update',[
+        return view('referensi.nomor.update',[
             'data'=>$nomor
         ]);
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\tagihan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class MonitoringTagihanController extends Controller
 {
@@ -14,8 +15,11 @@ class MonitoringTagihanController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('monitoring_tagihan.index',[
-            'data'=>tagihan::all()
+            'data'=>tagihan::tagihanppk()->get()
         ]);
     }
 
@@ -48,6 +52,20 @@ class MonitoringTagihanController extends Controller
      */
     public function show(tagihan $monitoring_tagihan)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($monitoring_tagihan->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($monitoring_tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
         return view('monitoring_tagihan.dokumen',[
             'data'=>$monitoring_tagihan
         ]);

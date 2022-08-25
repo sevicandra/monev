@@ -18,7 +18,7 @@ class SatkerController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('satker.index',[
+        return view('referensi.satker.index',[
             'data'=>satker::all()
         ]);
     }
@@ -33,7 +33,7 @@ class SatkerController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('satker.create');
+        return view('referensi.satker.create');
     }
 
     /**
@@ -100,7 +100,7 @@ class SatkerController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('satker.update',[
+        return view('referensi.satker.update',[
             'data'=> $satker
         ]);
     }

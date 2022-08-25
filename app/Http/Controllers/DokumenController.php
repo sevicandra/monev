@@ -20,7 +20,7 @@ class DokumenController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('dokumen.index',[
+        return view('referensi.dokumen.index',[
             'data'=>dokumen::orderby('kodedokumen')->get()
         ]);
     }
@@ -35,7 +35,7 @@ class DokumenController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('dokumen.create');
+        return view('referensi.dokumen.create');
     }
 
     /**
@@ -97,7 +97,7 @@ class DokumenController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('dokumen.update',[
+        return view('referensi.dokumen.update',[
             'data'=>$dokuman
         ]);
     }

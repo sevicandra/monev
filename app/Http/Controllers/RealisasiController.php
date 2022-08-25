@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\pagu;
 use App\Models\tagihan;
 use App\Models\realisasi;
-use App\Http\Requests\UpdaterealisasiRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\UpdaterealisasiRequest;
 
 class RealisasiController extends Controller
 {
@@ -17,7 +18,14 @@ class RealisasiController extends Controller
      */
     public function index(tagihan $tagihan)
     {
-        return view('realisasi.index',[
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+
+        return view('tagihan.realisasi.index',[
             'data'=>$tagihan
         ]);
     }
@@ -40,6 +48,17 @@ class RealisasiController extends Controller
      */
     public function store(tagihan $tagihan, pagu $pagu)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+        if ($pagu->mapingppk->user_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+
         if ($tagihan->status != 0) {
             return abort(403);
         }
@@ -59,9 +78,16 @@ class RealisasiController extends Controller
      */
     public function show(tagihan $realisasi)
     {
-        return view('realisasi.tarik_detail_akun',[
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($realisasi->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+
+        return view('tagihan.realisasi.tarik_detail_akun',[
             'data'=>$realisasi,
-            'pagu'=>pagu::Pagusatker()->get()
+            'pagu'=>pagu::Pagusatker()->paguppk()->get()
         ]); 
     }
 
@@ -73,10 +99,17 @@ class RealisasiController extends Controller
      */
     public function edit(realisasi $realisasi)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+
         if ($realisasi->tagihan->status != 0) {
             return abort(403);
         }
-        return view('realisasi.update',[
+        return view('tagihan.realisasi.update',[
             'data'=>$realisasi,
         ]);
     }
@@ -90,6 +123,13 @@ class RealisasiController extends Controller
      */
     public function update(Request $request, realisasi $realisasi)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+
         if ($realisasi->tagihan->status != 0) {
             return abort(403);
         }
@@ -113,6 +153,13 @@ class RealisasiController extends Controller
      */
     public function destroy(realisasi $realisasi)
     {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+
         if ($realisasi->tagihan->status > 0) {
             return abort(403);
         }

@@ -12,7 +12,7 @@
     </div>
     <div class="row mb-3">
         <div class="col-lg-7">
-            <a href="/tagihan/{{ $tagihan->id }}/dnp/index" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
+            <a href="/tagihan/{{ $tagihan->id }}/dnp" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
         </div>
         <div class="col-lg-5">
             <form action="" method="get" autocomplete="off">
@@ -47,14 +47,14 @@
                             <tr>
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{  $item->nip  }}</td>
-                                <td>{{  $item->nama  }}</td>
-                                <td>{{  $item->kodegolongan  }}</td>
+                                <td>{{  $item->nmpeg  }}</td>
+                                <td>{{  $item->kdgol  }}</td>
                                 <td>{{  $item->rekening  }}</td>
-                                <td>{{  $item->namabank  }}</td>
-                                <td>{{  $item->namarekening  }}</td>
+                                <td>{{  $item->nm_bank  }}</td>
+                                <td>{{  $item->nmrek  }}</td>
                                 <td class="pb-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <form action="/tagihan/{{ $tagihan->id }}/dnp-non-djkn/{{ $item->id }}" method="post">
+                                        <form action="/tagihan/{{ $tagihan->id }}/dnp/{{ $item->nip }}" method="post">
                                             @csrf
                                             <button class="btn btn-sm btn-outline-secondary pt-0 pb-0">Pilih</button>
                                         </form>

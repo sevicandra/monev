@@ -20,7 +20,7 @@ class BerkasController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('berkas.index',[
+        return view('referensi.berkas.index',[
             'data'=>berkas::orderby('kodeberkas')->get()
         ]);
     }
@@ -35,7 +35,7 @@ class BerkasController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('berkas.create');
+        return view('referensi.berkas.create');
     }
 
     /**
@@ -88,7 +88,7 @@ class BerkasController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('berkas.update',[
+        return view('referensi.berkas.update',[
             'data'=>$berka
         ]);
     }

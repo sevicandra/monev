@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Traits\Uuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class tagihan extends Model
 {
@@ -21,6 +22,7 @@ class tagihan extends Model
         'kodesatker',
         'tahun',
         'uraian',
+        'ppk_id'
     ];
     
     public function unit()
@@ -87,4 +89,16 @@ class tagihan extends Model
     {
         return $this->hasOne(spm::class);
     }
+
+    public function scopeTagihanppk($data)
+    {
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            return $data->where('ppk_id', auth()->user()->id);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            return $data->where('ppk_id', auth()->user()->mapingstafppk->ppk_id);
+        }
+    }
+
 }

@@ -16,7 +16,7 @@ class UnitController extends Controller
      */
     public function index()
     {
-        return view('unit.index',[
+        return view('referensi.unit.index',[
             'data'=>unit::orderby('kodeunit')->get()
         ]);
     }
@@ -28,7 +28,7 @@ class UnitController extends Controller
      */
     public function create()
     {
-        return view('unit.create');
+        return view('referensi.unit.create');
     }
 
     /**
@@ -76,7 +76,7 @@ class UnitController extends Controller
      */
     public function edit(unit $unit)
     {
-        return view('unit.update',[
+        return view('referensi.unit.update',[
             'data'=>$unit
         ]);
     }

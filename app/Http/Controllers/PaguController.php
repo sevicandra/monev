@@ -42,7 +42,7 @@ class PaguController extends Controller
     {
         $request->validate([
             'program'=>'required|min:2|max:2',
-            'kegiatan'=>'required|min2|max:2',
+            'kegiatan'=>'required|min:2|max:2',
             'kro'=>'required|min:3|max:3',
             'ro'=>'required|min:3|max:3',
             'komponen'=>'required|min:3|max:3',
@@ -110,7 +110,7 @@ class PaguController extends Controller
     {
         $request->validate([
             'program'=>'required|min:2|max:2',
-            'kegiatan'=>'required|min2|max:2',
+            'kegiatan'=>'required|min:2|max:2',
             'kro'=>'required|min:3|max:3',
             'ro'=>'required|min:3|max:3',
             'komponen'=>'required|min:3|max:3',

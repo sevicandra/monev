@@ -1,32 +1,33 @@
 <?php
 
-use App\Http\Controllers\ArsipController;
-use App\Http\Controllers\BendaharaController;
-use App\Http\Controllers\BerkasController;
-use App\Http\Controllers\BulanController;
-use App\Http\Controllers\DnpController;
-use App\Http\Controllers\DokumenController;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DnpController;
+use App\Http\Controllers\PphController;
 use App\Http\Controllers\PaguController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MonitoringTagihanController;
-use App\Http\Controllers\NominaldnpController;
-use App\Http\Controllers\NomorController;
-use App\Http\Controllers\PegawainondjknController;
-use App\Http\Controllers\PphController;
-use App\Http\Controllers\PpspmController;
-use App\Http\Controllers\RealisasiController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\RegisterTagihanController;
-use App\Http\Controllers\RoleUserController;
-use App\Http\Controllers\SatkerController;
-use App\Http\Controllers\TagihanController;
-use App\Http\Controllers\TahunController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ArsipController;
+use App\Http\Controllers\BulanController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NomorController;
+use App\Http\Controllers\PpspmController;
+use App\Http\Controllers\TahunController;
+use App\Http\Controllers\BerkasController;
+use App\Http\Controllers\SatkerController;
+use App\Http\Controllers\DokumenController;
+use App\Http\Controllers\TagihanController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\BendaharaController;
+use App\Http\Controllers\MapingppkController;
+use App\Http\Controllers\RealisasiController;
+use App\Http\Controllers\NominaldnpController;
 use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\PegawainondjknController;
+use App\Http\Controllers\RegisterTagihanController;
+use App\Http\Controllers\MonitoringTagihanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -195,3 +196,15 @@ Route::controller(ArsipController::class)->group(function(){
 });
 
 Route::resource('/arsip', ArsipController::class)->middleware('auth');
+
+Route::controller(MapingppkController::class)->group(function(){
+    Route::get('maping-ppk', 'index')->middleware('auth');
+    Route::get('maping-ppk/{ppk}/pagu', 'showpagu')->middleware('auth');
+    Route::get('maping-ppk/{ppk}/pagu/edit', 'editpagu')->middleware('auth');
+    Route::post('maping-ppk/{ppk}/pagu/{pagu}', 'updatepagu')->middleware('auth');
+    Route::delete('maping-ppk/{ppk}/pagu/{mapingppk}', 'destroypagu')->middleware('auth');
+    Route::get('maping-ppk/{ppk}/staf', 'showstaf')->middleware('auth');
+    Route::get('maping-ppk/{ppk}/staf/edit', 'editstaf')->middleware('auth');
+    Route::post('maping-ppk/{ppk}/staf/{staf}', 'updatestaf')->middleware('auth');
+    Route::delete('maping-ppk/{ppk}/staf/{mapingstafppk}', 'destroystaf')->middleware('auth');
+});

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\pegawainondjkn;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorepegawainondjknRequest;
 use App\Http\Requests\UpdatepegawainondjknRequest;
-use Illuminate\Http\Request;
 
 class PegawainondjknController extends Controller
 {
@@ -16,6 +17,9 @@ class PegawainondjknController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('PPK', auth()->user()->id) && ! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('pegawai_nondjkn.index',[
             'data'=>pegawainondjkn::all()
         ]);
@@ -28,6 +32,9 @@ class PegawainondjknController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('pegawai_nondjkn.create');
     }
 
@@ -39,6 +46,9 @@ class PegawainondjknController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'nip'=>'required|numeric',
             'nama'=>'required',
@@ -77,6 +87,9 @@ class PegawainondjknController extends Controller
      */
     public function edit(pegawainondjkn $pegawai_nondjkn)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('pegawai_nondjkn.update',[
             'data'=>$pegawai_nondjkn
         ]);
@@ -91,6 +104,9 @@ class PegawainondjknController extends Controller
      */
     public function update(Request $request, pegawainondjkn $pegawai_nondjkn)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'nip'=>'required|numeric',
             'nama'=>'required',
@@ -118,6 +134,9 @@ class PegawainondjknController extends Controller
      */
     public function destroy(pegawainondjkn $pegawai_nondjkn)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         $pegawai_nondjkn->delete();
         return redirect('/pegawai-nondjkn')->with('berhasil', 'Data Berhasil Di Hapus');
     }

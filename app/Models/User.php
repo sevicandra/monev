@@ -64,4 +64,36 @@ class User extends Authenticatable
         return false;
     }
 
+    public function scopePegawaisatker($data){
+        return $data->where('satker', auth()->user()->satker);
+    }
+
+    public function scopePpk($data){
+        return $data->wherehas('role', function($val){
+            $val->where('koderole', '05');
+        });
+    }
+
+    public function paguppk()
+    {
+        return $this->belongsToMany(pagu::class, 'mapingpaguppks');
+    }
+
+    public function stafppk()
+    {
+        return $this->belongsToMany(User::class, 'mapingstafppks', 'ppk_id', 'staf_id');
+    }
+
+    public function mapingstafppk()
+    {
+        return $this->hasOne(mapingstafppk::class, 'staf_id');
+    }
+    
+    public function scopeStafnoppk($data)
+    {
+        $data->wherehas('role', function($val){
+            $val->where('koderole', '06');
+        })->doesntHave('mapingstafppk');
+    }
+    
 }

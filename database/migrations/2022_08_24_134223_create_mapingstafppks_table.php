@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('registers', function (Blueprint $table) {
+        Schema::create('mapingstafppks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('tahun');
-            $table->string('kodesatker');
             $table->uuid('ppk_id');
-            $table->string('nomor',5);
-            $table->string('ekstensi', 64);
-            $table->tinyInteger('status');
-            $table->string('file');
+            $table->uuid('staf_id')->unique();
             $table->timestamps();
+            $table->unique(['ppk_id', 'staf_id']);
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('registers');
+        Schema::dropIfExists('mapingstafppks');
     }
 };

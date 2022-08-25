@@ -18,7 +18,7 @@ class RoleController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('role.index',[
+        return view('referensi.role.index',[
             'data'=>role::orderby('koderole')->get()
         ]);
     }
@@ -33,7 +33,7 @@ class RoleController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('role.create');
+        return view('referensi.role.create');
     }
 
     /**
@@ -88,7 +88,7 @@ class RoleController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('role.update',[
+        return view('referensi.role.update',[
             'data'=>$role,
         ]);
     }

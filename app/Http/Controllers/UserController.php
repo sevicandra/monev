@@ -10,13 +10,13 @@ class UserController extends Controller
 {
 
     public function index(){
-        return view('user.index',[
+        return view('referensi.user.index',[
             'data'=>User::all(),
         ]);
     }
 
     public function create(){
-        return view('user.create');
+        return view('referensi.user.create');
     }
     
     public function store(Request $request){
@@ -48,7 +48,7 @@ class UserController extends Controller
 
     public function edit(user $user)
     {
-        return view('user.update',[
+        return view('referensi.user.update',[
             'data'=> $user
         ]);
     }

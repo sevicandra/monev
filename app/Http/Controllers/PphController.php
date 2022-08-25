@@ -18,7 +18,7 @@ class PphController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('pph.index',[
+        return view('referensi.pph.index',[
             'data'=>pph::orderby('kodegolongan', 'DESC')->get()
         ]);
     }
@@ -33,7 +33,7 @@ class PphController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('pph.create');
+        return view('referensi.pph.create');
     }
 
     /**
@@ -88,7 +88,7 @@ class PphController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('pph.update',[
+        return view('referensi.pph.update',[
             'data'=>$pph
         ]);
     }
