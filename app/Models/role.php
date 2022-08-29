@@ -24,10 +24,9 @@ class role extends Model
     public function scopeOfUser($data, $user)
     {
 
-        function searchuser($val, $user){
-            $val->where('id', $user);
-        }
-
-        return $data->doesntHave('User', searchuser($this, $user))->get();
+        $var = $user;
+        return $data->whereDoesntHave('User', function($val)use($var){
+            $val->where('id', $var);
+        })->get();
     }
 }

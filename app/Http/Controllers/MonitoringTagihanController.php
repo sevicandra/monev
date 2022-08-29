@@ -19,7 +19,7 @@ class MonitoringTagihanController extends Controller
             abort(403);
         }
         return view('monitoring_tagihan.index',[
-            'data'=>tagihan::tagihanppk()->get()
+            'data'=>tagihan::tagihanppk()->where('tahun', session()->get('tahun'))->get()
         ]);
     }
 

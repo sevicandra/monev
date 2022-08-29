@@ -22,6 +22,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\MapingppkController;
+use App\Http\Controllers\MapingstafppkController;
 use App\Http\Controllers\RealisasiController;
 use App\Http\Controllers\NominaldnpController;
 use App\Http\Controllers\VerifikasiController;
@@ -207,4 +208,12 @@ Route::controller(MapingppkController::class)->group(function(){
     Route::get('maping-ppk/{ppk}/staf/edit', 'editstaf')->middleware('auth');
     Route::post('maping-ppk/{ppk}/staf/{staf}', 'updatestaf')->middleware('auth');
     Route::delete('maping-ppk/{ppk}/staf/{mapingstafppk}', 'destroystaf')->middleware('auth');
+});
+
+Route::controller(MapingstafppkController::class)->group(function(){
+    Route::get('maping-staf-ppk', 'index')->middleware('auth');
+    Route::get('maping-staf-ppk/{stafppk}/unit', 'showunit')->middleware('auth');
+    Route::get('maping-staf-ppk/{stafppk}/unit/edit', 'editunit')->middleware('auth');
+    Route::get('maping-staf-ppk/{stafppk}/unit/{unit}', 'updateunit')->middleware('auth');
+    Route::delete('maping-staf-ppk/{stafppk}/unit/{unit}', 'destroyunit')->middleware('auth');
 });

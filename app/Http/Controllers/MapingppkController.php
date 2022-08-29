@@ -99,12 +99,12 @@ class MapingppkController extends Controller
     public function destroypagu(User $ppk, mapingpaguppk $mapingppk)
     {
         $mapingppk->delete();
-        return redirect('/maping-ppk/'.$ppk->id.'/pagu')->with('berhasil', 'Pagu Berhasil Di Hapus dari PPK');;
+        return redirect('/maping-ppk/'.$ppk->id.'/pagu')->with('berhasil', 'Pagu Berhasil Di Hapus dari PPK');
     }
 
     public function destroystaf(User $ppk, mapingstafppk $mapingstafppk)
     {
         $mapingstafppk->delete();
-        return redirect('/maping-ppk/'.$ppk->id.'/staf')->with('berhasil', 'Pagu Berhasil Di Hapus dari PPK');;
+        return redirect('/maping-ppk/'.$ppk->id.'/staf')->with('berhasil', 'Pagu Berhasil Di Hapus dari PPK');
     }
 }

@@ -62,7 +62,7 @@ class RoleUserController extends Controller
     public function edit(User $role_user)
     {
         return view('referensi.user.role_user.create',[
-            'data'=>role::orderby('koderole')->get(),
+            'data'=>role::orderby('koderole')->ofUser($role_user->id),
             'user'=>$role_user
         ]);
     }

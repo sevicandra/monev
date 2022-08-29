@@ -23,8 +23,28 @@ class unit extends Model
         return $this->belongsTo(satker::class, 'kodesatker', 'kodesatker');
     }
 
+    public function stafppk()
+    {
+        return $this->belongsToMany(User::class, 'mapingunitstafppks');
+    }
+
     public function scopeMyunit()
     {
-        return $this->where('kodesatker', auth()->user()->satker)->orderby('kodeunit')->get();
+        return $this->where('kodesatker', auth()->user()->satker)->orderby('kodeunit');
+    }
+
+    public function scopeStafppk()
+    {
+        return $this->whereHas('stafppk', function($val){
+            $val->where('nip', auth()->user()->nip);
+        });
+    }
+
+    public function scopeNostafppk($data, $stafppk)
+    {
+        $var=$stafppk;
+        return $data->whereDoesntHave('stafppk', function($val)use($var){
+            $val->where('nip', $var);
+        });
     }
 }

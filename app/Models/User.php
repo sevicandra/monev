@@ -74,6 +74,12 @@ class User extends Authenticatable
         });
     }
 
+    public function scopeStafppk($data){
+        return $data->wherehas('role', function($val){
+            $val->where('koderole', '06');
+        });
+    }
+
     public function paguppk()
     {
         return $this->belongsToMany(pagu::class, 'mapingpaguppks');
@@ -96,4 +102,8 @@ class User extends Authenticatable
         })->doesntHave('mapingstafppk');
     }
     
+    public function unitstafppk()
+    {
+        return $this->belongsToMany(unit::class, 'mapingunitstafppks');
+    }
 }

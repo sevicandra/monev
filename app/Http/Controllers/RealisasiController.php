@@ -87,7 +87,7 @@ class RealisasiController extends Controller
 
         return view('tagihan.realisasi.tarik_detail_akun',[
             'data'=>$realisasi,
-            'pagu'=>pagu::Pagusatker()->paguppk()->get()
+            'pagu'=>pagu::Pagusatker()->paguppk()->pagustafppk()->get()
         ]); 
     }
 

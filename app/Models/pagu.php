@@ -37,7 +37,7 @@ class pagu extends Model
 
     public function scopePagusatker()
     {
-        return $this->where('kodesatker', auth()->user()->satker);
+        return $this->where('tahun', session()->get('tahun'))->where('kodesatker', auth()->user()->satker);
     }
 
     public function realisasi()
@@ -53,6 +53,15 @@ class pagu extends Model
     public function ppk()
     {
         return $this->belongsToMany(User::class, 'mapingpaguppks');
+    }
+
+    public function scopePagustafppk($data )
+    {
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            return $data->whereHas('unit', function($val){
+                $val->stafppk();
+            });
+        }
     }
 
     public function mapingppk()

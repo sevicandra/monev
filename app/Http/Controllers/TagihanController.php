@@ -25,7 +25,7 @@ class TagihanController extends Controller
             abort(403);
         }
         return view('tagihan.index',[
-            'data'=>tagihan::where('status', 0)->tagihanppk()->get()
+            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->get()
         ]);
     }
 
@@ -41,7 +41,7 @@ class TagihanController extends Controller
         }
         return view('tagihan.create',[
             'dokumen'=>dokumen::orderby('kodedokumen')->get(),
-            'unit'=>unit::Myunit()
+            'unit'=>unit::Myunit()->stafppk()->get()
         ]);
     }
 

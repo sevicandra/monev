@@ -93,6 +93,14 @@
                                     </div>
                                 </td>
                             </tr>
+                            <td>4</td>
+                            <td>Maping Staf PPK</td>
+                            <td class="pb-0 pr-0">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="/maping-staf-ppk" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                </div>
+                            </td>
+                        </tr>
                         @endcan
                         @can('sys_admin', auth()->user()->id)
                         <tr>
