@@ -80,6 +80,12 @@ class User extends Authenticatable
         });
     }
 
+    public function scopeVerifikator($data){
+        return $data->wherehas('role', function($val){
+            $val->where('koderole', '09');
+        });
+    }
+
     public function paguppk()
     {
         return $this->belongsToMany(pagu::class, 'mapingpaguppks');
@@ -105,5 +111,28 @@ class User extends Authenticatable
     public function unitstafppk()
     {
         return $this->belongsToMany(unit::class, 'mapingunitstafppks');
+    }
+
+    public function verifikator()
+    {
+        return $this->belongsToMany(unit::class, 'verifikatorunits');
+    }
+
+    public function scopeVerifikatornonsign($data, $unit)
+    {
+        $var=$unit;
+        return $data->whereDoesntHave('verifikator', function($val)use($var){
+            $val->where('id', $var);
+        });
+    }
+
+    public function verifikatorunit($val)
+    {
+       
+        foreach ($this->verifikator()->get() as $unit ) {
+            if ($unit->id === $val) {
+                return true;
+            }
+        }
     }
 }

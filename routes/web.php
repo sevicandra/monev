@@ -95,6 +95,13 @@ Route::resource('/pph', PphController::class)->middleware('auth');
 
 Route::resource('/bulan', BulanController::class)->middleware('auth');
 
+Route::controller(UnitController::class)->group(function(){
+    Route::get('/unit/{unit}/verifikator', 'showverifikator')->middleware('auth');
+    Route::get('/unit/{unit}/verifikator/create', 'editverifikator')->middleware('auth');
+    Route::post('/unit/{unit}/{verifikator}', 'updateverifikator')->middleware('auth');
+    Route::delete('/unit/{unit}/{verifikator}', 'destroyverifikator')->middleware('auth');
+});
+
 Route::resource('/unit', UnitController::class)->middleware('auth');
 
 Route::resource('/nomor', NomorController::class)->middleware('auth');

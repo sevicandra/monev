@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\unit;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -70,5 +71,8 @@ class AuthServiceProvider extends ServiceProvider
             return auth()->user()->satker === $key;
         });
 
+        Gate::define('verifikaor_unit', function(User $user, unit $unit){
+            return $user->verifikatorunit($unit->id) === true;
+        });
     }
 }

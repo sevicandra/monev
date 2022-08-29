@@ -101,4 +101,13 @@ class tagihan extends Model
         }
     }
 
+    public function scopeTagihanverifikator($data)
+    {
+        return $data->wherehas('unit', function($val){
+            $val->wherehas('verifikator', function($val){
+                $val->where('id', auth()->user()->id);
+            });
+        });
+    }
+
 }

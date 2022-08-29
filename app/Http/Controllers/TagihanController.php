@@ -110,12 +110,10 @@ class TagihanController extends Controller
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
+
         if ($tagihan->status > 0) {
             return abort(403);
         }
@@ -138,11 +136,8 @@ class TagihanController extends Controller
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
 
         if ($tagihan->status > 0) {
@@ -189,12 +184,10 @@ class TagihanController extends Controller
             abort(403);
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
-
+        
         if ($tagihan->status != 0) {
             return abort(403);
         }
@@ -218,12 +211,11 @@ class TagihanController extends Controller
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
+        
         return view('uploadberkas.index',[
             'data'=>$tagihan,
             'back'=>'/tagihan',
@@ -237,10 +229,8 @@ class TagihanController extends Controller
             abort(403);
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
 
         if ($tagihan->status != 0) {
@@ -292,10 +282,8 @@ class TagihanController extends Controller
             abort(403);
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
         
         if ($tagihan->status > 0) {

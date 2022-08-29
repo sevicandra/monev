@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\unit;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreunitRequest;
 use App\Http\Requests\UpdateunitRequest;
@@ -68,6 +69,13 @@ class UnitController extends Controller
         //
     }
 
+    public function showverifikator(unit $unit)
+    {
+        return view('referensi.unit.verifikator.index',[
+            'data'=>$unit
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -78,6 +86,14 @@ class UnitController extends Controller
     {
         return view('referensi.unit.update',[
             'data'=>$unit
+        ]);
+    }
+
+    public function editverifikator(unit $unit)
+    {
+        return view('referensi.unit.verifikator.create',[
+            'data'=>User::where('satker', auth()->user()->satker)->verifikator()->verifikatornonsign($unit->id)->get(),
+            'unit'=>$unit
         ]);
     }
 
@@ -104,6 +120,12 @@ class UnitController extends Controller
         return redirect('/unit');
     }
 
+    public function updateverifikator(unit $unit, User $verifikator)
+    {
+        $unit->verifikator()->attach($verifikator->id);
+        return redirect('/unit/'.$unit->id.'/verifikator/create')->with('berhasil', $verifikator->nama. ' Berhasil Ditambahkan Ke Unit '.$unit->namaunit);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -114,5 +136,11 @@ class UnitController extends Controller
     {
         $unit->delete();
         return redirect('/unit');
+    }
+
+    public function destroyverifikator(unit $unit, User $verifikator)
+    {
+        $unit->verifikator()->detach($verifikator->id);
+        return redirect('/unit/'.$unit->id.'/verifikator')->with('berhasil', $verifikator->nama. ' Berhasil Dihapus Dari Unit '.$unit->namaunit);
     }
 }

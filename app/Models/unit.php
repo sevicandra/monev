@@ -47,4 +47,9 @@ class unit extends Model
             $val->where('nip', $var);
         });
     }
+
+    public function verifikator()
+    {
+        return $this->belongsToMany(User::class, 'verifikatorunits');
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\berkas;
 use App\Models\tagihan;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class VerifikasiController extends Controller
@@ -18,8 +19,12 @@ class VerifikasiController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+        
         return view('verifikasi.index',[
-            'data'=>tagihan::unverified()->get(),
+            'data'=>tagihan::tagihanverifikator()->unverified()->get(),
         ]);
     }
 
@@ -52,6 +57,14 @@ class VerifikasiController extends Controller
      */
     public function show(tagihan $verifikasi)
     {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+       
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $verifikasi->unit)) {
+            abort(403);
+        }
+
         if ($verifikasi->status != 2) {
             abort(403);
         }
@@ -71,6 +84,14 @@ class VerifikasiController extends Controller
      */
     public function edit(tagihan $verifikasi)
     {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $verifikasi->unit)) {
+            abort(403);
+        }
+
         if ($verifikasi->status != 2) {
             abort(403);
         }
@@ -91,6 +112,14 @@ class VerifikasiController extends Controller
      */
     public function update(Request $request, tagihan $verifikasi)
     {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $verifikasi->unit)) {
+            abort(403);
+        }
+
         if ($verifikasi->status != 2) {
             abort(403);
         }
@@ -126,6 +155,14 @@ class VerifikasiController extends Controller
     }
 
     public function tolak(tagihan $tagihan){
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
         if ($tagihan->status != 2) {
             abort(403);
         }
@@ -137,6 +174,14 @@ class VerifikasiController extends Controller
     }
 
     public function approve(tagihan $tagihan){
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
         if ($tagihan->status != 2) {
             abort(403);
         }
@@ -164,6 +209,14 @@ class VerifikasiController extends Controller
     }
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas){
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
         if ($tagihan->status != 2) {
             return abort(403);
         }
