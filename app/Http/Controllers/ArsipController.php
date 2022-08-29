@@ -15,8 +15,12 @@ class ArsipController extends Controller
      */
     public function index()
     {
+        if (! Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('arsip.index',[
-            'data'=>tagihan::arsip()->orderby('notagihan', 'desc')->get()
+            'data'=>tagihan::tagihansatker()->arsip()->orderby('notagihan', 'desc')->get()
          ]);
     }
 
@@ -88,6 +92,14 @@ class ArsipController extends Controller
 
     public function dokumen(tagihan $tagihan)
     {
+        if (! Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 5) {
             abort(403);
         }
@@ -98,6 +110,14 @@ class ArsipController extends Controller
 
     public function coa(tagihan $tagihan)
     {
+        if (! Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 5) {
             abort(403);
         }
@@ -108,6 +128,14 @@ class ArsipController extends Controller
 
     public function dnp(tagihan $tagihan)
     {
+        if (! Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 5) {
             abort(403);
         }
@@ -121,6 +149,11 @@ class ArsipController extends Controller
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
         }
+        
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 5) {
             abort(403);
         }

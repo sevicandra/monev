@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\pagu;
 use App\Models\unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorepaguRequest;
 use App\Http\Requests\UpdatepaguRequest;
 
@@ -17,6 +18,10 @@ class PaguController extends Controller
      */
     public function index()
     {
+        if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('pagu.index',[
             'data'=>pagu::where('kodesatker', auth()->user()->satker)->Order()
         ]);
@@ -29,6 +34,10 @@ class PaguController extends Controller
      */
     public function create()
     {
+        if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('pagu.create');
     }
 
@@ -40,6 +49,10 @@ class PaguController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+            abort(403);
+        }
+
         $request->validate([
             'program'=>'required|min:2|max:2',
             'kegiatan'=>'required|min:4|max:4',
@@ -93,6 +106,10 @@ class PaguController extends Controller
      */
     public function edit(pagu $pagu)
     {
+        if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('pagu.update',[
             'unit'=>unit::where('kodesatker', auth()->user()->satker)->orderby('kodeunit')->get(),
             'data'=>$pagu
@@ -108,6 +125,10 @@ class PaguController extends Controller
      */
     public function update(Request $request, pagu $pagu)
     {
+        if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+            abort(403);
+        }
+
         $request->validate([
             'program'=>'required|min:2|max:2',
             'kegiatan'=>'required|min:4|max:4',
@@ -151,12 +172,20 @@ class PaguController extends Controller
      */
     public function destroy(pagu $pagu)
     {
+        if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+            abort(403);
+        }
+
         $pagu->delete();
         return redirect('/pagu');
     }
 
     public function import(Request $request)
     {
+        if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+            abort(403);
+        }
+        
         if ($request->all()) {
             $file_mimes = array('application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\user;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 
@@ -10,16 +11,26 @@ class UserController extends Controller
 {
 
     public function index(){
+        if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('referensi.user.index',[
             'data'=>User::all(),
         ]);
     }
 
     public function create(){
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('referensi.user.create');
     }
     
     public function store(Request $request){
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $messages = [
             'NIP.unique' => 'NIP Sudah Didaftarkan',
             'email.unique' => 'Email Sudah Didaftarkan',
@@ -48,6 +59,9 @@ class UserController extends Controller
 
     public function edit(user $user)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         return view('referensi.user.update',[
             'data'=> $user
         ]);
@@ -55,6 +69,9 @@ class UserController extends Controller
 
     public function update(Request $request, user $user)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $messages = [
             'NIP.unique' => 'NIP Sudah Didaftarkan',
             'email.unique' => 'Email Sudah Didaftarkan',
@@ -79,6 +96,9 @@ class UserController extends Controller
 
     public function destroy(user $user)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
         $user->delete();
         return redirect('/user');
     }

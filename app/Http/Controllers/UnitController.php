@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\unit;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreunitRequest;
 use App\Http\Requests\UpdateunitRequest;
 
@@ -17,8 +18,12 @@ class UnitController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('referensi.unit.index',[
-            'data'=>unit::orderby('kodeunit')->get()
+            'data'=>unit::myunit()->orderby('kodeunit')->get()
         ]);
     }
 
@@ -29,6 +34,10 @@ class UnitController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('referensi.unit.create');
     }
 
@@ -40,6 +49,10 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
         $request->validate([
             'kodeunit'=>'required|unique|min:2|max:2',
             'namaunit'=>'required'
@@ -71,6 +84,14 @@ class UnitController extends Controller
 
     public function showverifikator(unit $unit)
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         return view('referensi.unit.verifikator.index',[
             'data'=>$unit
         ]);
@@ -84,6 +105,14 @@ class UnitController extends Controller
      */
     public function edit(unit $unit)
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         return view('referensi.unit.update',[
             'data'=>$unit
         ]);
@@ -91,6 +120,14 @@ class UnitController extends Controller
 
     public function editverifikator(unit $unit)
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         return view('referensi.unit.verifikator.create',[
             'data'=>User::where('satker', auth()->user()->satker)->verifikator()->verifikatornonsign($unit->id)->get(),
             'unit'=>$unit
@@ -106,6 +143,14 @@ class UnitController extends Controller
      */
     public function update(Request $request, unit $unit)
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         $request->validate([
             'kodeunit'=>'required|unique|min:2|max:2',
             'kodeunit'=>'numeric',
@@ -122,6 +167,18 @@ class UnitController extends Controller
 
     public function updateverifikator(unit $unit, User $verifikator)
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != $verifikator->satker) {
+            abort(403);
+        }
+
         $unit->verifikator()->attach($verifikator->id);
         return redirect('/unit/'.$unit->id.'/verifikator/create')->with('berhasil', $verifikator->nama. ' Berhasil Ditambahkan Ke Unit '.$unit->namaunit);
     }
@@ -134,12 +191,27 @@ class UnitController extends Controller
      */
     public function destroy(unit $unit)
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         $unit->delete();
         return redirect('/unit');
     }
 
     public function destroyverifikator(unit $unit, User $verifikator)
     {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+        
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         $unit->verifikator()->detach($verifikator->id);
         return redirect('/unit/'.$unit->id.'/verifikator')->with('berhasil', $verifikator->nama. ' Berhasil Dihapus Dari Unit '.$unit->namaunit);
     }

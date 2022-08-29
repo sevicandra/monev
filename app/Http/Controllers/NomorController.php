@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\nomor;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorenomorRequest;
 use App\Http\Requests\UpdatenomorRequest;
-use Illuminate\Http\Request;
 
 class NomorController extends Controller
 {
@@ -16,6 +17,10 @@ class NomorController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('referensi.nomor.index',[
             'data'=>nomor::all()
         ]);
@@ -28,6 +33,10 @@ class NomorController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
+        
         return view('referensi.nomor.create');
     }
 
@@ -39,6 +48,10 @@ class NomorController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
+
         $request->validate([
             'nomor'=>'required|numeric',
             'tahun'=>'required|min:4|max:4',
@@ -79,6 +92,10 @@ class NomorController extends Controller
      */
     public function edit(nomor $nomor)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('referensi.nomor.update',[
             'data'=>$nomor
         ]);
@@ -93,6 +110,10 @@ class NomorController extends Controller
      */
     public function update(Request $request, nomor $nomor)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
+
         $request->validate([
             'nomor'=>'required|numeric'
         ]);
@@ -111,6 +132,10 @@ class NomorController extends Controller
      */
     public function destroy(nomor $nomor)
     {
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            abort(403);
+        }
+        
         $nomor->delete();
         return redirect('/nomor');
     }

@@ -7,6 +7,7 @@ use App\Models\berkas;
 use App\Models\tagihan;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class PpspmController extends Controller
@@ -18,8 +19,12 @@ class PpspmController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('PPSPM', auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('ppspm.index',[
-            'data'=>tagihan::ppspm()->get()
+            'data'=>tagihan::tagihansatker()->ppspm()->get()
         ]);
     }
 
@@ -52,6 +57,12 @@ class PpspmController extends Controller
      */
     public function show(tagihan $ppspm)
     {
+        if (! Gate::allows('PPSPM', auth()->user()->id)) {
+            abort(403);
+        }
+
+
+
         return view('uploadberkas.index',[
             'data'=>$ppspm,
             'back'=>'/ppspm',
@@ -68,6 +79,14 @@ class PpspmController extends Controller
      */
     public function edit(tagihan $ppspm)
     {
+        if (! Gate::allows('PPSPM', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($ppspm->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($ppspm->status != 3) {
             abort(403);
         }
@@ -88,6 +107,14 @@ class PpspmController extends Controller
      */
     public function update(Request $request, tagihan $ppspm)
     {
+        if (! Gate::allows('PPSPM', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($ppspm->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($ppspm->status != 3) {
             abort(403);
         }
@@ -123,6 +150,14 @@ class PpspmController extends Controller
     }
 
     public function tolak(tagihan $tagihan){
+        if (! Gate::allows('PPSPM', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 3) {
             abort(403);
         }
@@ -133,6 +168,14 @@ class PpspmController extends Controller
     }
 
     public function approve(tagihan $tagihan){
+        if (! Gate::allows('PPSPM', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 3) {
             abort(403);
         }
@@ -146,6 +189,14 @@ class PpspmController extends Controller
     }
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas){
+        if (! Gate::allows('PPSPM', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 3) {
             return abort(403);
         }

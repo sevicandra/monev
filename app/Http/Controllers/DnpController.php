@@ -22,6 +22,11 @@ class DnpController extends Controller
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+
         return view('tagihan.dnp.index',[
             'data'=>$tagihan
         ]);
@@ -37,6 +42,11 @@ class DnpController extends Controller
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+
         if ($tagihan->status != 0) {
             return abort(403);
         }
@@ -67,6 +77,9 @@ class DnpController extends Controller
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
         if ($tagihan->status != 0) {
             return abort(403);
         }
@@ -90,10 +103,8 @@ class DnpController extends Controller
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
         if ($tagihan->status != 0) {
             return abort(403);
@@ -130,11 +141,10 @@ class DnpController extends Controller
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
+        
         if ($tagihan->status != 0) {
             return abort(403);
         }
@@ -201,10 +211,8 @@ class DnpController extends Controller
             abort(403);
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
         }
 
         if ($tagihan->status != 0) {
@@ -217,6 +225,9 @@ class DnpController extends Controller
     public function cetak(tagihan $tagihan)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
         ob_start();

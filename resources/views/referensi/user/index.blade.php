@@ -7,12 +7,7 @@
         </div>
         <div class="row">
             <div class="col">
-                {{-- <?php if ($this->session->flashdata('pesan')) : ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Selamat!</strong> <?= $this->session->flashdata('pesan'); ?>
-                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif; ?> --}}
+                @include('layout.flashmessage')
             </div>
         </div>
         <div class="row mb-3">
@@ -57,9 +52,9 @@
                                 <td>{{ $item->created_at }}</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="role-user/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                        <a href="user/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Ubah</a>
+                                        <a href="role-user/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Role</a>
                                         @can('sys_admin', auth()->user()->id)
+                                        <a href="user/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Ubah</a>
                                         <form action="/user/{{ $item->id }}" method="post">
                                             @csrf
                                             @method('DELETE')

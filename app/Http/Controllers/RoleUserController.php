@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class RoleUserController extends Controller
 {
@@ -15,7 +16,7 @@ class RoleUserController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -25,6 +26,14 @@ class RoleUserController extends Controller
      */
     public function create(role $role, User $user)
     {
+        if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($user->satker != auth()->user()->satker) {
+            abort(403);
+        }
+
         $role->user()->attach($user->id);
         return redirect('/role-user/'. $user->id);
     }
@@ -48,6 +57,14 @@ class RoleUserController extends Controller
      */
     public function show(User $role_user)
     {
+        if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($role_user->satker != auth()->user()->satker) {
+            abort(403);
+        }
+
         return view('referensi.user.role_user.index',[
             'data'=>$role_user
         ]);
@@ -61,6 +78,13 @@ class RoleUserController extends Controller
      */
     public function edit(User $role_user)
     {
+        if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($role_user->satker != auth()->user()->satker) {
+            abort(403);
+        }
         return view('referensi.user.role_user.create',[
             'data'=>role::orderby('koderole')->ofUser($role_user->id),
             'user'=>$role_user
@@ -87,6 +111,13 @@ class RoleUserController extends Controller
      */
     public function destroy(role $role, User $user)
     {
+        if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($user->satker != auth()->user()->satker) {
+            abort(403);
+        }
         $role->user()->detach($user->id);
         return redirect('/role-user/'. $user->id);
     }

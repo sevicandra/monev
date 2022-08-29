@@ -24,7 +24,7 @@ class VerifikasiController extends Controller
         }
         
         return view('verifikasi.index',[
-            'data'=>tagihan::tagihanverifikator()->unverified()->get(),
+            'data'=>tagihan::tagihansatker()->tagihanverifikator()->unverified()->get(),
         ]);
     }
 

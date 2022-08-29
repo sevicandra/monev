@@ -199,7 +199,7 @@ class RegisterController extends Controller
             }
         }
         return view('register_tagihan.create_detail',[
-        'data'=>tagihan::notregistered()->get(),
+        'data'=>tagihan::tagihansatker()->notregistered()->get(),
         'register'=>$register
         ]);
     }

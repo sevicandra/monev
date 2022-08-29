@@ -14,51 +14,21 @@
                 <table class="table table-bordered table-hover">
                     <thead class="text-center">
                         <tr class="align-middle">
-                            <th>No</th>
                             <th>Jenis</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @canany(['Staf_KPA', 'KPA'], auth()->user()->id)
-                            <tr>
-                                <td>1</td>
-                                <td>Pagu</td>
-                                <td class="pb-0 pr-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="pagu" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endcanany
-                        
-                        @can('admin_satker', auth()->user()->id)
-                            <tr>
-                                <td>2</td>
-                                <td>Unit</td>
-                                <td class="pb-0 pr-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="/unit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endcan
-
-
                         @can('sys_admin', auth()->user()->id)
-
-
                             <tr>
-                                <td>4</td>
                                 <td>Satuan Kerja</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="satker" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                        <a href="/satker" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td>5</td>
                                 <td>Jenis Dokumen</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
@@ -67,7 +37,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>6</td>
                                 <td>Tahun Anggaran</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
@@ -76,7 +45,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>7</td>
                                 <td>Berkas</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
@@ -85,7 +53,60 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>4</td>
+                                <td>PPH</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/pph" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bulan</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/bulan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Users</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/user" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Role</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/role" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endcan
+
+                        @canany(['sys_admin','admin_satker'], auth()->user()->id)
+                            <tr>
+                                <td>Nomor</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/nomor" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endcan
+
+                        @can('admin_satker', auth()->user()->id)
+                            <tr>
+                                <td>Unit</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/unit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Maping PPK</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
@@ -93,92 +114,38 @@
                                     </div>
                                 </td>
                             </tr>
-                            <td>4</td>
-                            <td>Maping Staf PPK</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/maping-staf-ppk" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endcan
-                        @can('sys_admin', auth()->user()->id)
-                        <tr>
-                            <td>8</td>
-                            <td>PPH</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/pph" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endcan
-                        
-                        @can('admin_satker', auth()->user()->id)
-                        <tr>
-                            <td>9</td>
-                            <td>Pejabat</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endcan    
+                            <tr>
+                                <td>Maping Staf PPK</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/maping-staf-ppk" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endcan  
+
+                        @canany(['Staf_KPA', 'KPA'], auth()->user()->id)
+                            <tr>
+                                <td>Pagu</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/pagu" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endcanany
+                          
                         @canany(['PPK', 'Staf_PPK'], auth()->user()->id)
-                        <tr>
-                            <td>10</td>
-                            <td>Pegawai Non DJKN</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>Pegawai Non DJKN</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/pegawai-nondjkn" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
                         @endcanany
 
-                        @can('sys_admin', auth()->user()->id)
-                        <tr>
-                            <td>11</td>
-                            <td>Bulan</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/bulan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endcan
-                        @canany(['sys_admin','admin_satker'], auth()->user()->id)
-                        <tr>
-                            <td>12</td>
-                            <td>Nomor</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/nomor" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endcan
-                        @can('sys_admin', auth()->user()->id)
-                        <tr>
-                            <td>13</td>
-                            <td>Users</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="user" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>14</td>
-                            <td>Role</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="role" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endcan
                     </tbody>
                 </table>
             </div>

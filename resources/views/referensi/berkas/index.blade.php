@@ -7,12 +7,7 @@
     </div>
     <div class="row">
         <div class="col">
-            {{-- <?php if ($this->session->flashdata('pesan')) : ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Selamat!</strong> <?= $this->session->flashdata('pesan'); ?>
-                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php endif; ?> --}}
+            @include('layout.flashmessage')
         </div>
     </div>
     <div class="row mb-3">

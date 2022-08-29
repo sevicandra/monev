@@ -59,7 +59,7 @@ Route::get('/dashboard', function(){
 })->middleware('auth');
 
 Route::get('/referensi', function(){
-    if (! Gate::allows('sys_admin', auth()->user()->id) && ! Gate::allows('admin_satker', auth()->user()->id)) {
+    if (! Gate::any(['sys_admin', 'admin', 'KPA', 'Staf_KPA', 'PPK', 'Staf_PPK'], auth()->user()->id)) {
         abort(403);
     }
     return view('referensi.index');

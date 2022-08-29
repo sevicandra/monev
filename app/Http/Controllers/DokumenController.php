@@ -147,6 +147,7 @@ class DokumenController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
+        
         $dokuman->delete();
         return redirect('/dokumen');
     }

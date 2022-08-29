@@ -110,4 +110,9 @@ class tagihan extends Model
         });
     }
 
+    public function scopeTagihansatker($data)
+    {
+        $data->where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'));
+    }
+
 }

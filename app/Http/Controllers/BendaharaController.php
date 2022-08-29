@@ -9,6 +9,7 @@ use App\Models\tagihan;
 use App\Models\realisasi;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -22,8 +23,12 @@ class BendaharaController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
         return view('bendahara.index',[
-           'data'=>tagihan::bendahara()->get() 
+           'data'=>tagihan::tagihansatker()->tagihansatker()->bendahara()->get() 
         ]);
     }
 
@@ -56,6 +61,14 @@ class BendaharaController extends Controller
      */
     public function show(tagihan $bendahara)
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($bendahara->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         return view('bendahara.detail',[
             'data'=>$bendahara
         ]);
@@ -74,6 +87,14 @@ class BendaharaController extends Controller
 
     public function editsp2d(tagihan $tagihan)
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 4) {
             abort(403);
         }
@@ -84,6 +105,10 @@ class BendaharaController extends Controller
 
     public function editsspb(tagihan $tagihan, realisasi $realisasi)
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
         if ($tagihan->status != 4) {
             abort(403);
         }
@@ -107,6 +132,14 @@ class BendaharaController extends Controller
 
     public function updatesp2d(Request $request, tagihan $tagihan)
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 4) {
             abort(403);
         }
@@ -141,6 +174,14 @@ class BendaharaController extends Controller
 
     public function updatesspb(Request $request, tagihan $tagihan, realisasi $realisasi)
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 4) {
             abort(403);
         }
@@ -183,6 +224,14 @@ class BendaharaController extends Controller
     }
 
     public function tolak(tagihan $tagihan){
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 4) {
             abort(403);
         }
@@ -194,6 +243,14 @@ class BendaharaController extends Controller
     }
 
     public function approve(tagihan $tagihan){
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 4) {
             abort(403);
         }
@@ -240,6 +297,14 @@ class BendaharaController extends Controller
 
     public function payroll(tagihan $tagihan)
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         return view('bendahara.payroll',[
             'data'=>$tagihan
         ]);
@@ -247,6 +312,14 @@ class BendaharaController extends Controller
 
     public function cetakpayroll(tagihan $tagihan)
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -288,6 +361,14 @@ class BendaharaController extends Controller
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas)
     {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 4) {
             return abort(403);
         }
@@ -334,6 +415,14 @@ class BendaharaController extends Controller
     }
 
     public function dokumen(tagihan $tagihan){
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
         if ($tagihan->status != 4) {
             abort(403);
         }
