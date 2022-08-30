@@ -52,4 +52,21 @@ class unit extends Model
     {
         return $this->belongsToMany(User::class, 'verifikatorunits');
     }
+
+    public function pagu()
+    {
+        return $this->hasMany(pagu::class,'kodeunit');
+    }
+
+    public function realisasi()
+    {
+        return realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->sp2d()
+        ->join('units', 'pagus.kodeunit', '=', 'units.id')->where('units.id', $this->id);
+    }
+
+    public function sspb()
+    {
+        return sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')
+        ->join('units', 'pagus.kodeunit', '=', 'units.id')->where('units.id', $this->id);
+    }
 }

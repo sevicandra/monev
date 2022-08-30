@@ -91,6 +91,12 @@ class User extends Authenticatable
         return $this->belongsToMany(pagu::class, 'mapingpaguppks');
     }
 
+    public function realisasippk()
+    {
+        return realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')->sp2d()
+        ->join('users', 'mapingpaguppks.user_id', '=', 'users.id')->where('users.id', $this->id);
+    }
+
     public function stafppk()
     {
         return $this->belongsToMany(User::class, 'mapingstafppks', 'ppk_id', 'staf_id');

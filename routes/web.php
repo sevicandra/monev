@@ -21,6 +21,7 @@ use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\BendaharaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MapingppkController;
 use App\Http\Controllers\MapingstafppkController;
 use App\Http\Controllers\RealisasiController;
@@ -54,9 +55,9 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('/logout', 'logout')->middleware('auth');
 });
 
-Route::get('/dashboard', function(){
-    return view('dashboard.index');
-})->middleware('auth');
+Route::controller(DashboardController::class)->group(function(){
+    Route::get('/dashboard', 'index')->middleware('auth');
+});
 
 Route::get('/referensi', function(){
     if (! Gate::any(['sys_admin', 'admin', 'KPA', 'Staf_KPA', 'PPK', 'Staf_PPK'], auth()->user()->id)) {

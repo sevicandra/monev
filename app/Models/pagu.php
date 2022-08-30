@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Uuids;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -87,5 +88,10 @@ class pagu extends Model
         });
     }
 
+    public function scopeJenisbelanja($data, $jenis)
+    {
+        return $data->whereRaw(DB::raw('left(akun, 2) = "'.$jenis.'"'));
+    }
+    
     
 }

@@ -1,7 +1,13 @@
 @extends('layout.main')
 
 @section('head')
-    
+    <style>
+        .chart-container {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+        }
+    </style>
 @endsection
 
 
@@ -16,8 +22,8 @@
     </div>
     <div class="row mb-3">
         <div class="col">
-            <a href="" class="btn btn-sm btn-outline-primary">Per Tagihan</a>
-            <a href="" class="btn btn-sm btn-outline-primary ml-2">Per SP2D</a>
+            <a href="/dashboard" class="btn btn-sm btn-outline-primary">Per Tagihan</a>
+            <a href="/dashboard?sp2d=''" class="btn btn-sm btn-outline-primary ml-2">Per SP2D</a>
         </div>
     </div>
     <div class="row">
@@ -37,8 +43,48 @@
                         </thead>
                         <tbody>
                             <tr>
-                               
+                                <td class="text-center">1</td>
+                                <td>Belanja Pegawai</td>
+                                <td class="text-right">{{ number_format($belanjapegawai->sum('anggaran'), 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($realisasibelanjapegawai->sum('realisasi'), 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($belanjapegawai->sum('anggaran')-$realisasibelanjapegawai->sum('realisasi'), 2, ',', '.') }}</td>
+                                <td class="text-right">
+                                    @if ($realisasibelanjapegawai->sum('realisasi'))
+                                        {{ number_format($realisasibelanjapegawai->sum('realisasi')/$belanjapegawai->sum('anggaran'), 2, ',', '.') }}%
+                                    @else
+                                        0,00%
+                                    @endif
+                                </td>
                             </tr>
+                            <tr>
+                                <td class="text-center">2</td>
+                                <td>Belanja Barang</td>
+                                <td class="text-right">{{ number_format($belanjabarang->sum('anggaran'), 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($realisasibelanjabarang->sum('realisasi'), 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($belanjabarang->sum('anggaran')-$realisasibelanjabarang->sum('realisasi'), 2, ',', '.') }}</td>
+                                <td class="text-right">
+                                    @if ($realisasibelanjabarang->sum('realisasi'))
+                                        {{ number_format($realisasibelanjabarang->sum('realisasi')/$belanjabarang->sum('anggaran'), 2, ',', '.') }}%
+                                    @else
+                                        0,00%
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>Belanja Modal</td>
+                                <td class="text-right">{{ number_format($belanjamodal->sum('anggaran'), 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($realisasibelanjamodal->sum('realisasi'), 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($belanjamodal->sum('anggaran')-$realisasibelanjamodal->sum('realisasi'), 2, ',', '.') }}</td>
+                                <td class="text-right">
+                                    @if ($realisasibelanjamodal->sum('realisasi'))
+                                        {{ number_format($realisasibelanjamodal->sum('realisasi')/$belanjamodal->sum('anggaran'), 2, ',', '.') }}%
+                                    @else
+                                        0,00%
+                                    @endif
+                                </td>
+                            </tr>
+                            
 
                         </tbody>
                     </table>
@@ -57,7 +103,12 @@
                         <b>Realisasi per PPK</b>
                         <span><b>Persentase</b></span>
                     </li>
-
+                    @foreach ($ppk as $item)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ $item->nama }}
+                        <span class="badge bg-warning rounded-pill">{{ number_format($item->realisasippk()->sum('realisasi')/$item->paguppk->sum('anggaran'), 2, ',', '.') }}% </span>
+                    </li>
+                    @endforeach
                 </ul>
             </div>
         </div>
@@ -68,6 +119,44 @@
 @endsection
 
 @section('foot')
-    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<!-- bar chart -->
+<script>
+    const ctx = document.getElementById("chart").getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                @php
+                    foreach($unit as $item){
+                        echo '"'.$item->namaunit.'",';
+                    }
+                @endphp
+            ],
+            datasets: [{
+                label: 'Realisasi per Unit',
+                backgroundColor: 'rgba(161, 198, 247, 1)',
+                borderColor: 'rgb(47, 128, 237)',
+                 data: [
+                    @php
+                        foreach($unit as $item){
+                            echo '"'.($item->realisasi()->sum('realisasi')-$item->sspb()->sum('nominal_sspb'))*100/$item->pagu()->sum('anggaran').'",';
+                        }
+                    @endphp
+                 ],
+                
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                    }
+                }]
+            }
+        },
+    });
+</script>
 @endsection
 
