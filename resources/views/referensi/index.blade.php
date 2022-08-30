@@ -69,14 +69,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Users</td>
-                                <td class="pb-0 pr-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="/user" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>Role</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
@@ -87,6 +79,14 @@
                         @endcan
 
                         @canany(['sys_admin','admin_satker'], auth()->user()->id)
+                            <tr>
+                                <td>Users</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/user" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>Nomor</td>
                                 <td class="pb-0 pr-0">

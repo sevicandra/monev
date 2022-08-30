@@ -60,7 +60,7 @@ Route::controller(DashboardController::class)->group(function(){
 });
 
 Route::get('/referensi', function(){
-    if (! Gate::any(['sys_admin', 'admin', 'KPA', 'Staf_KPA', 'PPK', 'Staf_PPK'], auth()->user()->id)) {
+    if (! Gate::any(['sys_admin', 'admin_satker', 'KPA', 'Staf_KPA', 'PPK', 'Staf_PPK'], auth()->user()->id)) {
         abort(403);
     }
     return view('referensi.index');

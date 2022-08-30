@@ -14,7 +14,11 @@ class UserController extends Controller
         if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
             abort(403);
         }
-
+        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+            return view('referensi.user.index',[
+                'data'=>User::pegawaisatker()->get(),
+            ]);
+        }
         return view('referensi.user.index',[
             'data'=>User::all(),
         ]);

@@ -29,9 +29,10 @@ class RoleUserController extends Controller
         if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
             abort(403);
         }
-
-        if ($user->satker != auth()->user()->satker) {
-            abort(403);
+        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+            if ($user->satker != auth()->user()->satker) {
+                abort(403);
+            }
         }
 
         $role->user()->attach($user->id);
@@ -61,8 +62,10 @@ class RoleUserController extends Controller
             abort(403);
         }
 
-        if ($role_user->satker != auth()->user()->satker) {
-            abort(403);
+        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+            if ($role_user->satker != auth()->user()->satker) {
+                abort(403);
+            }
         }
 
         return view('referensi.user.role_user.index',[
@@ -82,9 +85,12 @@ class RoleUserController extends Controller
             abort(403);
         }
 
-        if ($role_user->satker != auth()->user()->satker) {
-            abort(403);
+        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+            if ($role_user->satker != auth()->user()->satker) {
+                abort(403);
+            }
         }
+
         return view('referensi.user.role_user.create',[
             'data'=>role::orderby('koderole')->ofUser($role_user->id),
             'user'=>$role_user
@@ -115,9 +121,12 @@ class RoleUserController extends Controller
             abort(403);
         }
 
-        if ($user->satker != auth()->user()->satker) {
-            abort(403);
+        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+            if ($user->satker != auth()->user()->satker) {
+                abort(403);
+            }
         }
+
         $role->user()->detach($user->id);
         return redirect('/role-user/'. $user->id);
     }
