@@ -23,7 +23,7 @@
     <div class="row mb-3">
         <div class="col">
             <a href="/dashboard" class="btn btn-sm btn-outline-primary">Per Tagihan</a>
-            <a href="/dashboard?sp2d=''" class="btn btn-sm btn-outline-primary ml-2">Per SP2D</a>
+            <a href="/dashboard?sp2d=?" class="btn btn-sm btn-outline-primary ml-2">Per SP2D</a>
         </div>
     </div>
     <div class="row">
@@ -106,7 +106,14 @@
                     @foreach ($ppk as $item)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ $item->nama }}
-                        <span class="badge bg-warning rounded-pill">{{ number_format($item->realisasippk()->sum('realisasi')/$item->paguppk->sum('anggaran'), 2, ',', '.') }}% </span>
+                        <span class="badge bg-warning rounded-pill">
+                            @if ($item->paguppk->sum('anggaran') != 0)
+                                {{ number_format($item->realisasippk()->sum('realisasi')/$item->paguppk->sum('anggaran'), 2, ',', '.') }}% 
+                            @else
+                                0%
+                            @endif
+
+                        </span>
                     </li>
                     @endforeach
                 </ul>

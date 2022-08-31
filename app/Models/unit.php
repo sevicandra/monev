@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Traits\Uuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class unit extends Model
 {
@@ -55,18 +56,38 @@ class unit extends Model
 
     public function pagu()
     {
-        return $this->hasMany(pagu::class,'kodeunit');
+        return $this->hasMany(pagu::class,'kodeunit')->where('tahun', session()->get('tahun'));
     }
 
     public function realisasi()
     {
-        return realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->sp2d()
+        $realisasi= realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->where('tahun', session()->get('tahun'))->sp2d()
         ->join('units', 'pagus.kodeunit', '=', 'units.id')->where('units.id', $this->id);
+
+        if ($realisasi->first()) {
+            return $realisasi;
+        }
+        $real = new Collection();
+        
+        $real->push((object)['realisasi' => '0',
+        ]);
+
+        return $real;
     }
 
     public function sspb()
     {
-        return sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')
+        $sspb= sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')->where('tahun', session()->get('tahun'))
         ->join('units', 'pagus.kodeunit', '=', 'units.id')->where('units.id', $this->id);
+
+        if ($sspb->first()) {
+            return $sspb;
+        }
+        $real = new Collection();
+        
+        $real->push((object)['nominal_sspb' => '0',
+        ]);
+
+        return $real;
     }
 }

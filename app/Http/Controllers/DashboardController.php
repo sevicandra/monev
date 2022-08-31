@@ -19,8 +19,22 @@ class DashboardController extends Controller
             'realisasibelanjapegawai'=>realisasi::sp2d()->realisaijenisbelanja('51'),
             'realisasibelanjabarang'=>realisasi::sp2d()->realisaijenisbelanja('52'),
             'realisasibelanjamodal'=>realisasi::sp2d()->realisaijenisbelanja('53'),
-            'ppk'=>User::pegawaisatker()->ppk()->get(),
+            'ppk'=>User::pegawaisatker()->ppk()->whereHas('paguppk')->get(),
             'unit'=>unit::myunit()->whereHas('pagu')->get(),
+        ]);
+    }
+
+    public function unit_index()
+    {
+        return view('dashboard.unit.index',[
+            'unit'=>unit::myunit()->whereHas('pagu')->get(),
+        ]);
+    }
+
+    public function ppk_index()
+    {
+        return view('dashboard.ppk.index',[
+            'ppk'=>User::pegawaisatker()->ppk()->whereHas('paguppk')->get(),
         ]);
     }
 }

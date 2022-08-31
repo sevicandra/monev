@@ -11,12 +11,12 @@
                 </a>
             </li>
             <li class="nav-item m-0 p-0">
-                <a class="nav-link pb-1" href="">
+                <a class="nav-link pb-1" href="/dashboard/unit">
                     &nbsp; Realisasi Unit
                 </a>
             </li>
             <li class="nav-item m-0 p-0">
-                <a class="nav-link pb-1" href="">
+                <a class="nav-link pb-1" href="/dashboard/ppk">
                     &nbsp; Realisasi PPK
                 </a>
             </li>

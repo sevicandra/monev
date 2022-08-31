@@ -5,10 +5,11 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Traits\Uuids;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Collection;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -88,13 +89,38 @@ class User extends Authenticatable
 
     public function paguppk()
     {
-        return $this->belongsToMany(pagu::class, 'mapingpaguppks');
+        return $this->belongsToMany(pagu::class, 'mapingpaguppks')->where('tahun', session()->get('tahun'));
     }
 
     public function realisasippk()
     {
-        return realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')->sp2d()
+        $realisasi= realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')->sp2d()
         ->join('users', 'mapingpaguppks.user_id', '=', 'users.id')->where('users.id', $this->id);
+        if ($realisasi->first()) {
+            return $realisasi;
+        }
+        $real = new Collection();
+        
+        $real->push((object)['realisasi' => '0',
+        ]);
+
+        return $real;
+    }
+
+    public function sspbppk()
+    {
+        $sspb= sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')
+        ->join('users', 'mapingpaguppks.user_id', '=', 'users.id')->where('users.id', $this->id);
+
+        if ($sspb->first()) {
+            return $sspb;
+        }
+        $real = new Collection();
+        
+        $real->push((object)['nominal_sspb' => '0',
+        ]);
+
+        return $real;
     }
 
     public function stafppk()

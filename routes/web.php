@@ -30,6 +30,7 @@ use App\Http\Controllers\VerifikasiController;
 use App\Http\Controllers\PegawainondjknController;
 use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\MonitoringTagihanController;
+use App\Http\Controllers\SessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,8 @@ Route::controller(LoginController::class)->group(function(){
 
 Route::controller(DashboardController::class)->group(function(){
     Route::get('/dashboard', 'index')->middleware('auth');
+    Route::get('/dashboard/unit', 'unit_index')->middleware('auth');
+    Route::get('/dashboard/ppk', 'ppk_index')->middleware('auth');
 });
 
 Route::get('/referensi', function(){
@@ -224,4 +227,9 @@ Route::controller(MapingstafppkController::class)->group(function(){
     Route::get('maping-staf-ppk/{stafppk}/unit/edit', 'editunit')->middleware('auth');
     Route::get('maping-staf-ppk/{stafppk}/unit/{unit}', 'updateunit')->middleware('auth');
     Route::delete('maping-staf-ppk/{stafppk}/unit/{unit}', 'destroyunit')->middleware('auth');
+});
+
+Route::controller(SessionController::class)->group(function(){
+    Route::get('session/tahun-anggaran', 'tahun_anggaran')->middleware('auth');
+    Route::post('session/tahun-anggaran', 'tahun_anggaran')->middleware('auth');
 });

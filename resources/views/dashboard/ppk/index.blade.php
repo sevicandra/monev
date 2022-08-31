@@ -1,0 +1,71 @@
+@extends('layout.main')
+
+@section('content')
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Realisasi Per Unit</h1>
+        </div>
+        <div class="row mb-3">
+            <div class="col-lg-7">
+                <a href="/dashboard/ppk" class="btn btn-sm btn-outline-primary mt-1">Per Tagihan</a>
+                <a href="/dashboard/ppk?sp2d=?" class="btn btn-sm btn-outline-primary mt-1 ml-2">Per SP2D</a>
+            </div>
+            <div class="col-lg-5">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-lg-10">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="text-center">
+                            <tr class="align-middle">
+                                <th>Nomor</th>
+                                <th>PPK</th>
+                                <th>Pagu</th>
+                                <th>Realisasi</th>
+                                <th>Pengembalian</th>
+                                <th>Sisa Pagu</th>
+                                <th>Persentase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($ppk as $item)
+                                <tr>
+                                    <td class="text-center"></td>
+                                    <td>{{ $item->nama }}</td>
+                                    <td class="text-right">{{ number_format($item->paguppk->sum('anggaran'), 2, ',', '.') }}</td>
+                                    <td class="text-right">
+                                        <a href="">
+                                            {{ number_format($item->realisasippk()->sum('realisasi'), 2, ',', '.') }}
+                                        </a>
+                                    </td>
+                                    <td class="text-right">
+                                        <a href="">
+                                            {{ number_format($item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}
+                                        </a>
+                                    </td>
+                                    <td class="text-right">{{ number_format($item->paguppk->sum('anggaran')-$item->realisasippk()->sum('realisasi')+$item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}</td>
+                                    <td class="text-center">
+                                        @if ($item->paguppk->sum('anggaran') != 0)
+                                            {{ number_format(($item->realisasippk()->sum('realisasi')-$item->sspbppk()->sum('nominal_sspb'))*100/$item->paguppk->sum('anggaran'), 2, ',', '.') }}%
+                                        @else
+                                            0%
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <th class="text-center" colspan="2">Jumlah</th>
+                                <th class="text-right"></th>
+                                <th class="text-right"></th>
+                                <th class="text-right"></th>
+                                <th class="text-right"></th>
+                                <th class="text-center">%</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
