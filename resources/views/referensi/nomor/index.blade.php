@@ -12,12 +12,13 @@
     </div>
     <div class="row mb-3">
         <div class="col-lg-7">
+            <a href="/referensi" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Sebelumnya</a>
             <a href="/nomor/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="nomor" class="form-control" placeholder="nomor">
+                    <input type="text" name="search" class="form-control" placeholder="Kode Satker" value="{{request('search')}}">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -70,7 +71,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            
+            {{$data->links()}}
         </div>
     </div>
 

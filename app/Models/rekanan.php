@@ -31,4 +31,17 @@ class rekanan extends Model
             $val->where('id', $var);
         })->get();
     }
+
+    public function scopeRekanansatker($data)
+    {
+        return $data->where('kodesatker', auth()->user()->satker);
+    }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data    ->where('nama', 'like', '%'.request('search').'%')
+                            ->orwhere('idpajak', 'like', '%'.request('search').'%');
+        }
+    }
 }

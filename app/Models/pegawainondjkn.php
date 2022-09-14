@@ -19,4 +19,13 @@ class pegawainondjkn extends Model
         'namabank',
         'namarekening',
     ];
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data    ->where('nip', 'like', '%'.request('search').'%')
+                            ->orwhere('nama', 'like', '%'.request('search').'%')
+                            ->orwhere('namabank', 'like', '%'.request('search').'%');
+        }
+    }
 }

@@ -23,7 +23,14 @@ class PaguController extends Controller
         }
 
         return view('pagu.index',[
-            'data'=>pagu::where('kodesatker', auth()->user()->satker)->Order()
+            'data'=>pagu::where('kodesatker', auth()->user()->satker)->Order()  ->searchprogram()  
+                                                                                ->searchkegiatan()
+                                                                                ->searchkro()
+                                                                                ->searchro()
+                                                                                ->searchkomponen()
+                                                                                ->searchsubkomponen()
+                                                                                ->searchakun()->paginate(15)->withQueryString()
+            
         ]);
     }
 

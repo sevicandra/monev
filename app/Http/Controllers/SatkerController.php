@@ -19,7 +19,7 @@ class SatkerController extends Controller
             abort(403);
         }
         return view('referensi.satker.index',[
-            'data'=>satker::all()
+            'data'=>satker::search()->paginate(15)->withQueryString()
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\rekanan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorerekananRequest;
 use App\Http\Requests\UpdaterekananRequest;
 
@@ -16,8 +17,11 @@ class RekananController extends Controller
      */
     public function index()
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('referensi.rekanan.index',[
-            'data'=>rekanan::all()
+            'data'=>rekanan::rekanansatker()->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -28,6 +32,9 @@ class RekananController extends Controller
      */
     public function create()
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         return view('referensi.rekanan.create');
     }
 
@@ -39,6 +46,9 @@ class RekananController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         $request->validate([
             'nama'=>'required',
             'idpajak'=>'required|numeric'
@@ -74,6 +84,9 @@ class RekananController extends Controller
      */
     public function show(rekanan $rekanan)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
         //
     }
 
@@ -85,6 +98,12 @@ class RekananController extends Controller
      */
     public function edit(rekanan $rekanan)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($rekanan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
         return view('referensi.rekanan.update',[
             'data'=>$rekanan
         ]);
@@ -99,6 +118,12 @@ class RekananController extends Controller
      */
     public function update(Request $request, rekanan $rekanan)
     {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($rekanan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
         $request->validate([
             'nama'=>'required',
             'idpajak'=>'required|numeric'
@@ -120,7 +145,6 @@ class RekananController extends Controller
             'nama'=>$request->nama,
             'idpajak'=>$request->idpajak,
             'npwp'=>$npwp,
-            'kodesatker'=>auth()->user()->satker
         ]);
 
         return redirect('/rekanan')->with('berhasil','Rekanan Berhasil di Ubah');
@@ -134,6 +158,12 @@ class RekananController extends Controller
      */
     public function destroy(rekanan $rekanan)
     {
-        //
+        
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($rekanan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
     }
 }

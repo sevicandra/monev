@@ -152,15 +152,15 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>Rekanan</td>
+                                <td class="pb-0 pr-0">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
                         @endcanany
-                        <tr>
-                            <td>Rekanan</td>
-                            <td class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
-                            </td>
-                        </tr>
 
                     </tbody>
                 </table>

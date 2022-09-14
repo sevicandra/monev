@@ -90,4 +90,11 @@ class unit extends Model
 
         return $real;
     }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data->where('namaunit', 'like', '%'.request('search').'%');
+        }
+    }
 }

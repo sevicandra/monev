@@ -17,4 +17,13 @@ class objekpajak extends Model
         'tarif',
         'tarifnonnpwp',
     ];
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data    ->where('kode', 'like', '%'.request('search').'%')
+                            ->orwhere('nama', 'like', '%'.request('search').'%')
+                            ->orwhere('jenis', 'like', '%'.request('search').'%');
+        }
+    }
 }

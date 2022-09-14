@@ -22,7 +22,7 @@ class MapingstafppkController extends Controller
         }
 
         return view('referensi.maping_staf_ppk.index',[
-            'data'=>User::pegawaisatker()->stafppk()->get()
+            'data'=>User::pegawaisatker()->stafppk()->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -64,7 +64,7 @@ class MapingstafppkController extends Controller
         }
         
         return view('referensi.maping_staf_ppk.unit.detail',[
-            'data'=>$stafppk->unitstafppk,
+            'data'=>$stafppk->unitstafppk()->search()->orderby('kodeunit')->paginate(15)->withQueryString(),
             'stafppk'=>$stafppk
         ]);
     }
@@ -86,7 +86,7 @@ class MapingstafppkController extends Controller
         }
 
         return view('referensi.maping_staf_ppk.unit.update',[
-            'data'=>unit::Nostafppk($stafppk->nip)->get(),
+            'data'=>unit::Nostafppk($stafppk->nip)->search()->orderby('kodeunit')->paginate(15)->withQueryString(),
             'stafppk'=>$stafppk
         ]);
     }

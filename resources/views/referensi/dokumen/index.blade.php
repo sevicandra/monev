@@ -12,15 +12,11 @@
     </div>
     <div class="row mb-3">
         <div class="col-lg-7">
+            <a href="/referensi" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Sebelumnya</a>
             <a href="/dokumen/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
-                <div class="input-group">
-                    <input type="text" name="nmsatker" class="form-control" placeholder="Nama Satker">
-                    <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
-                </div>
-            </form>
+
         </div>
     </div>
     <div class="row mb-3">

@@ -16,9 +16,9 @@
             <a href="/maping-ppk/{{ $ppk->id }}/staf/edit" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="nmsatker" class="form-control" placeholder="Nama Satker">
+                    <input type="text" name="search" class="form-control" value="{{request('search')}}" placeholder="Nama/NIP">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -67,7 +67,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            
+            {{$data->links()}}
         </div>
     </div>
 

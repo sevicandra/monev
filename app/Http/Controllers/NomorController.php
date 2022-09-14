@@ -22,7 +22,7 @@ class NomorController extends Controller
         }
 
         return view('referensi.nomor.index',[
-            'data'=>nomor::all()
+            'data'=>nomor::search()->paginate(15)->withQueryString()
         ]);
     }
 

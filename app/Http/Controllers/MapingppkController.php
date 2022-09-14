@@ -22,7 +22,7 @@ class MapingppkController extends Controller
         }
 
         return view('referensi.maping_ppk.index',[
-            'data'=>User::pegawaisatker()->ppk()->get()
+            'data'=>User::pegawaisatker()->ppk()->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -43,7 +43,13 @@ class MapingppkController extends Controller
         }
 
         return view('referensi.maping_ppk.pagu.detail',[
-            'data'=>$ppk->paguppk,
+            'data'=>$ppk->paguppk() ->searchprogram()  
+                                    ->searchkegiatan()
+                                    ->searchkro()
+                                    ->searchro()
+                                    ->searchkomponen()
+                                    ->searchsubkomponen()
+                                    ->searchakun()->paginate(15)->withQueryString(),
             'ppk'=>$ppk
         ]);
     }
@@ -59,7 +65,7 @@ class MapingppkController extends Controller
         }
 
         return view('referensi.maping_ppk.staf.detail',[
-            'data'=>$ppk->stafppk,
+            'data'=>$ppk->stafppk()->search()->paginate(15)->withQueryString(),
             'ppk'=>$ppk
         ]);
     }
@@ -81,7 +87,13 @@ class MapingppkController extends Controller
         }
 
         return view('referensi.maping_ppk.pagu.update',[
-            'data'=>pagu::pagunonppk()->get(),
+            'data'=>pagu::pagunonppk()->Order() ->searchprogram()  
+                                                ->searchkegiatan()
+                                                ->searchkro()
+                                                ->searchro()
+                                                ->searchkomponen()
+                                                ->searchsubkomponen()
+                                                ->searchakun()->paginate(15)->withQueryString(),
             'ppk'=>$ppk
         ]);
     }
@@ -97,7 +109,7 @@ class MapingppkController extends Controller
         }
 
         return view('referensi.maping_ppk.staf.update',[
-            'data'=>User::stafnoppk()->get(),
+            'data'=>User::stafnoppk()->search()->paginate(15)->withQueryString(),
             'ppk'=>$ppk
         ]);
     }

@@ -25,4 +25,13 @@ class satker extends Model
     {
         return $this->hasMany(unit::class, 'kodesatker', 'kodesatker');
     }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+
+            return $data->where('kodesatker', 'like', '%'.request('search').'%')
+                        ->orwhere('namasatker', 'like', '%'.request('search').'%');
+        }
+    }
 }

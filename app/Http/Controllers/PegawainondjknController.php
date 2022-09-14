@@ -21,7 +21,7 @@ class PegawainondjknController extends Controller
             abort(403);
         }
         return view('pegawai_nondjkn.index',[
-            'data'=>pegawainondjkn::all()
+            'data'=>pegawainondjkn::search()->paginate(15)->withQueryString()
         ]);
     }
 

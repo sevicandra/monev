@@ -23,4 +23,11 @@ class nomor extends Model
     {
         return $this->belongsTo(satker::class, 'kodesatker', 'kodesatker');
     }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data->where('kodesatker', 'like', '%'.request('search').'%');
+        }
+    }
 }

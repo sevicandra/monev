@@ -28,7 +28,7 @@ class pagu extends Model
     ];
 
     public function scopeOrder(){
-        return $this->orderby('program')->orderby('kegiatan')->orderby('kro')->orderby('ro')->orderby('komponen')->orderby('subkomponen')->orderby('akun')->get();
+        return $this->orderby('program')->orderby('kegiatan')->orderby('kro')->orderby('ro')->orderby('komponen')->orderby('subkomponen')->orderby('akun');
     }
 
     public function unit()
@@ -93,5 +93,52 @@ class pagu extends Model
         return $data->whereRaw(DB::raw('left(akun, 2) = "'.$jenis.'"'));
     }
     
-    
+    public function scopeSearchprogram($data)
+    {
+        if (request('program')) {
+            return $data->where('program', 'like', '%'.request('program').'%');
+        }
+    }
+
+    public function scopeSearchkegiatan($data)
+    {
+        if (request('kegiatan')) {
+            return $data->where('kegiatan', 'like', '%'.request('kegiatan').'%');
+        }
+    }
+
+    public function scopeSearchkro($data)
+    {
+        if (request('kro')) {
+            return $data->where('kro', 'like', '%'.request('kro').'%');
+        }
+    }
+
+    public function scopeSearchro($data)
+    {
+        if (request('ro')) {
+            return $data->where('ro', 'like', '%'.request('ro').'%');
+        }
+    }
+
+    public function scopeSearchkomponen($data)
+    {
+        if (request('komponen')) {
+            return $data->where('komponen', 'like', '%'.request('komponen').'%');
+        }
+    }
+
+    public function scopeSearchsubkomponen($data)
+    {
+        if (request('subkomponen')) {
+            return $data->where('subkomponen', 'like', '%'.request('subkomponen').'%');
+        }
+    }
+
+    public function scopeSearchakun($data)
+    {
+        if (request('akun')) {
+            return $data->where('akun', 'like', '%'.request('akun').'%');
+        }
+    }
 }

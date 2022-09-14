@@ -15,9 +15,9 @@
                 <a href="referensi" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Kembali</a>
             </div>
             <div class="col-lg-5">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="nama" class="form-control" placeholder="nama">
+                    <input type="text" name="search" class="form-control" placeholder="Nama/NIP" value="{{request('search')}}">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
                 </form>

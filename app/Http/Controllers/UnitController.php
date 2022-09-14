@@ -23,7 +23,7 @@ class UnitController extends Controller
         }
 
         return view('referensi.unit.index',[
-            'data'=>unit::myunit()->orderby('kodeunit')->get()
+            'data'=>unit::myunit()->search()->orderby('kodeunit')->paginate(15)->withQueryString()
         ]);
     }
 
@@ -129,7 +129,7 @@ class UnitController extends Controller
         }
 
         return view('referensi.unit.verifikator.create',[
-            'data'=>User::where('satker', auth()->user()->satker)->verifikator()->verifikatornonsign($unit->id)->get(),
+            'data'=>User::where('satker', auth()->user()->satker)->verifikator()->verifikatornonsign($unit->id)->search()->paginate(15)->withQueryString(),
             'unit'=>$unit
         ]);
     }

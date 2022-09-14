@@ -16,11 +16,11 @@ class UserController extends Controller
         }
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             return view('referensi.user.index',[
-                'data'=>User::pegawaisatker()->get(),
+                'data'=>User::pegawaisatker()->search()->paginate(15)->withQueryString(),
             ]);
         }
         return view('referensi.user.index',[
-            'data'=>User::all(),
+            'data'=>User::search()->paginate(15)->withQueryString(),
         ]);
     }
 

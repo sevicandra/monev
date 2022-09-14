@@ -11,13 +11,19 @@
         </div>
     </div>
     <div class="row mb-3">
-        <div class="col-lg-7">
+        <div class="col-lg-5">
             <a href="/maping-ppk/{{ $ppk->id }}/pagu" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Kembali</a>
         </div>
-        <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+        <div class="col-lg-7">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="nmsatker" class="form-control" placeholder="Nama Satker">
+                    <input type="text" name="program" class="form-control" value="{{request('program')}}" placeholder="Program" >
+                    <input type="text" name="kegiatan" class="form-control" value="{{request('kegiatan')}}" placeholder="Kegiatan">
+                    <input type="text" name="kro" class="form-control" value="{{request('kro')}}" placeholder="KRO">
+                    <input type="text" name="ro" class="form-control" value="{{request('ro')}}" placeholder="RO">
+                    <input type="text" name="komponen" class="form-control" value="{{request('komponen')}}" placeholder="Komponen">
+                    <input type="text" name="subkomponen" class="form-control" value="{{request('subkomponen')}}" placeholder="Subkomponen">
+                    <input type="text" name="akun" class="form-control" value="{{request('akun')}}" placeholder="Akun">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -79,7 +85,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            
+            {{$data->links()}}
         </div>
     </div>
 
