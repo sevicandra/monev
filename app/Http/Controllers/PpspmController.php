@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\spm;
 use App\Models\berkas;
 use App\Models\tagihan;
+use App\Models\logtagihan;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -164,6 +165,12 @@ class PpspmController extends Controller
         $tagihan->update([
             'status'=>2
         ]);
+        logtagihan::create([
+            'tagihan_id'=>$tagihan->id,
+            'action'=>'Tolak',
+            'user'=>auth()->user()->nama,
+            'catatan'=>''
+        ]);
         return redirect('/ppspm')->with('berhasil', 'Tagihan Berhasil Ditolak');
     }
 
@@ -184,6 +191,12 @@ class PpspmController extends Controller
         }
         $tagihan->update([
             'status'=>4
+        ]);
+        logtagihan::create([
+            'tagihan_id'=>$tagihan->id,
+            'action'=>'Approve',
+            'user'=>auth()->user()->nama,
+            'catatan'=>''
         ]);
         return redirect('/ppspm')->with('berhasil', 'Tagihan Berhasil Diverifikasi');
     }

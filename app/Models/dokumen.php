@@ -15,6 +15,7 @@ class dokumen extends Model
         'kodedokumen',
         'namadokumen',
         'statusdnp',
-        'statuspph'
+        'statuspph',
+        'statusrekanan'
     ];
 }

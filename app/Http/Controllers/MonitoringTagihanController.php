@@ -50,7 +50,7 @@ class MonitoringTagihanController extends Controller
      * @param  \App\Models\tagihan  $tagihan
      * @return \Illuminate\Http\Response
      */
-    public function show(tagihan $monitoring_tagihan)
+    public function show(Request $request,tagihan $monitoring_tagihan)
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
@@ -66,9 +66,21 @@ class MonitoringTagihanController extends Controller
                 abort(403);
             }
         }
-        return view('monitoring_tagihan.dokumen',[
-            'data'=>$monitoring_tagihan
-        ]);
+        switch ($request->scope) {
+            case 'dokumen':
+                return view('monitoring_tagihan.dokumen',[
+                    'data'=>$monitoring_tagihan
+                ]);
+                break;
+
+            case 'histories':
+                return view('monitoring_tagihan.detail',[
+                    'data'=>$monitoring_tagihan
+                ]);
+                break;
+
+        }
+
     }
 
     /**

@@ -81,6 +81,11 @@
                     &nbsp; Arsip
                 </a>
             </li>
+            <li class="nav-item m-0 p-0">
+                <a class="nav-link pb-1" href="/laporan-pajak">
+                    &nbsp; Laporan Pajak
+                </a>
+            </li>
         </ul>
         {{--  Akhir Bagian Keuangan  --}}
         @endcanany

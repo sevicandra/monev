@@ -34,6 +34,7 @@
                             <th>Nama Dokumen</th>
                             <th>Status DNP</th>
                             <th>Status PPh</th>
+                            <th>Status Rekanan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>

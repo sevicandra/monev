@@ -6,6 +6,7 @@ use App\Models\nomor;
 use GuzzleHttp\Client;
 use App\Models\tagihan;
 use App\Models\register;
+use App\Models\logtagihan;
 use Endroid\QrCode\QrCode;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -313,6 +314,12 @@ class RegisterController extends Controller
 
                 foreach ($register->tagihan as $tagihan) {
                     $tagihan->update(['status'=>2]);
+                    logtagihan::create([
+                        'tagihan_id'=>$tagihan->id,
+                        'action'=>'Esign',
+                        'user'=>auth()->user()->nama,
+                        'catatan'=>''
+                    ]);
                 }
 
                 return redirect('/register')->with('berhasil','Proses penandatanganan berhasil!');

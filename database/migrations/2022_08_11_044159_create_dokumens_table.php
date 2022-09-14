@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('namadokumen');
             $table->string('statusdnp', 1);
             $table->string('statuspph', 1);
+            $table->string('statusrekanan', 1);
             $table->timestamps();
         });
     }

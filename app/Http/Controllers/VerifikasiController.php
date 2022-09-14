@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\spm;
 use App\Models\berkas;
+use App\Models\rekanan;
 use App\Models\tagihan;
+use App\Models\logtagihan;
+use App\Models\objekpajak;
+use App\Models\pphrekanan;
+use App\Models\ppnrekanan;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -170,6 +175,12 @@ class VerifikasiController extends Controller
         $tagihan->update([
             'status'=>0
         ]);
+        logtagihan::create([
+            'tagihan_id'=>$tagihan->id,
+            'action'=>'Tolak',
+            'user'=>auth()->user()->nama,
+            'catatan'=>''
+        ]);
         return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Dikembalikan');
     }
 
@@ -190,6 +201,12 @@ class VerifikasiController extends Controller
                 $tagihan->update([
                     'status'=>4
                 ]);
+                logtagihan::create([
+                    'tagihan_id'=>$tagihan->id,
+                    'action'=>'Approve',
+                    'user'=>auth()->user()->nama,
+                    'catatan'=>''
+                ]);
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
                 break;
 
@@ -202,6 +219,12 @@ class VerifikasiController extends Controller
                 }
                 $tagihan->update([
                     'status'=>3
+                ]);
+                logtagihan::create([
+                    'tagihan_id'=>$tagihan->id,
+                    'action'=>'Approve',
+                    'user'=>auth()->user()->nama,
+                    'catatan'=>''
                 ]);
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
                 break;
@@ -258,5 +281,359 @@ class VerifikasiController extends Controller
             'back'=>'/verifikasi/'.$tagihan->id,
             'upload'=>'/verifikasi/'.$tagihan->id.'/upload'
         ]);
+    }
+
+    public function showrekanan(tagihan $tagihan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        return view('verifikasi.rekanan.index',[
+            'data'=>$tagihan
+        ]);
+    }
+
+    public function createrekanan(tagihan $tagihan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        return view('verifikasi.rekanan.create',[
+            'tagihan'=>$tagihan,
+            'data'=>rekanan::ofTagihan($tagihan->id)
+        ]);
+    }
+
+    public function storerekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        $tagihan->rekanan()->attach($rekanan->id);
+
+        return redirect('/verifikasi/'.$tagihan->id.'/rekanan')->with('berhasil','Data berhasil Ditambahkan.');
+    }
+
+    public function deleterekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        $tagihan->rekanan()->detach($rekanan->id);
+        pphrekanan::where('rekanan_id', $rekanan->id)->where('tagihan_id', $tagihan->id)->delete();
+        ppnrekanan::where('rekanan_id', $rekanan->id)->where('tagihan_id', $tagihan->id)->delete();
+        return redirect('/verifikasi/'.$tagihan->id.'/rekanan')->with('berhasil','Data berhasil di Hapus.');
+    }
+
+    public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        return view('verifikasi.rekanan.ppn.index',[
+            'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan
+        ]);
+    }
+
+    public function createppnrekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        return view('verifikasi.rekanan.ppn.create',[
+            'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan
+        ]);
+    }
+
+    public function storeppnrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        $request->validate([
+            'nomorfaktur'=>'required',
+            'tanggalfaktur'=>'required',
+            'tarif'=>'required',
+            'ppn'=>'required|numeric'
+        ]);
+
+        ppnrekanan::create([
+            'nomorfaktur'=>$request->nomorfaktur,
+            'tanggalfaktur'=>$request->tanggalfaktur,
+            'tarif'=>$request->tarif,
+            'ppn'=>$request->ppn,
+            'tagihan_id'=>$tagihan->id,
+            'rekanan_id'=>$rekanan->id,
+        ]);
+
+        return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('berhasil','Data berhasil Ditambahkan.');
+    }
+
+
+    public function editppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        return view('verifikasi.rekanan.ppn.update',[
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan,
+            'data'=>$ppn
+        ]);
+    }
+
+    public function updateppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn, Request $request)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        $request->validate([
+            'nomorfaktur'=>'required',
+            'tanggalfaktur'=>'required',
+            'tarif'=>'required',
+            'ppn'=>'required|numeric'
+        ]);
+
+        $ppn->update([
+            'nomorfaktur'=>$request->nomorfaktur,
+            'tanggalfaktur'=>$request->tanggalfaktur,
+            'tarif'=>$request->tarif,
+            'ppn'=>$request->ppn,
+        ]);
+        return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('berhasil','Data berhasil di Ubah.');
+    }
+
+    public function deleteppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        if ($ppn->rekanan_id === $rekanan->id && $ppn->tagihan_id === $tagihan->id) {
+            $ppn->delete();
+            return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('berhasil','Data berhasil di Hapus.');
+        }else{
+            return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('gagal','Link Error.');
+        }
+    }
+
+    public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        return view('verifikasi.rekanan.pph.index',[
+            'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan
+        ]);
+    }
+
+    public function createpphrekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        return view('verifikasi.rekanan.pph.create',[
+            'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan,
+            'objekpajak'=>objekpajak::all()
+        ]);
+    }
+
+    public function storepphrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        $request->validate([
+            'objek'=>'required',
+            'pph'=>'required|numeric',
+        ]);
+
+        pphrekanan::create([
+            'objekpajak_id'=>$request->objek,
+            'pph'=>$request->pph,
+            'tagihan_id'=>$tagihan->id,
+            'rekanan_id'=>$rekanan->id,
+        ]);
+
+        return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil Ditambahkan.');
+    }
+
+
+    public function editpphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        return view('verifikasi.rekanan.pph.update',[
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan,
+            'data'=>$pph,
+            'objekpajak'=>objekpajak::all()
+        ]);
+    }
+
+    public function updatepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph, Request $request)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        $request->validate([
+            'objek'=>'required',
+            'pph'=>'required|numeric',
+        ]);
+
+        $pph->update([
+            'objekpajak_id'=>$request->objek,
+            'pph'=>$request->pph,
+        ]);
+        return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil di Ubah.');
+    }
+
+    public function deletepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        if ($pph->rekanan_id === $rekanan->id && $pph->tagihan_id === $tagihan->id) {
+            $pph->delete();
+            return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil di Hapus.');
+        }else{
+            return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('gagal','Link Error.');
+        }
     }
 }

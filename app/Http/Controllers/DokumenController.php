@@ -119,12 +119,14 @@ class DokumenController extends Controller
             'nama'=>'required',
             'statusdnp'=>'required|min:1|max:1',
             'statuspph'=>'required|min:1|max:1',
+            'statusrekanan'=>'required|min:1|max:1',
         ]);
 
         
         $request->validate([
             'statusdnp'=>'numeric',
             'statuspph'=>'numeric',
+            'statusrekanan'=>'numeric',
             'kode'=>'numeric',
         ]);
         $dokuman->update([
@@ -132,6 +134,7 @@ class DokumenController extends Controller
             'namadokumen'=>$request->nama,
             'statusdnp'=>$request->statusdnp,
             'statuspph'=>$request->statuspph,
+            'statusrekanan'=>$request->statusrekanan,
         ]);
         return redirect('/dokumen');
     }

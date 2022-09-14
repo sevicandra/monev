@@ -44,7 +44,6 @@ class tagihan extends Model
         return $this->hasMany(realisasi::class);
     }
     
-
     public function dnp()
     {
         return $this->hasMany(dnp::class);
@@ -112,7 +111,16 @@ class tagihan extends Model
 
     public function scopeTagihansatker($data)
     {
-        $data->where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'));
+        return $data->where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'));
     }
 
+    public function log()
+    {
+        return $this->hasMany(logtagihan::class);
+    }
+
+    public function rekanan()
+    {
+        return $this->belongsToMany(rekanan::class,'rekanantagihan');
+    }
 }

@@ -68,7 +68,10 @@
                             <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
                             <td class="pb-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/monitoring-tagihan/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Dokumen</a>
+                                    <a href="/monitoring-tagihan/{{ $item->id }}?scope=dokumen" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Dokumen</a>
+                                </div>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="/monitoring-tagihan/{{ $item->id }}?scope=histories" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                 </div>
                             </td>
                         </tr>

@@ -79,6 +79,9 @@
                                         <a href="/bendahara/{{ $item->id }}/payroll" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Payroll</a>
                                         @endif
                                     <a href="/bendahara/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">detail</a>
+                                    @if ($item->dokumen->statusrekanan === '1')
+                                    <a href="/bendahara/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
+                                    @endif
                                     <a href="/bendahara/{{ $item->id }}/tolak" class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
                                     <a href="/bendahara/{{ $item->id }}/approve" class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
                                 </div>

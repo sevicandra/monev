@@ -66,6 +66,9 @@
                                         @if ($item->dokumen->statusdnp === '1')
                                         <a href="/tagihan/{{ $item->id }}/dnp" class="btn btn-sm btn-outline-secondary pt-0 pb-0">DNP</a>
                                         @endif
+                                        @if ($item->dokumen->statusrekanan === '1')
+                                        <a href="/tagihan/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
+                                        @endif
                                         <a href="/tagihan/{{ $item->id }}/upload" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Upload</a>
                                         <form action="/tagihan/{{ $item->id }}/kirim" method="post">
                                             @csrf

@@ -65,6 +65,9 @@
                                         <a href="/verifikasi/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">SPM</a>
                                     @endif
                                     <a href="/verifikasi/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">detail</a>
+                                    @if ($item->dokumen->statusrekanan === '1')
+                                    <a href="/verifikasi/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
+                                    @endif
                                     <a href="/verifikasi/{{ $item->id }}/tolak" class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
                                     <a href="/verifikasi/{{ $item->id }}/approve" class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
                                 </div>

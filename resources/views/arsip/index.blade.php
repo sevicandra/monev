@@ -80,6 +80,9 @@
                                             <a href="/arsip/{{ $item->id }}/dnp" class="btn btn-sm btn-outline-secondary pt-0 pb-0">DNP</a>
                                         @endif
                                         <a href="/arsip/{{ $item->id }}/coa" class="btn btn-sm btn-outline-secondary pt-0 pb-0">COA</a>
+                                        @if ($item->dokumen->statusrekanan === '1')
+                                            <a href="/arsip/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
+                                        @endif
                                         <a href="/arsip/{{ $item->id }}/dokumen" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Dokumen</a>
                                     </div>
                                 </td>

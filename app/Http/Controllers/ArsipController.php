@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\rekanan;
 use App\Models\tagihan;
+use App\Models\pphrekanan;
+use App\Models\ppnrekanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -161,5 +164,63 @@ class ArsipController extends Controller
             'status'=>4
         ]);
         return redirect('/arsip')->with('berhasil', 'Tagihan Berhasil Di Tolak');
+    }
+
+    public function showrekanan(tagihan $tagihan)
+    {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 5) {
+            abort(403);
+        }
+        return view('arsip.rekanan.index',[
+            'data'=>$tagihan
+        ]);
+    }
+
+    public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 5) {
+            abort(403);
+        }
+        return view('arsip.rekanan.ppn.index',[
+            'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan
+        ]);
+    }
+
+    public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 5) {
+            abort(403);
+        }
+        return view('arsip.rekanan.pph.index',[
+            'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan
+        ]);
     }
 }
