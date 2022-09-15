@@ -15,9 +15,9 @@
             <a href="/tagihan/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="notagihan" class="form-control" placeholder="Nomor Tagihan">
+                    <input type="text" name="search" class="form-control" placeholder="Nomor Tagihan">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -48,20 +48,24 @@
                             <tr>
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->notagihan }}</td>
-                                <td>{{ $item->tgltagihan }}</td>
+                                <td>{{ indonesiaDate($item->tgltagihan) }}</td>
                                 <td>{{ $item->uraian }}</td>
-                                <td>{{ $item->jnstagihan }}</td>
+                                <td>
+                                    @switch($item->jnstagihan)
+                                        @case('0')
+                                            SPBy
+                                            @break
+                                        @case('1')
+                                            SPP
+                                            @break
+                                    @endswitch
+                                </td>
                                 <td>{{ $item->unit->namaunit }}</td>
                                 <td>{{ $item->dokumen->namadokumen }}</td>
                                 <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
                                 <td class="pb-0">
                                     <div class="btn-group btn-group-sm" role="group">
                                         <a href="/tagihan/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Ubah</a>
-                                        <form action="/tagihan/{{ $item->id }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                        </form>
                                         <a href="/tagihan/{{ $item->id }}/realisasi" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Realisasi</a>
                                         @if ($item->dokumen->statusdnp === '1')
                                         <a href="/tagihan/{{ $item->id }}/dnp" class="btn btn-sm btn-outline-secondary pt-0 pb-0">DNP</a>
@@ -70,9 +74,14 @@
                                         <a href="/tagihan/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
                                         @endif
                                         <a href="/tagihan/{{ $item->id }}/upload" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Upload</a>
+                                        <form action="/tagihan/{{ $item->id }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                                        </form>
                                         <form action="/tagihan/{{ $item->id }}/kirim" method="post">
                                             @csrf
-                                            <button href="" class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Kirim</button>
+                                            <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Kirim</button>
                                         </form>
                                     </div>
                                 </td>

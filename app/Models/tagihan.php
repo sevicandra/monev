@@ -123,4 +123,11 @@ class tagihan extends Model
     {
         return $this->belongsToMany(rekanan::class,'rekanantagihan');
     }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data->where('notagihan', 'like', '%'.request('search').'%');
+        }
+    }
 }

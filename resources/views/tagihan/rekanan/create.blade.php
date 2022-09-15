@@ -3,7 +3,7 @@
 @section('content')
 <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Tarik Data Pegawai Dari Gaji</h1>
+        <h1 class="h2">Tarik Data Rekanan</h1>
     </div>
     <div class="row">
         <div class="col">
@@ -16,10 +16,10 @@
         </div>
         <div class="col-lg-5">
             <form action="" method="get" autocomplete="off">
-            <div class="input-group">
-                <input type="text" name="nama" class="form-control" placeholder="nama pegawai">
-                <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
-            </div>
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search" value="{{request('search')}}">
+                    <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
+                </div>
             </form>
         </div>
     </div>

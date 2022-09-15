@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\rekanan;
 use App\Models\tagihan;
+use App\Models\pphrekanan;
+use App\Models\ppnrekanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -19,7 +22,7 @@ class MonitoringTagihanController extends Controller
             abort(403);
         }
         return view('monitoring_tagihan.index',[
-            'data'=>tagihan::tagihansatker()->tagihanppk()->where('tahun', session()->get('tahun'))->get()
+            'data'=>tagihan::tagihansatker()->tagihanppk()->where('tahun', session()->get('tahun'))->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -81,6 +84,116 @@ class MonitoringTagihanController extends Controller
 
         }
 
+    }
+
+    public function showcoa(tagihan $tagihan)
+    {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+
+        return view('monitoring_tagihan.coa',[
+            'data'=>$tagihan
+        ]);
+    }
+
+    public function showdnp(tagihan $tagihan)
+    {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+        return view('monitoring_tagihan.dnp',[
+            'data'=>$tagihan
+        ]);
+    }
+
+    public function showrekanan(tagihan $tagihan)
+    {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+        return view('monitoring_tagihan.rekanan.index',[
+            'data'=>$tagihan
+        ]);
+    }
+
+    public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+        return view('monitoring_tagihan.rekanan.ppn.index',[
+            'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan
+        ]);
+    }
+
+    public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
+    {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+        return view('monitoring_tagihan.rekanan.pph.index',[
+            'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
+            'tagihan'=>$tagihan,
+            'rekanan'=>$rekanan
+        ]);
     }
 
     /**

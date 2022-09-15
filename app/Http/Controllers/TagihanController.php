@@ -30,7 +30,7 @@ class TagihanController extends Controller
             abort(403);
         }
         return view('tagihan.index',[
-            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->get()
+            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -126,13 +126,13 @@ class TagihanController extends Controller
             abort(403);
         }
 
-        if ($tagihan->status > 0) {
+        if ($tagihan->status != 0) {
             return abort(403);
         }
         return view('tagihan.update',[
             'data'=>$tagihan,
             'dokumen'=>dokumen::orderby('kodedokumen')->get(),
-            'unit'=>unit::Myunit()
+            'unit'=>unit::Myunit()->stafppk()->get()
         ]);
     }
 
@@ -349,7 +349,8 @@ class TagihanController extends Controller
             return abort(403);
         }
         return view('tagihan.rekanan.index',[
-            'data'=>$tagihan
+            'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 
@@ -367,7 +368,7 @@ class TagihanController extends Controller
         }
         return view('tagihan.rekanan.create',[
             'tagihan'=>$tagihan,
-            'data'=>rekanan::ofTagihan($tagihan->id)
+            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString()
         ]);
     }
 

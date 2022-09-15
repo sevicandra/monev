@@ -50,4 +50,67 @@ class realisasi extends Model
             });
         }
     }
+
+    public function scopeSearchprogram($data)
+    {
+        if (request('program')) {
+            return $data->wherehas('pagu', function($val){
+                $val->where('program', 'like', '%'.request('program').'%');
+            });
+        }
+    }
+
+    public function scopeSearchkegiatan($data)
+    {
+        if (request('kegiatan')) {
+            return $data->wherehas('pagu', function($val){
+                $val->where('kegiatan', 'like', '%'.request('kegiatan').'%');
+            });
+        }
+    }
+
+    public function scopeSearchkro($data)
+    {
+        if (request('kro')) {
+            return $data->wherehas('pagu', function($val){
+                $val->where('kro', 'like', '%'.request('kro').'%');
+            });
+        }
+    }
+
+    public function scopeSearchro($data)
+    {
+        if (request('ro')) {
+            return $data->wherehas('pagu', function($val){
+                $val->where('ro', 'like', '%'.request('ro').'%');
+            });
+        }
+    }
+
+    public function scopeSearchkomponen($data)
+    {
+        if (request('komponen')) {
+            return $data->wherehas('pagu', function($val){
+                $val->where('komponen', 'like', '%'.request('komponen').'%');
+            });
+        }
+    }
+
+    public function scopeSearchsubkomponen($data)
+    {
+        if (request('subkomponen')) {
+            return $data->wherehas('pagu', function($val){
+                $val->where('subkomponen', 'like', '%'.request('subkomponen').'%');
+            });
+        }
+    }
+
+    public function scopeSearchakun($data)
+    {
+        if (request('akun')) {
+            return $data->wherehas('pagu', function($val){
+                $val->where('akun', 'like', '%'.request('akun').'%');
+            });
+        }
+    }
 }

@@ -178,6 +178,14 @@ Route::controller(RegisterTagihanController::class)->group(function(){
     Route::delete('/register/{register}/tagihan/{tagihan}','destroy')->middleware('auth');
 });
 
+Route::controller(MonitoringTagihanController::class)->group(function(){
+    Route::get('/monitoring-tagihan/{tagihan}/coa', 'showcoa')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/dnp', 'showdnp')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/rekanan/{rekanan}/pph', 'showpphrekanan')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/rekanan/{rekanan}/ppn', 'showppnrekanan')->middleware('auth');
+});
+
 Route::resource('/monitoring-tagihan', MonitoringTagihanController::class)->middleware('auth');
 
 Route::resource('/pegawai-nondjkn', PegawainondjknController::class)->middleware('auth');

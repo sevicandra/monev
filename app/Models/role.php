@@ -23,7 +23,6 @@ class role extends Model
 
     public function scopeOfUser($data, $user)
     {
-
         $var = $user;
         return $data->whereDoesntHave('User', function($val)use($var){
             $val->where('id', $var);

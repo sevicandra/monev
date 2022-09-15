@@ -9,9 +9,9 @@
         <div class="col-lg-7">
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="notagihan" class="form-control" placeholder="nomor SPP/SPBy">
+                    <input type="text" name="search" class="form-control" placeholder="Nomor Tagihan">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -45,10 +45,10 @@
                         <tr>
                             <td class="text-center">{{ $i }}</td>
                             <td>{{ $item->notagihan }}</td>
-                            <td>{{ $item->tgltagihan }}</td>
+                            <td>{{ indonesiaDate($item->tgltagihan) }}</td>
                             <td>
                                 @if (isset($item->spm))
-                                    {{ $item->spm->tanggal_spm }}
+                                    {{ indonesiaDate($item->spm->tanggal_spm) }}
                                 @endif
                             </td>
                             <td>
@@ -58,10 +58,19 @@
                             </td>
                             <td>
                                 @if (isset($item->spm))
-                                    {{ $item->spm->tanggal_sp2d }}
+                                    {{ indonesiaDate($item->spm->tanggal_sp2d) }}
                                 @endif
                             </td>
-                            <td>{{ $item->jnstagihan }}</td>
+                            <td>
+                                @switch($item->jnstagihan)
+                                    @case('0')
+                                        SPBy
+                                        @break
+                                    @case('1')
+                                        SPP
+                                        @break
+                                @endswitch    
+                            </td>
                             <td>{{ $item->unit->namaunit }}</td>
                             <td></td>
                             <td>{{ $item->dokumen->namadokumen }}</td>
@@ -69,10 +78,16 @@
                             <td class="pb-0">
                                 <div class="btn-group btn-group-sm" role="group">
                                     <a href="/monitoring-tagihan/{{ $item->id }}?scope=dokumen" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Dokumen</a>
+                                    <a href="/monitoring-tagihan/{{ $item->id }}?scope=histories" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Riwayat</a>
+                                    <a href="/monitoring-tagihan/{{ $item->id }}/coa" class="btn btn-sm btn-outline-secondary pt-0 pb-0">COA</a>
+                                    @if ($item->dokumen->statusdnp === '1')
+                                        <a href="/monitoring-tagihan/{{ $item->id }}/dnp" class="btn btn-sm btn-outline-secondary pt-0 pb-0">DNP</a>
+                                    @endif
+                                    @if ($item->dokumen->statusrekanan === '1')
+                                        <a href="/monitoring-tagihan/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
+                                    @endif
                                 </div>
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/monitoring-tagihan/{{ $item->id }}?scope=histories" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
-                                </div>
+                                
                             </td>
                         </tr>
                         @php

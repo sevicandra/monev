@@ -11,8 +11,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-lg-7">
-                <a href="/tagihan/{{ $tagihan->id }}/rekanan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-                <a href="/tagihan/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/ppn/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Tambah</a>
+                <a href="/monitoring-tagihan/{{ $tagihan->id }}/rekanan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
             </div>
             <div class="col-lg-5">
 
@@ -30,7 +29,6 @@
                                 <th>Tarif</th>
                                 <th>PPN</th>
                                 <th>NOP</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,16 +43,6 @@
                                 <td>{{ $item->tarif*100}}%</td>
                                 <td>{{ number_format($item->ppn, 2, ',', '.')}}</td>
                                 <td>{{ number_format($item->ppn/$item->tarif, 2, ',', '.')}}</td>
-                                <td class="pb-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <form action="/tagihan/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/ppn/{{ $item->id }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                        </form>
-                                        <a href="/tagihan/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/ppn/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">edit</a>
-                                    </div>
-                                </td>
                             </tr>
                             @php
                                 $i++;

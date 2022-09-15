@@ -28,7 +28,8 @@ class DnpController extends Controller
         }
 
         return view('tagihan.dnp.index',[
-            'data'=>$tagihan
+            'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 
@@ -87,7 +88,7 @@ class DnpController extends Controller
             abort(403);
         }
         return view('tagihan.dnp.tarik_pegawai_nondjkn',[
-            'data'=>pegawainondjkn::all(),
+            'data'=>pegawainondjkn::search()->paginate(15)->withQueryString(),
             'tagihan'=>$tagihan
         ]);
     }

@@ -44,4 +44,11 @@ class register extends Model
             return $data->where('ppk_id', auth()->user()->mapingstafppk->ppk_id);
         }
     }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data->where('nomor', 'like', '%'.request('search').'%');
+        }
+    }
 }

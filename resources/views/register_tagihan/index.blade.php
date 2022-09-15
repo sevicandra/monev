@@ -17,9 +17,9 @@
             </form>
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="nomor" class="form-control" placeholder="nomor">
+                    <input type="text" name="search" class="form-control" placeholder="Nomor" value="{{request('search')}}">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -47,7 +47,7 @@
                         <tr>
                             <td class="text-center">{{ $i }}</td>
                             <td>{{ $item->nomor }}</td>
-                            <td>{{ $item->created_at }} </td>
+                            <td>{{ indonesiaDate($item->created_at) }} </td>
                             <td class="text-center"></td>
                             <td class="text-right">
                                 @php
@@ -86,7 +86,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-
+            {{$data->links()}}
         </div>
     </div>
 

@@ -197,7 +197,7 @@ html {
     
     <div id="judul1" style="margin-top: 10px;">
     <strong>REGISTER TAGIHAN</strong><br>
-    <span style="font-size: 12px; margin-top: 5px;">No: {{ $register->nomor }} {{ $register->ekstensi }} {{ $register->tahun }}   Tgl: . {{ $register->created_at }}</span>
+    <span style="font-size: 12px; margin-top: 5px;">No: {{ $register->nomor }} {{ $register->ekstensi }} {{ $register->tahun }}   Tgl: . {{ indonesiaDate($register->created_at) }}</span>
     </div>
     
     <p style="margin-left:10px; margin-bottom: 10px; margin-top:25px;  text-align: justify;">Saya yang bertandatangan dibawah ini, menyampaikan daftar tagihan sebagai berikut untuk diproses sesuai dengan ketentuan yang berlaku,</p>
@@ -220,7 +220,7 @@ html {
         <tr>
             <td class="head" style="text-align: center;width: 4%;">{{ $i }}</td>
             <td class="head" style="text-align: center;width: 7%;">{{ $item->notagihan }}</td>
-            <td class="head" style="width: 18%;">{{ $item->tgltagihan }}</td>
+            <td class="head" style="width: 18%;">{{ indonesiaDate($item->tgltagihan) }}</td>
             <td class="head" style="width: 34%;">{{ $item->uraian }}</td>
             <td class="head" style="text-align: center;width: 7%;">{{ $item->jnstagihan }}</td>
             <td class="head" style="text-align: center;width: 10%;">{{ $item->unit->namaunit }}</td>

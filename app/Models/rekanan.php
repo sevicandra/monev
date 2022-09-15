@@ -29,7 +29,7 @@ class rekanan extends Model
         $var = $tagihan;
         return $data->whereDoesntHave('tagihan', function($val)use($var){
             $val->where('id', $var);
-        })->get();
+        });
     }
 
     public function scopeRekanansatker($data)

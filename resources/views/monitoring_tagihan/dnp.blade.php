@@ -11,15 +11,12 @@
         </div>
         <div class="row mb-3">
             <div class="col-lg-7">
-                <a href="/tagihan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-                <a href="/tagihan/{{ $tagihan->id }}/dnp/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Data Gaji</a>
-                <a href="/tagihan/{{ $tagihan->id }}/dnp-non-djkn/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Data Pegawai Non DJKN</a>
-                <a href="/tagihan/{{ $tagihan->id }}/dnp/cetak" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2" target="_blank">Cetak</a>
+                <a href="/monitoring-tagihan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
             </div>
             <div class="col-lg-5">
-                <form action="" method="get" autocomplete="off">
+                <form action="" method="post" autocomplete="off">
                     <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Nama Pegawai" value="{{request('search')}}">
+                        <input type="text" name="nama" class="form-control" placeholder="Nama Pegawai">
                         <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                     </div>
                 </form>
@@ -40,14 +37,13 @@
                                 <th>Netto</th>
                                 <th>Rekening</th>
                                 <th>Nama Bank</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
                                 $i=1;
                             @endphp
-                            @foreach ($data as $item)
+                            @foreach ($data->dnp as $item)
                             <tr>
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->nip }}</td>
@@ -64,20 +60,6 @@
                                 @endif
                                 <td>{{ $item->rekening }}</td>
                                 <td>{{ $item->namabank }}</td>
-                                <td class="pb-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        @if ($item->nominal)
-                                            <a href="/tagihan/{{ $tagihan->id }}/dnp/{{ $item->id }}/nominal/{{ $item->nominal->id }}/update/" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Nominal</a>
-                                        @else
-                                            <a href="/tagihan/{{ $tagihan->id }}/dnp/{{ $item->id }}/nominal/" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Nominal</a>
-                                        @endif
-                                        <form action="/tagihan/{{ $tagihan->id }}/dnp/{{ $item->id }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
                             </tr>
                             @php
                                 $i++;
@@ -90,7 +72,7 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
-                {{$data->links()}}
+                
             </div>
         </div>
 

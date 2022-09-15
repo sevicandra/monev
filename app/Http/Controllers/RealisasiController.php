@@ -26,7 +26,14 @@ class RealisasiController extends Controller
         }
 
         return view('tagihan.realisasi.index',[
-            'data'=>$tagihan
+            'data'=>$tagihan->realisasi()   ->searchprogram()  
+                                            ->searchkegiatan()
+                                            ->searchkro()
+                                            ->searchro()
+                                            ->searchkomponen()
+                                            ->searchsubkomponen()
+                                            ->searchakun()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 
@@ -87,7 +94,13 @@ class RealisasiController extends Controller
 
         return view('tagihan.realisasi.tarik_detail_akun',[
             'data'=>$realisasi,
-            'pagu'=>pagu::Pagusatker()->paguppk()->pagustafppk()->get()
+            'pagu'=>pagu::Pagusatker()->paguppk()->pagustafppk()    ->searchprogram()  
+                                                                    ->searchkegiatan()
+                                                                    ->searchkro()
+                                                                    ->searchro()
+                                                                    ->searchkomponen()
+                                                                    ->searchsubkomponen()
+                                                                    ->searchakun()->paginate(15)->withQueryString()
         ]); 
     }
 

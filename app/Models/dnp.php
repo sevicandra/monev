@@ -35,4 +35,14 @@ class dnp extends Model
     {
         return $this->hasOne(nominaldnp::class);
     }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data    ->where('nama', 'like', '%'.request('search').'%')
+                            ->orwhere('nip', 'like', '%'.request('search').'%')
+                            ->orwhere('namabank', 'like', '%'.request('search').'%')
+            ;
+        }
+    }
 }
