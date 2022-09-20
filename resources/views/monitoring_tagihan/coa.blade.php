@@ -10,10 +10,15 @@
             <a href="/monitoring-tagihan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="kro" class="form-control" placeholder="KRO">
-                    <input type="text" name="ro" class="form-control" placeholder="RO">
+                    <input type="text" name="program" class="form-control" value="{{request('program')}}" placeholder="Program" >
+                    <input type="text" name="kegiatan" class="form-control" value="{{request('kegiatan')}}" placeholder="Kegiatan">
+                    <input type="text" name="kro" class="form-control" value="{{request('kro')}}" placeholder="KRO">
+                    <input type="text" name="ro" class="form-control" value="{{request('ro')}}" placeholder="RO">
+                    <input type="text" name="komponen" class="form-control" value="{{request('komponen')}}" placeholder="Komponen">
+                    <input type="text" name="subkomponen" class="form-control" value="{{request('subkomponen')}}" placeholder="Subkomponen">
+                    <input type="text" name="akun" class="form-control" value="{{request('akun')}}" placeholder="Akun">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -40,7 +45,7 @@
                         @php
                             $i=1;
                         @endphp
-                        @foreach ($data->realisasi as $item)
+                        @foreach ($data as $item)
                         <tr>
                             <td class="text-center">{{ $i }}</td>
                             <td>{{ $item->pagu->program }}</td>
@@ -63,7 +68,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            
+            {{$data->links()}}
         </div>
     </div>
 

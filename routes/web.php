@@ -263,6 +263,7 @@ Route::controller(ArsipController::class)->group(function(){
     Route::get('/arsip/{tagihan}/dokumen', 'dokumen')->middleware('auth');
     Route::get('/arsip/{tagihan}/coa', 'coa')->middleware('auth');
     Route::get('/arsip/{tagihan}/dnp', 'dnp')->middleware('auth');
+    Route::get('/arsip/{tagihan}/riwayat', 'showriwayat')->middleware('auth');
     Route::get('/arsip/{tagihan}/tolak', 'tolak')->middleware('auth');
     Route::get('/arsip/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
     Route::get('/arsip/{tagihan}/rekanan/{rekanan}/ppn', 'showppnrekanan')->middleware('auth');

@@ -29,7 +29,7 @@ class VerifikasiController extends Controller
         }
         
         return view('verifikasi.index',[
-            'data'=>tagihan::tagihansatker()->tagihanverifikator()->unverified()->get(),
+            'data'=>tagihan::tagihansatker()->tagihanverifikator()->unverified()->search()->paginate(15)->withQueryString(),
         ]);
     }
 
@@ -297,7 +297,8 @@ class VerifikasiController extends Controller
             abort(403);
         }
         return view('verifikasi.rekanan.index',[
-            'data'=>$tagihan
+            'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 

@@ -104,7 +104,13 @@ class MonitoringTagihanController extends Controller
         }
 
         return view('monitoring_tagihan.coa',[
-            'data'=>$tagihan
+            'data'=>$tagihan->realisasi()   ->searchprogram()  
+                                            ->searchkegiatan()
+                                            ->searchkro()
+                                            ->searchro()
+                                            ->searchkomponen()
+                                            ->searchsubkomponen()
+                                            ->searchakun()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -125,7 +131,8 @@ class MonitoringTagihanController extends Controller
             }
         }
         return view('monitoring_tagihan.dnp',[
-            'data'=>$tagihan
+            'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 
@@ -146,7 +153,8 @@ class MonitoringTagihanController extends Controller
             }
         }
         return view('monitoring_tagihan.rekanan.index',[
-            'data'=>$tagihan
+            'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 

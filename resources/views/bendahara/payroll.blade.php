@@ -8,12 +8,12 @@
     <div class="row mb-3">
         <div class="col-lg-7">
             <a href="/bendahara" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-            <a href="/bendahara/{{ $data->id }}/payroll/cetak" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2"> Ekspor Excel</a>
+            <a href="/bendahara/{{ $tagihan->id }}/payroll/cetak" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2"> Ekspor Excel</a>
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="nama" class="form-control" placeholder="Nama Pegawai">
+                    <input type="text" name="search" class="form-control" placeholder="Nama Pegawai">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -40,7 +40,7 @@
                         @php
                             $i=1;
                         @endphp
-                        @foreach ($data->dnp as $item)
+                        @foreach ($data as $item)
                         <tr>
                             <td class="text-center">{{ $i }}</td>
                             <td>{{ $item->nip }}</td>
@@ -69,7 +69,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            
+            {{$data->links()}}
         </div>
     </div>
 

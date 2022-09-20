@@ -14,9 +14,9 @@
         <div class="col-lg-7">
         </div>
         <div class="col-lg-5">
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="get" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" name="notagihan" class="form-control" placeholder="nomor SPP/SPBy">
+                    <input type="text" name="search" class="form-control" placeholder="Nomor Tagihan">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                 </div>
             </form>
@@ -84,6 +84,7 @@
                                             <a href="/arsip/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
                                         @endif
                                         <a href="/arsip/{{ $item->id }}/dokumen" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Dokumen</a>
+                                        <a href="/arsip/{{ $item->id }}/riwayat" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Riwayat</a>
                                     </div>
                                 </td>
                             </tr>
@@ -98,7 +99,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            
+            {{$data->links()}}
         </div>
     </div>
 

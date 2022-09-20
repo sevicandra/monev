@@ -29,20 +29,36 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $pagu=0;
+                                $realisasi=0;
+                                $pengembalian=0;
+                            @endphp
                             @foreach ($ppk as $item)
                                 <tr>
                                     <td class="text-center"></td>
                                     <td>{{ $item->nama }}</td>
-                                    <td class="text-right">{{ number_format($item->paguppk->sum('anggaran'), 2, ',', '.') }}</td>
+                                    <td class="text-right">
+                                        {{ number_format($item->paguppk->sum('anggaran'), 2, ',', '.') }}
+                                        @php
+                                            $pagu += $item->paguppk->sum('anggaran');
+                                        @endphp
+                                    </td>
                                     <td class="text-right">
                                         <a href="">
                                             {{ number_format($item->realisasippk()->sum('realisasi'), 2, ',', '.') }}
                                         </a>
+                                        @php
+                                            $realisasi += $item->realisasippk()->sum('realisasi');
+                                        @endphp
                                     </td>
                                     <td class="text-right">
                                         <a href="">
                                             {{ number_format($item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}
                                         </a>
+                                        @php
+                                            $pengembalian += $item->sspbppk()->sum('nominal_sspb');
+                                        @endphp
                                     </td>
                                     <td class="text-right">{{ number_format($item->paguppk->sum('anggaran')-$item->realisasippk()->sum('realisasi')+$item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}</td>
                                     <td class="text-center">
@@ -56,11 +72,17 @@
                             @endforeach
                             <tr>
                                 <th class="text-center" colspan="2">Jumlah</th>
-                                <th class="text-right"></th>
-                                <th class="text-right"></th>
-                                <th class="text-right"></th>
-                                <th class="text-right"></th>
-                                <th class="text-center">%</th>
+                                <th class="text-right"> {{ number_format($pagu, 2, ',', '.') }} </th>
+                                <th class="text-right"> {{ number_format($realisasi, 2, ',', '.') }} </th>
+                                <th class="text-right"> {{ number_format($pengembalian, 2, ',', '.') }} </th>
+                                <th class="text-right">{{ number_format($pagu+$realisasi-$pengembalian, 2, ',', '.') }}</th>
+                                <th class="text-center">
+                                    @if ($pagu != 0)
+                                    {{ number_format(($realisasi-$pengembalian)*100/$pagu, 2, ',', '.') }}%
+                                    @else
+                                    0%
+                                    @endif
+                                </th>
                             </tr>
                         </tbody>
                     </table>

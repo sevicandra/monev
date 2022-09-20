@@ -43,7 +43,7 @@
                             @php
                                 $i=1;
                             @endphp
-                            @foreach ($data->dnp as $item)
+                            @foreach ($data as $item)
                             <tr>
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->nip }}</td>
@@ -72,7 +72,7 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
-                
+                {{$data->links()}}
             </div>
         </div>
 

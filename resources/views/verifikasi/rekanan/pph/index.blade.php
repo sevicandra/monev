@@ -15,12 +15,7 @@
                 <a href="/verifikasi/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Tambah</a>
             </div>
             <div class="col-lg-5">
-                <form action="" method="post" autocomplete="off">
-                    <div class="input-group">
-                        <input type="text" name="nama" class="form-control" placeholder="Nama Pegawai">
-                        <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
-                    </div>
-                </form>
+
             </div>
         </div>
         <div class="row mb-3">

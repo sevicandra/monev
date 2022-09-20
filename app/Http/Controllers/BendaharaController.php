@@ -33,7 +33,7 @@ class BendaharaController extends Controller
         }
 
         return view('bendahara.index',[
-           'data'=>tagihan::tagihansatker()->tagihansatker()->bendahara()->get() 
+           'data'=>tagihan::tagihansatker()->tagihansatker()->bendahara()->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -74,8 +74,15 @@ class BendaharaController extends Controller
             abort(403);
         }
 
-        return view('bendahara.detail',[
-            'data'=>$bendahara
+        return view('bendahara.coa',[
+            'data'=>$bendahara->realisasi() ->searchprogram()  
+                                            ->searchkegiatan()
+                                            ->searchkro()
+                                            ->searchro()
+                                            ->searchkomponen()
+                                            ->searchsubkomponen()
+                                            ->searchakun()->paginate(15)->withQueryString(),
+            'tagihan'=>$bendahara
         ]);
     }
 
@@ -329,7 +336,7 @@ class BendaharaController extends Controller
         }
 
         return view('bendahara.payroll',[
-            'data'=>$tagihan
+            'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString(),
         ]);
     }
 
@@ -473,7 +480,8 @@ class BendaharaController extends Controller
             abort(403);
         }
         return view('bendahara.rekanan.index',[
-            'data'=>$tagihan
+            'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 

@@ -12,12 +12,12 @@
         <div class="row mb-3">
             <div class="col-lg-7">
                 <a href="/bendahara" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-                <a href="/bendahara/{{ $data->id }}/rekanan/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Tambah</a>
+                <a href="/bendahara/{{ $tagihan->id }}/rekanan/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Tambah</a>
             </div>
             <div class="col-lg-5">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="get" autocomplete="off">
                     <div class="input-group">
-                        <input type="text" name="nama" class="form-control" placeholder="Nama Pegawai">
+                        <input type="text" name="search" class="form-control" placeholder="Search" value="{{request('search')}}">
                         <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                     </div>
                 </form>
@@ -40,7 +40,7 @@
                             @php
                                 $i=1;
                             @endphp
-                            @foreach ($data->rekanan as $item)
+                            @foreach ($data as $item)
                             <tr>
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->nama }}</td>
@@ -48,13 +48,13 @@
                                 <td>{{ $item->idpajak }}</td>
                                 <td class="pb-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <form action="/bendahara/{{ $data->id }}/rekanan/{{ $item->id }}" method="post">
+                                        <a href="/bendahara/{{ $tagihan->id }}/rekanan/{{ $item->id }}/ppn" class="btn btn-sm btn-outline-secondary pt-0 pb-0">PPN</a>
+                                        <a href="/bendahara/{{ $tagihan->id }}/rekanan/{{ $item->id }}/pph" class="btn btn-sm btn-outline-secondary pt-0 pb-0">PPh</a>
+                                        <form action="/bendahara/{{ $tagihan->id }}/rekanan/{{ $item->id }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                         </form>
-                                        <a href="/bendahara/{{ $data->id }}/rekanan/{{ $item->id }}/ppn" class="btn btn-sm btn-outline-secondary pt-0 pb-0">PPN</a>
-                                        <a href="/bendahara/{{ $data->id }}/rekanan/{{ $item->id }}/pph" class="btn btn-sm btn-outline-secondary pt-0 pb-0">PPh</a>
                                     </div>
                                 </td>
                             </tr>
@@ -69,7 +69,7 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
-                
+                {{$data->links()}}
             </div>
         </div>
 

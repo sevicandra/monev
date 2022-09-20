@@ -23,7 +23,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.index',[
-            'data'=>tagihan::tagihansatker()->arsip()->orderby('notagihan', 'desc')->get()
+            'data'=>tagihan::tagihansatker()->arsip()->orderby('notagihan', 'desc')->search()->paginate(15)->withQueryString()
          ]);
     }
 
@@ -125,7 +125,13 @@ class ArsipController extends Controller
             abort(403);
         }
         return view('arsip.coa',[
-            'data'=>$tagihan
+            'data'=>$tagihan->realisasi()   ->searchprogram()  
+                                            ->searchkegiatan()
+                                            ->searchkro()
+                                            ->searchro()
+                                            ->searchkomponen()
+                                            ->searchsubkomponen()
+                                            ->searchakun()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -143,7 +149,7 @@ class ArsipController extends Controller
             abort(403);
         }
         return view('arsip.dnp',[
-            'data'=>$tagihan
+            'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -180,7 +186,8 @@ class ArsipController extends Controller
             abort(403);
         }
         return view('arsip.rekanan.index',[
-            'data'=>$tagihan
+            'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 
@@ -221,6 +228,13 @@ class ArsipController extends Controller
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan
+        ]);
+    }
+
+    public function showriwayat(tagihan $tagihan)
+    {
+        return view('arsip.detail',[
+            'data'=>$tagihan
         ]);
     }
 }
