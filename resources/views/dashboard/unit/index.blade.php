@@ -33,10 +33,11 @@
                                 $pagu=0;
                                 $realisasi=0;
                                 $pengembalian=0;
+                                $i=1;
                             @endphp
                             @foreach ($unit as $item)
                                 <tr>
-                                    <td class="text-center"></td>
+                                    <td class="text-center">{{$i}}</td>
                                     <td>{{ $item->namaunit }}</td>
                                     <td class="text-right">
                                         {{ number_format($item->pagu->sum('anggaran'), 2, ',', '.') }}
@@ -45,17 +46,13 @@
                                         @endphp
                                     </td>
                                     <td class="text-right">
-                                        <a href="">
-                                            {{ number_format($item->realisasi()->sum('realisasi'), 2, ',', '.') }}
-                                        </a>
+                                        {{ number_format($item->realisasi()->sum('realisasi'), 2, ',', '.') }}
                                         @php
                                             $realisasi += $item->realisasi()->sum('realisasi');
                                         @endphp
                                     </td>
                                     <td class="text-right">
-                                        <a href="">
-                                            {{ number_format($item->sspb()->sum('nominal_sspb'), 2, ',', '.') }}
-                                        </a>
+                                        {{ number_format($item->sspb()->sum('nominal_sspb'), 2, ',', '.') }}
                                         @php
                                             $pengembalian += $item->sspb()->sum('nominal_sspb');
                                         @endphp
@@ -63,6 +60,9 @@
                                     <td class="text-right">{{ number_format($item->pagu->sum('anggaran')-$item->realisasi()->sum('realisasi')+$item->sspb()->sum('nominal_sspb'), 2, ',', '.') }}</td>
                                     <td class="text-center">{{ number_format(($item->realisasi()->sum('realisasi')-$item->sspb()->sum('nominal_sspb'))*100/$item->pagu->sum('anggaran'), 2, ',', '.') }}%</td>
                                 </tr>
+                                @php
+                                $i++;
+                                @endphp
                             @endforeach
                             <tr>
                                 <th class="text-center" colspan="2">Jumlah</th>

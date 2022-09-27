@@ -66,7 +66,19 @@
                                         {{ $item->spm->tanggal_sp2d }}
                                     @endif
                                 </td>
-                                <td>{{ $item->jnstagihan }}</td>
+                                <td>
+                                    @switch($item->jnstagihan)
+                                    @case('0')
+                                        SPBy
+                                        @break
+                                    @case('1')
+                                        SPP
+                                        @break
+                                    @case('2')
+                                        KKP
+                                        @break
+                                @endswitch    
+                                </td>
                                 <td>{{ $item->unit->namaunit }}</td>
                                 <td></td>
                                 <td>{{ $item->dokumen->namadokumen }}</td>

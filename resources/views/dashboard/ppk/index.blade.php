@@ -33,10 +33,11 @@
                                 $pagu=0;
                                 $realisasi=0;
                                 $pengembalian=0;
+                                $i=1;
                             @endphp
                             @foreach ($ppk as $item)
                                 <tr>
-                                    <td class="text-center"></td>
+                                    <td class="text-center">{{$i}}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td class="text-right">
                                         {{ number_format($item->paguppk->sum('anggaran'), 2, ',', '.') }}
@@ -45,17 +46,13 @@
                                         @endphp
                                     </td>
                                     <td class="text-right">
-                                        <a href="">
-                                            {{ number_format($item->realisasippk()->sum('realisasi'), 2, ',', '.') }}
-                                        </a>
+                                        {{ number_format($item->realisasippk()->sum('realisasi'), 2, ',', '.') }}
                                         @php
                                             $realisasi += $item->realisasippk()->sum('realisasi');
                                         @endphp
                                     </td>
                                     <td class="text-right">
-                                        <a href="">
-                                            {{ number_format($item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}
-                                        </a>
+                                        {{ number_format($item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}
                                         @php
                                             $pengembalian += $item->sspbppk()->sum('nominal_sspb');
                                         @endphp
@@ -69,6 +66,9 @@
                                         @endif
                                     </td>
                                 </tr>
+                                @php
+                                    $i++;
+                                @endphp
                             @endforeach
                             <tr>
                                 <th class="text-center" colspan="2">Jumlah</th>

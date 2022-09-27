@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\mapingpaguppk;
 use App\Models\mapingstafppk;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Redirect;
 
 class MapingppkController extends Controller
 {
@@ -87,7 +88,7 @@ class MapingppkController extends Controller
         }
 
         return view('referensi.maping_ppk.pagu.update',[
-            'data'=>pagu::pagunonppk()->Order() ->searchprogram()  
+            'data'=>pagu::Order()->pagunonppk() ->searchprogram()  
                                                 ->searchkegiatan()
                                                 ->searchkro()
                                                 ->searchro()
@@ -139,6 +140,7 @@ class MapingppkController extends Controller
             'pagu_id'=>$pagu->id,
             'user_id'=>$ppk->id
         ]);
+        return Redirect()->back()->with('berhasil', 'Pagu Berhasil Ditambahkan Ke PPK '.$ppk->nama);
         return redirect('/maping-ppk/'.$ppk->id.'/pagu/edit')->with('berhasil', 'Pagu Berhasil Ditambahkan Ke PPK '.$ppk->nama);
     }
 

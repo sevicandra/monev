@@ -50,7 +50,7 @@
                                 <td class="text-right">{{ number_format($belanjapegawai->sum('anggaran')-$realisasibelanjapegawai->sum('realisasi'), 2, ',', '.') }}</td>
                                 <td class="text-right">
                                     @if ($realisasibelanjapegawai->sum('realisasi'))
-                                        {{ number_format($realisasibelanjapegawai->sum('realisasi')/$belanjapegawai->sum('anggaran'), 2, ',', '.') }}%
+                                        {{ number_format($realisasibelanjapegawai->sum('realisasi')*100 /$belanjapegawai->sum('anggaran'), 2, ',', '.') }}%
                                     @else
                                         0,00%
                                     @endif
@@ -64,7 +64,7 @@
                                 <td class="text-right">{{ number_format($belanjabarang->sum('anggaran')-$realisasibelanjabarang->sum('realisasi'), 2, ',', '.') }}</td>
                                 <td class="text-right">
                                     @if ($realisasibelanjabarang->sum('realisasi'))
-                                        {{ number_format($realisasibelanjabarang->sum('realisasi')/$belanjabarang->sum('anggaran'), 2, ',', '.') }}%
+                                        {{ number_format($realisasibelanjabarang->sum('realisasi')*100 /$belanjabarang->sum('anggaran'), 2, ',', '.') }}%
                                     @else
                                         0,00%
                                     @endif
@@ -78,7 +78,7 @@
                                 <td class="text-right">{{ number_format($belanjamodal->sum('anggaran')-$realisasibelanjamodal->sum('realisasi'), 2, ',', '.') }}</td>
                                 <td class="text-right">
                                     @if ($realisasibelanjamodal->sum('realisasi'))
-                                        {{ number_format($realisasibelanjamodal->sum('realisasi')/$belanjamodal->sum('anggaran'), 2, ',', '.') }}%
+                                        {{ number_format($realisasibelanjamodal->sum('realisasi')*100 /$belanjamodal->sum('anggaran'), 2, ',', '.') }}%
                                     @else
                                         0,00%
                                     @endif
@@ -108,7 +108,7 @@
                         {{ $item->nama }}
                         <span class="badge bg-warning rounded-pill">
                             @if ($item->paguppk->sum('anggaran') != 0)
-                                {{ number_format($item->realisasippk()->sum('realisasi')/$item->paguppk->sum('anggaran'), 2, ',', '.') }}% 
+                                {{ number_format($item->realisasippk()->sum('realisasi')*100 /$item->paguppk->sum('anggaran'), 2, ',', '.') }}% 
                             @else
                                 0%
                             @endif

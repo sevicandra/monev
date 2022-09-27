@@ -228,6 +228,19 @@ class VerifikasiController extends Controller
                 ]);
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
                 break;
+
+            case 2:
+                $tagihan->update([
+                    'status'=>4
+                ]);
+                logtagihan::create([
+                    'tagihan_id'=>$tagihan->id,
+                    'action'=>'Approve',
+                    'user'=>auth()->user()->nama,
+                    'catatan'=>''
+                ]);
+                return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
+                break;
         }
     }
 

@@ -43,6 +43,7 @@
                         <select class="form-select form-select-sm mb-3" name="jnstagihan">
                             <option value="0">SPBy</option>
                             <option value="1">SPP</option>
+                            <option value="2">KKP</option>
                         </select>
                         <div class="invalid-feedback">
                             @error('jnstagihan')

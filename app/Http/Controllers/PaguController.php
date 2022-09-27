@@ -197,7 +197,6 @@ class PaguController extends Controller
             $file_mimes = array('application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             
             $file = $request->file('berkas_excel');
-            $name = $file->hashName(); // Generate a unique, random name...
             $extension = $file->extension(); // Determine the file's extension based on the file's MIME type...
 
             if ('csv' == $extension) {
@@ -221,6 +220,7 @@ class PaguController extends Controller
                     'anggaran'=>$sheetData[$i][9],
                     'tahun'=>session()->get('tahun'),
                     'kodesatker'=>auth()->user()->satker,
+                    'kodeunit'=>$sheetData[$i][10],
                 ]);
             }
             return redirect('/pagu');      

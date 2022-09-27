@@ -74,7 +74,10 @@
                                 @case('1')
                                     SPP
                                     @break
-                                @endswitch    
+                                @case('2')
+                                    KKP
+                                    @break
+                            @endswitch   
                             </td>
                             <td>{{ $item->unit->namaunit }}</td>
                             <td></td>
