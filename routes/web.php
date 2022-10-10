@@ -51,6 +51,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('sign-in')->middleware('guest');
 
+Route::get('/login', function () {
+    return redirect('/')->with('gagal','LoginFailed');
+});
+
 Route::get('/sso', [SsoController::class, 'sso']);
 
 Route::get('/sign-in', function(){

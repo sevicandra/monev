@@ -21,11 +21,7 @@
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             <div class="row">
                 <div class="col">
-                    {{-- <?php if ($this->session->flashdata('pesan')) : ?>
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <?= $this->session->flashdata('pesan'); ?>
-                        </div>
-                    <?php endif; ?> --}}
+                    @include('layout.flashmessage')
                 </div>
             </div>
             <label for="nip" class="visually-hidden">NIP</label>

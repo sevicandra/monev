@@ -15,6 +15,7 @@ class SsoController extends Controller
     }
     public function sign_in(Request $request)
     {
+        session()->regenerate();
         if ($request->code) {
             // Get Token
             $response = Http::post(config('sso.base_uri').config('sso.token')['endpoint'],[
@@ -27,24 +28,33 @@ class SsoController extends Controller
             $token =  json_decode($response->getBody()->getContents(), true);
             
             // Get User Info
-            $access_token = $token['access_token'];
-            if ($access_token) {
-                $response = Http::post(config('sso.base_uri').config('sso.userinfo')['endpoint'],[
-                    'access_token' => $access_token
-                ]);
-                if ($response) {
-                    $userinfo =  json_decode($response->getBody()->getContents(), true);
-                    $nip = $userinfo['nip'];
-                    if(Auth::loginUsingId($nip)){
-                        $request->session()->regenerate();
-                        $request->session()->put('tahun', date('Y'));
-                        return redirect()->intended('/dashboard');
+            if ($token['access_token']) {
+
+                $access_token = $token['access_token'];
+                if ($access_token) {
+                    $response = Http::post(config('sso.base_uri').config('sso.userinfo')['endpoint'],[
+                        'access_token' => $access_token
+                    ]);
+                    if ($response) {
+                        $userinfo =  json_decode($response->getBody()->getContents(), true);
+                        $nip = $userinfo['nip'];
+                        if(Auth::loginUsingId($nip)){
+                            $request->session()->regenerate();
+                            $request->session()->put('tahun', date('Y'));
+                            return redirect()->intended('/dashboard');
+                        }
+                        return redirect('/login');
+                    } else {
+                        return redirect('/login');
                     }
-                    return back()->with('LoginErorr','Pengguna tidak terdaftar');
-                } else {
-                    redirect('welcome');
+                }else {
+                    return redirect('/login');
                 }
+            }else {
+                return redirect('/login');
             }
+        }else {
+            return redirect('/login');
         }
     }
 }
