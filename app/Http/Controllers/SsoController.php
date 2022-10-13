@@ -15,6 +15,7 @@ class SsoController extends Controller
     }
     public function sign_in(Request $request)
     {
+        session()->regenerate();
         if ($request->code) {
             // Get Token
 

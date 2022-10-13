@@ -20,7 +20,7 @@ class LoginController extends Controller
             return redirect()->intended('/dashboard');
         }
 
-        return back()->with('LoginErorr','LoginFailed');
+        return back()->with('gagal','LoginFailed');
     }
 
     public function logout(Request $request)
