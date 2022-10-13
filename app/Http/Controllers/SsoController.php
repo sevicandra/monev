@@ -17,34 +17,43 @@ class SsoController extends Controller
     {
         if ($request->code) {
             // Get Token
-            $response = Http::post(config('sso.base_uri').config('sso.token')['endpoint'],[
+
+            $response = Http::asForm()->post(config('sso.base_uri').config('sso.token')['endpoint'],[
                 'client_id' => config('sso.authorize')['client_id'],
                 'grant_type' => config('sso.authorize')['grant_type'],
                 'client_secret' => config('sso.token')['client_secret'],
                 'code' => $request->code,
                 'redirect_uri' => config('sso.authorize')['redirect_uri']
             ]);
+
             $token =  json_decode($response->getBody()->getContents(), true);
-            
             // Get User Info
             $access_token = $token['access_token'];
             if ($access_token) {
-                $response = Http::post(config('sso.base_uri').config('sso.userinfo')['endpoint'],[
+                $response2 = Http::asForm()->post(config('sso.base_uri').config('sso.userinfo')['endpoint'],[
                     'access_token' => $access_token
                 ]);
-                if ($response) {
-                    $userinfo =  json_decode($response->getBody()->getContents(), true);
+
+                if ($response2) {
+                    $userinfo =  json_decode($response2->getBody()->getContents(), true);
                     $nip = $userinfo['nip'];
-                    if(Auth::loginUsingId($nip)){
+                    $user=User::where('nip', $nip)->first();
+                    if (isset($user->id)) {
+                        Auth::loginUsingId($user->id);
                         $request->session()->regenerate();
                         $request->session()->put('tahun', date('Y'));
+                        $request->session()->put('nik', $userinfo['g2c_Nik']);
                         return redirect()->intended('/dashboard');
                     }
-                    return back()->with('LoginErorr','Pengguna tidak terdaftar');
+                    return redirect('/')->with('gagal','Pengguna tidak terdaftar');
                 } else {
-                    redirect('welcome');
+                    redirect('/')->with('gagal','Request Error');
                 }
+            }else{
+                redirect('/')->with('gagal','Request Error');
             }
+        }else{
+            redirect('/')->with('gagal','Request Error');
         }
     }
 }

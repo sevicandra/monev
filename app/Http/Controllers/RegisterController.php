@@ -285,7 +285,7 @@ class RegisterController extends Controller
             try {
                 $response = $this->_client->request('POST', 'pdf', [
                     'query' => [
-                        'nik' => '',
+                        'nik' => $request->session()->get('nik'),
                         'passphrase' => htmlspecialchars($request->passphrase),
                         'jenis_dokumen' => 'Register Tagihan',
                         'nomor' => $register->nomor.$register->ekstensi.$register->tahun,

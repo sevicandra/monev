@@ -46,6 +46,7 @@ use App\Http\Controllers\MonitoringTagihanController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/api/sso', [SsoController::class, 'sign_in'])->middleware('guest');
 
 Route::get('/', function () {
     return view('welcome');
