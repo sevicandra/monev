@@ -14,7 +14,7 @@ class SessionController extends Controller
         }
         
         return view('session.tahun_anggaran',[
-            'tahun'=>tahun::all()
+            'tahun'=>tahun::orderBy('tahun', 'desc')->get()
         ]);
     }
 

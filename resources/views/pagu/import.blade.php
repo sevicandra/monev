@@ -16,6 +16,7 @@
             <div class="col">
                 <div class="form-group">
                     <a href="/pagu" class="btn btn-sm btn-outline-secondary">Batal</a>
+                    <a href="/pagu/template" class="btn btn-sm btn-outline-secondary">Template</a>
                     <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
                 </div>
             </div>

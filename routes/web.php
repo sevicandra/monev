@@ -84,6 +84,7 @@ Route::resource('/user', UserController::class)->middleware('auth');
 
 Route::controller(PaguController::class)->group(function(){
     Route::get('/pagu/import', 'import')->middleware('auth');
+    Route::get('/pagu/template', 'template')->middleware('auth');
     Route::post('/pagu/import', 'import')->middleware('auth');
 });
 

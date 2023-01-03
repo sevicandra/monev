@@ -23,13 +23,13 @@ class PaguController extends Controller
         }
 
         return view('pagu.index',[
-            'data'=>pagu::where('kodesatker', auth()->user()->satker)->Order()  ->searchprogram()  
-                                                                                ->searchkegiatan()
-                                                                                ->searchkro()
-                                                                                ->searchro()
-                                                                                ->searchkomponen()
-                                                                                ->searchsubkomponen()
-                                                                                ->searchakun()->paginate(15)->withQueryString()
+            'data'=>pagu::Order()->where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun')) ->searchprogram()  
+                                                                                                                        ->searchkegiatan()
+                                                                                                                        ->searchkro()
+                                                                                                                        ->searchro()
+                                                                                                                        ->searchkomponen()
+                                                                                                                        ->searchsubkomponen()
+                                                                                                                        ->searchakun()->paginate(15)->withQueryString()
             
         ]);
     }
@@ -207,8 +207,11 @@ class PaguController extends Controller
             $spreadsheet = $reader->load($file);
             $spreadsheet->getActiveSheet()->setCellValueByColumnAndRow(1,1, '=counta(C1:C1000)');
             $sheetData = $spreadsheet->getSheetByName('pagu')->toArray();
-
-            for ($i=7; $i < $sheetData[0][0]+6 ; $i++) { 
+            
+            for ($i=7; $i < 507 ; $i++) { 
+                if ($sheetData[$i][2] === null || $sheetData[$i][3] === null || $sheetData[$i][4] === null || $sheetData[$i][5] === null || $sheetData[$i][6] === null || $sheetData[$i][7] === null || $sheetData[$i][8] === null || $sheetData[$i][9] === null) {
+                    break;
+                }
                 pagu::create([
                     'program'=>$sheetData[$i][2],
                     'kegiatan'=>$sheetData[$i][3],
@@ -222,10 +225,16 @@ class PaguController extends Controller
                     'kodesatker'=>auth()->user()->satker,
                     'kodeunit'=>$sheetData[$i][10],
                 ]);
+                
             }
             return redirect('/pagu');      
         }
 
         return view('pagu.import');
+    }
+
+    public function template()
+    {
+        return response()->download(file: 'xlsx/upload_pagu.xlsx');
     }
 }
