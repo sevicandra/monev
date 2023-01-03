@@ -27,8 +27,8 @@ class pagu extends Model
         'tahun',
     ];
 
-    public function scopeOrder(){
-        return $this->orderby('program')->orderby('kegiatan')->orderby('kro')->orderby('ro')->orderby('komponen')->orderby('subkomponen')->orderby('akun');
+    public function scopeOrder($data){
+        return $data->orderby('program')->orderby('kegiatan')->orderby('kro')->orderby('ro')->orderby('komponen')->orderby('subkomponen')->orderby('akun');
     }
 
     public function unit()
