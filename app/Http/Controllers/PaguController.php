@@ -201,7 +201,7 @@ class PaguController extends Controller
             $spreadsheet->getActiveSheet()->setCellValueByColumnAndRow(1,1, '=counta(C1:C1000)');
             $sheetData = $spreadsheet->getSheetByName('pagu')->toArray();
             
-            for ($i=7; $i < 507 ; $i++) { 
+            for ($i=7; $i < $sheetData[0][0]+6 ; $i++) { 
                 if ($sheetData[$i][2] === null || $sheetData[$i][3] === null || $sheetData[$i][4] === null || $sheetData[$i][5] === null || $sheetData[$i][6] === null || $sheetData[$i][7] === null || $sheetData[$i][8] === null || $sheetData[$i][9] === null) {
                     break;
                 }
