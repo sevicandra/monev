@@ -88,13 +88,13 @@ class MapingppkController extends Controller
         }
 
         return view('referensi.maping_ppk.pagu.update',[
-            'data'=>pagu::Order()->pagunonppk() ->searchprogram()  
-                                                ->searchkegiatan()
-                                                ->searchkro()
-                                                ->searchro()
-                                                ->searchkomponen()
-                                                ->searchsubkomponen()
-                                                ->searchakun()->paginate(15)->withQueryString(),
+            'data'=>pagu::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->Order()->pagunonppk()   ->searchprogram()  
+                                                                                                                                        ->searchkegiatan()
+                                                                                                                                        ->searchkro()
+                                                                                                                                        ->searchro()
+                                                                                                                                        ->searchkomponen()
+                                                                                                                                        ->searchsubkomponen()
+                                                                                                                                        ->searchakun()->paginate(15)->withQueryString(),
             'ppk'=>$ppk
         ]);
     }
