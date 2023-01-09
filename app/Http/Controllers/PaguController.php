@@ -194,16 +194,9 @@ class PaguController extends Controller
         }
         
         if ($request->all()) {
-            $file_mimes = array('application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             
             $file = $request->file('berkas_excel');
-            $extension = $file->extension(); // Determine the file's extension based on the file's MIME type...
-
-            if ('csv' == $extension) {
-                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-            } else {
-                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-            }
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             $spreadsheet = $reader->load($file);
             $spreadsheet->getActiveSheet()->setCellValueByColumnAndRow(1,1, '=counta(C1:C1000)');
             $sheetData = $spreadsheet->getSheetByName('pagu')->toArray();
