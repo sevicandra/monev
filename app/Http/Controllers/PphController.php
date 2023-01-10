@@ -48,7 +48,7 @@ class PphController extends Controller
             abort(403);
         }
         $request->validate([
-            'kodegolongan'=>'required|unique|min:1|max:1',
+            'kodegolongan'=>'required|unique:pphs|min:1|max:1',
             'tarifpph'=>'required|numeric'
         ]);
 
@@ -106,7 +106,7 @@ class PphController extends Controller
             abort(403);
         }
         $request->validate([
-            'kodegolongan'=>'required|unique|min:1|max:1',
+            'kodegolongan'=>'required|min:1|max:1',
             'tarifpph'=>'required|numeric'
         ]);
 
