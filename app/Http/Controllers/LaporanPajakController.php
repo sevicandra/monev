@@ -65,17 +65,17 @@ class LaporanPajakController extends Controller
                 $G=$key->rekanan->idpajak;
                 $H=null;
                 $K=$key->objekpajak->tarif;
-                $L=$key->pph;
-                $M=$key->pph/($key->objekpajak->tarif/100);
-                $N=$key->pph/($key->objekpajak->tarif/100);
+                $L=floor($key->pph*($key->objekpajak->tarif/100));
+                $M=$key->pph;
+                $N=$key->pph;
             }else{
                 $F='NIK';
                 $G=null;
                 $H=$key->rekanan->idpajak;
                 $K=$key->objekpajak->tarifnonnpwp;
-                $L=$key->pph;
-                $M=$key->pph/($key->objekpajak->tarifnonnpwp/100);
-                $N=$key->pph/($key->objekpajak->tarifnonnpwp/100);
+                $L=floor($key->pph*($key->objekpajak->tarifnonnpwp/100));
+                $M=$key->pph;
+                $N=$key->pph;
             }
             $I=$key->rekanan->nama;
             $J=$key->objekpajak->kode;
@@ -98,8 +98,8 @@ class LaporanPajakController extends Controller
         }
         $uuid=Str::uuid()->toString();
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('xlsx/laporan_pph/Laporan_PPh-'.$uuid.'.xlsx');
-        return response()->download(file: 'xlsx/laporan_pph/Laporan_PPh-'.$uuid.'.xlsx')->deleteFileAfterSend(shouldDelete: true);
+        $writer->save('xlsx/Laporan_PPh-'.$uuid.'.xlsx');
+        return response()->download(file: 'xlsx/Laporan_PPh-'.$uuid.'.xlsx')->deleteFileAfterSend(shouldDelete: true);
     }
 
     public function showppn()
@@ -148,9 +148,9 @@ class LaporanPajakController extends Controller
             $I=$key->tanggalfaktur;
             $J=Carbon::parse($key->tanggalfaktur)->isoFormat('M');
             $K=$key->tarif*100;
-            $L=$key->ppn;
-            $M=$key->ppn/($key->tarif);
-            $N=$key->ppn/($key->tarif);
+            $L=floor($key->ppn*($key->tarif));
+            $M=$key->ppn;
+            $N=$key->ppn;
             $spreadsheet->getActiveSheet()  ->setCellValue('A' . $row, $A)
                                             ->setCellValue('B' . $row, "'".$B)
                                             ->setCellValue('C' . $row, "'".$C)
@@ -170,7 +170,7 @@ class LaporanPajakController extends Controller
         }
         $uuid=Str::uuid()->toString();
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('xlsx/laporan_ppn/Laporan_PPN-'.$uuid.'.xlsx');
-        return response()->download(file: 'xlsx/laporan_ppn/Laporan_PPN-'.$uuid.'.xlsx')->deleteFileAfterSend(shouldDelete: true);
+        $writer->save('xlsx/Laporan_PPN-'.$uuid.'.xlsx');
+        return response()->download(file: 'xlsx/Laporan_PPN-'.$uuid.'.xlsx')->deleteFileAfterSend(shouldDelete: true);
     }
 }
