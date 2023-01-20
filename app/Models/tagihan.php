@@ -24,7 +24,12 @@ class tagihan extends Model
         'uraian',
         'ppk_id'
     ];
-    
+
+    public function ppk()
+    {
+        return $this->belongsTo(User::class, 'ppk_id');
+    }
+
     public function unit()
     {
         return $this->belongsTo(unit::class, 'kodeunit', 'id');

@@ -234,7 +234,7 @@ class ArsipController extends Controller
     public function showriwayat(tagihan $tagihan)
     {
         return view('arsip.detail',[
-            'data'=>$tagihan
+            'data'=>$tagihan->log()->orderby('created_at', 'DESC')->get()
         ]);
     }
 }

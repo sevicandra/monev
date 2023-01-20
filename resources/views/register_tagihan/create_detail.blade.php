@@ -67,6 +67,7 @@
                                         <button class="btn btn-sm btn-outline-secondary pt-0 pb-0">Pilih</button>
                                     </form>
                                 </div>
+                                <a class="btn btn-sm btn-outline-secondary pt-0 pb-0" href="/register/{{ $register->id }}/tagihan/{{ $item->id }}/tolak">Tolak</a>
                             </td>
                         </tr>
                         @php

@@ -46,7 +46,7 @@
                                 <td>{{ number_format($item->pph, 2, ',', '.')}}</td>
                                 @else
                                 <td>{{ $item->objekpajak->tarifnonnpwp}}%</td>
-                                <td>{{ number_format(floor($item->pph/($item->objekpajak->tarifnonnpwp/100)), 2, ',', '.')}}</td>
+                                <td>{{ number_format(floor($item->pph*($item->objekpajak->tarifnonnpwp/100)), 2, ',', '.')}}</td>
                                 <td>{{ number_format($item->pph, 2, ',', '.')}}</td>
                                 @endif
                                 <td class="pb-0">

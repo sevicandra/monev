@@ -69,7 +69,7 @@
                                     </form>
                                     <a href="/register/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                     <a href="/register/{{ $item->id }}/preview" class="btn btn-sm btn-outline-secondary pt-0 pb-0" target="_blank">Preview</a>
-                                    @can('ppk', auth()->user()->role)
+                                    @can('PPK', auth()->user()->role)
                                     <a href="/register/{{ $item->id }}/esign" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Kirim</a>
                                     @endcan
                                 </div>

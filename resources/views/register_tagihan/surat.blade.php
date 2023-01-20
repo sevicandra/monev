@@ -122,13 +122,22 @@
     }
 </style>
 
+@php
+    $image_path = 'img/logo.jpeg';
+    $image_data = base64_encode(file_get_contents($image_path));
+    $image_type = pathinfo($image_path, PATHINFO_EXTENSION);
+    // Generate data URI
+    $src_img = 'data:image/' . $image_type . ';base64,' . $image_data;
+@endphp
+
+
 <page backtop="40mm" backbottom="0mm" backleft="5mm" backright="5mm">
 
     <page_header>
         <table class="page_header" cellspacing="0px" cellpadding="0px">
             <tr>
                 <td class="logo" rowspan="10">
-                    <img src="{{ config('app.url') }}/img/logo.jpeg" alt="logo kemenkeu" width="100">
+                    <img src="{{ $src_img }}" alt="logo kemenkeu" width="100">
                 </td>
                 <td class="kop1">
                     <b>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</b>
@@ -151,7 +160,7 @@
             </tr>
             <tr>
                 <td class="kop3">
-                    
+                    Gedung Syafrudin Prawiranegara II, Jalan Lapangan Banteng Timur Nomor 2-4, Jakarta 10710
                 </td>
             </tr>
             <tr>
@@ -161,7 +170,7 @@
             </tr>
             <tr>
                 <td class="kop3">
-
+                    
                 </td>
             </tr>
             <tr>
@@ -202,6 +211,7 @@
         </tr>
             @php
                 $i=1;
+                $jumlah = 0;
             @endphp
             @foreach ($data as $item)
             <tr>
@@ -209,24 +219,44 @@
                 <td class="head" style="text-align: center;width: 7%;">{{ $item->notagihan }}</td>
                 <td class="head" style="width: 18%;">{{ indonesiaDate($item->tgltagihan) }}</td>
                 <td class="head" style="width: 34%;">{{ $item->uraian }}</td>
-                <td class="head" style="text-align: center;width: 7%;">{{ $item->jnstagihan }}</td>
+                <td class="head" style="text-align: center;width: 7%;">
+                    @switch($item->jnstagihan)
+                        @case(1)
+                            SPP
+                            @break
+                        @case(2)
+                            KKP
+                            @break
+                        @default
+                            SPBY
+                    @endswitch
+                </td>
                 <td class="head" style="text-align: center;width: 10%;">{{ $item->unit->namaunit }}</td>
                 <td class="head" style="width: 10%;">{{ $item->dokumen->namadokumen }}</td>
                 <td class="head" style="text-align: right;width: 10%;">{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
             </tr>
             @php
-                $i++
+                $i++;
+                $jumlah +=$item->realisasi->sum('realisasi');
             @endphp
             @endforeach
         <tr>
             <td class="head" style="text-align: center;width: 10%;" colspan="7">Jumlah</td>
-            <td class="head" style="text-align: right;width: 10%;"></td>
+            <td class="head" style="text-align: right;width: 10%;">{{ number_format($jumlah, 2, ',', '.') }}</td>
         </tr>
     </table>
 
     <p style="margin-left:10px; margin-bottom: 5px;  text-align: justify;">Atas kerjasamanya kami ucapkan terima kasih.</p>
 
     <table style="width: 100%; margin-top: 70px;">
+        <tr>
+            <td style="width: 65%;"></td>
+            <td style="width: 35%; text-align: left; margin-top:0; padding-top:0;">Pejabat Pembuat Komitmen</td>
+        </tr>
+        <tr>
+            <td style="width: 65%;"></td>
+            <td style="width: 35%; text-align: left; margin-top:0; padding-top:0;height:100px"></td>
+        </tr>
         <tr>
             <td style="width: 65%;"></td>
             <td style="width: 35%; color: RGB(153, 153, 153); margin-top:0; padding-top:0;">Ditandatangani secara elektronik</td>

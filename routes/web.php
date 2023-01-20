@@ -116,6 +116,11 @@ Route::controller(UnitController::class)->group(function(){
     Route::get('/unit/{unit}/verifikator/create', 'editverifikator')->middleware('auth');
     Route::post('/unit/{unit}/{verifikator}', 'updateverifikator')->middleware('auth');
     Route::delete('/unit/{unit}/{verifikator}', 'destroyverifikator')->middleware('auth');
+
+    Route::get('/unit/{unit}/pagu', 'showpagu')->middleware('auth');
+    Route::get('/unit/{unit}/pagu/edit', 'editpagu')->middleware('auth');
+    Route::post('/unit/{unit}/pagu/{pagu}', 'updatepagu')->middleware('auth');
+    Route::delete('/unit/{unit}/pagu/{pagu}', 'destroypagu')->middleware('auth');
 });
 
 Route::resource('/unit', UnitController::class)->middleware('auth');
@@ -221,6 +226,7 @@ Route::controller(VerifikasiController::class)->group(function(){
     Route::get('/verifikasi/{tagihan}/rekanan/{rekanan}/pph/{pph}/edit', 'editpphrekanan')->middleware('auth');
     Route::patch('/verifikasi/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'updatepphrekanan')->middleware('auth');
     Route::delete('/verifikasi/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'deletepphrekanan')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/coa', 'coa')->middleware('auth');
 });
 
 Route::resource('/verifikasi', VerifikasiController::class)->middleware('auth')->except('create');

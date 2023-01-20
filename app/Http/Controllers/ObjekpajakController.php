@@ -21,7 +21,7 @@ class ObjekpajakController extends Controller
             abort(403);
         }
         return view('referensi.objekpajak.index',[
-            'data'=>objekpajak::search()->paginate(10)->withQueryString()
+            'data'=>objekpajak::search()->orderBy('kode')->paginate(10)->withQueryString()
         ]);
     }
 

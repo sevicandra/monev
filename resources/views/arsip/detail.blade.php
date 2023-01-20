@@ -29,7 +29,7 @@
                             @php
                                 $i=1;
                             @endphp
-                            @foreach ($data->log as $item)
+                            @foreach ($data as $item)
                             <tr>
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ indonesiaDate($item->created_at) }}</td>

@@ -95,6 +95,8 @@ class RegisterTagihanController extends Controller
             abort(403);
         }
         register_tagihan::where('tagihan_id', $tagihan->id)->where('register_id', $register->id)->delete();
+        $tagihan->update(['status'=>1]);
         return redirect('/register/'. $register->id)->with('berhasil', 'Data Berhasil Di Hapus');      
     }
+    
 }

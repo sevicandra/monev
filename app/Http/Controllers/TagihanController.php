@@ -29,7 +29,7 @@ class TagihanController extends Controller
             abort(403);
         }
         return view('tagihan.index',[
-            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->paginate(15)->withQueryString()
+            'data'=>tagihan::where('status', 0)->orwhere('status', 1)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -580,7 +580,7 @@ class TagihanController extends Controller
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
-            'objekpajak'=>objekpajak::all()
+            'objekpajak'=>objekpajak::orderBy('kode')->get()
         ]);
     }
 
@@ -676,5 +676,19 @@ class TagihanController extends Controller
         }else{
             return redirect('/tagihan/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('gagal','Link Error.');
         }
+    }
+
+    public function batalkirim(tagihan $tagihan)
+    {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+        if ($tagihan->status != 1) {
+            return abort(403);
+        }
+        
     }
 }

@@ -226,11 +226,9 @@ class RegisterController extends Controller
         $html2pdf = ob_get_clean();
         $html2pdf = new Html2Pdf('P', 'A4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
-        $image = file_get_contents(config('app.url').'/img/logo.jpeg');
         $html2pdf->writeHTML(view('register_tagihan.surat',[
             'data'=>$register->tagihan,
             'register'=>$register,
-            'logo'=>$image,
             'ppk'=>$ppk,
         ]));
         $html2pdf->output('register_tagihan.pdf');
@@ -263,19 +261,23 @@ class RegisterController extends Controller
                 ->setRoundBlockSizeMode(new RoundBlockSizeModeShrink())
                 ->setForegroundColor(new Color(0, 0, 0))
                 ->setBackgroundColor(new Color(255, 255, 255));
-            $logo = Logo::create(config('app.url'). '/img/kemenkeu_color.png')
+                $image_path = 'img/logo.jpeg';
+                $image_data = base64_encode(file_get_contents($image_path));
+                $image_type = pathinfo($image_path, PATHINFO_EXTENSION);
+                // Generate data URI
+                $src_img = 'data:image/' . $image_type . ';base64,' . $image_data;
+
+            $logo = Logo::create($src_img)
                 ->setResizeToWidth(20);
+
             $result = $writer->write($qrCode, $logo);
             $qrcode = $result->getDataUri();
-            $image = file_get_contents(config('app.url').'/img/logo.jpeg');
-            
     
             Pdf::setOption(['dpi' => 1000, 'defaultFont' => 'Arial']);
             Pdf::setOption('A4', 'portrait');
             $pdf = Pdf::loadView('register_tagihan.surat_esign',[
                 'data'=>$register->tagihan,
                 'register'=>$register,
-                'logo'=>$image,
                 'qrcode'=>$qrcode,
                 'ppk'=>$ppk
             ]);
@@ -302,9 +304,10 @@ class RegisterController extends Controller
                         ]
                     ]
                 ]);
-
+                
                 $result_header = $response->getHeaders();
                 $result_body = $response->getBody()->getContents();
+                return $result_body;
                 Storage::put($register->file, $result_body) ;
                 $register->update([
                     'dokumen_date' => $result_header['Date'][0],

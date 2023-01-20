@@ -48,6 +48,7 @@
                             <td class="pb-0 pr-0">
                                 <div class="btn-group btn-group-sm" role="group">
                                     <a href="/unit/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Ubah</a>
+                                    <a href="/unit/{{ $item->id }}/pagu" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Pagu</a>
                                     <a href="/unit/{{ $item->id }}/verifikator" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Verifikator</a>
                                     <form action="/unit/{{ $item->id }}" method="post">
                                         @csrf

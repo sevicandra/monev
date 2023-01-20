@@ -80,7 +80,7 @@
                             @endswitch   
                             </td>
                             <td>{{ $item->unit->namaunit }}</td>
-                            <td></td>
+                            <td>{{ $item->ppk->nama }}</td>
                             <td>{{ $item->dokumen->namadokumen }}</td>
                             <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
                             <td class="pb-0">

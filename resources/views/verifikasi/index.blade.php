@@ -68,7 +68,7 @@
                             @endswitch
                             </td>
                             <td>{{ $item->unit->namaunit }}</td>
-                            <td></td>
+                            <td>{{ $item->ppk->nama }}</td>
                             <td>{{ $item->dokumen->namadokumen }}</td>
                             <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
                             <td class="pb-0">
@@ -76,7 +76,8 @@
                                     @if ($item->jnstagihan === '1' )
                                         <a href="/verifikasi/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">SPM</a>
                                     @endif
-                                    <a href="/verifikasi/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">detail</a>
+                                    <a href="/verifikasi/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    <a href="/verifikasi/{{ $item->id }}/coa" class="btn btn-sm btn-outline-secondary pt-0 pb-0">COA</a>
                                     @if ($item->dokumen->statusrekanan === '1')
                                     <a href="/verifikasi/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
                                     @endif

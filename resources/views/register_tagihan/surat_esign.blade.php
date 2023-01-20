@@ -131,7 +131,13 @@ html {
         border: 1px solid black;
     }
 </style>
-<!DOCTYPE html>
+@php
+    $image_path = 'img/logo.jpeg';
+    $image_data = base64_encode(file_get_contents($image_path));
+    $image_type = pathinfo($image_path, PATHINFO_EXTENSION);
+    // Generate data URI
+    $src_img = 'data:image/' . $image_type . ';base64,' . $image_data;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,7 +150,7 @@ html {
     <table class="page_header" cellspacing="0px" cellpadding="0px">
         <tr>
             <td class="logo" rowspan="10">
-                <img src="{{ config('app.url') }}/img/logo.jpeg" alt="logo kemenkeu" width="96">
+                <img src="{{ $src_img }}" alt="logo kemenkeu" width="96">
             </td>
             <td class="kop1">
                 <b>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</b>
@@ -167,7 +173,7 @@ html {
         </tr>
         <tr>
             <td class="kop3">
-                
+                Gedung Syafrudin Prawiranegara II, Jalan Lapangan Banteng Timur Nomor 2-4, Jakarta 1070
             </td>
         </tr>
         <tr>
@@ -186,6 +192,7 @@ html {
         </tr>
         <tr>
             <td class="kop3">
+
             </td>
         </tr>
     </table>
@@ -215,6 +222,7 @@ html {
     </tr>
         @php
             $i=1;
+            $jumlah = 0;
         @endphp
         @foreach ($data as $item)
         <tr>
@@ -222,23 +230,39 @@ html {
             <td class="head" style="text-align: center;width: 7%;">{{ $item->notagihan }}</td>
             <td class="head" style="width: 18%;">{{ indonesiaDate($item->tgltagihan) }}</td>
             <td class="head" style="width: 34%;">{{ $item->uraian }}</td>
-            <td class="head" style="text-align: center;width: 7%;">{{ $item->jnstagihan }}</td>
+            <td class="head" style="text-align: center;width: 7%;">
+                @switch($item->jnstagihan)
+                    @case(1)
+                        SPP
+                        @break
+                    @case(2)
+                        KKP
+                        @break
+                    @default
+                        SPBY
+                @endswitch    
+            </td>
             <td class="head" style="text-align: center;width: 10%;">{{ $item->unit->namaunit }}</td>
             <td class="head" style="width: 10%;">{{ $item->dokumen->namadokumen }}</td>
             <td class="head" style="text-align: right;width: 10%;">{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
         </tr>
         @php
-            $i++
+            $i++;
+            $jumalah +=$item->realisasi->sum('realisasi');
         @endphp
         @endforeach
     <tr>
         <td class="head" style="text-align: center;width: 10%;" colspan="7">Jumlah</td>
-        <td class="head" style="text-align: right;width: 10%;"></td>
+        <td class="head" style="text-align: right;width: 10%;">{{ number_format($jumlah, 2, ',', '.') }}</td>
     </tr>
     </table>
     
     <p style="margin-left:10px; margin-bottom: 5px;  text-align: justify;">Atas kerjasamanya kami ucapkan terima kasih.</p>
     <table style="width: 100%; margin-bottom:0;">
+    <tr>
+        <td style="width: 65%;"></td>
+        <td style="width: 35%; text-align: left; margin-top:0; padding-top:0;">Pejabat Pembuat Komitmen</td>
+    </tr>
     <tr>
         <td style="width: 65%;"></td>
         <td style="width: 35%; text-align: left; margin-top:0; padding-top:0;"><img src="{{ $qrcode }}" alt=""></td>
@@ -251,14 +275,20 @@ html {
     </tr>
     <tr>
         <td style="width: 65%;"></td>
-        <td style="width: 35%;"></td>
+        <td style="width: 35%;">{{ $ppk }}</td>
     </tr>
     </table>
-    
+    @php
+    $image_path_bssn = 'img/esign.png';
+    $image_data_bssn = base64_encode(file_get_contents($image_path));
+    $image_type_bssn = pathinfo($image_path, PATHINFO_EXTENSION);
+    // Generate data URI
+    $src_img_bssn = 'data:image/' . $image_type . ';base64,' . $image_data;
+    @endphp
     <table class="page_footer">
     <tr>
         <td class="logo" >
-            <img src="{{ config('app.url') }}/img/esign.png" alt="logo bssn" width="20">
+            <img src="{{ $src_img_bssn }}" alt="logo bssn" width="20">
         </td>
     </tr>
     </table>

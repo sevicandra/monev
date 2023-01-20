@@ -650,4 +650,26 @@ class VerifikasiController extends Controller
             return redirect('/verifikasi/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('gagal','Link Error.');
         }
     }
+
+    public function coa(tagihan $tagihan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+        
+        return view('verifikasi.coa',[
+            'data'=>$tagihan->realisasi() ->searchprogram()  
+                                            ->searchkegiatan()
+                                            ->searchkro()
+                                            ->searchro()
+                                            ->searchkomponen()
+                                            ->searchsubkomponen()
+                                            ->searchakun()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
+        ]);
+    }
 }

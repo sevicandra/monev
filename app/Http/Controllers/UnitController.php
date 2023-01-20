@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\pagu;
 use App\Models\unit;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -214,5 +215,78 @@ class UnitController extends Controller
 
         $unit->verifikator()->detach($verifikator->id);
         return redirect('/unit/'.$unit->id.'/verifikator')->with('berhasil', $verifikator->nama. ' Berhasil Dihapus Dari Unit '.$unit->namaunit);
+    }
+
+    public function showpagu(unit $unit)
+    {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        return view('referensi.unit.pagu.detail',[
+            'data'=>$unit->pagu() ->searchprogram()  
+                                    ->searchkegiatan()
+                                    ->searchkro()
+                                    ->searchro()
+                                    ->searchkomponen()
+                                    ->searchsubkomponen()
+                                    ->searchakun()->paginate(15)->withQueryString(),
+            'unit'=>$unit
+        ]);
+    }
+
+    public function editpagu(unit $unit)
+    {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        return view('referensi.unit.pagu.update',[
+            'data'=>pagu::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->where('kodeunit', null)->Order() ->searchprogram()  
+                                                                                                                        ->searchkegiatan()
+                                                                                                                        ->searchkro()
+                                                                                                                        ->searchro()
+                                                                                                                        ->searchkomponen()
+                                                                                                                        ->searchsubkomponen()
+                                                                                                                        ->searchakun()->paginate(15)->withQueryString(),
+            'unit'=>$unit
+        ]);
+    }
+
+    public function updatepagu(unit $unit, pagu $pagu)
+    {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        $pagu->update(['kodeunit'=>$unit->id]);
+        return Redirect()->back()->with('berhasil', 'Pagu Berhasil Ditambahkan Ke Unit '.$unit->namaunit);
+        return redirect('/unit/'.$unit->id.'/pagu/edit')->with('berhasil', 'Pagu Berhasil Ditambahkan Ke Unit '.$unit->namaunit);
+    }
+
+    public function destroypagu(unit $unit, pagu $pagu)
+    {
+        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($unit->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        $pagu->update(['kodeunit'=>null]);
+        return redirect('/unit/'.$unit->id.'/pagu')->with('berhasil', 'Pagu Berhasil Di Hapus dari Unit');
     }
 }
