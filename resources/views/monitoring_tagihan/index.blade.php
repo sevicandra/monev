@@ -88,6 +88,9 @@
                                     @endif
                                     @if ($item->dokumen->statusrekanan === '1')
                                         <a href="/monitoring-tagihan/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
+                                        @endif
+                                    @if ($item->status === 1)
+                                        <a class="btn btn-sm btn-outline-secondary pt-0 pb-0" href="/monitoring-tagihan/{{ $item->id }}/tolak">Batal Kirim</a>
                                     @endif
                                 </div>
                                 

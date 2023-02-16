@@ -25,6 +25,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileViewController;
 use App\Http\Controllers\MapingppkController;
 use App\Http\Controllers\RealisasiController;
 use App\Http\Controllers\NominaldnpController;
@@ -70,7 +71,9 @@ Route::controller(LoginController::class)->group(function(){
 Route::controller(DashboardController::class)->group(function(){
     Route::get('/dashboard', 'index')->middleware('auth');
     Route::get('/dashboard/unit', 'unit_index')->middleware('auth');
+    Route::get('/dashboard/unit/{unit}', 'unit_detail')->middleware('auth');
     Route::get('/dashboard/ppk', 'ppk_index')->middleware('auth');
+    Route::get('/dashboard/ppk/{ppk}', 'ppk_detail')->middleware('auth');
 });
 
 Route::get('/referensi', function(){
@@ -195,6 +198,7 @@ Route::controller(RegisterTagihanController::class)->group(function(){
 Route::controller(MonitoringTagihanController::class)->group(function(){
     Route::get('/monitoring-tagihan/{tagihan}/coa', 'showcoa')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/dnp', 'showdnp')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/tolak', 'tolak')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/rekanan/{rekanan}/pph', 'showpphrekanan')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/rekanan/{rekanan}/ppn', 'showppnrekanan')->middleware('auth');
@@ -323,3 +327,5 @@ Route::controller(LaporanPajakController::class)->group(function(){
     Route::get('/laporan-pajak/ppn', 'showppn')->middleware('auth');
     Route::get('/laporan-pajak/ppn/cetak', 'cetakppn')->middleware('auth');
 });
+
+Route::get('/file-view/{path}/{file}', [FileViewController::class, 'view'])->middleware('auth');

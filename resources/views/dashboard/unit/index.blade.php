@@ -38,7 +38,9 @@
                             @foreach ($unit as $item)
                                 <tr>
                                     <td class="text-center">{{$i}}</td>
-                                    <td>{{ $item->namaunit }}</td>
+                                    <td>
+                                        <a href="unit/{{ $item->id }}">{{ $item->namaunit }}</a>
+                                    </td>
                                     <td class="text-right">
                                         {{ number_format($item->pagu->sum('anggaran'), 2, ',', '.') }}
                                         @php

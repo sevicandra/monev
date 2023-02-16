@@ -28,7 +28,9 @@ class SsoController extends Controller
             ]);
 
             $token =  json_decode($response->getBody()->getContents(), true);
-            // Get User Info
+            if(!isset($token['access_token'])){
+                return redirect('/sso');
+            }
             $access_token = $token['access_token'];
             if ($access_token) {
                 $response2 = Http::asForm()->post(config('sso.base_uri').config('sso.userinfo')['endpoint'],[

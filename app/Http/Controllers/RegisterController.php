@@ -200,7 +200,7 @@ class RegisterController extends Controller
             }
         }
         return view('register_tagihan.create_detail',[
-        'data'=>tagihan::tagihansatker()->notregistered()->get(),
+        'data'=>tagihan::tagihansatker()->tagihanppk()->notregistered()->get(),
         'register'=>$register
         ]);
     }
@@ -282,12 +282,12 @@ class RegisterController extends Controller
                 'ppk'=>$ppk
             ]);
             $content = $pdf->download()->getOriginalContent();
-    
+            Storage::delete($register->file);
             Storage::put($register->file,$content) ;
             try {
                 $response = $this->_client->request('POST', 'pdf', [
                     'query' => [
-                        'nik' => $request->session()->get('nik'),
+                        'nik' => '3404072006960004',
                         'passphrase' => htmlspecialchars($request->passphrase),
                         'jenis_dokumen' => 'Register Tagihan',
                         'nomor' => $register->nomor.$register->ekstensi.$register->tahun,
@@ -307,7 +307,7 @@ class RegisterController extends Controller
                 
                 $result_header = $response->getHeaders();
                 $result_body = $response->getBody()->getContents();
-                return $result_body;
+
                 Storage::put($register->file, $result_body) ;
                 $register->update([
                     'dokumen_date' => $result_header['Date'][0],

@@ -29,7 +29,7 @@ class TagihanController extends Controller
             abort(403);
         }
         return view('tagihan.index',[
-            'data'=>tagihan::where('status', 0)->orwhere('status', 1)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->paginate(15)->withQueryString()
+            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -270,7 +270,8 @@ class TagihanController extends Controller
             if ($tagihan->id != $berkas->tagihan_id) {
                 abort(403);
             }
-            if ($berkas->berkas->kodeberkas === '01' && $berkas->berkas->kodeberkas === '02') {
+
+            if ($berkas->berkas->kodeberkas === '01' || $berkas->berkas->kodeberkas === '02') {
                 Storage::delete($berkas->file);
                 $berkas->delete();
                 return redirect('/tagihan/'.$tagihan->id.'/upload')->with('berhasil', 'Dokumen Berhasil Di Hapus.');;
@@ -678,17 +679,4 @@ class TagihanController extends Controller
         }
     }
 
-    public function batalkirim(tagihan $tagihan)
-    {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
-            abort(403);
-        }
-        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-            abort(403);
-        }
-        if ($tagihan->status != 1) {
-            return abort(403);
-        }
-        
-    }
 }

@@ -31,10 +31,26 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function unit_detail(unit $unit)
+    {
+        return view('dashboard.unit.detail',[
+            'data'=>$unit->pagu()->order()->get(),
+            'unit'=>$unit
+        ]);
+    }
+
     public function ppk_index()
     {
         return view('dashboard.ppk.index',[
             'ppk'=>User::pegawaisatker()->ppk()->whereHas('paguppk')->get(),
+        ]);
+    }
+
+    public function ppk_detail(user $ppk)
+    {
+        return view('dashboard.ppk.detail',[
+            'data'=>$ppk->paguppk()->order()->get(),
+            'ppk'=>$ppk
         ]);
     }
 }

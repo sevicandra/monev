@@ -6,6 +6,7 @@ use App\Models\rekanan;
 use App\Models\tagihan;
 use App\Models\pphrekanan;
 use App\Models\ppnrekanan;
+use App\Models\register_tagihan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -236,5 +237,21 @@ class MonitoringTagihanController extends Controller
     public function destroy(tagihan $tagihan)
     {
         //
+    }
+
+    public function tolak(tagihan $tagihan)
+    {
+        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            abort(403);
+        }
+        if ($tagihan->status != 1) {
+            return abort(403);
+        }
+        $tagihan->update(['status'=> 0]);
+        register_tagihan::where('tagihan_id', $tagihan->id)->delete();
+        return redirect('/monitoring-tagihan');
     }
 }

@@ -44,7 +44,7 @@
                                 <td>{{ $item->created_at }}</td>
                                 <td class="text-center">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{ Storage::url( $item->file) }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0" target="_blank">Preview File</a>
+                                        <a href="/file-view/{{ $item->file }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0" target="_blank">Preview File</a>
                                     </div>
                                 </td>
                                 <td class="text-center pb-0">
