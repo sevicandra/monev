@@ -33,7 +33,7 @@
                         <label for="">Tarif:</label>
                         <select class="form-select form-select-sm mb-3" name="tarif">
                             <option value="0.11">11%</option>
-                            <option value="0.01">1%</option>
+                            <option value="0.011">1,1%</option>
                         </select>
                         <div class="invalid-feedback">
                             @error('tarif')
