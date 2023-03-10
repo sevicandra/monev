@@ -251,7 +251,7 @@ class RegisterController extends Controller
                 'passphrase'=>'required'
             ]);
 
-            $qr = config('app.url') .  '/' . $register->file;
+            $qr = config('app.url') .  '/file-view/' . $register->file;
             $writer = new PngWriter();
             $qrCode = QrCode::create($qr)
                 ->setEncoding(new Encoding('UTF-8'))

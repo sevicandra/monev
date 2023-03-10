@@ -21,17 +21,18 @@ use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\RekananController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TagihanController;
+use App\Http\Controllers\FileViewController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FileViewController;
 use App\Http\Controllers\MapingppkController;
 use App\Http\Controllers\RealisasiController;
 use App\Http\Controllers\NominaldnpController;
 use App\Http\Controllers\ObjekpajakController;
 use App\Http\Controllers\VerifikasiController;
 use App\Http\Controllers\LaporanPajakController;
+use App\Http\Controllers\ArsipRegisterController;
 use App\Http\Controllers\MapingstafppkController;
 use App\Http\Controllers\PegawainondjknController;
 use App\Http\Controllers\RegisterTagihanController;
@@ -329,3 +330,7 @@ Route::controller(LaporanPajakController::class)->group(function(){
 });
 
 Route::get('/file-view/{path}/{file}', [FileViewController::class, 'view'])->middleware('auth');
+
+Route::controller(ArsipRegisterController::class)->group(function(){
+    Route::get('/arsip-register', 'index');
+});

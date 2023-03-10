@@ -43,7 +43,12 @@
                 </li>
                 <li class="nav-item m-0 p-0">
                     <a class="nav-link pb-1" href="/monitoring-tagihan">
-                        &nbsp; Arsip
+                        &nbsp; Arsip Tagihan
+                    </a>
+                </li>
+                <li class="nav-item m-0 p-0">
+                    <a class="nav-link pb-1" href="/arsip-register">
+                        &nbsp; Arsip Register
                     </a>
                 </li>
             </ul>
@@ -79,7 +84,12 @@
                 @endcan
                 <li class="nav-item m-0 p-0">
                     <a class="nav-link pb-1" href="/arsip">
-                        &nbsp; Arsip
+                        &nbsp; Arsip Tagihan
+                    </a>
+                </li>
+                <li class="nav-item m-0 p-0">
+                    <a class="nav-link pb-1" href="/arsip-register">
+                        &nbsp; Arsip Register
                     </a>
                 </li>
                 <li class="nav-item m-0 p-0">

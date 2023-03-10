@@ -280,10 +280,10 @@ html {
     </table>
     @php
     $image_path_bssn = 'img/esign.png';
-    $image_data_bssn = base64_encode(file_get_contents($image_path));
-    $image_type_bssn = pathinfo($image_path, PATHINFO_EXTENSION);
+    $image_data_bssn = base64_encode(file_get_contents($image_path_bssn));
+    $image_type_bssn = pathinfo($image_path_bssn, PATHINFO_EXTENSION);
     // Generate data URI
-    $src_img_bssn = 'data:image/' . $image_type_bssn . ';base64,' . $image_type_bssn;
+    $src_img_bssn = 'data:image/' . $image_type_bssn . ';base64,' . $image_data_bssn;
     @endphp
     <table class="page_footer">
     <tr>

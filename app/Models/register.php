@@ -51,4 +51,14 @@ class register extends Model
             return $data->where('nomor', 'like', '%'.request('search').'%');
         }
     }
+
+    public function ppk()
+    {
+        return $this->belongsTo(User::class, 'ppk_id');
+    }
+
+    public function scopeArsip($data)
+    {
+        return $data->where('status', 1);
+    }
 }
