@@ -123,7 +123,7 @@
 
         <div>
             <span class="px-3">
-                Version : 2.1.4
+                Version : 2.2.0
             </span>
         </div>
     </div>

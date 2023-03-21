@@ -24,12 +24,12 @@
                     <thead class="text-center">
                         <tr class="align-middle">
                             <th>No</th>
+                            <th>Jenis Tagihan</th>
                             <th>Nomor</th>
                             <th>Tanggal</th>
                             <th>Tgl SPM</th>
                             <th>No SP2D</th>
                             <th>Tgl SP2D</th>
-                            <th>Jenis Tagihan</th>
                             <th>Unit</th>
                             <th>PPK</th>
                             <th>Jenis Dokumen</th>
@@ -44,6 +44,19 @@
                         @foreach ($data as $item)
                         <tr style="white-space:nowrap">
                             <td class="text-center">{{ $i }}</td>
+                            <td>
+                                @switch($item->jnstagihan)
+                                @case('0')
+                                    SPBy
+                                    @break
+                                @case('1')
+                                    SPP
+                                    @break
+                                @case('2')
+                                    KKP
+                                    @break
+                            @endswitch  
+                            </td>
                             <td>{{ $item->notagihan }}</td>
                             <td>{{ indonesiaDate($item->tgltagihan) }}</td>
                             <td>
@@ -60,19 +73,6 @@
                                 @if (isset($item->spm))
                                     {{ indonesiaDate($item->spm->tanggal_sp2d) }}
                                 @endif
-                            </td>
-                            <td>
-                                @switch($item->jnstagihan)
-                                @case('0')
-                                    SPBy
-                                    @break
-                                @case('1')
-                                    SPP
-                                    @break
-                                @case('2')
-                                    KKP
-                                    @break
-                            @endswitch  
                             </td>
                             <td>{{ $item->unit->namaunit }}</td>
                             <td>{{ $item->ppk->nama }}</td>

@@ -30,10 +30,10 @@
                     <thead class="text-center">
                         <tr class="align-middle">
                             <th>No</th>
+                            <th>Jenis Tagihan</th>
                             <th>Nomor</th>
                             <th>Tanggal</th>
                             <th>Uraian</th>
-                            <th>Jenis Tagihan</th>
                             <th>Unit</th>
                             <th>Jenis Dokumen</th>
                             <th>Bruto</th>
@@ -47,9 +47,6 @@
                         @foreach ($data as $item)
                             <tr style="white-space:nowrap">
                                 <td class="text-center">{{ $i }}</td>
-                                <td>{{ $item->notagihan }}</td>
-                                <td>{{ indonesiaDate($item->tgltagihan) }}</td>
-                                <td style="white-space:normal; min-width:300px">{{ $item->uraian }}</td>
                                 <td>
                                     @switch($item->jnstagihan)
                                         @case('0')
@@ -63,6 +60,9 @@
                                             @break
                                     @endswitch
                                 </td>
+                                <td>{{ $item->notagihan }}</td>
+                                <td>{{ indonesiaDate($item->tgltagihan) }}</td>
+                                <td style="white-space:normal; min-width:300px">{{ $item->uraian }}</td>
                                 <td>{{ $item->unit->namaunit }}</td>
                                 <td>{{ $item->dokumen->namadokumen }}</td>
                                 <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>

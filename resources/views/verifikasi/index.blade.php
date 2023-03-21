@@ -29,10 +29,10 @@
                     <thead class="text-center">
                         <tr class="align-middle">
                             <th>No</th>
+                            <th>Jenis Tagihan</th>
                             <th>Nomor</th>
                             <th>Tanggal</th>
                             <th>Tgl SPM</th>
-                            <th>Jenis Tagihan</th>
                             <th>Unit</th>
                             <th>PPK</th>
                             <th>Jenis Dokumen</th>
@@ -47,13 +47,6 @@
                         @foreach ($data as $item)
                         <tr>
                             <td class="text-center">{{ $i }}</td>
-                            <td>{{ $item->notagihan }}</td>
-                            <td>{{ $item->tgltagihan }}</td>
-                            <td>
-                                @if (isset($item->spm))
-                                    {{ $item->spm->tanggal_spm }}
-                                @endif
-                            </td>
                             <td>
                                 @switch($item->jnstagihan)
                                 @case('0')
@@ -66,6 +59,13 @@
                                     KKP
                                     @break
                             @endswitch
+                            </td>
+                            <td>{{ $item->notagihan }}</td>
+                            <td>{{ $item->tgltagihan }}</td>
+                            <td>
+                                @if (isset($item->spm))
+                                    {{ $item->spm->tanggal_spm }}
+                                @endif
                             </td>
                             <td>{{ $item->unit->namaunit }}</td>
                             <td>{{ $item->ppk->nama }}</td>
