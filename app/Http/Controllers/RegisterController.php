@@ -47,7 +47,7 @@ class RegisterController extends Controller
             abort(403);
         }
         return view('register_tagihan.index',[
-            'data'=>register::registerppk()->where('status' , 0)->where('tahun', session()->get('tahun'))->search()->paginate(15)->withQueryString()
+            'data'=>register::registerppk()->where('status' , 0)->where('tahun', session()->get('tahun'))->search()->orderby('nomor', 'DESC')->paginate(15)->withQueryString()
         ]);
     }
 

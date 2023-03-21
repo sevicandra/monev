@@ -61,4 +61,9 @@ class register extends Model
     {
         return $data->where('status', 1);
     }
+
+    public function scopeOrder($data)
+    {
+        return $data->orderby('nomor');
+    }
 }
