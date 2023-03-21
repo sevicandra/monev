@@ -29,7 +29,7 @@ class VerifikasiController extends Controller
         }
         
         return view('verifikasi.index',[
-            'data'=>tagihan::tagihansatker()->tagihanverifikator()->unverified()->search()->paginate(15)->withQueryString(),
+            'data'=>tagihan::tagihansatker()->tagihanverifikator()->unverified()->search()->order()->paginate(15)->withQueryString(),
         ]);
     }
 

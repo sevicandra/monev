@@ -29,7 +29,7 @@ class TagihanController extends Controller
             abort(403);
         }
         return view('tagihan.index',[
-            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->paginate(15)->withQueryString()
+            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->order()->paginate(15)->withQueryString()
         ]);
     }
 

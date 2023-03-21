@@ -23,7 +23,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.index',[
-            'data'=>tagihan::tagihansatker()->arsip()->orderby('notagihan', 'desc')->search()->paginate(15)->withQueryString()
+            'data'=>tagihan::tagihansatker()->arsip()->orderby('notagihan', 'desc')->search()->order()->paginate(15)->withQueryString()
          ]);
     }
 

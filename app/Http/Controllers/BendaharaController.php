@@ -33,7 +33,7 @@ class BendaharaController extends Controller
         }
 
         return view('bendahara.index',[
-           'data'=>tagihan::tagihansatker()->tagihansatker()->bendahara()->search()->paginate(15)->withQueryString()
+           'data'=>tagihan::tagihansatker()->tagihansatker()->bendahara()->search()->order()->paginate(15)->withQueryString()
         ]);
     }
 

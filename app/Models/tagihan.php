@@ -135,4 +135,10 @@ class tagihan extends Model
             return $data->where('notagihan', 'like', '%'.request('search').'%');
         }
     }
+
+    public function scopeOrder($data)
+    {
+        return $data    ->orderby('tgltagihan', 'DESC')
+                        ->orderby('notagihan', 'DESC');
+    }
 }

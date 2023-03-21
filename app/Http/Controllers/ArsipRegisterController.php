@@ -12,12 +12,12 @@ class ArsipRegisterController extends Controller
     {
         if (Gate::any(['PPSPM', 'Bendahara', 'Validator'], auth()->user()->id)) {
             return view('arsip-register.index',[
-                'data'=>register::arsip()->search()->paginate(15)->withQueryString()
+                'data'=>register::arsip()->search()->order()->paginate(15)->withQueryString()
             ]);
         }
 
         return view('arsip-register.index',[
-            'data'=>register::registerppk()->arsip()->where('tahun', session()->get('tahun'))->search()->paginate(15)->withQueryString()
+            'data'=>register::registerppk()->arsip()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString()
         ]);
     }
 }

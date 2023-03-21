@@ -25,7 +25,7 @@ class PpspmController extends Controller
         }
 
         return view('ppspm.index',[
-            'data'=>tagihan::tagihansatker()->ppspm()->search()->paginate(15)->withQueryString()
+            'data'=>tagihan::tagihansatker()->ppspm()->search()->order()->paginate(15)->withQueryString()
         ]);
     }
 
