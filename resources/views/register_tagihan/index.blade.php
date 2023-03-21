@@ -34,8 +34,8 @@
                             <th>No</th>
                             <th>Nomor Register</th>
                             <th>Tanggal</th>
-                            <th>Jumlah</th>
-                            <th>Total</th>
+                            <th>Jumlah Tagihan</th>
+                            <th>Total Nilai</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -48,17 +48,28 @@
                             <td class="text-center">{{ $i }}</td>
                             <td>{{ $item->nomor }}</td>
                             <td>{{ indonesiaDate($item->created_at) }} </td>
-                            <td class="text-center"></td>
+                            <td class="text-center">
+                                @if ($item->tagihan)
+                                    @php
+                                        $jumlah = $item->tagihan->count()
+                                    @endphp
+                                @else
+                                    @php
+                                        $jumlah =0
+                                    @endphp
+                                @endif
+                                {{ $jumlah }}
+                            </td>
                             <td class="text-right">
                                 @php
-                                    $jumlah=0
+                                    $total=0
                                 @endphp
                                 @foreach ($item->tagihan as $tagihan)
                                     @php
-                                        $jumlah=$jumlah+$tagihan->realisasi->sum('realisasi')
+                                        $total=$total+$tagihan->realisasi->sum('realisasi')
                                     @endphp
                                 @endforeach
-                                Rp{{ number_format($jumlah, 2, ',', '.') }}
+                                Rp{{ number_format($total, 2, ',', '.') }}
                             </td>
                             <td class="pb-0 pr-0">
                                 <div class="btn-group btn-group-sm" role="group">

@@ -43,7 +43,15 @@
                             <tr>
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ $item->npwp }}</td>
+                                <td>
+                                    @switch($item->npwp)
+                                        @case(1)
+                                            YA
+                                            @break
+                                        @default
+                                            TIDAK
+                                    @endswitch
+
                                 <td>{{ $item->idpajak }}</td>
                                 <td class="pb-0">
                                     <div class="btn-group btn-group-sm" role="group">

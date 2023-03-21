@@ -46,7 +46,19 @@
                             <td>{{ $item->notagihan }}</td>
                             <td>{{ $item->tgltagihan }}</td>
                             <td>{{ $item->uraian }}</td>
-                            <td>{{ $item->jnstagihan }}</td>
+                            <td>
+                                @switch($item->jnstagihan)
+                                @case('0')
+                                    SPBy
+                                    @break
+                                @case('1')
+                                    SPP
+                                    @break
+                                @case('2')
+                                    KKP
+                                    @break
+                                @endswitch
+                            </td>
                             <td>{{ $item->unit->namaunit }}</td>
                             <td>{{ $item->dokumen->namadokumen }}</td>
                             <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>

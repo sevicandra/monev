@@ -7,8 +7,8 @@
         </div>
         <div class="row mb-3">
             <div class="col-lg-7">
-                <a href="/dashboard/unit" class="btn btn-sm btn-outline-primary mt-1">Per Tagihan</a>
-                <a href="/dashboard/unit?sp2d=?" class="btn btn-sm btn-outline-primary mt-1 ml-2">Per SP2D</a>
+                <a href="/dashboard/unit" class="btn btn-sm btn-outline-primary mt-1 @if (request('sp2d') === 'ya') @else active @endif">Per Tagihan</a>
+                <a href="/dashboard/unit?sp2d=ya" class="btn btn-sm btn-outline-primary mt-1 ml-2 @if (request('sp2d') === 'ya') active @else @endif">Per SP2D</a>
             </div>
             <div class="col-lg-5">
             </div>

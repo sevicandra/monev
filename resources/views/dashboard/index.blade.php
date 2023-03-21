@@ -22,8 +22,8 @@
     </div>
     <div class="row mb-3">
         <div class="col">
-            <a href="/dashboard" class="btn btn-sm btn-outline-primary">Per Tagihan</a>
-            <a href="/dashboard?sp2d=?" class="btn btn-sm btn-outline-primary ml-2">Per SP2D</a>
+            <a href="/dashboard" class="btn btn-sm btn-outline-primary @if (request('sp2d') === 'ya') @else active @endif">Per Tagihan</a>
+            <a href="/dashboard?sp2d=ya" class="btn btn-sm btn-outline-primary ml-2 @if (request('sp2d') === 'ya') active @else @endif">Per SP2D</a>
         </div>
     </div>
     <div class="row">

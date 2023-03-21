@@ -45,11 +45,11 @@
                             $i=1;
                         @endphp
                         @foreach ($data as $item)
-                            <tr>
+                            <tr style="white-space:nowrap">
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->notagihan }}</td>
                                 <td>{{ indonesiaDate($item->tgltagihan) }}</td>
-                                <td>{{ $item->uraian }}</td>
+                                <td style="white-space:normal; min-width:300px">{{ $item->uraian }}</td>
                                 <td>
                                     @switch($item->jnstagihan)
                                         @case('0')

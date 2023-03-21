@@ -47,7 +47,7 @@
                             $i=1;
                         @endphp
                         @foreach ($data as $item)
-                            <tr>
+                            <tr style="white-space:nowrap">
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->notagihan }}</td>
                                 <td>{{ $item->tgltagihan }}</td>
