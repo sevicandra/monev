@@ -288,7 +288,7 @@ class RegisterController extends Controller
                 $response = $this->_client->request('POST', 'pdf', [
                     'query' => [
                         'nik' => $request->session()->get('nik'),
-                        'passphrase' => htmlspecialchars($request->passphrase),
+                        'passphrase' => $request->passphrase,
                         'jenis_dokumen' => 'Register Tagihan',
                         'nomor' => $register->nomor.$register->ekstensi.$register->tahun,
                         'tujuan' => 'Pejabat Penandatangan SPM',
