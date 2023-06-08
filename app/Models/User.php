@@ -176,4 +176,12 @@ class User extends Authenticatable
                             ->orwhere('nip', 'like', '%'.request('search').'%');
         }
     }
+
+    public function scopeRealisasiBulanan($data, $ppk_id, $bulan)
+    {
+        $data   ->belongsToMany(pagu::class, 'mapingpaguppks')
+                ->where('tahun', session()->get('tahun'))
+                ->leftJoin('realisasis', 'mapingpaguppks.pagu_id', '=', 'realisasis.pagu_id')
+        ;
+    }
 }

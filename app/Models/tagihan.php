@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Uuids;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -140,5 +141,176 @@ class tagihan extends Model
     {
         return $data    ->orderby('tgltagihan', 'DESC')
                         ->orderby('notagihan', 'DESC');
+    }
+
+    public function scopeRealisasiBulananPpk($data, $id)
+    {
+        if (request('sp2d') === 'ya') {
+            $data   ->where('ppk_id', $id)
+                    ->where('tahun', session()->get('tahun'))
+                    ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                    ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
+                    ->leftJoin('bulans', function ($join) {
+                        $join->on('bulans.kodebulan', '=', DB::raw('LPAD(MONTH(spms.tanggal_sp2d), 2, "0")'));
+                    })
+                    ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                    ->selectRaw('LPAD(MONTH(tanggal_sp2d), 2, "0") as bulan, sum(realisasi) as total_realisasi, namabulan, sum(nominal_sspb) as total_sspb')
+                    ->groupBy('bulan')
+                    ;
+        }else{
+            $data   ->where('ppk_id', $id)
+                    ->where('tahun', session()->get('tahun'))
+                    ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                    ->leftjoin('bulans', function ($join) {
+                        $join->on('bulans.kodebulan', '=', DB::raw('LPAD(MONTH(tagihans.tgltagihan), 2, "0")'));
+                    })
+                    ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                    ->selectRaw('LPAD(MONTH(tgltagihan), 2, "0") as bulan, sum(realisasi) as total_realisasi, namabulan, sum(nominal_sspb) as total_sspb')
+                    ->groupBy('bulan')
+                    ;
+        }
+    }
+
+    public function scopeRealisasiPaguBulananPpk($data, $id)
+    {
+        if (request('sp2d') === 'ya') {
+            $data   ->where('ppk_id', $id)
+                    ->where('tahun', session()->get('tahun'))
+                    ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                    ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
+                    ->leftJoin('bulans', function ($join) {
+                        $join->on('bulans.kodebulan', '=', DB::raw('LPAD(MONTH(spms.tanggal_sp2d), 2, "0")'));
+                    })
+                    ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                    ->selectRaw('LPAD(MONTH(tanggal_sp2d), 2, "0") as bulan, sum(realisasi) as total_realisasi, namabulan, sum(nominal_sspb) as total_sspb')
+                    ->groupBy('bulan')
+                    ;
+        }else{
+            $data   ->where('ppk_id', $id)
+                    ->where('tahun', session()->get('tahun'))
+                    ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                    ->leftjoin('bulans', function ($join) {
+                        $join->on('bulans.kodebulan', '=', DB::raw('LPAD(MONTH(tagihans.tgltagihan), 2, "0")'));
+                    })
+                    ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                    ->selectRaw('LPAD(MONTH(tgltagihan), 2, "0") as bulan, sum(realisasi) as total_realisasi, namabulan, sum(nominal_sspb) as total_sspb')
+                    ->groupBy('bulan')
+                    
+                    ;
+        }
+    }
+
+    public function scopeRealisasiTagihanPerBulanPpk($data, $ppk_id, $bulan)
+    {
+        if (request('sp2d') === 'ya') {
+            if ($bulan === "null") {
+                return  $data   ->where('ppk_id', $ppk_id)
+                                ->leftjoin('spms', function($val)use($bulan){
+                                    $val    ->on('spms.tagihan_id', '=', 'tagihans.id');
+                                })
+                                ->where('spms.tanggal_sp2d', null)
+                                ->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                                ->join('pagus', 'realisasis.pagu_id', '=', 'pagus.id')
+                                ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                                ->groupBy('tagihans.id', 'realisasis.id')
+                                ->selectRaw('notagihan, jnstagihan, status, tgltagihan, uraian, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, realisasi, tanggal_sp2d, realisasis.id, nominal_sspb, tgltagihan')
+                ;
+            }else{
+                return  $data   ->where('ppk_id', $ppk_id)
+                                ->join('spms', function($val)use($bulan){
+                                    $val    ->on('spms.tagihan_id', '=', 'tagihans.id')
+                                            ->where(DB::raw('MONTH(tanggal_sp2d)'), $bulan);
+                                })->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                                ->join('pagus', 'realisasis.pagu_id', '=', 'pagus.id')
+                                ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                                ->groupBy('tagihans.id', 'realisasis.id')
+                                ->selectRaw('notagihan, jnstagihan, status, tgltagihan, uraian, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, realisasi, tanggal_sp2d, realisasis.id, nominal_sspb, tgltagihan')
+                ;
+            }
+        }else{
+            return  $data   ->where('ppk_id', $ppk_id)
+                            ->where(DB::raw('MONTH(tgltagihan)'), $bulan)
+                            ->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                            ->join('pagus', 'realisasis.pagu_id', '=', 'pagus.id')
+                            ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                            ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
+                            ->groupBy('tagihans.id', 'realisasis.id')
+                            ->selectRaw('notagihan, jnstagihan, status, tgltagihan, uraian, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, realisasi, tanggal_sp2d, realisasis.id, nominal_sspb, tgltagihan')
+            ;
+        }
+    }
+
+    public function scopeRealisasiBulananUnit($data, $unit)
+    {
+        if (request('sp2d') === 'ya') {
+            $data   ->where('kodesatker', $unit->kodesatker)
+                    ->where('kodeunit', $unit->id)
+                    ->where('tahun', session()->get('tahun'))
+                    ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                    ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
+                    ->leftJoin('bulans', function ($join) {
+                        $join->on('bulans.kodebulan', '=', DB::raw('LPAD(MONTH(spms.tanggal_sp2d), 2, "0")'));
+                    })
+                    ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                    ->selectRaw('LPAD(MONTH(tanggal_sp2d), 2, "0") as bulan, sum(realisasi) as total_realisasi, namabulan, sum(nominal_sspb) as total_sspb')
+                    ->groupBy('bulan')
+                    ;
+        }else{
+            $data   ->where('kodesatker', $unit->kodesatker)
+                    ->where('kodeunit', $unit->id)
+                    ->where('tahun', session()->get('tahun'))
+                    ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                    ->leftjoin('bulans', function ($join) {
+                        $join->on('bulans.kodebulan', '=', DB::raw('LPAD(MONTH(tagihans.tgltagihan), 2, "0")'));
+                    })
+                    ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                    ->selectRaw('LPAD(MONTH(tgltagihan), 2, "0") as bulan, sum(realisasi) as total_realisasi, namabulan, sum(nominal_sspb) as total_sspb')
+                    ->groupBy('bulan')
+                    
+                    ;
+        }
+    }
+
+    public function scopeRealisasiTagihanPerBulanUnit($data, $unit, $bulan)
+    {
+        if (request('sp2d') === 'ya') {
+            if ($bulan === "null") {
+                return  $data   ->where('tagihans.kodesatker', $unit->kodesatker)
+                                ->where('tagihans.kodeunit', $unit->id)
+                                ->leftjoin('spms', function($val)use($bulan){
+                                    $val    ->on('spms.tagihan_id', '=', 'tagihans.id');
+                                })
+                                ->where('spms.tanggal_sp2d', null)
+                                ->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                                ->join('pagus', 'realisasis.pagu_id', '=', 'pagus.id')
+                                ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                                ->groupBy('tagihans.id', 'realisasis.id')
+                                ->selectRaw('notagihan, jnstagihan, status, tgltagihan, uraian, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, realisasi, tanggal_sp2d, realisasis.id, nominal_sspb, tgltagihan')
+                ;
+            }else{
+                return  $data   ->where('tagihans.kodesatker', $unit->kodesatker)
+                                ->where('tagihans.kodeunit', $unit->id)
+                                ->join('spms', function($val)use($bulan){
+                                    $val    ->on('spms.tagihan_id', '=', 'tagihans.id')
+                                            ->where(DB::raw('MONTH(tanggal_sp2d)'), $bulan);
+                                })->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                                ->join('pagus', 'realisasis.pagu_id', '=', 'pagus.id')
+                                ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                                ->groupBy('tagihans.id', 'realisasis.id')
+                                ->selectRaw('notagihan, jnstagihan, status, tgltagihan, uraian, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, realisasi, tanggal_sp2d, realisasis.id, nominal_sspb, tgltagihan')
+                ;
+            }
+        }else{
+            return  $data   ->where('tagihans.kodesatker', $unit->kodesatker)
+                            ->where('tagihans.kodeunit', $unit->id)
+                            ->where(DB::raw('MONTH(tgltagihan)'), $bulan)
+                            ->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+                            ->join('pagus', 'realisasis.pagu_id', '=', 'pagus.id')
+                            ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
+                            ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
+                            ->groupBy('tagihans.id', 'realisasis.id')
+                            ->selectRaw('notagihan, jnstagihan, status, tgltagihan, uraian, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, realisasi, tanggal_sp2d, realisasis.id, nominal_sspb, tgltagihan')
+            ;
+        }
     }
 }

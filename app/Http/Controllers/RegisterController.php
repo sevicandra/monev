@@ -16,7 +16,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Http;
 use Endroid\QrCode\Encoding\Encoding;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Exception\ClientException;

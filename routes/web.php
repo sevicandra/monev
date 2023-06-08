@@ -73,8 +73,12 @@ Route::controller(DashboardController::class)->group(function(){
     Route::get('/dashboard', 'index')->middleware('auth');
     Route::get('/dashboard/unit', 'unit_index')->middleware('auth');
     Route::get('/dashboard/unit/{unit}', 'unit_detail')->middleware('auth');
+    Route::get('/dashboard/unit/{unit}/{bulan}', 'unit_detail_bulan')->middleware('auth');
+    Route::get('/dashboard/unit/{unit}/{bulan}/tagihan', 'unit_detail_tagihan')->middleware('auth');
     Route::get('/dashboard/ppk', 'ppk_index')->middleware('auth');
     Route::get('/dashboard/ppk/{ppk}', 'ppk_detail')->middleware('auth');
+    Route::get('/dashboard/ppk/{ppk}/{bulan}', 'ppk_detail_bulan')->middleware('auth');
+    Route::get('/dashboard/ppk/{ppk}/{bulan}/tagihan', 'ppk_detail_tagihan')->middleware('auth');
 });
 
 Route::get('/referensi', function(){

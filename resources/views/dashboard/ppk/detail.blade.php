@@ -3,7 +3,7 @@
 @section('content')
     <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Realisasi Unit {{ $ppk->namaunit }}</h1>
+            <h1 class="h2">Realisasi PPK {{ $ppk->nama }}</h1>
         </div>
         <div class="row mb-3">
             <div class="col-lg-7">
@@ -19,67 +19,41 @@
                     <table class="table table-bordered table-hover">
                         <thead class="text-center">
                             <tr class="align-middle">
-                                <th>Nomor</th>
-                                <th>POK</th>
-                                <th>Pagu</th>
+                                <th>Bulan</th>
                                 <th>Realisasi</th>
-                                <th>Pengembalian</th>
-                                <th>Sisa Pagu</th>
-                                <th>Persentase</th>
+                                <th>SSPB</th>
+                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $pagu=0;
-                                $realisasi=0;
-                                $pengembalian=0;
-                                $i=1;
-                            @endphp
                             @foreach ($data as $item)
                                 <tr>
-                                    <td class="text-center">{{$i}}</td>
                                     <td>
-                                        {{ $item->kegiatan }}.{{ $item->kro }}.{{ $item->ro }}.{{ $item->komponen }}.{{ $item->subkomponen }}.{{ $item->akun }}
+                                        <a target="_blank" href="/dashboard/ppk/{{ $ppk->id }}/{{ $item->bulan }}?sp2d={{ request('sp2d') }}">
+                                            {{ $item->namabulan }}
+                                        </a>
                                     </td>
-                                    <td class="text-right">
-                                        {{ number_format($item->anggaran, 2, ',', '.') }}
-                                        @php
-                                            $pagu += $item->anggaran;
-                                        @endphp
+                                    <td>
+                                        @if ($item->bulan)
+                                        <a href="/dashboard/ppk/{{ $ppk->id }}/{{ $item->bulan }}/tagihan/?sp2d={{ request('sp2d') }}" target="_blank">
+                                            Rp {{ number_format($item->total_realisasi, 2, ",", ".") }}
+                                        </a>    
+                                        @else
+                                        <a href="/dashboard/ppk/{{ $ppk->id }}/null/tagihan/?sp2d={{ request('sp2d') }}" target="_blank">
+                                            Rp {{ number_format($item->total_realisasi, 2, ",", ".") }}
+                                        </a>  
+                                        @endif
                                     </td>
-                                    <td class="text-right">
-                                        {{ number_format($item->realisasi()->sp2d()->sum('realisasi'), 2, ',', '.') }}
-                                        @php
-                                            $realisasi += $item->realisasi()->sp2d()->sum('realisasi');
-                                        @endphp
-                                    </td>
-                                    <td class="text-right">
-                                        {{ number_format($item->sspb()->sum('nominal_sspb'), 2, ',', '.') }}
-                                        @php
-                                            $pengembalian += $item->sspb()->sum('nominal_sspb');
-                                        @endphp
-                                    </td>
-                                    <td class="text-right">{{ number_format($item->anggaran-$item->realisasi()->sp2d()->sum('realisasi')+$item->sspb()->sum('nominal_sspb'), 2, ',', '.') }}</td>
-                                    <td class="text-center">{{ number_format(($item->realisasi()->sp2d()->sum('realisasi')-$item->sspb()->sum('nominal_sspb'))*100/$item->anggaran, 2, ',', '.') }}%</td>
+                                    <td>Rp {{ number_format($item->total_sspb, 2, ",", ".") }}</td>
+                                    <td>Rp {{ number_format($item->total_realisasi-$item->total_sspb, 2, ",", ".") }}</td>
                                 </tr>
-                                @php
-                                $i++;
-                                @endphp
                             @endforeach
-                            <tr>
-                                <th class="text-center" colspan="2">Jumlah</th>
-                                <th class="text-right"> {{ number_format($pagu, 2, ',', '.') }} </th>
-                                <th class="text-right"> {{ number_format($realisasi, 2, ',', '.') }} </th>
-                                <th class="text-right"> {{ number_format($pengembalian, 2, ',', '.') }} </th>
-                                <th class="text-right">{{ number_format($pagu+$realisasi-$pengembalian, 2, ',', '.') }}</th>
-                                <th class="text-center">
-                                    @if ($pagu != 0)
-                                    {{ number_format(($realisasi-$pengembalian)*100/$pagu, 2, ',', '.') }}%
-                                    @else
-                                    0%
-                                    @endif
-                                </th>
-                            </tr>
+                                <tr>
+                                    <td>Total</td>
+                                    <td>Rp {{ number_format($data->sum('total_realisasi'), 2, ",", ".") }}</td>
+                                    <td>Rp {{ number_format($data->sum('total_sspb'), 2, ",", ".") }}</td>
+                                    <td></td>
+                                </tr>
                         </tbody>
                     </table>
                 </div>
