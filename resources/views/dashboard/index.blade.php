@@ -126,7 +126,7 @@
 @endsection
 
 @section('foot')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- bar chart -->
 <script>
     const ctx = document.getElementById("chart").getContext('2d');

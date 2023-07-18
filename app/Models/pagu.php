@@ -91,7 +91,7 @@ class pagu extends Model
 
     public function scopeJenisbelanja($data, $jenis)
     {
-        return $data->whereRaw(DB::raw('left(akun, 2) = "'.$jenis.'"'));
+        return $data    ->whereRaw('left(pagus.akun, 2) = '. $jenis);
     }
     
     public function scopeSearchprogram($data)

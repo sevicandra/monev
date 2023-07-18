@@ -14,12 +14,12 @@ class DashboardController extends Controller
     public function index()
     {
         return view('dashboard.index',[
-            'belanjapegawai'=>pagu::pagusatker()->jenisbelanja('51'),
-            'belanjabarang'=>pagu::pagusatker()->jenisbelanja('52'),
-            'belanjamodal'=>pagu::pagusatker()->jenisbelanja('53'),
-            'realisasibelanjapegawai'=>realisasi::sp2d()->realisaijenisbelanja('51'),
-            'realisasibelanjabarang'=>realisasi::sp2d()->realisaijenisbelanja('52'),
-            'realisasibelanjamodal'=>realisasi::sp2d()->realisaijenisbelanja('53'),
+            'belanjapegawai'=>pagu::pagusatker()->jenisbelanja('51')->get(),
+            'belanjabarang'=>pagu::pagusatker()->jenisbelanja('52')->get(),
+            'belanjamodal'=>pagu::pagusatker()->jenisbelanja('53')->get(),
+            'realisasibelanjapegawai'=>realisasi::sp2d()->realisaijenisbelanja('51')->get(),
+            'realisasibelanjabarang'=>realisasi::sp2d()->realisaijenisbelanja('52')->get(),
+            'realisasibelanjamodal'=>realisasi::sp2d()->realisaijenisbelanja('53')->get(),
             'ppk'=>User::pegawaisatker()->ppk()->whereHas('paguppk')->get(),
             'unit'=>unit::myunit()->whereHas('pagu')->get(),
         ]);

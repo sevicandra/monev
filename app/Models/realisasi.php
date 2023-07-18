@@ -36,7 +36,7 @@ class realisasi extends Model
     {
         $a=$jenis;
         return $data->wherehas('pagu', function($val)use($a){
-            $val->where('tahun', session()->get('tahun'))->where('kodesatker', auth()->user()->satker)->whereRaw(DB::raw('left(akun, 2) = "'.$a.'"'));
+            $val->where('tahun', session()->get('tahun'))->where('kodesatker', auth()->user()->satker)->whereRaw('left(akun, 2) ='. $a);
         });
     }
 
