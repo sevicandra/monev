@@ -1,5 +1,5 @@
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    <div class="position-sticky pt-3 d-flex flex-column justify-content-between pb-3 h-100">
+
+    <div class="pt-3 d-flex flex-column justify-content-between pb-3 h-100 max-h-100 overflow-auto">
         <div>
             {{--  Halaman Utama  --}}
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
@@ -7,17 +7,17 @@
             </h6>
             <ul class="nav flex-column">
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/dashboard">
+                    <a class="nav-link pb-1 text-muted" href="/dashboard">
                         &nbsp; Dashboard
                     </a>
                 </li>
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/dashboard/unit">
+                    <a class="nav-link pb-1 text-muted" href="/dashboard/unit">
                         &nbsp; Realisasi Unit
                     </a>
                 </li>
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/dashboard/ppk">
+                    <a class="nav-link pb-1 text-muted" href="/dashboard/ppk">
                         &nbsp; Realisasi PPK
                     </a>
                 </li>
@@ -31,23 +31,23 @@
             <ul class="nav flex-column">
                 @can('Staf_PPK', auth()->user()->id)
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/tagihan">
+                    <a class="nav-link pb-1 text-muted" href="/tagihan">
                         &nbsp; Data Tagihan
                     </a>
                 </li>
                 @endcan
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/register">
+                    <a class="nav-link pb-1 text-muted" href="/register">
                         &nbsp; Register Tagihan
                     </a>
                 </li>
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/monitoring-tagihan">
+                    <a class="nav-link pb-1 text-muted" href="/monitoring-tagihan">
                         &nbsp; Arsip Tagihan
                     </a>
                 </li>
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/arsip-register">
+                    <a class="nav-link pb-1 text-muted" href="/arsip-register">
                         &nbsp; Arsip Register
                     </a>
                 </li>
@@ -63,37 +63,37 @@
             <ul class="nav flex-column">
                 @can('Validator', auth()->user()->id)
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/verifikasi">
+                    <a class="nav-link pb-1 text-muted" href="/verifikasi">
                         &nbsp; Verifikasi
                     </a>
                 </li>
                 @endcan
                 @can('PPSPM', auth()->user()->id)
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/ppspm">
+                    <a class="nav-link pb-1 text-muted" href="/ppspm">
                         &nbsp; PPSPM
                     </a>
                 </li>
                 @endcan
                 @can('Bendahara', auth()->user()->id)
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/bendahara">
+                    <a class="nav-link pb-1 text-muted" href="/bendahara">
                         &nbsp; Bendahara
                     </a>
                 </li>
                 @endcan
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/arsip">
+                    <a class="nav-link pb-1 text-muted" href="/arsip">
                         &nbsp; Arsip Tagihan
                     </a>
                 </li>
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/arsip-register">
+                    <a class="nav-link pb-1 text-muted" href="/arsip-register">
                         &nbsp; Arsip Register
                     </a>
                 </li>
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/laporan-pajak">
+                    <a class="nav-link pb-1 text-muted" href="/laporan-pajak">
                         &nbsp; Laporan Pajak
                     </a>
                 </li>
@@ -107,7 +107,7 @@
             </h6>
             <ul class="nav flex-column">
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1" href="/referensi">
+                    <a class="nav-link pb-1 text-muted" href="/referensi">
                         &nbsp; Referensi
                     </a>
                 </li>
@@ -127,4 +127,3 @@
             </span>
         </div>
     </div>
-</nav>
