@@ -48,7 +48,6 @@ class SatkerController extends Controller
             abort(403);
         }
         if ($request['kodesatkerkoordinator'] != null) {
-            return $request;
             $request->validate([
                 'kodesatkerkoordinator'=>'min:6|max:6',
             ]);
@@ -118,7 +117,6 @@ class SatkerController extends Controller
             abort(403);
         }
         if ($request['kodesatkerkoordinator'] != null) {
-            return $request;
             $request->validate([
                 'kodesatkerkoordinator'=>'min:6|max:6',
             ]);
