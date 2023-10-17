@@ -30,15 +30,6 @@
                 </div>
             </div>
             <div class="form-group mb-2">
-                <label for="">Email:</label>
-                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $data->email }}">
-                <div class="invalid-feedback">
-                    @error('email')
-                    {{$message}}
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group mb-2">
                 <label for="">Satker:</label>
                 <input type="text" name="satker" class="form-control @error('satker') is-invalid @enderror" value="{{ $data->satker }}">
                 <div class="invalid-feedback">
