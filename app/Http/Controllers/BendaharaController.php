@@ -21,11 +21,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class BendaharaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (! Gate::allows('Bendahara', auth()->user()->id)) {
@@ -37,33 +32,6 @@ class BendaharaController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
     public function show(tagihan $bendahara)
     {
         if (! Gate::allows('Bendahara', auth()->user()->id)) {
@@ -84,17 +52,6 @@ class BendaharaController extends Controller
                                             ->searchakun()->paginate(15)->withQueryString(),
             'tagihan'=>$bendahara
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(tagihan $tagihan)
-    {
-        //
     }
 
     public function editsp2d(tagihan $tagihan)
@@ -128,18 +85,6 @@ class BendaharaController extends Controller
             'tagihan'=>$tagihan,
             'realisasi'=>$realisasi
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, tagihan $tagihan)
-    {
-        //
     }
 
     public function updatesp2d(Request $request, tagihan $tagihan)
@@ -222,17 +167,6 @@ class BendaharaController extends Controller
             ]);
             return redirect('/bendahara/'.$tagihan->id)->with('berhasil', 'Data SSPB Berhasi Ditambahkan');
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(tagihan $tagihan)
-    {
-        //
     }
 
     public function tolak(tagihan $tagihan){
@@ -337,6 +271,7 @@ class BendaharaController extends Controller
 
         return view('bendahara.payroll',[
             'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString(),
+            'tagihan'=>$tagihan
         ]);
     }
 
@@ -444,7 +379,8 @@ class BendaharaController extends Controller
         ]);
     }
 
-    public function dokumen(tagihan $tagihan){
+    public function dokumen(tagihan $tagihan)
+    {
         if (! Gate::allows('Bendahara', auth()->user()->id)) {
             abort(403);
         }
@@ -621,7 +557,6 @@ class BendaharaController extends Controller
 
         return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('berhasil','Data berhasil Ditambahkan.');
     }
-
 
     public function editppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {

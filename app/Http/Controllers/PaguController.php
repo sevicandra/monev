@@ -6,16 +6,9 @@ use App\Models\pagu;
 use App\Models\unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\StorepaguRequest;
-use App\Http\Requests\UpdatepaguRequest;
 
 class PaguController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
@@ -34,11 +27,6 @@ class PaguController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
@@ -48,12 +36,6 @@ class PaguController extends Controller
         return view('pagu.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorepaguRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
@@ -94,23 +76,6 @@ class PaguController extends Controller
         return redirect('/pagu');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\pagu  $pagu
-     * @return \Illuminate\Http\Response
-     */
-    public function show(pagu $pagu)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\pagu  $pagu
-     * @return \Illuminate\Http\Response
-     */
     public function edit(pagu $pagu)
     {
         if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
@@ -123,13 +88,6 @@ class PaguController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatepaguRequest  $request
-     * @param  \App\Models\pagu  $pagu
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, pagu $pagu)
     {
         if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
@@ -171,12 +129,6 @@ class PaguController extends Controller
         return redirect('/pagu');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\pagu  $pagu
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(pagu $pagu)
     {
         if (! Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {

@@ -22,7 +22,7 @@ class pphrekanan extends Model
 
     public function objekpajak()
     {
-        return $this->belongsTo(objekpajak::class);
+        return $this->belongsTo(objekpajak::class, 'objekpajak_id', 'kode');
     }
 
     public function tagihan()

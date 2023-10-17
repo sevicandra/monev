@@ -7,15 +7,9 @@ use App\Models\tagihan;
 use App\Models\realisasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\UpdaterealisasiRequest;
 
 class RealisasiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(tagihan $tagihan)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -37,22 +31,6 @@ class RealisasiController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorerealisasiRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(tagihan $tagihan, pagu $pagu)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -77,12 +55,6 @@ class RealisasiController extends Controller
         return redirect('/tagihan/'.$tagihan->id.'/realisasi')->with('berhasil', 'Realisasi Berhasil Di Tambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\realisasi  $realisasi
-     * @return \Illuminate\Http\Response
-     */
     public function show(tagihan $realisasi)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -104,12 +76,6 @@ class RealisasiController extends Controller
         ]); 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\realisasi  $realisasi
-     * @return \Illuminate\Http\Response
-     */
     public function edit(realisasi $realisasi)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -127,13 +93,6 @@ class RealisasiController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdaterealisasiRequest  $request
-     * @param  \App\Models\realisasi  $realisasi
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, realisasi $realisasi)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -158,12 +117,6 @@ class RealisasiController extends Controller
         return redirect('/tagihan/'.$realisasi->tagihan->id.'/realisasi')->with('berhasil', 'Realisasi Berhasil Di Ubah.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\realisasi  $realisasi
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(realisasi $realisasi)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {

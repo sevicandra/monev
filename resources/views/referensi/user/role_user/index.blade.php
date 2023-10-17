@@ -36,7 +36,7 @@
                         @endphp
                         @foreach ($data->role()->get() as $item)
                         <tr>
-                            <td class="text-center">{{ $i }}</td>
+                            <td class="text-center">{{ $i++ }}</td>
                             <td>{{ $item->koderole }}</td>
                             <td>{{ $item->role }}</td>
                             <td class="pb-0 pr-0">

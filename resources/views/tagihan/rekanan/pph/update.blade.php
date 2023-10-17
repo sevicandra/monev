@@ -14,7 +14,7 @@
                         <label for="">Objek Pajak:</label>
                         <select class="form-select form-select-sm mb-3" name="objek">
                             @foreach ($objekpajak as $obj)
-                                <option value="{{$obj->id}}" @if ($obj->id === $data->objekpajak_id) selected @endif>{{$obj->kode}} / {{$obj->nama}} - {{$obj->jenis}}</option>
+                                <option value="{{$obj->kode}}" @if ($obj->kode === $data->objekpajak_id) selected @endif>{{$obj->kode}} / {{$obj->nama}} - {{$obj->jenis}}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback">

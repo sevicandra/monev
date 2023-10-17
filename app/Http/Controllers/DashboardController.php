@@ -13,6 +13,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+
         return view('dashboard.index',[
             'belanjapegawai'=>pagu::pagusatker()->jenisbelanja('51')->get(),
             'belanjabarang'=>pagu::pagusatker()->jenisbelanja('52')->get(),
@@ -76,7 +77,7 @@ class DashboardController extends Controller
     public function ppk_detail(User $ppk)
     {
         return view('dashboard.ppk.detail',[
-            'data'=>tagihan::realisasiBulananPpk($ppk->id)->orderBy('bulan')->get(),
+            'data'=>tagihan::realisasiBulananPpk($ppk->nip)->orderBy('bulan')->get(),
             'ppk'=>$ppk
         ]);
     }
@@ -85,7 +86,7 @@ class DashboardController extends Controller
     {
         $bulanModel= bulan::where('kodebulan', $bulan)->first();
         return view('dashboard.ppk.detail-pok',[
-            'data'=>pagu::RealisasiBulananPpk($ppk->id, $bulanModel->kodebulan)->orderBy('pok')->get(),
+            'data'=>pagu::RealisasiBulananPpk($ppk->nip, $bulanModel->kodebulan)->orderBy('pok')->get(),
             'ppk'=>$ppk,
             'bulan'=>$bulanModel
         ]);
@@ -102,7 +103,7 @@ class DashboardController extends Controller
         }
 
         return view('dashboard.ppk.detail-tagihan',[
-            'data'=> tagihan::realisasiTagihanPerBulanPpk($ppk->id, $bulan)->get(),
+            'data'=> tagihan::realisasiTagihanPerBulanPpk($ppk->nip, $bulan)->get(),
             'ppk'=>$ppk,
             'bulan'=>$bulanModel
         ]);

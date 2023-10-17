@@ -34,7 +34,7 @@ class pagu extends Model
 
     public function unit()
     {
-        return $this->belongsTo(unit::class, 'kodeunit', 'id');
+        return $this->belongsTo(unit::class, 'kodeunit', 'kodeunit');
     }
 
     public function scopePagusatker()
@@ -54,7 +54,7 @@ class pagu extends Model
 
     public function ppk()
     {
-        return $this->belongsToMany(User::class, 'mapingpaguppks');
+        return $this->belongsToMany(User::class, 'mapingpaguppks', 'pagu_id', 'user_id', 'id', 'nip');
     }
 
     public function scopePagustafppk($data )
@@ -80,7 +80,7 @@ class pagu extends Model
     {
         return $data->wherehas('ppk', function($val){
             if (Gate::allows('PPK', auth()->user()->id)) {
-                return $val->where('user_id', auth()->user()->id);
+                return $val->where('user_id', auth()->user()->nip);
             }
     
             if (Gate::allows('Staf_PPK', auth()->user()->id)) {

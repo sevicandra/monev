@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Gate;
 
 class MonitoringTagihanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -27,40 +22,14 @@ class MonitoringTagihanController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
     public function show(Request $request,tagihan $monitoring_tagihan)
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($monitoring_tagihan->ppk_id != auth()->user()->id) {
+            if ($monitoring_tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -92,8 +61,9 @@ class MonitoringTagihanController extends Controller
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->id) {
+            if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -120,8 +90,9 @@ class MonitoringTagihanController extends Controller
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->id) {
+            if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -142,8 +113,9 @@ class MonitoringTagihanController extends Controller
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->id) {
+            if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -164,8 +136,9 @@ class MonitoringTagihanController extends Controller
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->id) {
+            if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -187,8 +160,9 @@ class MonitoringTagihanController extends Controller
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->id) {
+            if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -205,51 +179,28 @@ class MonitoringTagihanController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(tagihan $tagihan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, tagihan $tagihan)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(tagihan $tagihan)
-    {
-        //
-    }
-
     public function tolak(tagihan $tagihan)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-            abort(403);
-        }
+        
         if ($tagihan->status != 1) {
             return abort(403);
         }
+
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->nip) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+                abort(403);
+            }
+        }
+
         $tagihan->update(['status'=> 0]);
         register_tagihan::where('tagihan_id', $tagihan->id)->delete();
         return redirect('/monitoring-tagihan');

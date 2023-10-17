@@ -35,11 +35,7 @@ class RegisterController extends Controller
             'auth' => [config('esign.id'), config('esign.password')]
         ]);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -50,11 +46,7 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -63,12 +55,6 @@ class RegisterController extends Controller
         return view('register_tagihan.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreregisterRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -76,7 +62,7 @@ class RegisterController extends Controller
         }
 
         if (Gate::allows('PPK', auth()->user()->id)) {
-            $ppk_id = auth()->user()->id;
+            $ppk_id = auth()->user()->nip;
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -99,12 +85,6 @@ class RegisterController extends Controller
         return redirect('/register')->with('berhasil', 'Register Berhasil Ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\register  $register
-     * @return \Illuminate\Http\Response
-     */
     public function show(register $register)
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -112,7 +92,7 @@ class RegisterController extends Controller
         }
 
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($register->ppk_id != auth()->user()->id) {
+            if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -129,35 +109,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\register  $register
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(register $register)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateregisterRequest  $request
-     * @param  \App\Models\register  $register
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateregisterRequest $request, register $register)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\register  $register
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(register $register)
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -165,7 +116,7 @@ class RegisterController extends Controller
         }
 
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($register->ppk_id != auth()->user()->id) {
+            if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -188,7 +139,7 @@ class RegisterController extends Controller
             abort(403);
         }
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($register->ppk_id != auth()->user()->id) {
+            if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
@@ -203,13 +154,14 @@ class RegisterController extends Controller
         'register'=>$register
         ]);
     }
+    
     public function preview(register $register)
     {
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($register->ppk_id != auth()->user()->id) {
+            if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
             $ppk=auth()->user()->nama;
@@ -223,7 +175,7 @@ class RegisterController extends Controller
         }
         ob_start();
         $html2pdf = ob_get_clean();
-        $html2pdf = new Html2Pdf('P', 'A4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
+        $html2pdf = new Html2Pdf('P', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
         $html2pdf->addFont('Arial');
         $html2pdf->writeHTML(view('register_tagihan.surat',[
             'data'=>$register->tagihan,
@@ -239,7 +191,7 @@ class RegisterController extends Controller
             abort(403);
         }
         if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($register->ppk_id != auth()->user()->id) {
+            if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
             $ppk=auth()->user()->nama;

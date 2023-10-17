@@ -33,9 +33,7 @@
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>NIP</th>
-                                <th>Email</th>
                                 <th>Satker</th>
-                                <th>Date Created</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -48,9 +46,7 @@
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->nip }}</td>
-                                <td>{{ $item->email }}</td>
                                 <td>{{ $item->satker }}</td>
-                                <td>{{ $item->created_at }}</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
                                         <a href="role-user/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Role</a>

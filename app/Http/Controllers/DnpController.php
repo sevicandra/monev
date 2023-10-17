@@ -8,15 +8,9 @@ use Spipu\Html2Pdf\Html2Pdf;
 use App\Models\pegawainondjkn;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
-use App\Http\Requests\UpdatednpRequest;
 
 class DnpController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(tagihan $tagihan)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -33,11 +27,6 @@ class DnpController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(tagihan $tagihan)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -93,12 +82,6 @@ class DnpController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorednpRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(tagihan $tagihan, $nip)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -166,46 +149,6 @@ class DnpController extends Controller
         return redirect('/tagihan/'.$tagihan->id.'/dnp')->with('berhasil', 'Data Pegawai Berhasil Di Tambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\dnp  $dnp
-     * @return \Illuminate\Http\Response
-     */
-    public function show(dnp $dnp)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\dnp  $dnp
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(dnp $dnp)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatednpRequest  $request
-     * @param  \App\Models\dnp  $dnp
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatednpRequest $request, dnp $dnp)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\dnp  $dnp
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(tagihan $tagihan, dnp $dnp)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {

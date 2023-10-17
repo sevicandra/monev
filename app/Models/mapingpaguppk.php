@@ -22,6 +22,6 @@ class mapingpaguppk extends Model
 
     public function ppk()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'nip');
     }
 }

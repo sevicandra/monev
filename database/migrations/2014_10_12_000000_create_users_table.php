@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nip', '18');
             $table->string('satker', '6');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

@@ -1,4 +1,10 @@
 <style type="text/css">
+    *{
+        margin:0;
+        padding: 0
+    }
+
+
     table.page_header {
         width: 100%;
         border: none;
@@ -200,14 +206,13 @@
 
     <table class="detail" style="width: 100%; margin-left:3px;">
         <tr style="text-align: center;">
-            <td class="head" style="width: 4%;">No.</td>
-            <td class="head" style="width: 7%;">Nomor</td>
-            <td class="head" style="width: 18%;">Tanggal</td>
-            <td class="head" style="width: 34%;">Uraian</td>
-            <td class="head" style="width: 7%;">Jenis</td>
-            <td class="head" style="width: 10%;">Unit</td>
-            <td class="head" style="width: 10%;">Dokumen</td>
-            <td class="head" style="width: 10%;">Bruto</td>
+            <td class="head" style="width: 30px; padding: 5px 0">No.</td>
+            <td class="head" style="width: 60px; padding: 5px 0">Jenis</td>
+            <td class="head" style="width: 55px; padding: 5px 0">Nomor</td>
+            <td class="head" style="width: 95px; padding: 5px 0">Tanggal</td>
+            <td class="head" style="width: 250px; padding: 5px 0">Uraian</td>
+            <td class="head" style="width: 95px; padding: 5px 0">Dokumen</td>
+            <td class="head" style="width: 100px; padding: 5px 0">Bruto</td>
         </tr>
             @php
                 $i=1;
@@ -215,11 +220,8 @@
             @endphp
             @foreach ($data as $item)
             <tr>
-                <td class="head" style="text-align: center;width: 4%;">{{ $i }}</td>
-                <td class="head" style="text-align: center;width: 7%;">{{ $item->notagihan }}</td>
-                <td class="head" style="width: 18%;">{{ indonesiaDate($item->tgltagihan) }}</td>
-                <td class="head" style="width: 34%;">{{ $item->uraian }}</td>
-                <td class="head" style="text-align: center;width: 7%;">
+                <td class="head" style="text-align: center;width: 30px;">{{ $i }}</td>
+                <td class="head" style="text-align: center;width: 60px;">
                     @switch($item->jnstagihan)
                         @case(1)
                             SPP
@@ -231,9 +233,11 @@
                             SPBY
                     @endswitch
                 </td>
-                <td class="head" style="text-align: center;width: 10%;">{{ $item->unit->namaunit }}</td>
-                <td class="head" style="width: 10%;">{{ $item->dokumen->namadokumen }}</td>
-                <td class="head" style="text-align: right;width: 10%;">{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
+                <td class="head" style="text-align: center; width: 55px">{{ $item->notagihan }}</td>
+                <td class="head" style="text-align: center; width: 95px">{{ indonesiaDate($item->tgltagihan) }}</td>
+                <td class="head" style="text-align: justify ;width: 240px; padding: 5px 6px">{{ $item->uraian }}</td>
+                <td class="head" style="text-align: center;width: 95px;">{{ $item->dokumen->namadokumen }}</td>
+                <td class="head" style="text-align: right;width: 100px; padding-right:6px">{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
             </tr>
             @php
                 $i++;
@@ -241,8 +245,8 @@
             @endphp
             @endforeach
         <tr>
-            <td class="head" style="text-align: center;width: 10%;" colspan="7">Jumlah</td>
-            <td class="head" style="text-align: right;width: 10%;">{{ number_format($jumlah, 2, ',', '.') }}</td>
+            <td class="head" style="text-align: center; padding:5px 0" colspan="6">Jumlah</td>
+            <td class="head" style="text-align: right; padding-right:6px">{{ number_format($jumlah, 2, ',', '.') }}</td>
         </tr>
     </table>
 

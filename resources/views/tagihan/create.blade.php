@@ -56,7 +56,7 @@
                         <label for="">Unit:</label>
                         <select class="form-select form-select-sm mb-3" name="kodeunit">
                             @foreach ($unit as $item)
-                            <option value="{{ $item->id }}" @if (old('kodeunit') === $item->id) selected @endif>{{ $item->namaunit }}</option>
+                            <option value="{{ $item->kodeunit }}" @if (old('kodeunit') === $item->kodeunit) selected @endif>{{ $item->namaunit }}</option>
                             
                             @endforeach
                         </select>
@@ -70,7 +70,7 @@
                         <label for="">Jenis Dokumen:</label>
                         <select class="form-select form-select-sm mb-3" name="kodedokumen">
                             @foreach ($dokumen as $item)
-                                <option value="{{ $item->id }}" @if (old('kodedokumen') === $item->id) selected @endif>{{ $item->namadokumen }}</option>
+                                <option value="{{ $item->kodedokumen }}" @if (old('kodedokumen') === $item->kodedokumen) selected @endif>{{ $item->namadokumen }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback">

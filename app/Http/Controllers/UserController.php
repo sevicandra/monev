@@ -5,7 +5,6 @@ use App\Models\user;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -37,16 +36,14 @@ class UserController extends Controller
         }
         $messages = [
             'NIP.unique' => 'NIP Sudah Didaftarkan',
-            'email.unique' => 'Email Sudah Didaftarkan',
             'satker.numeric' => 'Kode Satker Harus Berupa Angka'
         ];
         
         $ValidatedData=$request->validate(
             [
                 'nama'=>'required|max:255',
-                'nip'=>'required|min:18|max:18|unique:users',
-                'email'=>'required|email|unique:users',
-                'satker'=>'required|min:6|max:6',
+                'nip'=>'required|min_digits:18|max_digits:18|unique:users',
+                'satker'=>'required|min_digits:6|max_digits:6',
                 'password'=>'required',
             ], $messages);
 
@@ -55,7 +52,6 @@ class UserController extends Controller
             'nama'=>$ValidatedData['nama'],
             'nip'=>$ValidatedData['nip'],
             'satker'=>$ValidatedData['satker'],
-            'email'=>$ValidatedData['email'],
             'password'=>$ValidatedData['password'],
         ]);
         return redirect('/user');
@@ -78,22 +74,19 @@ class UserController extends Controller
         }
         $messages = [
             'NIP.unique' => 'NIP Sudah Didaftarkan',
-            'email.unique' => 'Email Sudah Didaftarkan',
             'satker.numeric' => 'Kode Satker Harus Berupa Angka'
         ];
         
         $ValidatedData=$request->validate([
             'nama'=>'required|max:255',
-            'nip'=>'required|min:18|max:18',
-            'email'=>'required|email',
-            'satker'=>'required|min:6|max:6',
+            'nip'=>'required|min_digits:18|max_digits:18:unique:users,nip,'.$user->id,
+            'satker'=>'required|min_digits:6|max_digits:6',
         ], $messages);
 
         $user->update([
             'nama'=>$ValidatedData['nama'],
             'nip'=>$ValidatedData['nip'],
             'satker'=>$ValidatedData['satker'],
-            'email'=>$ValidatedData['email'],
         ]);
         return redirect('/user');
     }

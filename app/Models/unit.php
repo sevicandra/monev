@@ -26,7 +26,7 @@ class unit extends Model
 
     public function stafppk()
     {
-        return $this->belongsToMany(User::class, 'mapingunitstafppks');
+        return $this->belongsToMany(User::class, 'mapingunitstafppks', 'unit_id', 'user_id', 'kodeunit', 'nip');
     }
 
     public function scopeMyunit()
@@ -51,18 +51,18 @@ class unit extends Model
 
     public function verifikator()
     {
-        return $this->belongsToMany(User::class, 'verifikatorunits');
+        return $this->belongsToMany(User::class, 'verifikatorunits', 'unit_id', 'user_id', 'kodeunit', 'nip');
     }
 
     public function pagu()
     {
-        return $this->hasMany(pagu::class,'kodeunit')->where('tahun', session()->get('tahun'));
+        return $this->hasMany(pagu::class,'kodeunit', 'kodeunit')->where('tahun', session()->get('tahun'));
     }
 
     public function realisasi()
     {
         $realisasi= realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->where('tahun', session()->get('tahun'))->sp2d()
-        ->join('units', 'pagus.kodeunit', '=', 'units.id')->where('units.id', $this->id);
+        ->join('units', 'pagus.kodeunit', '=', 'units.kodeunit')->where('units.kodeunit', $this->kodeunit);
 
         if ($realisasi->first()) {
             return $realisasi;
@@ -78,7 +78,7 @@ class unit extends Model
     public function sspb()
     {
         $sspb= sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')->where('tahun', session()->get('tahun'))
-        ->join('units', 'pagus.kodeunit', '=', 'units.id')->where('units.id', $this->id);
+        ->join('units', 'pagus.kodeunit', '=', 'units.kodeunit')->where('units.kodeunit', $this->kodeunit);
 
         if ($sspb->first()) {
             return $sspb;

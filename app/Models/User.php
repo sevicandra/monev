@@ -25,7 +25,6 @@ class User extends Authenticatable
         'nama',
         'nip',
         'satker',
-        'email',
         'password',
     ];
 
@@ -40,21 +39,13 @@ class User extends Authenticatable
         'id',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
     public function satker(){
         return $this->belongsTo(satker::class, 'satker','kodesatker');
     }
 
     public function role(){
-        return $this->belongsToMany(role::class);
+        return $this->belongsToMany(role::class, 'role_user', 'user_id', 'role_id', 'nip', 'koderole');
     }
 
     public function is($access){
@@ -90,13 +81,13 @@ class User extends Authenticatable
 
     public function paguppk()
     {
-        return $this->belongsToMany(pagu::class, 'mapingpaguppks')->where('tahun', session()->get('tahun'));
+        return $this->belongsToMany(pagu::class, 'mapingpaguppks', 'user_id', 'pagu_id', 'nip', 'id')->where('tahun', session()->get('tahun'));
     }
 
     public function realisasippk()
     {
         $realisasi= realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')->sp2d()
-        ->join('users', 'mapingpaguppks.user_id', '=', 'users.id')->where('users.id', $this->id);
+        ->join('users', 'mapingpaguppks.user_id', '=', 'users.nip')->leftjoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')->where('users.nip', $this->nip);
         if ($realisasi->first()) {
             return $realisasi;
         }
@@ -111,7 +102,7 @@ class User extends Authenticatable
     public function sspbppk()
     {
         $sspb= sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')
-        ->join('users', 'mapingpaguppks.user_id', '=', 'users.id')->where('users.id', $this->id);
+        ->join('users', 'mapingpaguppks.user_id', '=', 'users.nip')->where('users.nip', $this->nip);
 
         if ($sspb->first()) {
             return $sspb;
@@ -126,12 +117,12 @@ class User extends Authenticatable
 
     public function stafppk()
     {
-        return $this->belongsToMany(User::class, 'mapingstafppks', 'ppk_id', 'staf_id');
+        return $this->belongsToMany(User::class, 'mapingstafppks', 'ppk_id', 'staf_id', 'nip', 'nip');
     }
 
     public function mapingstafppk()
     {
-        return $this->hasOne(mapingstafppk::class, 'staf_id');
+        return $this->hasOne(mapingstafppk::class, 'staf_id', 'nip');
     }
     
     public function scopeStafnoppk($data)
@@ -143,12 +134,12 @@ class User extends Authenticatable
     
     public function unitstafppk()
     {
-        return $this->belongsToMany(unit::class, 'mapingunitstafppks');
+        return $this->belongsToMany(unit::class, 'mapingunitstafppks', 'user_id', 'unit_id', 'nip', 'kodeunit');
     }
 
     public function verifikator()
     {
-        return $this->belongsToMany(unit::class, 'verifikatorunits');
+        return $this->belongsToMany(unit::class, 'verifikatorunits', 'user_id', 'unit_id', 'nip', 'kodeunit');
     }
 
     public function scopeVerifikatornonsign($data, $unit)

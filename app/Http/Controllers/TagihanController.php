@@ -18,11 +18,6 @@ use Illuminate\Support\Facades\Storage;
 
 class TagihanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -33,11 +28,6 @@ class TagihanController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -49,12 +39,6 @@ class TagihanController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoretagihanRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -99,23 +83,11 @@ class TagihanController extends Controller
         return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Dibuat.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
     public function show(tagihan $tagihan)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
     public function edit(tagihan $tagihan)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -135,13 +107,6 @@ class TagihanController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatetagihanRequest  $request
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, tagihan $tagihan)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -183,12 +148,6 @@ class TagihanController extends Controller
         return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Di Ubah.');;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(tagihan $tagihan)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {

@@ -24,7 +24,7 @@ class berkasupload extends Model
 
     public function berkas()
     {
-        return $this->belongsTo(berkas::class);
+        return $this->belongsTo(berkas::class, 'berkas_id', 'kodeberkas');
     }
 
     public function scopeCekberkas1($data)

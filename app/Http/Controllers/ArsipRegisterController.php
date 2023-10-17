@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\register;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Http\Request;
 
 class ArsipRegisterController extends Controller
 {

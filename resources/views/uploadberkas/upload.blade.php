@@ -15,7 +15,7 @@
                     <label for="">Jenis Dokumen:</label>
                     <select class="form-select form-select-sm mb-3" name="berkas">
                         @foreach ($berkas as $item)
-                            <option value="{{ $item->id }}" @if (old('berkas') === $item->id) selected @endif>{{ $item->namaberkas }}</option>
+                            <option value="{{ $item->kodeberkas }}" @if (old('berkas') === $item->kodeberkas) selected @endif>{{ $item->namaberkas }}</option>
                         @endforeach
                     </select>
                 </div>

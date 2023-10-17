@@ -7,15 +7,9 @@ use App\Models\User;
 use App\Models\mapingpaguppk;
 use App\Models\mapingstafppk;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 
 class MapingppkController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -27,12 +21,6 @@ class MapingppkController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\mapingpaguppk  $mapingpaguppk
-     * @return \Illuminate\Http\Response
-     */
     public function showpagu(User $ppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -71,12 +59,6 @@ class MapingppkController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\mapingpaguppk  $mapingpaguppk
-     * @return \Illuminate\Http\Response
-     */
     public function editpagu(User $ppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -115,13 +97,6 @@ class MapingppkController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatemapingpaguppkRequest  $request
-     * @param  \App\Models\mapingpaguppk  $mapingpaguppk
-     * @return \Illuminate\Http\Response
-     */
     public function updatepagu(User $ppk, pagu $pagu)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -138,7 +113,7 @@ class MapingppkController extends Controller
 
         mapingpaguppk::create([
             'pagu_id'=>$pagu->id,
-            'user_id'=>$ppk->id
+            'user_id'=>$ppk->nip
         ]);
         return Redirect()->back()->with('berhasil', 'Pagu Berhasil Ditambahkan Ke PPK '.$ppk->nama);
         return redirect('/maping-ppk/'.$ppk->id.'/pagu/edit')->with('berhasil', 'Pagu Berhasil Ditambahkan Ke PPK '.$ppk->nama);
@@ -159,18 +134,12 @@ class MapingppkController extends Controller
         }
 
         mapingstafppk::create([
-            'staf_id'=>$staf->id,
-            'ppk_id'=>$ppk->id
+            'staf_id'=>$staf->nip,
+            'ppk_id'=>$ppk->nip
         ]);
         return redirect('/maping-ppk/'.$ppk->id.'/staf/edit')->with('berhasil', 'staf Berhasil Ditambahkan Ke PPK '.$ppk->nama);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\mapingpaguppk  $mapingpaguppk
-     * @return \Illuminate\Http\Response
-     */
     public function destroypagu(User $ppk, mapingpaguppk $mapingppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {

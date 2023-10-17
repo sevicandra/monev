@@ -17,6 +17,6 @@ class mapingstafppk extends Model
 
     public function ppk()
     {
-        return $this->belongsTo(User::class, 'ppk_id');
+        return $this->belongsTo(User::class, 'ppk_id', 'nip');
     }
 }

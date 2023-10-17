@@ -96,7 +96,7 @@
                     <label for="">Unit:</label>
                     <select class="form-select form-select-sm mb-3" name="kodeunit">
                         @foreach ($unit as $item)
-                        <option value="{{ $item->id }}">{{ $item->namaunit }}</option>
+                        <option value="{{ $item->kodeunit }}">{{ $item->namaunit }}</option>
                         @endforeach
                     </select>
                 </div>

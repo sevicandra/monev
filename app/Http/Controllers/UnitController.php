@@ -7,16 +7,9 @@ use App\Models\unit;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\StoreunitRequest;
-use App\Http\Requests\UpdateunitRequest;
 
 class UnitController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -28,11 +21,6 @@ class UnitController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -42,12 +30,6 @@ class UnitController extends Controller
         return view('referensi.unit.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreunitRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -55,13 +37,10 @@ class UnitController extends Controller
         }
 
         $request->validate([
-            'kodeunit'=>'required|unique|min:2|max:2',
+            'kodeunit'=>'required|unique:units|min_digits:2|max_digits:2',
             'namaunit'=>'required'
         ]);
 
-        $request->validate([
-            'kodeunit'=>'numeric',
-        ]);
 
         unit::create([
             'kodeunit'=>$request->kodeunit,
@@ -70,17 +49,6 @@ class UnitController extends Controller
         ]);
 
         return redirect('/unit');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\unit  $unit
-     * @return \Illuminate\Http\Response
-     */
-    public function show(unit $unit)
-    {
-        //
     }
 
     public function showverifikator(unit $unit)
@@ -98,12 +66,6 @@ class UnitController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\unit  $unit
-     * @return \Illuminate\Http\Response
-     */
     public function edit(unit $unit)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -135,13 +97,6 @@ class UnitController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateunitRequest  $request
-     * @param  \App\Models\unit  $unit
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, unit $unit)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
@@ -153,8 +108,7 @@ class UnitController extends Controller
         }
 
         $request->validate([
-            'kodeunit'=>'required|unique|min:2|max:2',
-            'kodeunit'=>'numeric',
+            'kodeunit'=>'required|unique:units,kodeunit,'.$unit->id.'|min_digits:2|max_digits:2',
             'namaunit'=>'required'
         ]);
 
@@ -184,12 +138,6 @@ class UnitController extends Controller
         return redirect('/unit/'.$unit->id.'/verifikator/create')->with('berhasil', $verifikator->nama. ' Berhasil Ditambahkan Ke Unit '.$unit->namaunit);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\unit  $unit
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(unit $unit)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {

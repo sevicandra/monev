@@ -28,17 +28,17 @@ class tagihan extends Model
 
     public function ppk()
     {
-        return $this->belongsTo(User::class, 'ppk_id');
+        return $this->belongsTo(User::class, 'ppk_id', 'nip');
     }
 
     public function unit()
     {
-        return $this->belongsTo(unit::class, 'kodeunit', 'id');
+        return $this->belongsTo(unit::class, 'kodeunit', 'kodeunit');
     }
 
     public function dokumen()
     {
-        return $this->belongsTo(dokumen::class, 'kodedokumen', 'id');
+        return $this->belongsTo(dokumen::class, 'kodedokumen', 'kodedokumen');
     }
 
     public function berkasupload(){
@@ -98,7 +98,7 @@ class tagihan extends Model
     public function scopeTagihanppk($data)
     {
         if (Gate::allows('PPK', auth()->user()->id)) {
-            return $data->where('ppk_id', auth()->user()->id);
+            return $data->where('ppk_id', auth()->user()->nip);
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -143,10 +143,10 @@ class tagihan extends Model
                         ->orderby('notagihan', 'DESC');
     }
 
-    public function scopeRealisasiBulananPpk($data, $id)
+    public function scopeRealisasiBulananPpk($data, $nip)
     {
         if (request('sp2d') === 'ya') {
-            $data   ->where('ppk_id', $id)
+            $data   ->where('ppk_id', $nip)
                     ->where('tahun', session()->get('tahun'))
                     ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
                     ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
@@ -158,7 +158,7 @@ class tagihan extends Model
                     ->groupBy('bulan')
                     ;
         }else{
-            $data   ->where('ppk_id', $id)
+            $data   ->where('ppk_id', $nip)
                     ->where('tahun', session()->get('tahun'))
                     ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
                     ->leftjoin('bulans', function ($join) {
@@ -171,10 +171,10 @@ class tagihan extends Model
         }
     }
 
-    public function scopeRealisasiPaguBulananPpk($data, $id)
+    public function scopeRealisasiPaguBulananPpk($data, $nip)
     {
         if (request('sp2d') === 'ya') {
-            $data   ->where('ppk_id', $id)
+            $data   ->where('ppk_id', $nip)
                     ->where('tahun', session()->get('tahun'))
                     ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
                     ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
@@ -186,7 +186,7 @@ class tagihan extends Model
                     ->groupBy('bulan')
                     ;
         }else{
-            $data   ->where('ppk_id', $id)
+            $data   ->where('ppk_id', $nip)
                     ->where('tahun', session()->get('tahun'))
                     ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
                     ->leftjoin('bulans', function ($join) {
@@ -200,11 +200,11 @@ class tagihan extends Model
         }
     }
 
-    public function scopeRealisasiTagihanPerBulanPpk($data, $ppk_id, $bulan)
+    public function scopeRealisasiTagihanPerBulanPpk($data, $nip, $bulan)
     {
         if (request('sp2d') === 'ya') {
             if ($bulan === "null") {
-                return  $data   ->where('ppk_id', $ppk_id)
+                return  $data   ->where('ppk_id', $nip)
                                 ->leftjoin('spms', function($val)use($bulan){
                                     $val    ->on('spms.tagihan_id', '=', 'tagihans.id');
                                 })
@@ -216,7 +216,7 @@ class tagihan extends Model
                                 ->selectRaw('notagihan, jnstagihan, status, tgltagihan, uraian, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, realisasi, tanggal_sp2d, realisasis.id, nominal_sspb, tgltagihan')
                 ;
             }else{
-                return  $data   ->where('ppk_id', $ppk_id)
+                return  $data   ->where('ppk_id', $nip)
                                 ->join('spms', function($val)use($bulan){
                                     $val    ->on('spms.tagihan_id', '=', 'tagihans.id')
                                             ->where(DB::raw('MONTH(tanggal_sp2d)'), $bulan);
@@ -228,7 +228,7 @@ class tagihan extends Model
                 ;
             }
         }else{
-            return  $data   ->where('ppk_id', $ppk_id)
+            return  $data   ->where('ppk_id', $nip)
                             ->where(DB::raw('MONTH(tgltagihan)'), $bulan)
                             ->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
                             ->join('pagus', 'realisasis.pagu_id', '=', 'pagus.id')
@@ -244,7 +244,7 @@ class tagihan extends Model
     {
         if (request('sp2d') === 'ya') {
             $data   ->where('kodesatker', $unit->kodesatker)
-                    ->where('kodeunit', $unit->id)
+                    ->where('kodeunit', $unit->kodeunit)
                     ->where('tahun', session()->get('tahun'))
                     ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
                     ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
@@ -257,7 +257,7 @@ class tagihan extends Model
                     ;
         }else{
             $data   ->where('kodesatker', $unit->kodesatker)
-                    ->where('kodeunit', $unit->id)
+                    ->where('kodeunit', $unit->kodeunit)
                     ->where('tahun', session()->get('tahun'))
                     ->leftJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
                     ->leftjoin('bulans', function ($join) {
@@ -276,9 +276,10 @@ class tagihan extends Model
         if (request('sp2d') === 'ya') {
             if ($bulan === "null") {
                 return  $data   ->where('tagihans.kodesatker', $unit->kodesatker)
-                                ->where('tagihans.kodeunit', $unit->id)
+                                ->where('tagihans.kodeunit', $unit->kodeunit)
                                 ->leftjoin('spms', function($val)use($bulan){
                                     $val    ->on('spms.tagihan_id', '=', 'tagihans.id');
+                                    
                                 })
                                 ->where('spms.tanggal_sp2d', null)
                                 ->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
@@ -289,7 +290,7 @@ class tagihan extends Model
                 ;
             }else{
                 return  $data   ->where('tagihans.kodesatker', $unit->kodesatker)
-                                ->where('tagihans.kodeunit', $unit->id)
+                                ->where('tagihans.kodeunit', $unit->kodeunit)
                                 ->join('spms', function($val)use($bulan){
                                     $val    ->on('spms.tagihan_id', '=', 'tagihans.id')
                                             ->where(DB::raw('MONTH(tanggal_sp2d)'), $bulan);
@@ -302,7 +303,7 @@ class tagihan extends Model
             }
         }else{
             return  $data   ->where('tagihans.kodesatker', $unit->kodesatker)
-                            ->where('tagihans.kodeunit', $unit->id)
+                            ->where('tagihans.kodeunit', $unit->kodeunit)
                             ->where(DB::raw('MONTH(tgltagihan)'), $bulan)
                             ->join('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
                             ->join('pagus', 'realisasis.pagu_id', '=', 'pagus.id')

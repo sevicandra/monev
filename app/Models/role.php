@@ -18,7 +18,7 @@ class role extends Model
 
     public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'role_user', 'role_id', 'user_id', 'koderole', 'nip');
     }
 
     public function scopeOfUser($data, $user)
