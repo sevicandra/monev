@@ -181,7 +181,9 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        $tagihan->spm->delete();
+        if ($tagihan->spm) {
+            $tagihan->spm->delete();
+        }
         $tagihan->update([
             'status'=>2
         ]);
