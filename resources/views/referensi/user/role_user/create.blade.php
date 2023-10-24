@@ -12,7 +12,7 @@
     </div>
     <div class="row mb-3">
         <div class="col-lg-7">
-            <a href="/role/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
+            <a href="/role-user/{{ $user->id }}" class="btn btn-sm btn-outline-secondary mt-1 mb-1">Kembali</a>
         </div>
         <div class="col-lg-5">
 

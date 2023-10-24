@@ -134,7 +134,7 @@ class UnitController extends Controller
             abort(403);
         }
 
-        $unit->verifikator()->attach($verifikator->id);
+        $unit->verifikator()->attach($verifikator->nip);
         return redirect('/unit/'.$unit->id.'/verifikator/create')->with('berhasil', $verifikator->nama. ' Berhasil Ditambahkan Ke Unit '.$unit->namaunit);
     }
 
@@ -161,7 +161,7 @@ class UnitController extends Controller
             abort(403);
         }
 
-        $unit->verifikator()->detach($verifikator->id);
+        $unit->verifikator()->detach($verifikator->nip);
         return redirect('/unit/'.$unit->id.'/verifikator')->with('berhasil', $verifikator->nama. ' Berhasil Dihapus Dari Unit '.$unit->namaunit);
     }
 

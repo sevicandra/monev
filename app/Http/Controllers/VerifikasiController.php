@@ -153,11 +153,7 @@ class VerifikasiController extends Controller
                 ]);
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
                 break;
-
             case 1:
-                if (berkasupload::where('tagihan_id', $tagihan->id)->cekberkas3()->first() === null) {
-                    return back()->with('gagal','Data tidak dapat dikirim karena berkas belum lengkap.');
-                }
                 if (!isset($tagihan->spm)) {
                     return back()->with('gagal','Data tidak dapat dikirim karena tanggal SPM belum di input');
                 }
@@ -172,7 +168,6 @@ class VerifikasiController extends Controller
                 ]);
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
                 break;
-
             case 2:
                 $tagihan->update([
                     'status'=>4

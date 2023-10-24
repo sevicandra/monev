@@ -12,6 +12,7 @@
     </div>
     <div class="row mb-3">
         <div class="col-lg-7">
+            <a href="/maping-staf-ppk" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Kembali</a>
             <a href="/maping-staf-ppk/{{ $stafppk->id }}/unit/edit" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
         </div>
         <div class="col-lg-5">

@@ -46,8 +46,8 @@
                     <div class="form-group mb-2">
                         <label for="">Status Rekanan:</label>
                         <select class="form-select form-select-sm mb-3" name="statusrekanan">
-                            <option value="0" @if ($data->statusrekanan === '0') selected @endif>Non PPH</option>
-                            <option value="1" @if ($data->statusrekanan === '1') selected @endif>PPH</option>
+                            <option value="0" @if ($data->statusrekanan === '0') selected @endif>Non Rekanan</option>
+                            <option value="1" @if ($data->statusrekanan === '1') selected @endif>Rekanan</option>
                         </select>
                     </div>
                 </div>

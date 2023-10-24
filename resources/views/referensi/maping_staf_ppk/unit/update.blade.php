@@ -12,7 +12,7 @@
     </div>
     <div class="row mb-3">
         <div class="col-lg-7">
-            <a href="/maping-staf-ppk" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
+            <a href="/maping-staf-ppk/{{$stafppk->id}}/unit" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Kembali</a>
         </div>
         <div class="col-lg-5">
             <form action="" method="get" autocomplete="off">

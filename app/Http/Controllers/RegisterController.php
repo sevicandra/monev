@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Gate;
 use Endroid\QrCode\Encoding\Encoding;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Exception\ClientException;
-use App\Http\Requests\UpdateregisterRequest;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeShrink;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
 
