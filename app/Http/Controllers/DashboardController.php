@@ -13,7 +13,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
         return view('dashboard.index',[
             'belanjapegawai'=>pagu::pagusatker()->jenisbelanja('51')->get(),
             'belanjabarang'=>pagu::pagusatker()->jenisbelanja('52')->get(),

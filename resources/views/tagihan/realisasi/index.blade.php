@@ -13,7 +13,7 @@
     <div class="row mb-3">
         <div class="col-lg-5">
             <a href="/tagihan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-            <a href="/tagihan/realisasi/{{ $tagihan->id }}" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2"> Tarik Detail Akun</a>
+            <a href="/tagihan/realisasi/{{ $tagihan->id }}" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2"> Tambah Detail Akun</a>
         </div>
         <div class="col-lg-7">
             <form action="" method="get" autocomplete="off">

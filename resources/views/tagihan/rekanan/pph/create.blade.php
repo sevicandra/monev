@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="">NOP:</label>
+                        <label for="">Nilai Objek Pajak:</label>
                         <input type="text" name="pph" class="form-control @error('pph') is-invalid @enderror" value="{{ old('pph') }}">
                         <div class="invalid-feedback">
                             @error('pph')

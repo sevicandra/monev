@@ -32,7 +32,7 @@
                         <label for="">Tarif:</label>
                         <select class="form-select form-select-sm mb-3" name="tarif">
                             <option value="0.11" @if ($data->tarif === 0.11) selected @endif>11%</option>
-                            <option value="0.01"@if ($data->tarif === 0.01) selected @endif>1%</option>
+                            <option value="0.011"@if ($data->tarif === 0.011) selected @endif>1,1%</option>
                         </select>
                         <div class="invalid-feedback">
                             @error('tarif')
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="">Jumlah PPN:</label>
+                        <label for="">Nilai Objek Pajak:</label>
                         <input type="text" name="ppn" class="form-control @error('ppn') is-invalid @enderror" value="{{ $data->ppn }}">
                         <div class="invalid-feedback">
                             @error('ppn')

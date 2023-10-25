@@ -146,21 +146,16 @@ class pagu extends Model
     public function scopeRealisasiBulananPpk($data, $id, $bulan)
     {
         if (request('sp2d') === 'ya') {
-            $realisasi    = DB::table('realisasis')
-                            ->leftJoin('tagihans', 'tagihans.id', '=', 'realisasis.tagihan_id')
-                            ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
-                            ->where(DB::raw('LPAD(MONTH(spms.tanggal_sp2d), 2, "0")'),'<=', $bulan)
-                            ->select('realisasis.*')
-                        ;
+
             return $data   ->whereHas('ppk', function($val)use($id){
                             $val->where('user_id', $id);
                     })
                     ->where('pagus.tahun', session()->get('tahun'))
-                    ->leftJoinSub($realisasi, 'realisasis', function(JoinClause $join){
-                        $join->on('realisasis.pagu_id', '=', 'pagus.id');
+                    ->leftJoin('view_realisasipagubulanan', function(JoinClause $join)use($bulan){
+                        $join->on('pagus.id', '=', 'view_realisasipagubulanan.pagu_id')
+                        ->where('view_realisasipagubulanan.bulan_sp2d', '<=', $bulan);
                     })
-                    ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
-                    ->selectRaw('CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, anggaran, sum(realisasi) as realisasi, sum(nominal_sspb) as total_sspb')
+                    ->selectRaw('CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, anggaran, sum(realisasi) as realisasi, sum(pengembalian) as total_sspb')
                     ->groupBy('pagus.id')
                     ;
         }else{
@@ -187,20 +182,14 @@ class pagu extends Model
     public function scopeRealisasiBulananUnit($data, $unit, $bulan)
     {
         if (request('sp2d') === 'ya') {
-            $realisasi    = DB::table('realisasis')
-                            ->leftJoin('tagihans', 'tagihans.id', '=', 'realisasis.tagihan_id')
-                            ->leftJoin('spms', 'spms.tagihan_id', '=', 'tagihans.id')
-                            ->where(DB::raw('LPAD(MONTH(spms.tanggal_sp2d), 2, "0")'), '<=', $bulan)
-                            ->select('realisasis.*')
-                        ;
             return $data   ->where('kodesatker', $unit->kodesatker)
-                    ->where('kodeunit', $unit->id)
+                    ->where('kodeunit', $unit->kodeunit)
                     ->where('pagus.tahun', session()->get('tahun'))
-                    ->leftJoinSub($realisasi, 'realisasis', function(JoinClause $join){
-                        $join->on('realisasis.pagu_id', '=', 'pagus.id');
+                    ->leftJoin('view_realisasipagubulanan', function(JoinClause $join)use($bulan){
+                        $join->on('pagus.id', '=', 'view_realisasipagubulanan.pagu_id')
+                        ->where('view_realisasipagubulanan.bulan_sp2d', '<=', $bulan);
                     })
-                    ->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')
-                    ->selectRaw('CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, anggaran, sum(realisasi) as realisasi, sum(nominal_sspb) as total_sspb')
+                    ->selectRaw('CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, anggaran, sum(realisasi) as realisasi, sum(pengembalian) as total_sspb')
                     ->groupBy('pagus.id')
                     ;
         }else{
@@ -210,7 +199,7 @@ class pagu extends Model
                             ->select('realisasis.*')
             ;
             return $data   ->where('kodesatker', $unit->kodesatker)
-                    ->where('kodeunit', $unit->id)
+                    ->where('kodeunit', $unit->kodeunit)
                     ->where('pagus.tahun', session()->get('tahun'))
                     ->leftJoinSub($realisasi, 'realisasis', function(JoinClause $join){
                         $join->on('realisasis.pagu_id', '=', 'pagus.id');
