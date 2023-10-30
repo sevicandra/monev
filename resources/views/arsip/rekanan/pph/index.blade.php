@@ -41,12 +41,12 @@
                                 <td>{{ $item->objekpajak->nama }}</td>
                                 @if ($item->rekanan->npwp === 1)
                                 <td>{{ $item->objekpajak->tarif}}%</td>
+                                <td>{{ number_format(floor($item->pph*($item->objekpajak->tarif/100)), 2, ',', '.')}}</td>
                                 <td>{{ number_format($item->pph, 2, ',', '.')}}</td>
-                                <td>{{ number_format($item->pph/($item->objekpajak->tarif/100), 2, ',', '.')}}</td>
                                 @else
                                 <td>{{ $item->objekpajak->tarifnonnpwp}}%</td>
+                                <td>{{ number_format(floor($item->pph*($item->objekpajak->tarifnonnpwp/100)), 2, ',', '.')}}</td>
                                 <td>{{ number_format($item->pph, 2, ',', '.')}}</td>
-                                <td>{{ number_format($item->pph/($item->objekpajak->tarifnonnpwp/100), 2, ',', '.')}}</td>
                                 @endif
                             </tr>
                             @php

@@ -85,28 +85,28 @@ class MonitoringTagihanController extends Controller
         ]);
     }
 
-    public function showdnp(tagihan $tagihan)
-    {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
-            abort(403);
-        }
+    // public function showdnp(tagihan $tagihan)
+    // {
+    //     if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+    //         abort(403);
+    //     }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->nip) {
-                abort(403);
-            }
-        }
+    //     if (Gate::allows('PPK', auth()->user()->id)) {
+    //         if ($tagihan->ppk_id != auth()->user()->nip) {
+    //             abort(403);
+    //         }
+    //     }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
-                abort(403);
-            }
-        }
-        return view('monitoring_tagihan.dnp',[
-            'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
-        ]);
-    }
+    //     if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+    //         if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+    //             abort(403);
+    //         }
+    //     }
+    //     return view('monitoring_tagihan.dnp',[
+    //         'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString(),
+    //         'tagihan'=>$tagihan
+    //     ]);
+    // }
 
     public function showrekanan(tagihan $tagihan)
     {

@@ -65,6 +65,16 @@ class tagihan extends Model
         return $this->hasOne(register_tagihan::class);
     }
 
+    public function pph()
+    {
+        return $this->hasMany(pphrekanan::class);
+    }
+
+    public function ppn()
+    {
+        return $this->hasMany(ppnrekanan::class);
+    }
+
     public function scopeNotregistered($data)
     {
         return $data->where('status', 1)->doesntHave('register');
@@ -93,6 +103,11 @@ class tagihan extends Model
     public function spm()
     {
         return $this->hasOne(spm::class);
+    }
+
+    public function payroll()
+    {
+        return $this->hasMany(payroll::class);
     }
 
     public function scopeTagihanppk($data)

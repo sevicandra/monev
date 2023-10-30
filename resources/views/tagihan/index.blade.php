@@ -70,13 +70,14 @@
                                     <div class="btn-group btn-group-sm" role="group">
                                         <a href="/tagihan/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Ubah</a>
                                         <a href="/tagihan/{{ $item->id }}/realisasi" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Realisasi</a>
-                                        @if ($item->dokumen->statusdnp === '1')
+                                        {{-- @if ($item->dokumen->statusdnp === '1')
                                         <a href="/tagihan/{{ $item->id }}/dnp" class="btn btn-sm btn-outline-secondary pt-0 pb-0">DNP</a>
-                                        @endif
+                                        @endif --}}
                                         @if ($item->dokumen->statusrekanan === '1')
                                         <a href="/tagihan/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
                                         @endif
                                         <a href="/tagihan/{{ $item->id }}/upload" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Upload</a>
+                                        <a href="/tagihan/{{ $item->id }}/payroll" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Payroll</a>
                                         <form action="/tagihan/{{ $item->id }}" method="post">
                                             @csrf
                                             @method('DELETE')

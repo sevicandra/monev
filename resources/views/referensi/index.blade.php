@@ -145,10 +145,10 @@
                           
                         @canany(['PPK', 'Staf_PPK'], auth()->user()->id)
                             <tr>
-                                <td>Pegawai Non DJKN</td>
+                                <td>Rekening</td>
                                 <td class="pb-0 pr-0">
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="/pegawai-nondjkn" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                        <a href="/referensi-rekening" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                     </div>
                                 </td>
                             </tr>

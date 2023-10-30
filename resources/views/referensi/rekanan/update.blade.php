@@ -28,7 +28,7 @@
             </div>
             <div class="form-group mb-2">
                 <label for="">ID Pajak :</label>
-                <input type="text" name="idpajak" class="form-control @error('idpajak') is-invalid @enderror" value="{{ $data->idpajak }}" placeholder="NPWP/NIP">
+                <input type="text" name="idpajak" class="form-control @error('idpajak') is-invalid @enderror" value="{{ $data->idpajak }}" placeholder="NPWP/NIK">
                 <div class="invalid-feedback">
                     @error('idpajak')
                         {{$message}}

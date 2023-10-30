@@ -78,6 +78,7 @@
                                     @endif
                                     <a href="/verifikasi/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
                                     <a href="/verifikasi/{{ $item->id }}/coa" class="btn btn-sm btn-outline-secondary pt-0 pb-0">COA</a>
+                                    <a href="/verifikasi/{{ $item->id }}/payroll" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Payroll</a>
                                     @if ($item->dokumen->statusrekanan === '1')
                                     <a href="/verifikasi/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
                                     @endif

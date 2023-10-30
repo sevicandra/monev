@@ -1,0 +1,90 @@
+@extends('layout.main')
+
+@section('content')
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Tambah Referensi Rekening</h1>
+        </div>
+
+        <form action="" method="post" autocomplete="off">
+            @csrf
+            @method('PATCH')
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group mb-2">
+                        <label for="">NIK/NIP/NPWP:</label>
+                        <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ $data->kode }}">
+                        <div class="invalid-feedback">
+                            @error('kode')
+                                {{$message}}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Nama Pemilik Rekening:</label>
+                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ $data->nama }}">
+                        <div class="invalid-feedback">
+                            @error('nama')
+                                {{$message}}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Nomor Rekening:</label>
+                        <input type="text" name="norek" class="form-control @error('norek') is-invalid @enderror" value="{{ $data->norek }}">
+                        <div class="invalid-feedback">
+                            @error('norek')
+                                {{$message}}
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Nama Bank:</label>
+                        <select id="bank" class="form-select form-select-sm mb-3" name="bank">
+                            <option value="Bank Negara Indonesia" @if ($data->bank === 'Bank Negara Indonesia') selected @endif>Bank Negara Indonesia</option>
+                            <option value="Bank Rakyat Indonesia" @if ($data->bank === 'Bank Rakyat Indonesia') selected @endif>Bank Rakyat Indonesia</option>
+                            <option value="Bank Mandiri" @if ($data->bank === 'Bank Mandiri') selected @endif>Bank Mandiri</option>
+                            <option value="Bank Syariah Indonesia" @if ($data->bank === 'Bank Syariah Indonesia') selected @endif>Bank Syariah Indonesia</option>
+                            <option value="Other" @if ($data->bank === 'Other') selected @endif>Other</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            @error('bank')
+                                {{$message}}
+                            @enderror
+                        </div>
+                    </div>
+                    <div id="otherBank" class="form-group mb-2" style="display: @if ($data->bank === 'Other') selected @else none @endif">
+                        <input  placeholder="Input Other Bank Name" type="text" name="otherBank" class="form-control @error('otherBank') is-invalid @enderror" value="{{ $data->otherbank }}">
+                        <div class="invalid-feedback">
+                            @error('otherBank')
+                                {{$message}}
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="form-group">
+                        <a href="/referensi-rekening" class="btn btn-sm btn-outline-secondary">Batal</a>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </main>
+@endsection
+
+@section('foot')
+<script>
+    document.getElementById("bank").addEventListener("change", function() {
+        var otherBankInput = document.getElementById("otherBank");
+        if (this.value === "Other") {
+            otherBankInput.style.display = "block";
+        } else {
+            otherBankInput.style.display = "none";
+        }
+    });
+</script>
+@endsection

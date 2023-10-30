@@ -37,6 +37,8 @@ use App\Http\Controllers\MapingstafppkController;
 use App\Http\Controllers\PegawainondjknController;
 use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\MonitoringTagihanController;
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\RefRekeningController;
 
 /*
 |--------------------------------------------------------------------------
@@ -156,6 +158,14 @@ Route::controller(TagihanController::class)->group(function(){
     Route::get('/tagihan/{tagihan}/rekanan/{rekanan}/pph/{pph}/edit', 'editpphrekanan')->middleware('auth');
     Route::patch('/tagihan/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'updatepphrekanan')->middleware('auth');
     Route::delete('/tagihan/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'deletepphrekanan')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/payroll', 'payroll')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/payroll/create', 'createPayroll')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/payroll/create', 'storePayroll')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/payroll/import-hris', 'importHrisPayroll')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/payroll/import-monev', 'importMonevPayroll')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
+    Route::delete('/tagihan/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
 });
 
 Route::resource('/tagihan', TagihanController::class)->middleware('auth');
@@ -167,24 +177,24 @@ Route::controller(RealisasiController::class)->group(function(){
 });
 Route::resource('/tagihan/realisasi', RealisasiController::class)->middleware('auth')->except('index|store');
 
-Route::controller(DnpController::class)->group(function(){
-    Route::get('/tagihan/{tagihan}/dnp/', 'index')->middleware('auth');
-    Route::delete('/tagihan/{tagihan}/dnp/{dnp}', 'destroy')->middleware('auth');
-    Route::get('/tagihan/{tagihan}/dnp/create', 'create')->middleware('auth');
-    Route::post('/tagihan/{tagihan}/dnp/{nip}', 'store')->middleware('auth');
-    Route::get('/tagihan/{tagihan}/dnp-non-djkn/create', 'create_non_djkn')->middleware('auth');
-    Route::post('/tagihan/{tagihan}/dnp-non-djkn/{pegawainondjkn}', 'store_non_djkn')->middleware('auth');
-    Route::get('/tagihan/{tagihan}/dnp/cetak', 'cetak')->middleware('auth');
-});
+// Route::controller(DnpController::class)->group(function(){
+//     Route::get('/tagihan/{tagihan}/dnp/', 'index')->middleware('auth');
+//     Route::delete('/tagihan/{tagihan}/dnp/{dnp}', 'destroy')->middleware('auth');
+//     Route::get('/tagihan/{tagihan}/dnp/create', 'create')->middleware('auth');
+//     Route::post('/tagihan/{tagihan}/dnp/{nip}', 'store')->middleware('auth');
+//     Route::get('/tagihan/{tagihan}/dnp-non-djkn/create', 'create_non_djkn')->middleware('auth');
+//     Route::post('/tagihan/{tagihan}/dnp-non-djkn/{pegawainondjkn}', 'store_non_djkn')->middleware('auth');
+//     Route::get('/tagihan/{tagihan}/dnp/cetak', 'cetak')->middleware('auth');
+// });
 
-Route::resource('/tagihan/dnp', DnpController::class)->except('index|store|create')->middleware('auth');
+// Route::resource('/tagihan/dnp', DnpController::class)->except('index|store|create')->middleware('auth');
 
-Route::controller(NominaldnpController::class)->group(function(){
-    Route::get('/tagihan/{tagihan}/dnp/{dnp}/nominal/', 'create')->middleware('auth');
-    Route::get('/tagihan/{tagihan}/dnp/{dnp}/nominal/{nominaldnp}/update', 'edit')->middleware('auth');
-    Route::post('/tagihan/{tagihan}/dnp/{dnp}/nominal/', 'store')->middleware('auth');
-    Route::patch('/tagihan/{tagihan}/dnp/{dnp}/nominal/{nominaldnp}/update', 'update')->middleware('auth');
-});
+// Route::controller(NominaldnpController::class)->group(function(){
+//     Route::get('/tagihan/{tagihan}/dnp/{dnp}/nominal/', 'create')->middleware('auth');
+//     Route::get('/tagihan/{tagihan}/dnp/{dnp}/nominal/{nominaldnp}/update', 'edit')->middleware('auth');
+//     Route::post('/tagihan/{tagihan}/dnp/{dnp}/nominal/', 'store')->middleware('auth');
+//     Route::patch('/tagihan/{tagihan}/dnp/{dnp}/nominal/{nominaldnp}/update', 'update')->middleware('auth');
+// });
 
 Route::controller(RegisterController::class)->group(function(){
     Route::get('register/{register}/create', 'detailcreate')->middleware('auth');
@@ -202,7 +212,7 @@ Route::controller(RegisterTagihanController::class)->group(function(){
 
 Route::controller(MonitoringTagihanController::class)->group(function(){
     Route::get('/monitoring-tagihan/{tagihan}/coa', 'showcoa')->middleware('auth');
-    Route::get('/monitoring-tagihan/{tagihan}/dnp', 'showdnp')->middleware('auth');
+    // Route::get('/monitoring-tagihan/{tagihan}/dnp', 'showdnp')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/tolak', 'tolak')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/rekanan/{rekanan}/pph', 'showpphrekanan')->middleware('auth');
@@ -236,6 +246,14 @@ Route::controller(VerifikasiController::class)->group(function(){
     Route::patch('/verifikasi/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'updatepphrekanan')->middleware('auth');
     Route::delete('/verifikasi/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'deletepphrekanan')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/coa', 'coa')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/payroll', 'payroll')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/payroll/create', 'createPayroll')->middleware('auth');
+    Route::post('/verifikasi/{tagihan}/payroll/create', 'storePayroll')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/payroll/import-hris', 'importHrisPayroll')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/payroll/import-monev', 'importMonevPayroll')->middleware('auth');
+    Route::post('/verifikasi/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
+    Route::delete('/verifikasi/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
 });
 
 Route::resource('/verifikasi', VerifikasiController::class)->middleware('auth')->except('create');
@@ -279,6 +297,14 @@ Route::controller(BendaharaController::class)->group(function(){
     Route::get('/bendahara/{tagihan}/rekanan/{rekanan}/pph/{pph}/edit', 'editpphrekanan')->middleware('auth');
     Route::patch('/bendahara/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'updatepphrekanan')->middleware('auth');
     Route::delete('/bendahara/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'deletepphrekanan')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/payroll', 'payroll')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/payroll/create', 'createPayroll')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/payroll/create', 'storePayroll')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/payroll/import-hris', 'importHrisPayroll')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/payroll/import-monev', 'importMonevPayroll')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
+    Route::delete('/bendahara/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
 });
 
 Route::resource('/bendahara', BendaharaController::class)->middleware('auth');
@@ -286,7 +312,7 @@ Route::resource('/bendahara', BendaharaController::class)->middleware('auth');
 Route::controller(ArsipController::class)->group(function(){
     Route::get('/arsip/{tagihan}/dokumen', 'dokumen')->middleware('auth');
     Route::get('/arsip/{tagihan}/coa', 'coa')->middleware('auth');
-    Route::get('/arsip/{tagihan}/dnp', 'dnp')->middleware('auth');
+    // Route::get('/arsip/{tagihan}/dnp', 'dnp')->middleware('auth');
     Route::get('/arsip/{tagihan}/riwayat', 'showriwayat')->middleware('auth');
     Route::get('/arsip/{tagihan}/tolak', 'tolak')->middleware('auth');
     Route::get('/arsip/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
@@ -337,4 +363,24 @@ Route::get('/file-view/{path}/{file}', [FileViewController::class, 'view'])->mid
 
 Route::controller(ArsipRegisterController::class)->group(function(){
     Route::get('/arsip-register', 'index');
+});
+
+Route::controller(RefRekeningController::class)->group(function(){
+    Route::get('referensi-rekening', 'index');
+    Route::get('referensi-rekening/create', 'create');
+    Route::post('referensi-rekening/create', 'store');
+    Route::get('referensi-rekening/{rekening}/edit', 'edit');
+    Route::patch('referensi-rekening/{rekening}/edit', 'update');
+    Route::delete('referensi-rekening/{rekening}', 'destroy');
+});
+
+Route::controller(PayrollController::class)->group(function(){
+    Route::get('/payroll', 'index');
+    Route::get('/payroll/{tagihan}', 'show')->middleware('auth');
+    Route::get('/payroll/{tagihan}/cetak', 'cetak')->middleware('auth');
+    Route::get('/payroll/{tagihan}/dokumen', 'dokumen')->middleware('auth');
+    Route::get('/payroll/{tagihan}/approve', 'approve')->middleware('auth');
+    Route::get('/payroll/{tagihan}/upload', 'upload')->middleware('auth');
+    Route::patch('/payroll/{tagihan}/upload', 'upload')->middleware('auth');
+    Route::delete('/payroll/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth');
 });

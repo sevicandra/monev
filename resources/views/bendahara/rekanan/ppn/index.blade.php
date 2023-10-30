@@ -41,10 +41,10 @@
                             <tr>
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->nomorfaktur }}</td>
-                                <td>{{ $item->tanggalfaktur}}</td>
+                                <td>{{ indonesiaDate($item->tanggalfaktur)}}</td>
                                 <td>{{ $item->tarif*100}}%</td>
+                                <td>{{ number_format(floor($item->ppn*$item->tarif), 2, ',', '.')}}</td>
                                 <td>{{ number_format($item->ppn, 2, ',', '.')}}</td>
-                                <td>{{ number_format($item->ppn/$item->tarif, 2, ',', '.')}}</td>
                                 <td class="pb-0">
                                     <div class="btn-group btn-group-sm" role="group">
                                         <form action="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/ppn/{{ $item->id }}" method="post">

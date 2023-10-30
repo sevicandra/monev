@@ -41,8 +41,8 @@
                                 <td>{{ $item->nomorfaktur }}</td>
                                 <td>{{ indonesiaDate($item->tanggalfaktur)}}</td>
                                 <td>{{ $item->tarif*100}}%</td>
+                                <td>{{ number_format(floor($item->ppn*$item->tarif), 2, ',', '.')}}</td>
                                 <td>{{ number_format($item->ppn, 2, ',', '.')}}</td>
-                                <td>{{ number_format($item->ppn/$item->tarif, 2, ',', '.')}}</td>
                             </tr>
                             @php
                                 $i++;

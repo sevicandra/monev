@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-group mb-2">
                         <label for="">ID Pajak :</label>
-                        <input type="text" name="idpajak" class="form-control @error('idpajak') is-invalid @enderror" value="{{ old('idpajak') }}" placeholder="NPWP/NIP">
+                        <input type="text" name="idpajak" class="form-control @error('idpajak') is-invalid @enderror" value="{{ old('idpajak') }}" placeholder="NPWP/NIK">
                         <div class="invalid-feedback">
                             @error('idpajak')
                                 {{$message}}
@@ -39,7 +39,7 @@
             <div class="row mt-3">
                 <div class="col">
                     <div class="form-group">
-                        <a href="/pph" class="btn btn-sm btn-outline-secondary">Batal</a>
+                        <a href="/rekanan" class="btn btn-sm btn-outline-secondary">Batal</a>
                         <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
                     </div>
                 </div>

@@ -3,7 +3,7 @@
 @section('content')
 <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Bendahara</h1>
+        <h1 class="h2">Payroll</h1>
     </div>
     <div class="row">
         <div class="col">
@@ -32,13 +32,10 @@
                             <th>Jenis Tagihan</th>
                             <th>Nomor</th>
                             <th>Tanggal</th>
-                            <th>Tgl SPM</th>
-                            <th>No SP2D</th>
-                            <th>Tgl SP2D</th>
                             <th>Unit</th>
                             <th>PPK</th>
-                            <th>Jenis Dokumen</th>
-                            <th>Bruto</th>
+                            <th>Nilai Tagihan</th>
+                            <th>Nilai Payroll</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -64,39 +61,15 @@
                             </td>
                             <td>{{ $item->notagihan }}</td>
                             <td>{{ $item->tgltagihan }}</td>
-                            <td>
-                                @if (isset($item->spm))
-                                    {{ $item->spm->tanggal_spm }}
-                                @endif
-                            </td>
-                            <td>
-                                @if (isset($item->spm))
-                                {{ $item->spm->nomor_sp2d }}
-                            @endif
-                            </td>
-                            <td>
-                                @if (isset($item->spm))
-                                    {{ $item->spm->tanggal_sp2d }}
-                                @endif
-                            </td>
-                            <td>{{ $item->unit->namaunit }}</td>
-                            <td>{{ $item->ppk->nama }}</td>
-                            <td>{{ $item->dokumen->namadokumen }}</td>
-                            <td class="text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
+                            <td>{{ $item->namaunit }}</td>
+                            <td>{{ $item->ppk }}</td>
+                            <td class="text-right">Rp{{ number_format($item->realisasi, 2, ',', '.') }}</td>
+                            <td class="text-right">Rp{{ number_format($item->payroll, 2, ',', '.') }}</td>
                             <td class="pb-0">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/bendahara/{{ $item->id }}/sp2d" class="btn btn-sm btn-outline-secondary pt-0 pb-0">SP2D</a>
-                                    <a href="/bendahara/{{ $item->id }}/dokumen" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Dokumen</a>
-                                        {{-- @if ($item->dokumen->statusdnp === '1')
-                                        <a href="/bendahara/{{ $item->id }}/payroll" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Payroll</a>
-                                        @endif --}}
-                                    <a href="/bendahara/{{ $item->id }}/payroll" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Payroll</a>
-                                    <a href="/bendahara/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">COA</a>
-                                    @if ($item->dokumen->statusrekanan === '1')
-                                    <a href="/bendahara/{{ $item->id }}/rekanan" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Rekanan</a>
-                                    @endif
-                                    <a href="/bendahara/{{ $item->id }}/tolak" class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
-                                    <a href="/bendahara/{{ $item->id }}/approve" class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
+                                    <a href="/payroll/{{ $item->id }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Detail</a>
+                                    <a href="/payroll/{{ $item->id }}/dokumen" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Dokumen</a>
+                                    <a href="/payroll/{{ $item->id }}/approve" class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
                                 </div>
                             </td>
                         </tr>

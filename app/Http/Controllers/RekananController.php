@@ -36,15 +36,12 @@ class RekananController extends Controller
             'idpajak'=>'required|numeric'
         ]);
 
+        $request->validate([
+            'idpajak'=>'min:15|max:16'
+        ]);
         if ($request->npwp) {
-            $request->validate([
-                'idpajak'=>'min:15|max:15'
-            ]);
             $npwp=true;
         }else{
-            $request->validate([
-                'idpajak'=>'min:16|max:16'
-            ]);
             $npwp=false;
         }
 
@@ -92,15 +89,12 @@ class RekananController extends Controller
             'idpajak'=>'required|numeric'
         ]);
 
+        $request->validate([
+            'idpajak'=>'min:15|max:16'
+        ]);
         if ($request->npwp) {
-            $request->validate([
-                'idpajak'=>'min:15|max:15'
-            ]);
             $npwp=true;
         }else{
-            $request->validate([
-                'idpajak'=>'min:16|max:16'
-            ]);
             $npwp=false;
         }
 

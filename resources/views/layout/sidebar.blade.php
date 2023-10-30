@@ -81,6 +81,11 @@
                         &nbsp; Bendahara
                     </a>
                 </li>
+                <li class="nav-item m-0 p-0">
+                    <a class="nav-link pb-1 text-muted" href="/payroll">
+                        &nbsp; Payroll
+                    </a>
+                </li>
                 @endcan
                 <li class="nav-item m-0 p-0">
                     <a class="nav-link pb-1 text-muted" href="/arsip">
