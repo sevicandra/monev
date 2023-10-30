@@ -826,7 +826,7 @@ class BendaharaController extends Controller
             abort(403);
         }
         return view('bendahara.payroll.index',[
-           'data'   => $tagihan->payroll()->paginate(15)->withQueryString(),
+           'data'   => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
            'tagihan' => $tagihan  
         ]);
     }

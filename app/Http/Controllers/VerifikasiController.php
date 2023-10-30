@@ -631,7 +631,7 @@ class VerifikasiController extends Controller
             return abort(403);
         }
         return view('verifikasi.payroll.index',[
-           'data'   => $tagihan->payroll()->paginate(15)->withQueryString(),
+           'data'   => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
            'tagihan' => $tagihan  
         ]);
     }

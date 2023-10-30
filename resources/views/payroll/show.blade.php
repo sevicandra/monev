@@ -17,7 +17,7 @@
             <div class="col-lg-5">
                 <form action="" method="get" autocomplete="off">
                     <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Nama Pegawai" value="{{request('search')}}">
+                        <input type="text" name="search" class="form-control" placeholder="Nama Penerima">
                         <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
                     </div>
                 </form>

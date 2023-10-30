@@ -39,4 +39,12 @@ class Payroll extends Model
                         ->selectRaw('tagihans.*, namaunit, users.nama as ppk, sum(realisasis.realisasi) as realisasi, sum(bruto) as payroll')
         ;
     }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            $data = $data->where('nama','like','%'. request('search').'%');
+        }
+        return $data;
+    }
 }

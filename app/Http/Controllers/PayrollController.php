@@ -136,7 +136,7 @@ class PayrollController extends Controller
             abort(403);
         }
         return view('payroll.show',[
-            'data'=>$tagihan->payroll()->paginate(15)->withQueryString(),
+            'data'=>$tagihan->payroll()->search()->paginate(15)->withQueryString(),
             'tagihan'=>$tagihan
         ]);
     }
