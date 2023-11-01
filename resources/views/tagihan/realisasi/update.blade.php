@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="form-group mb-2">
-                <label for="">Realisasi:</label>
+                <label for="">Realisasi (Bruto):</label>
                 <input type="text" name="realisasi" class="form-control " value="{{ $data->realisasi }}">
                 <div class="invalid-feedback">
                     @error('realisasi')
@@ -25,7 +25,7 @@
     <div class="row mt-3">
         <div class="col">
             <div class="form-group">
-                <a href="/tagihan/realisasi/{{ $data->tagihan->id }}/index" class="btn btn-sm btn-outline-secondary">Batal</a>
+                <a href="/tagihan/{{ $data->tagihan->id }}/realisasi" class="btn btn-sm btn-outline-secondary">Batal</a>
                 <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
             </div>
         </div>

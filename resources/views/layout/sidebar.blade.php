@@ -1,5 +1,5 @@
 
-    <div class="pt-3 d-flex flex-column justify-content-between pb-3 h-100 max-h-100 overflow-auto">
+    <div class="pt-3 d-flex flex-column justify-content-between pb-3 h-100 max-h-100 overflow-auto position-sticky">
         <div>
             {{--  Halaman Utama  --}}
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
@@ -36,21 +36,21 @@
                     </a>
                 </li>
                 @endcan
-                <li class="nav-item m-0 p-0">
+                {{-- <li class="nav-item m-0 p-0">
                     <a class="nav-link pb-1 text-muted" href="/register">
                         &nbsp; Register Tagihan
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item m-0 p-0">
                     <a class="nav-link pb-1 text-muted" href="/monitoring-tagihan">
                         &nbsp; Arsip Tagihan
                     </a>
                 </li>
-                <li class="nav-item m-0 p-0">
+                {{-- <li class="nav-item m-0 p-0">
                     <a class="nav-link pb-1 text-muted" href="/arsip-register">
                         &nbsp; Arsip Register
                     </a>
-                </li>
+                </li> --}}
             </ul>
             @endcanany
             {{--  Akhir Pejabat Pembuat Komitmen  --}}
@@ -77,13 +77,13 @@
                 @endcan
                 @can('Bendahara', auth()->user()->id)
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1 text-muted" href="/bendahara">
-                        &nbsp; Bendahara
+                    <a class="nav-link pb-1 text-muted" href="/payroll">
+                        &nbsp; Payroll
                     </a>
                 </li>
                 <li class="nav-item m-0 p-0">
-                    <a class="nav-link pb-1 text-muted" href="/payroll">
-                        &nbsp; Payroll
+                    <a class="nav-link pb-1 text-muted" href="/bendahara">
+                        &nbsp; Bendahara
                     </a>
                 </li>
                 @endcan
@@ -92,11 +92,11 @@
                         &nbsp; Arsip Tagihan
                     </a>
                 </li>
-                <li class="nav-item m-0 p-0">
+                {{-- <li class="nav-item m-0 p-0">
                     <a class="nav-link pb-1 text-muted" href="/arsip-register">
                         &nbsp; Arsip Register
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item m-0 p-0">
                     <a class="nav-link pb-1 text-muted" href="/laporan-pajak">
                         &nbsp; Laporan Pajak

@@ -58,10 +58,10 @@
                                     <td>
                                         {{ $item->pok }}
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->realisasi, 2, ',', '.') }}
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->nominal_sspb, 2, ',', '.') }}
                                     </td>
                                     <td>{{ $item->tanggal_sp2d }}</td>

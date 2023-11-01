@@ -28,7 +28,7 @@
                                 <th>Objek Pajak</th>
                                 <th>Tarif</th>
                                 <th>PPh</th>
-                                <th>NOP</th>
+                                <th>DPP</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>

@@ -33,12 +33,13 @@
                                 <th>Nama</th>
                                 <th>NIP</th>
                                 <th>Golongan</th>
-                                <th>Bruto</th>
-                                <th>PPh</th>
+                                <th>Frekuensi</th>
+                                <th>Tarif Uang Harian</th>
+                                <th>Tarif Uang Representatif</th>
+                                <th>Transport</th>
+                                <th>Transport Lain-Lain</th>
+                                <th>Hotel</th>
                                 <th>Netto</th>
-                                <th>Rekening</th>
-                                <th>Nama Bank</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

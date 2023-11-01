@@ -40,6 +40,11 @@ class Payroll extends Model
         ;
     }
 
+    public function scopeBelumApprove($data)
+    {
+        return $data ->where('status', 0);
+    }
+
     public function scopeSearch($data)
     {
         if (request('search')) {

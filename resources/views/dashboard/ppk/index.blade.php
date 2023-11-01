@@ -41,25 +41,25 @@
                                     <td>
                                         <a href="ppk/{{ $item->id }}">{{ $item->nama }}</a>
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->paguppk->sum('anggaran'), 2, ',', '.') }}
                                         @php
                                             $pagu += $item->paguppk->sum('anggaran');
                                         @endphp
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->realisasippk()->sum('realisasi'), 2, ',', '.') }}
                                         @php
                                             $realisasi += $item->realisasippk()->sum('realisasi');
                                         @endphp
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}
                                         @php
                                             $pengembalian += $item->sspbppk()->sum('nominal_sspb');
                                         @endphp
                                     </td>
-                                    <td class="text-right">{{ number_format($item->paguppk->sum('anggaran')-$item->realisasippk()->sum('realisasi')+$item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}</td>
+                                    <td class="text-end">{{ number_format($item->paguppk->sum('anggaran')-$item->realisasippk()->sum('realisasi')+$item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}</td>
                                     <td class="text-center">
                                         @if ($item->paguppk->sum('anggaran') != 0)
                                             {{ number_format(($item->realisasippk()->sum('realisasi')-$item->sspbppk()->sum('nominal_sspb'))*100/$item->paguppk->sum('anggaran'), 2, ',', '.') }}%
@@ -74,10 +74,10 @@
                             @endforeach
                             <tr>
                                 <th class="text-center" colspan="2">Jumlah</th>
-                                <th class="text-right"> {{ number_format($pagu, 2, ',', '.') }} </th>
-                                <th class="text-right"> {{ number_format($realisasi, 2, ',', '.') }} </th>
-                                <th class="text-right"> {{ number_format($pengembalian, 2, ',', '.') }} </th>
-                                <th class="text-right">{{ number_format($pagu+$realisasi-$pengembalian, 2, ',', '.') }}</th>
+                                <th class="text-end"> {{ number_format($pagu, 2, ',', '.') }} </th>
+                                <th class="text-end"> {{ number_format($realisasi, 2, ',', '.') }} </th>
+                                <th class="text-end"> {{ number_format($pengembalian, 2, ',', '.') }} </th>
+                                <th class="text-end">{{ number_format($pagu+$realisasi-$pengembalian, 2, ',', '.') }}</th>
                                 <th class="text-center">
                                     @if ($pagu != 0)
                                     {{ number_format(($realisasi-$pengembalian)*100/$pagu, 2, ',', '.') }}%

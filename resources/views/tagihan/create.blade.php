@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group mb-2">
-                        <label for="">Nomor Tagihan:</label>
+                        <label for="">Nomor Tagihan (5 digit):</label>
                         <input type="text" name="notagihan" class="form-control @error('notagihan') is-invalid @enderror" value="{{ old('notagihan') }}">
                         <div class="invalid-feedback">
                             @error('notagihan')

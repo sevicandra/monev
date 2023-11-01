@@ -136,7 +136,7 @@ class PayrollController extends Controller
             abort(403);
         }
         return view('payroll.show',[
-            'data'=>$tagihan->payroll()->search()->paginate(15)->withQueryString(),
+            'data'=>$tagihan->payroll()->belumApprove()->search()->paginate(15)->withQueryString(),
             'tagihan'=>$tagihan
         ]);
     }
@@ -194,8 +194,8 @@ class PayrollController extends Controller
         ;
         $spreadsheet    ->getActiveSheet()
                         ->setCellValue('B5', "No.")
-                        ->setCellValue('C5', "Nama Penerima")
-                        ->setCellValue('D5', "Nomor Rekening")
+                        ->setCellValue('C5', "Nomor Rekening")
+                        ->setCellValue('D5', "Nama Penerima")
                         ->setCellValue('E5', "Bruto")
                         ->setCellValue('F5', "Pajak")
                         ->setCellValue('G5', "Biaya Admin")
@@ -206,19 +206,19 @@ class PayrollController extends Controller
                         ->getStyle('B5:I5')->applyFromArray($textcenter)
         ;
         $i=0;
-        foreach ($tagihan->payroll as $payroll) {
+        foreach ($tagihan->payroll()->BelumApprove()->get() as $payroll) {
             if (Str::upper($payroll->bank) === "BANK NEGARA INDONESIA" || Str::upper($payroll->bank) === "BNI" || Str::upper($payroll->bank) === "BANK NEGARAINDONESIA"|| Str::upper($payroll->bank) === "BANKNEGARA INDONESIA"|| Str::upper($payroll->bank) === "BANKNEGARAINDONESIA") {
                 $i++;
                 $spreadsheet    ->getActiveSheet()
                                 ->setCellValue('B'.($i+5), $i)
-                                ->setCellValue('C'.($i+5), $payroll->nama)
+                                ->setCellValue('D'.($i+5), $payroll->nama)
                                 ->setCellValue('E'.($i+5), $payroll->bruto)
                                 ->setCellValue('F'.($i+5), $payroll->pajak)
                                 ->setCellValue('G'.($i+5), $payroll->admin)
                                 ->setCellValue('H'.($i+5), $payroll->netto)
                                 ->setCellValue('I'.($i+5), $payroll->bank)
                 ;
-                $spreadsheet    ->getActiveSheet()->getCell('D'.($i+5))->setValueExplicit($payroll->norek, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                $spreadsheet    ->getActiveSheet()->getCell('C'.($i+5))->setValueExplicit($payroll->norek, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             }
         }
         $spreadsheet    ->getActiveSheet()
@@ -241,8 +241,8 @@ class PayrollController extends Controller
         ;
         $spreadsheet    ->getActiveSheet()
                         ->setCellValue('B'. $nonBNIcol+1, "No.")
-                        ->setCellValue('C'. $nonBNIcol+1, "Nama Penerima")
-                        ->setCellValue('D'. $nonBNIcol+1, "Nomor Rekening")
+                        ->setCellValue('C'. $nonBNIcol+1, "Nomor Rekening")
+                        ->setCellValue('D'. $nonBNIcol+1, "Nama Penerima")
                         ->setCellValue('E'. $nonBNIcol+1, "Bruto")
                         ->setCellValue('F'. $nonBNIcol+1, "Pajak")
                         ->setCellValue('G'. $nonBNIcol+1, "Biaya Admin")
@@ -253,12 +253,12 @@ class PayrollController extends Controller
                         ->getStyle('B'.$nonBNIcol+1 .':I'. $nonBNIcol+1)->applyFromArray($textcenter)
         ;
         $j= 0;
-        foreach ($tagihan->payroll as $payroll) {
+        foreach ($tagihan->payroll()->BelumApprove()->get() as $payroll) {
             if (!(Str::upper($payroll->bank) === "BANK NEGARA INDONESIA" || Str::upper($payroll->bank) === "BNI" || Str::upper($payroll->bank) === "BANK NEGARAINDONESIA"|| Str::upper($payroll->bank) === "BANKNEGARA INDONESIA"|| Str::upper($payroll->bank) === "BANKNEGARAINDONESIA")) {
                 $j++;
                 $spreadsheet    ->getActiveSheet()
                                 ->setCellValue('B'.$nonBNIcol+1+$j, $j)
-                                ->setCellValue('C'.$nonBNIcol+1+$j, $payroll->nama)
+                                ->setCellValue('D'.$nonBNIcol+1+$j, $payroll->nama)
 
                                 ->setCellValue('E'.$nonBNIcol+1+$j, $payroll->bruto)
                                 ->setCellValue('F'.$nonBNIcol+1+$j, $payroll->pajak)
@@ -266,7 +266,7 @@ class PayrollController extends Controller
                                 ->setCellValue('H'.$nonBNIcol+1+$j, $payroll->netto)
                                 ->setCellValue('I'.$nonBNIcol+1+$j, $payroll->bank)
                 ;
-                $spreadsheet    ->getActiveSheet()->getCell('D'.$nonBNIcol+1+$j)->setValueExplicit($payroll->norek, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                $spreadsheet    ->getActiveSheet()->getCell('C'.$nonBNIcol+1+$j)->setValueExplicit($payroll->norek, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             }
         }
         $spreadsheet    ->getActiveSheet()

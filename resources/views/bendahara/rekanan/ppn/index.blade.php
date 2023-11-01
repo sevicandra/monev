@@ -29,7 +29,7 @@
                                 <th>Tanggal Faktur</th>
                                 <th>Tarif</th>
                                 <th>PPN</th>
-                                <th>NOP</th>
+                                <th>DPP</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>

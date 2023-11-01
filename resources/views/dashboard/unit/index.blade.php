@@ -41,25 +41,25 @@
                                     <td>
                                         <a href="unit/{{ $item->id }}">{{ $item->namaunit }}</a>
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->pagu->sum('anggaran'), 2, ',', '.') }}
                                         @php
                                             $pagu += $item->pagu->sum('anggaran');
                                         @endphp
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->realisasi()->sum('realisasi'), 2, ',', '.') }}
                                         @php
                                             $realisasi += $item->realisasi()->sum('realisasi');
                                         @endphp
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->sspb()->sum('nominal_sspb'), 2, ',', '.') }}
                                         @php
                                             $pengembalian += $item->sspb()->sum('nominal_sspb');
                                         @endphp
                                     </td>
-                                    <td class="text-right">{{ number_format($item->pagu->sum('anggaran')-$item->realisasi()->sum('realisasi')+$item->sspb()->sum('nominal_sspb'), 2, ',', '.') }}</td>
+                                    <td class="text-end">{{ number_format($item->pagu->sum('anggaran')-$item->realisasi()->sum('realisasi')+$item->sspb()->sum('nominal_sspb'), 2, ',', '.') }}</td>
                                     <td class="text-center">{{ number_format(($item->realisasi()->sum('realisasi')-$item->sspb()->sum('nominal_sspb'))*100/$item->pagu->sum('anggaran'), 2, ',', '.') }}%</td>
                                 </tr>
                                 @php
@@ -68,10 +68,10 @@
                             @endforeach
                             <tr>
                                 <th class="text-center" colspan="2">Jumlah</th>
-                                <th class="text-right"> {{ number_format($pagu, 2, ',', '.') }} </th>
-                                <th class="text-right"> {{ number_format($realisasi, 2, ',', '.') }} </th>
-                                <th class="text-right"> {{ number_format($pengembalian, 2, ',', '.') }} </th>
-                                <th class="text-right">{{ number_format($pagu+$realisasi-$pengembalian, 2, ',', '.') }}</th>
+                                <th class="text-end"> {{ number_format($pagu, 2, ',', '.') }} </th>
+                                <th class="text-end"> {{ number_format($realisasi, 2, ',', '.') }} </th>
+                                <th class="text-end"> {{ number_format($pengembalian, 2, ',', '.') }} </th>
+                                <th class="text-end">{{ number_format($pagu+$realisasi-$pengembalian, 2, ',', '.') }}</th>
                                 <th class="text-center">
                                     @if ($pagu != 0)
                                     {{ number_format(($realisasi-$pengembalian)*100/$pagu, 2, ',', '.') }}%

@@ -41,16 +41,16 @@
                                     <td>
                                         {{ $item->pok }}
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->anggaran, 2, ',', '.') }}
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->realisasi, 2, ',', '.') }}
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         {{ number_format($item->total_sspb, 2, ',', '.') }}
                                     </td>
-                                    <td class="text-right">{{ number_format($item->anggaran-$item->realisasi+$item->total_sspb, 2, ',', '.') }}</td>
+                                    <td class="text-end">{{ number_format($item->anggaran-$item->realisasi+$item->total_sspb, 2, ',', '.') }}</td>
                                     <td class="text-center">{{ number_format(($item->realisasi-$item->total_sspb)*100/$item->anggaran, 2, ',', '.') }}%</td>
                                 </tr>
                                 @php
@@ -60,10 +60,10 @@
                             <tr>
                                 <th></th>
                                 <th></th>
-                                <th class="text-right">{{ number_format($data->sum('anggaran'), 2, ',', '.') }}</th>
-                                <th class="text-right">{{ number_format($data->sum('realisasi'), 2, ',', '.') }}</th>
-                                <th class="text-right">{{ number_format($data->sum('total_sspb'), 2, ',', '.') }}</th>
-                                <th class="text-right">{{ number_format($data->sum('anggaran')-$data->sum('realisasi')+$data->sum('total_sspb'), 2, ',', '.') }}</th>
+                                <th class="text-end">{{ number_format($data->sum('anggaran'), 2, ',', '.') }}</th>
+                                <th class="text-end">{{ number_format($data->sum('realisasi'), 2, ',', '.') }}</th>
+                                <th class="text-end">{{ number_format($data->sum('total_sspb'), 2, ',', '.') }}</th>
+                                <th class="text-end">{{ number_format($data->sum('anggaran')-$data->sum('realisasi')+$data->sum('total_sspb'), 2, ',', '.') }}</th>
                                 <th class="text-center">{{ number_format(($data->sum('realisasi')-$data->sum('total_sspb'))*100/$data->sum('anggaran'), 2, ',', '.') }}%</th>
                             </tr>
                         </tbody>

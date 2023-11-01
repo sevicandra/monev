@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="">Nilai Objek Pajak:</label>
+                        <label for="">Dasar Pengenaan Pajak:</label>
                         <input type="text" name="ppn" class="form-control @error('ppn') is-invalid @enderror" value="{{ old('ppn') }}">
                         <div class="invalid-feedback">
                             @error('ppn')

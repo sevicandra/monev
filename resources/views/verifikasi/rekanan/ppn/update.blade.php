@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="">Jumlah PPN:</label>
+                        <label for="">Dasar Pengenaan Pajak:</label>
                         <input type="text" name="ppn" class="form-control @error('ppn') is-invalid @enderror" value="{{ $data->ppn }}">
                         <div class="invalid-feedback">
                             @error('ppn')

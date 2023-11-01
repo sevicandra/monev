@@ -32,7 +32,7 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>NPWP</th>
-                            <th>Id Pajak</th>
+                            <th>NIK/NPWP</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
