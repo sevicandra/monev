@@ -1,83 +1,78 @@
 @extends('layout.main')
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Payroll</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Payroll</h1>
+    </div>
+    <div class="">
+        @include('layout.flashmessage')
+    </div>
+    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+        <div>
+            <a href="/verifikasi" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="/verifikasi/{{ $tagihan->id }}/payroll/create" class="btn btn-sm btn-neutral">Tambah</a>
+            <a href="/verifikasi/{{ $tagihan->id }}/payroll/import-hris" class="btn btn-sm btn-neutral">Import DB HRIS</a>
+            <a href="/verifikasi/{{ $tagihan->id }}/payroll/import-monev" class="btn btn-sm btn-neutral">Import DB Monev</a>
+            <a href="/verifikasi/{{ $tagihan->id }}/payroll/cetak" class="btn btn-sm btn-neutral" target="_blank">Cetak</a>
         </div>
-        <div class="row">
-            <div class="col">
-                @include('layout.flashmessage')
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-lg-7">
-                <a href="/verifikasi" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-                <a href="/verifikasi/{{ $tagihan->id }}/payroll/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Tambah</a>
-                <a href="/verifikasi/{{ $tagihan->id }}/payroll/import-hris" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Import DB HRIS</a>
-                <a href="/verifikasi/{{ $tagihan->id }}/payroll/import-monev" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Import DB Monev</a>
-                <a href="/verifikasi/{{ $tagihan->id }}/payroll/cetak" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2" target="_blank">Cetak</a>
-            </div>
-            <div class="col-lg-5">
-                <form action="" method="get" autocomplete="off">
-                    <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Nama Pegawai" value="{{request('search')}}">
-                        <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
+        <div>
+            <form action="" method="get" autocomplete="off">
+                <div class="join">
+                    <input type="text" name="search" class="input input-sm input-bordered join-item"
+                        placeholder="Nama Pegawai">
+                    <div class="indicator">
+                        <button class="btn join-item btn-sm btn-neutral">Cari</button>
                     </div>
-                </form>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="text-center">
-                            <tr class="align-middle">
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Nomor Rekening</th>
-                                <th>Nama Bank</th>
-                                <th>Bruto</th>
-                                <th>Pajak</th>
-                                <th>Adm.</th>
-                                <th>Netto</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $i=1;
-                            @endphp
-                            @foreach ($data as $item)
-                            <tr>
-                                <td class="text-center">{{ $i++ }}</td>
-                                <td>{{ $item->nama }}</td>
-                                <td>{{ $item->norek }}</td>
-                                <td>{{ $item->bank }}</td>
-                                <td class="text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
-                                <td class="pb-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <form action="/verifikasi/{{ $item->tagihan_id }}/payroll/{{ $item->id }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
                 </div>
-            </div>
+            </form>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                {{$data->links()}}
-            </div>
-        </div>
+    </div>
+    <div class="px-4 gap-2 overflow-y-auto">
+        <table class="table border-collapse w-full">
+            <thead class="text-center">
+                <tr class="align-middle">
+                    <th class="border border-base-content">No</th>
+                    <th class="border border-base-content">Nama</th>
+                    <th class="border border-base-content">Nomor Rekening</th>
+                    <th class="border border-base-content">Nama Bank</th>
+                    <th class="border border-base-content">Bruto</th>
+                    <th class="border border-base-content">Pajak</th>
+                    <th class="border border-base-content">Adm.</th>
+                    <th class="border border-base-content">Netto</th>
+                    <th class="border border-base-content">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $i = 1;
+                @endphp
+                @foreach ($data as $item)
+                    <tr>
+                        <td class="border border-base-content text-center">{{ $i++ }}</td>
+                        <td class="border border-base-content">{{ $item->nama }}</td>
+                        <td class="border border-base-content">{{ $item->norek }}</td>
+                        <td class="border border-base-content">{{ $item->bank }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
+                        <td class="border border-base-content">
+                            <div>
+                                <form action="/tagihan/{{ $item->tagihan_id }}/payroll/{{ $item->id }}"
+                                    method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-xs btn-error btn-outline round"
+                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@endsection
 
-    </main>
+@section('pagination')
+    {{ $data->links() }}
 @endsection

@@ -1,71 +1,62 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Upload</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">File Upload</h1>
     </div>
-    <div class="row">
-        <div class="col-lg-8">
-            @include('layout.flashmessage')
+    <div class="">
+        @include('layout.flashmessage')
+    </div>
+    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+        <div class="">
+            <a href="{{ $back }}" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="{{ $upload }}" class="btn btn-sm btn-neutral"> Tambah Data</a>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col-lg-5">
-            <a href="{{ $back }}" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-            <a href="{{ $upload }}" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
-        </div>
-        <div class="col-lg-3">
-        </div>
+    <div class="px-4 gap-2 overflow-y-auto">
+        <table class="table border-collapse w-full">
+            <thead class="text-center">
+                <tr class="align-middle">
+                    <th class="border border-base-content">No</th>
+                    <th class="border border-base-content">Berkas</th>
+                    <th class="border border-base-content">Keterangan</th>
+                    <th class="border border-base-content">Tanggal</th>
+                    <th class="border border-base-content">File</th>
+                    <th class="border border-base-content">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $i = 1;
+                @endphp
+                @foreach ($data->berkasupload as $item)
+                    <tr>
+                        <td class="text-center border border-base-content">{{ $i }}</td>
+                        <td class="border border-base-content">{{ $item->berkas->namaberkas }}</td>
+                        <td class="border border-base-content">{{ $item->uraian }}</td>
+                        <td class="border border-base-content">{{ $item->created_at }}</td>
+                        <td class="text-center border border-base-content">
+                            <div class="join">
+                                <a href="/file-view/{{ $item->file }}" class="btn btn-xs btn-outline btn-neutral"
+                                    target="_blank">Preview File</a>
+                            </div>
+                        </td>
+                        <td class="text-center border border-base-content">
+                            <div class="join">
+                                <form action="{{ $delete }}{{ $item->id }}/delete" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-xs btn-outline btn-error"
+                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @php
+                        $i++;
+                    @endphp
+                @endforeach
+            </tbody>
+        </table>
     </div>
-    <div class="row mb-3">
-        <div class="col-lg-12">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="text-center">
-                        <tr class="align-middle">
-                            <th>No</th>
-                            <th>Berkas</th>
-                            <th>Keterangan</th>
-                            <th>Tanggal</th>
-                            <th>File</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $i=1;
-                        @endphp
-                        @foreach ($data->berkasupload as $item)
-                            <tr>
-                                <td class="text-center">{{ $i }}</td>
-                                <td>{{ $item->berkas->namaberkas }}</td>
-                                <td>{{ $item->uraian }}</td>
-                                <td>{{ $item->created_at }}</td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="/file-view/{{ $item->file }}" class="btn btn-sm btn-outline-secondary pt-0 pb-0" target="_blank">Preview File</a>
-                                    </div>
-                                </td>
-                                <td class="text-center pb-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <form action="{{ $delete }}{{ $item->id }}/delete" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>   
-                        @php
-                            $i++;
-                        @endphp
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-</main>
 @endsection

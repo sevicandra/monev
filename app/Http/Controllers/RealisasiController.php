@@ -107,7 +107,7 @@ class RealisasiController extends Controller
         }
 
         $request->validate([
-            'realisasi'=>'required'
+            'realisasi'=>'required|numeric'
         ]);
 
         $realisasi->update([

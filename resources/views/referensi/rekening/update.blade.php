@@ -1,90 +1,118 @@
 @extends('layout.main')
 
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Tambah Referensi Rekening</h1>
-        </div>
-
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Ubah Referensi Rekening</h1>
+    </div>
+    <div class="px-4">
         <form action="" method="post" autocomplete="off">
             @csrf
             @method('PATCH')
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group mb-2">
-                        <label for="">NIK/NIP/NPWP:</label>
-                        <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ $data->kode }}">
-                        <div class="invalid-feedback">
-                            @error('kode')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Nama Pemilik Rekening:</label>
-                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ $data->nama }}">
-                        <div class="invalid-feedback">
-                            @error('nama')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Nomor Rekening:</label>
-                        <input type="text" name="norek" class="form-control @error('norek') is-invalid @enderror" value="{{ $data->norek }}">
-                        <div class="invalid-feedback">
-                            @error('norek')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Nama Bank:</label>
-                        <select id="bank" class="form-select form-select-sm mb-3" name="bank">
-                            <option value="Bank Negara Indonesia" @if ($data->bank === 'Bank Negara Indonesia') selected @endif>Bank Negara Indonesia</option>
-                            <option value="Bank Rakyat Indonesia" @if ($data->bank === 'Bank Rakyat Indonesia') selected @endif>Bank Rakyat Indonesia</option>
-                            <option value="Bank Mandiri" @if ($data->bank === 'Bank Mandiri') selected @endif>Bank Mandiri</option>
-                            <option value="Bank Syariah Indonesia" @if ($data->bank === 'Bank Syariah Indonesia') selected @endif>Bank Syariah Indonesia</option>
-                            <option value="Other" @if ($data->bank === 'Other') selected @endif>Other</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('bank')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div id="otherBank" class="form-group mb-2" style="display: @if ($data->bank === 'Other') selected @else none @endif">
-                        <input  placeholder="Input Other Bank Name" type="text" name="otherBank" class="form-control @error('otherBank') is-invalid @enderror" value="{{ $data->otherbank }}">
-                        <div class="invalid-feedback">
-                            @error('otherBank')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">NIK/NIP/NPWP:</span>
+                </label>
+                <input type="text" name="kode"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('kode') input-error @enderror"
+                    value="{{ $data->kode }}" />
+                <label class="label">
+                    @error('kode')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
             </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="form-group">
-                        <a href="/referensi-rekening" class="btn btn-sm btn-outline-secondary">Batal</a>
-                        <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                    </div>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Nama Pemilik Rekening:</span>
+                </label>
+                <input type="text" name="nama"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('nama') input-error @enderror"
+                    value="{{ $data->nama }}" />
+                <label class="label">
+                    @error('nama')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Nomor Rekening:</span>
+                </label>
+                <input type="text" name="norek"
+                    class="input input-sm input-bordered w-full max-w-xs @error('norek') input-error @enderror"
+                    value="{{ $data->norek }}" />
+                <label class="label">
+                    @error('norek')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Nama Bank:</span>
+                </label>
+                <select name="bank" id="bank"
+                    class="select select-sm select-bordered  w-full max-w-xs @error('bank') select-error @enderror"
+                    value="{{ $data->bank }}">
+                    <option value="Bank Negara Indonesia" @if ($data->bank === 'Bank Negara Indonesia') selected @endif>Bank Negara
+                        Indonesia</option>
+                    <option value="Bank Rakyat Indonesia" @if ($data->bank === 'Bank Rakyat Indonesia') selected @endif>Bank Rakyat
+                        Indonesia</option>
+                    <option value="Bank Mandiri" @if ($data->bank === 'Bank Mandiri') selected @endif>Bank Mandiri</option>
+                    <option value="Bank Syariah Indonesia" @if ($data->bank === 'Bank Syariah Indonesia') selected @endif>Bank
+                        Syariah Indonesia</option>
+                    <option value="Other" @if ($data->bank === 'Other') selected @endif>Other</option>
+                </select>
+                <label class="label">
+                    @error('bank')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div id="otherBank"
+                class="form-control w-full max-w-xs @if ($data->bank === 'Other') selected @else hidden @endif">
+                <label class="label">
+                    <span class="label-text">Nomor Rekening:</span>
+                </label>
+                <input type="text" name="otherBank"
+                    class="input input-sm input-bordered w-full max-w-xs @error('otherBank') input-error @enderror"
+                    value="{{ $data->otherbank }}" placeholder="Input Other Bank Name" />
+                <label class="label">
+                    @error('otherBank')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div>
+                <a href="/referensi-rekening" class="btn btn-sm btn-accent">Batal</a>
+                <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
             </div>
         </form>
-
-    </main>
+    </div>
 @endsection
 
 @section('foot')
-<script>
-    document.getElementById("bank").addEventListener("change", function() {
-        var otherBankInput = document.getElementById("otherBank");
-        if (this.value === "Other") {
-            otherBankInput.style.display = "block";
-        } else {
-            otherBankInput.style.display = "none";
-        }
-    });
-</script>
+    <script>
+        $(document).ready(function() {
+            $('#bank').on('change', function() {
+                var selectedValue = $(this).val();
+                if ($(this).val() === "Other") {
+                    $('#otherBank').removeClass('hidden');
+                } else {
+                    $('#otherBank').addClass('hidden');
+
+                }
+            });
+        });
+    </script>
 @endsection

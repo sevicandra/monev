@@ -122,7 +122,6 @@ class VerifikasiController extends Controller
         if ($tagihan->status != 2) {
             abort(403);
         }
-        $tagihan->register->delete();
         $tagihan->update([
             'status'=>0
         ]);
@@ -276,7 +275,7 @@ class VerifikasiController extends Controller
         }
         return view('verifikasi.rekanan.create',[
             'tagihan'=>$tagihan,
-            'data'=>rekanan::ofTagihan($tagihan->id)
+            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString()
         ]);
     }
 

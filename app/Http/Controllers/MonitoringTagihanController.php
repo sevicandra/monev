@@ -42,13 +42,13 @@ class MonitoringTagihanController extends Controller
         switch ($request->scope) {
             case 'dokumen':
                 return view('monitoring_tagihan.dokumen',[
-                    'data'=>$monitoring_tagihan
+                    'data'=>$monitoring_tagihan->berkasupload
                 ]);
                 break;
 
             case 'histories':
                 return view('monitoring_tagihan.detail',[
-                    'data'=>$monitoring_tagihan
+                    'data'=>$monitoring_tagihan->log()->orderBy('created_at', 'desc')->get()
                 ]);
                 break;
 

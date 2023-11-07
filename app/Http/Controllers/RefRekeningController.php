@@ -14,7 +14,7 @@ class RefRekeningController extends Controller
             abort(403);
         }
         return view('referensi.rekening.index',[
-            'data'=>RefRekening::where('kdsatker',auth()->user()->satker)->paginate(15)->withQueryString()
+            'data'=>RefRekening::where('kdsatker',auth()->user()->satker)->search()->paginate(15)->withQueryString()
         ]);
     }
 

@@ -73,7 +73,7 @@ class PaguController extends Controller
             'kodesatker'=>auth()->user()->satker,
         ]);
 
-        return redirect('/pagu');
+        return redirect('/pagu')->with('berhasil', 'Data Berhasil Ditambahkan');
     }
 
     public function edit(pagu $pagu)
@@ -103,7 +103,6 @@ class PaguController extends Controller
             'subkomponen'=>'required|min:1|max:1',
             'akun'=>'required|min:6|max:6',
             'anggaran'=>'required|numeric',
-            'kodeunit'=>'required'
         ]);
 
         $request->validate([
@@ -123,10 +122,9 @@ class PaguController extends Controller
             'akun'=>$request->akun,
             'program'=>$request->program,
             'anggaran'=>$request->anggaran,
-            'kodeunit'=>$request->kodeunit
         ]);
 
-        return redirect('/pagu');
+        return redirect('/pagu')->with('berhasil', 'Data Berhasil Diubah');
     }
 
     public function destroy(pagu $pagu)

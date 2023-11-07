@@ -18,6 +18,9 @@ class Hris
     {
         $accesstoken = self::token();
         $pegawai = Http::withToken($accesstoken)->get(config('hris.uri').'rekening/Riwayat/GetRekeningByNip/'.$nip);
-        return collect(json_decode($pegawai, false)->Data);
+        if (json_decode($pegawai, false) != null) {
+            return collect(json_decode($pegawai, false)->Data);
+        }
+        return collect([]);
     }
 }

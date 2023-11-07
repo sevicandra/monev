@@ -1,70 +1,61 @@
 @extends('layout.main')
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Payroll</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Payroll</h1>
+    </div>
+    <div class="">
+        @include('layout.flashmessage')
+    </div>
+    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+        <div>
+            <a href="/payroll" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="/payroll/{{ $tagihan->id }}/cetak" class="btn btn-sm btn-neutral" target="_blank">Cetak</a>
         </div>
-        <div class="row">
-            <div class="col">
-                @include('layout.flashmessage')
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-lg-7">
-                <a href="/payroll" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-                <a href="/payroll/{{ $tagihan->id }}/cetak" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2" target="_blank">Cetak</a>
-            </div>
-            <div class="col-lg-5">
-                <form action="" method="get" autocomplete="off">
-                    <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Nama Penerima">
-                        <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="text-center">
-                            <tr class="align-middle">
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Nomor Rekening</th>
-                                <th>Nama Bank</th>
-                                <th>Bruto</th>
-                                <th>Pajak</th>
-                                <th>Adm.</th>
-                                <th>Netto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $i=1;
-                            @endphp
-                            @foreach ($data as $item)
-                            <tr>
-                                <td class="text-center">{{ $i++ }}</td>
-                                <td>{{ $item->nama }}</td>
-                                <td>{{ $item->norek }}</td>
-                                <td>{{ $item->bank }}</td>
-                                <td class="text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+        <div>
+            <form action="" method="get" autocomplete="off">
+                <div class="join">
+                    <input type="text" name="search" class="input input-sm input-bordered join-item"
+                        placeholder="Nama Penerima">
+                    <button class="btn join-item btn-sm btn-neutral" type="submit">Cari</button>
                 </div>
-            </div>
+            </form>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                {{$data->links()}}
-            </div>
-        </div>
+    </div>
+    <div class="px-4 gap-2 overflow-y-auto">
+        <table class="table border-collapse w-full">
+            <thead class="text-center">
+                <tr class="align-middle">
+                    <th class="border border-base-content">No</th>
+                    <th class="border border-base-content">Nama</th>
+                    <th class="border border-base-content">Nomor Rekening</th>
+                    <th class="border border-base-content">Nama Bank</th>
+                    <th class="border border-base-content">Bruto</th>
+                    <th class="border border-base-content">Pajak</th>
+                    <th class="border border-base-content">Adm.</th>
+                    <th class="border border-base-content">Netto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $i = 1;
+                @endphp
+                @foreach ($data as $item)
+                    <tr>
+                        <td class="text-center border border-base-content">{{ $i++ }}</td>
+                        <td class="border border-base-content">{{ $item->nama }}</td>
+                        <td class="border border-base-content">{{ $item->norek }}</td>
+                        <td class="border border-base-content">{{ $item->bank }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-    </main>
+    </div>
+@endsection
+@section('pagination')
+    {{ $data->links() }}
 @endsection

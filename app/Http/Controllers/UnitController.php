@@ -48,7 +48,7 @@ class UnitController extends Controller
             'kodesatker'=>auth()->user()->satker,
         ]);
 
-        return redirect('/unit');
+        return redirect('/unit')->with('berhasil', 'Unit Berhasil Ditambahkan');
     }
 
     public function showverifikator(unit $unit)
@@ -117,7 +117,7 @@ class UnitController extends Controller
             'namaunit'=>$request->namaunit,
         ]);
 
-        return redirect('/unit');
+        return redirect('/unit')->with('berhasil', 'Unit Berhasil Diubah');
     }
 
     public function updateverifikator(unit $unit, User $verifikator)
@@ -198,7 +198,7 @@ class UnitController extends Controller
         }
 
         return view('referensi.unit.pagu.update',[
-            'data'=>pagu::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->where('kodeunit', null)->Order() ->searchprogram()  
+            'data'=>pagu::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->whereDoesntHave('unit')->Order() ->searchprogram()  
                                                                                                                         ->searchkegiatan()
                                                                                                                         ->searchkro()
                                                                                                                         ->searchro()
@@ -219,7 +219,7 @@ class UnitController extends Controller
             abort(403);
         }
 
-        $pagu->update(['kodeunit'=>$unit->id]);
+        $pagu->update(['kodeunit'=>$unit->kodeunit]);
         return Redirect()->back()->with('berhasil', 'Pagu Berhasil Ditambahkan Ke Unit '.$unit->namaunit);
         return redirect('/unit/'.$unit->id.'/pagu/edit')->with('berhasil', 'Pagu Berhasil Ditambahkan Ke Unit '.$unit->namaunit);
     }

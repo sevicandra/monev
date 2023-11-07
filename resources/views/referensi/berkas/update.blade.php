@@ -1,46 +1,47 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Ubah Berkas</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Ubah Berkas</h1>
     </div>
-
-    <form action="/berkas/{{ $data->id }}" method="post" autocomplete="off">
-    @method('PATCH')
-    @csrf
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="form-group mb-2">
-                <label for="">Kode Berkas:</label>
-                <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ $data->kodeberkas }}">
-                <div class="invalid-feedback">
+    <div class="px-4 gap-2 overflow-y-auto">
+        <form action="/berkas/{{ $data->id }}" method="post" autocomplete="off">
+            @method('PATCH')
+            @csrf
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Kode Berkas:</span>
+                </label>
+                <input type="text" name="kode"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('kode') input-error @enderror"
+                    value="{{ $data->kodeberkas }}" />
+                <label class="label">
                     @error('kode')
-                    {{$message}}
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
                     @enderror
-                </div>
+                </label>
             </div>
-            <div class="form-group mb-2">
-                <label for="">Berkas:</label>
-                <input type="text" name="berkas" class="form-control @error('berkas') is-invalid @enderror" value="{{ $data->namaberkas }}">
-                <div class="invalid-feedback">
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Berkas:</span>
+                </label>
+                <input type="text" name="berkas"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('berkas') input-error @enderror"
+                    value="{{ $data->namaberkas }}" />
+                <label class="label">
                     @error('berkas')
-                    {{$message}}
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
                     @enderror
-                </div>
+                </label>
             </div>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col">
-            <div class="form-group">
-                <a href="/berkas" class="btn btn-sm btn-outline-secondary">Batal</a>
-                <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
+            <div>
+                <a href="/berkas" class="btn btn-sm btn-accent">Batal</a>
+                <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
             </div>
-        </div>
+        </form>
     </div>
-
-    </form>
-
-</main>
 @endsection

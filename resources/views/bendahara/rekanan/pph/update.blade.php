@@ -1,69 +1,109 @@
 @extends('layout.main')
-
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Tambah Tagihan</h1>
-        </div>
-        <form action="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/{{ $data->id }}" method="post" autocomplete="off">
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Tambah Tagihan</h1>
+    </div>
+    <div class="px-4">
+        <form id="inputForm" action="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/{{ $data->id }}" method="post"
+            autocomplete="off">
             @csrf
             @method('PATCH')
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group mb-2">
-                        <label for="">Objek Pajak:</label>
-                        <select class="form-select form-select-sm mb-3" name="objek">
-                            @foreach ($objekpajak as $obj)
-                                <option value="{{$obj->id}}" @if ($obj->id === $data->objekpajak_id) selected @endif>{{$obj->kode}} / {{$obj->nama}} - {{$obj->jenis}}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('objek')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Dasar Pengenaan Pajak:</label>
-                        <input type="text" name="pph" class="form-control @error('pph') is-invalid @enderror" value="{{ $data->pph }}">
-                        <div class="invalid-feedback">
-                            @error('pph')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    @if ($tagihan->jnstagihan === '0')
-                    <div class="form-group mb-2">
-                        <label for="">NTPN:</label>
-                        <input type="text" name="ntpn" class="form-control @error('ntpn') is-invalid @enderror" value="{{ $data->ntpn }}">
-                        <div class="invalid-feedback">
-                            @error('ntpn')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Tanggal NTPN:</label>
-                        <input type="date" name="tanggalntpn" class="form-control @error('tanggalntpn') is-invalid @enderror" value="{{ $data->tanggalntpn }}">
-                        <div class="invalid-feedback">
-                            @error('tanggalntpn')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>                        
-                    @endif
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Objek Pajak:</span>
+                </label>
+                <select type="text" name="objek"
+                    class="select select-sm select-bordered w-full max-w-xs @error('objek') select-error @enderror">
+                    @foreach ($objekpajak as $obj)
+                        <option value="{{ $obj->kode }}" @if ($data->objekpajak_id === $obj->kode) selected @endif>
+                            {{ $obj->kode }} / {{ $obj->nama }} - {{ $obj->jenis }}
+                        </option>
+                    @endforeach
+                </select>
+                <label class="label">
+                    @error('objek')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
             </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="form-group">
-                        <a href="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph" class="btn btn-sm btn-outline-secondary">Batal</a>
-                        <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                    </div>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Dasar Pengenaan Pajak:</span>
+                </label>
+                <input id="dpp" type="text" name="pph"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('pph') input-error @enderror"
+                    value="{{$data->pph }}" />
+                <label class="label">
+                    @error('pph')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
             </div>
-
+            @if ($tagihan->jnstagihan === '0')
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">NTPN:</span>
+                    </label>
+                    <input type="text" name="ntpn"
+                        class="input input-sm input-bordered  w-full max-w-xs @error('ntpn') input-error @enderror"
+                        value="{{$data->ntpn }}" />
+                    <label class="label">
+                        @error('ntpn')
+                            <span class="label-text-alt text-red-500">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Tanggal NTPN:</span>
+                    </label>
+                    <input type="date" name="tanggalntpn"
+                        class="input input-sm input-bordered  w-full max-w-xs @error('tanggalntpn') input-error @enderror"
+                        value="{{$data->tanggalntpn }}" />
+                    <label class="label">
+                        @error('tanggalntpn')
+                            <span class="label-text-alt text-red-500">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
+            @endif
+            <div>
+                <a href="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph"
+                    class="btn btn-sm btn-accent">Batal</a>
+                <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
+            </div>
         </form>
-
-    </main>
+    </div>
+@endsection
+@section('foot')
+    <script>
+        $(document).ready(function() {
+            let value = $('#dpp').val()
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            $('#dpp').val(value);
+            $('#dpp').on('input', function() {
+                let value = $(this).val();
+                value = value.replace(/[^0-9,.]/g, '');
+                value = value.replace(/,+/g, ',');
+                value = value.replace(/\./g, '');
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $(this).val(value);
+            });
+            $("#inputForm").submit(function(event) {
+                event.preventDefault();
+                var inputValue = $("#dpp").val();
+                var sanitizedValue = inputValue.replace(/\./g, "");
+                $("#dpp").val(sanitizedValue);
+                this.submit();
+            });
+        });
+    </script>
 @endsection

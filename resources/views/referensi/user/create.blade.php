@@ -1,62 +1,76 @@
 @extends('layout.main')
 
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Tambah User </h1>
+<div class="bg-primary p-4">
+    <h1 class="text-xl text-primary-content">Tambah User</h1>
+</div>
+<div class="px-4">
+    <form action="/user" method="post" autocomplete="off">
+        @csrf
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Nama:</span>
+            </label>
+            <input type="text" name="nama"
+                class="input input-sm input-bordered  w-full max-w-xs @error('nama') input-error @enderror"
+                value="{{ old('nama') }}" />
+            <label class="label">
+                @error('nama')
+                    <span class="label-text-alt text-red-500">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </label>
         </div>
-
-        <form action="/user" method="post" autocomplete="off">
-            @csrf
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="form-group mb-2">
-                        <label for="">Nama:</label>
-                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}">
-                        <div class="invalid-feedback">
-                            @error('nama')
-                            {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">NIP:</label>
-                        <input type="text" name="nip" class="form-control @error('nip') is-invalid @enderror" value="{{ old('nip') }}">
-                        <div class="invalid-feedback">
-                            @error('nip')
-                            {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Satker:</label>
-                        <input type="text" name="satker" class="form-control @error('satker') is-invalid @enderror" value="{{ old('satker') }}">
-                        <div class="invalid-feedback">
-                            @error('satker')
-                            {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Password:</label>
-                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" value="{{ old('password') }}">
-                        <div class="invalid-feedback">
-                            @error('password')
-                            {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="form-group">
-                        <a href="/user" class="btn btn-sm btn-outline-secondary">Batal</a>
-                        <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-    </main>
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">NIP:</span>
+            </label>
+            <input type="text" name="nip"
+                class="input input-sm input-bordered  w-full max-w-xs @error('nip') input-error @enderror"
+                value="{{ old('nip') }}" />
+            <label class="label">
+                @error('nip')
+                    <span class="label-text-alt text-red-500">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </label>
+        </div>
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Kode Satker (6 Digit):</span>
+            </label>
+            <input type="text" name="satker"
+                class="input input-sm input-bordered  w-full max-w-xs @error('satker') input-error @enderror"
+                value="{{ old('satker') }}" />
+            <label class="label">
+                @error('satker')
+                    <span class="label-text-alt text-red-500">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </label>
+        </div>
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Password:</span>
+            </label>
+            <input type="password" name="password"
+                class="input input-sm input-bordered  w-full max-w-xs @error('password') input-error @enderror"
+                value="{{ old('password') }}" />
+            <label class="label">
+                @error('password')
+                    <span class="label-text-alt text-red-500">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </label>
+        </div>
+        <div>
+            <a href="/user" class="btn btn-sm btn-accent">Batal</a>
+            <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
+        </div>
+    </form>
+</div>
 @endsection

@@ -445,7 +445,6 @@ class TagihanController extends Controller
         return redirect('/tagihan/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('berhasil','Data berhasil Ditambahkan.');
     }
 
-
     public function editppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
         if (! Gate::allows('Staf_PPK', auth()->user()->id)) {

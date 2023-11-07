@@ -1,55 +1,61 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Tambah Nomor Register</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Tambah Nomor Register</h1>
     </div>
-
-    <form action="/nomor" method="post" autocomplete="off">
-        @csrf
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="form-group mb-2">
-                    <label for="">Nomor register:</label>
-                    <input type="text" name="nomor" class="form-control @error('nomor') is-invalid @enderror" value="{{ old('nomor') }}">
-                    <div class="invalid-feedback">
-                        @error('nomor')
+    <div class="px-4 gap-2 overflow-y-auto">
+        <form action="/nomor" method="post" autocomplete="off">
+            @csrf
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Nomor register:</span>
+                </label>
+                <input type="text" name="nomor"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('nomor') input-error @enderror"
+                    value="{{ old('nomor') }}" />
+                <label class="label">
+                    @error('nomor')
+                        <span class="label-text-alt text-red-500">
                             {{ $message }}
-                        @enderror
-                        
-                    </div>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="">Kode Satker:</label>
-                    <input type="text" name="kodesatker" class="form-control @error('kodesatker') is-invalid @enderror" value="{{ old('kodesatker') }}">
-                    <div class="invalid-feedback">
-                        @error('kodesatker')
-                        {{ $message }}
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="">Tahun:</label>
-                    <input type="text" name="tahun" class="form-control @error('tahun') is-invalid @enderror" value="{{ old('tahun') }}">
-                    <div class="invalid-feedback">
-                        @error('tahun')
-                        {{ $message }}
-                        @enderror
-                    </div>
-                </div>
+                        </span>
+                    @enderror
+                </label>
             </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col">
-                <div class="form-group">
-                    <a href="/nomor" class="btn btn-sm btn-outline-secondary">Batal</a>
-                    <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Kode Satker:</span>
+                </label>
+                <input type="text" name="kodesatker"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('kodesatker') input-error @enderror"
+                    value="{{ old('kodesatker') }}" />
+                <label class="label">
+                    @error('kodesatker')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
             </div>
-        </div>
-
-    </form>
-
-</main>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Tahun:</span>
+                </label>
+                <input type="text" name="tahun"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('tahun') input-error @enderror"
+                    value="{{ old('tahun') }}" />
+                <label class="label">
+                    @error('tahun')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div>
+                <a href="/nomor" class="btn btn-sm btn-accent">Batal</a>
+                <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
+            </div>
+        </form>
+    </div>
 @endsection

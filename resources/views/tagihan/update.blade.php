@@ -1,92 +1,118 @@
 @extends('layout.main')
 
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Tambah Tagihan</h1>
-        </div>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Ubah Tagihan</h1>
+    </div>
+    <div class="px-4">
         <form action="/tagihan/{{ $data->id }}" method="post" autocomplete="off">
             @csrf
             @method('PATCH')
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group mb-2">
-                        <label for="">Nomor Tagihan (5 digit):</label>
-                        <input type="text" name="notagihan" class="form-control @error('notagihan') is-invalid @enderror" value="{{ $data->notagihan }}">
-                        <div class="invalid-feedback">
-                            @error('notagihan')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Tanggal Tagihan:</label>
-                        <input type="date" name="tgltagihan" class="form-control @error('tgltagihan') is-invalid @enderror" placeholder="dd-mm-yyyy" value="{{ $data->tgltagihan }}">
-                        <div class="invalid-feedback">
-                            @error('tgltagihan')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Uraian Tagihan:</label>
-                        <input type="text" name="uraian" class="form-control @error('uraian') is-invalid @enderror" value="{{ $data->uraian }}">
-                        <div class="invalid-feedback">
-                            @error('uraian')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Jenis tagihan:</label>
-                        <select class="form-select form-select-sm mb-3" name="jnstagihan">
-                            <option value="0" @if ( $data->jnstagihan === '0') selected @endif >SPBy</option>
-                            <option value="1" @if ( $data->jnstagihan === '1') selected @endif>SPP</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('jnstagihan')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    
-                    <div class="form-group mb-2">
-                        <label for="">Unit:</label>
-                        <select class="form-select form-select-sm mb-3" name="kodeunit">
-                            @foreach ($unit as $item)
-                            <option value="{{ $item->kodeunit }}" @if ( $data->kodeunit === $item->kodeunit) selected @endif>{{ $item->namaunit }}</option>
-                            
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('kodeunit')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Jenis Dokumen:</label>
-                        <select class="form-select form-select-sm mb-3" name="kodedokumen">
-                            @foreach ($dokumen as $item)
-                                <option value="{{ $item->kodedokumen }}" @if ( $data->kodedokumen === $item->kodedokumen) selected @endif>{{ $item->namadokumen }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('kodedokumen')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Nomor Tagihan (5 digit):</span>
+                </label>
+                <input type="text" name="notagihan"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('notagihan') input-error @enderror"
+                    value="{{ $data->notagihan }}" />
+                <label class="label">
+                    @error('notagihan')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
             </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="form-group">
-                        <a href="/tagihan" class="btn btn-sm btn-outline-secondary">Batal</a>
-                        <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                    </div>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Tanggal Tagihan:</span>
+                </label>
+                <input type="date" name="tgltagihan"
+                    class="input input-sm input-bordered w-full max-w-xs @error('tgltagihan') input-error @enderror"
+                    placeholder="dd-mm-yyyy" value="{{ $data->tgltagihan }}" />
+                <label class="label">
+                    @error('tgltagihan')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Uraian Tagihan:</span>
+                </label>
+                <input type="text" name="uraian"
+                    class="input input-sm input-bordered w-full max-w-xs @error('uraian') input-error @enderror"
+                    value="{{ $data->uraian }}" />
+                <label class="label">
+                    @error('uraian')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Unit:</span>
+                </label>
+                <select type="text" name="jnstagihan"
+                    class="select select-sm select-bordered w-full max-w-xs @error('jnstagihan') select-error @enderror">
+                    <option value="0" @if ($data->jnstagihan == 0) selected @endif>SPBy</option>
+                    <option value="1" @if ($data->jnstagihan == 1) selected @endif>SPP</option>
+                    <option value="2" @if ($data->jnstagihan == 2) selected @endif>KKP</option>
+                </select>
+                <label class="label">
+                    @error('jnstagihan')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Jenis tagihan:</span>
+                </label>
+                <select type="text" name="kodeunit"
+                    class="select select-sm select-bordered w-full max-w-xs @error('kodeunit') select-error @enderror">
+                    @foreach ($unit as $item)
+                        <option value="{{ $item->kodeunit }}" @if ($data->kodeunit === $item->kodeunit) selected @endif>
+                            {{ $item->namaunit }}</option>
+                    @endforeach
+                </select>
+                <label class="label">
+                    @error('kodeunit')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Jenis Dokumen:</span>
+                </label>
+                <select type="text" name="kodedokumen"
+                    class="select select-sm select-bordered w-full max-w-xs @error('kodedokumen') select-error @enderror">
+                    @foreach ($dokumen as $item)
+                        <option value="{{ $item->kodedokumen }}" @if ($data->kodedokumen === $item->kodedokumen) selected @endif>
+                            {{ $item->namadokumen }}</option>
+                    @endforeach
+                </select>
+                <label class="label">
+                    @error('kodedokumen')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-group">
+                <a href="/tagihan" class="btn btn-sm btn-accent">Batal</a>
+                <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
             </div>
         </form>
-    </main>
+    </div>
 @endsection

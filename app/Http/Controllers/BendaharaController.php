@@ -454,7 +454,7 @@ class BendaharaController extends Controller
         }
         return view('bendahara.rekanan.create',[
             'tagihan'=>$tagihan,
-            'data'=>rekanan::ofTagihan($tagihan->id)
+            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString()
         ]);
     }
 

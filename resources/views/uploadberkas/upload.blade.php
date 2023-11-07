@@ -1,54 +1,66 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Upload Tagihan</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Upload Tagihan</h1>
     </div>
-
-    <form action="{{ $upload }}" method="post" autocomplete="off" enctype="multipart/form-data">
-        @csrf
-        @method('PATCH')
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group mb-2">
-                    <label for="">Jenis Dokumen:</label>
-                    <select class="form-select form-select-sm mb-3" name="berkas">
-                        @foreach ($berkas as $item)
-                            <option value="{{ $item->kodeberkas }}" @if (old('berkas') === $item->kodeberkas) selected @endif>{{ $item->namaberkas }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="">Keterangan Dokumen:</label>
-                    <input type="text" name="uraian" class="form-control @error('uraian') is-invalid @enderror" value="{{ old('uraian') }}">
-                    <div class="invalid-feedback">
-                        @error('uraian')
-                            {{$message}}
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="">Pilih File:</label>
-                    <input type="file" name="fileupload" class="form-control @error('fileupload') is-invalid @enderror" value="{{ old('fileupload') }}">
-                    <div class="invalid-feedback">
-                        @error('fileupload')
-                            {{$message}}
-                        @enderror
-                    </div>
-                </div>
+    <div class="px-4">
+        <form action="{{ $upload }}" method="post" autocomplete="off" enctype="multipart/form-data">
+            @csrf
+            @method('PATCH')
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Jenis Dokumen:</span>
+                </label>
+                <select type="text" name="berkas"
+                    class="select select-sm select-bordered w-full max-w-xs @error('berkas') select-error @enderror">
+                    @foreach ($berkas as $item)
+                        <option value="{{ $item->kodeberkas }}" @if (old('berkas') === $item->kodeberkas) selected @endif>
+                            {{ $item->namaberkas }}</option>
+                    @endforeach
+                </select>
+                <label class="label">
+                    @error('berkas')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
             </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col">
-                <div class="form-group">
-                    <a href="{{ $back }}" class="btn btn-sm btn-outline-secondary">Batal</a>
-                    <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Keterangan Dokumen:</span>
+                </label>
+                <input type="text" name="uraian"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('uraian') input-error @enderror"
+                    value="{{ old('uraian') }}" />
+                <label class="label">
+                    @error('uraian')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
             </div>
-        </div>
-
-    </form>
-
-</main>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Pilih File:</span>
+                </label>
+                <input type="file" name="fileupload"
+                    class="file-input file-input-sm file-input-bordered  w-full max-w-xs @error('fileupload') file-input-error @enderror"
+                    value="{{ old('fileupload') }}" />
+                <label class="label">
+                    @error('fileupload')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-group">
+                <a href="{{ $back }}" class="btn btn-sm btn-accent">Batal</a>
+                <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
+            </div>
+        </form>
+    </div>
 @endsection

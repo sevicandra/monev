@@ -1,98 +1,98 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Pagu</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Pagu</h1>
     </div>
-    <div class="row">
-        <div class="col">
-            @include('layout.flashmessage')
-        </div>
+    <div class="">
+        @include('layout.flashmessage')
     </div>
-    <div class="row mb-3">
-        <div class="col-lg-5">
-            <a href="/referensi" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Sebelumnya</a>
-            <a href="/pagu/create" class="btn btn-sm btn-outline-secondary mt-1 mb-1"> Tambah Data</a>
-            <a href="/pagu/import" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2"> Impor Data</a>
+    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+        <div class="lg:basis-5/12 flex gap-2 shrink max-w-full">
+            <a href="/pagu/create" class="btn btn-sm btn-neutral"> Tambah Data</a>
+            <a href="/pagu/import" class="btn btn-sm btn-neutral"> Impor Data</a>
         </div>
-        <div class="col-lg-7">
+        <div class="lg:basis-7/12 overflow-hidden max-w-full shrink">
             <form action="" method="get" autocomplete="off">
-                <div class="input-group">
-                    <input type="text" name="program" class="form-control" value="{{request('program')}}" placeholder="Program" >
-                    <input type="text" name="kegiatan" class="form-control" value="{{request('kegiatan')}}" placeholder="Kegiatan">
-                    <input type="text" name="kro" class="form-control" value="{{request('kro')}}" placeholder="KRO">
-                    <input type="text" name="ro" class="form-control" value="{{request('ro')}}" placeholder="RO">
-                    <input type="text" name="komponen" class="form-control" value="{{request('komponen')}}" placeholder="Komponen">
-                    <input type="text" name="subkomponen" class="form-control" value="{{request('subkomponen')}}" placeholder="Subkomponen">
-                    <input type="text" name="akun" class="form-control" value="{{request('akun')}}" placeholder="Akun">
-                    <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
+                <div class="join flex max-w-full justify-end">
+                    <input type="text" name="program" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('program') }}" placeholder="Program">
+                    <input type="text" name="kegiatan" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('kegiatan') }}" placeholder="Kegiatan">
+                    <input type="text" name="kro" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('kro') }}" placeholder="KRO">
+                    <input type="text" name="ro" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('ro') }}" placeholder="RO">
+                    <input type="text" name="komponen" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('komponen') }}" placeholder="Komponen">
+                    <input type="text" name="subkomponen" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('subkomponen') }}" placeholder="Subkomponen">
+                    <input type="text" name="akun" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('akun') }}" placeholder="Akun">
+                    <button class="btn btn-sm btn-neutral join-item" type="submit">Cari</button>
                 </div>
             </form>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="text-center">
-                        <tr class="align-middle">
-                            <th>No</th>
-                            <th>Program</th>
-                            <th>Kegiatan</th>
-                            <th>KRO</th>
-                            <th>RO</th>
-                            <th>Komponen</th>
-                            <th>Subkomponen</th>
-                            <th>Akun</th>
-                            <th>Anggaran</th>
-                            <th>Unit</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $i=1;
-                        @endphp
+    <div class="px-4 gap-2 overflow-y-auto">
+        <table class="table border-collapse w-full">
+            <thead class="text-center">
+                <tr class="align-middle">
+                    <th class="border border-base-content">No</th>
+                    <th class="border border-base-content">Program</th>
+                    <th class="border border-base-content">Kegiatan</th>
+                    <th class="border border-base-content">KRO</th>
+                    <th class="border border-base-content">RO</th>
+                    <th class="border border-base-content">Komponen</th>
+                    <th class="border border-base-content">Subkomponen</th>
+                    <th class="border border-base-content">Akun</th>
+                    <th class="border border-base-content">Anggaran</th>
+                    <th class="border border-base-content">Unit</th>
+                    <th class="border border-base-content">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $i = 1;
+                @endphp
 
-                        @foreach ($data as $item)
-                        <tr>
-                            <td class="text-center">{{ $i }}</td>
-                            <td class="text-center">{{ $item->program }}</td>
-                            <td class="text-center">{{ $item->kegiatan }}</td>
-                            <td class="text-center">{{ $item->kro }}</td>
-                            <td class="text-center">{{ $item->ro }}</td>
-                            <td class="text-center">{{ $item->komponen }}</td>
-                            <td class="text-center">{{ $item->subkomponen }}</td>
-                            <td class="text-center">{{ $item->akun }}</td>
-                            <td class="text-right">Rp{{ number_format($item->anggaran, 2, ',', '.') }}</td>
-                            <td class="text-center"> @if ($item->unit) {{ $item->unit->namaunit }} @endif </td>
-                            <td  class="pb-0 pr-0">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="/pagu/{{ $item->id }}/edit" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Ubah</a>
-                                    
-                                    <form action="/pagu/{{ $item->id }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @php
-                            $i++;
-                        @endphp
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                @foreach ($data as $item)
+                    <tr>
+                        <td class="border border-base-content text-center">{{ $i }}</td>
+                        <td class="border border-base-content text-center">{{ $item->program }}</td>
+                        <td class="border border-base-content text-center">{{ $item->kegiatan }}</td>
+                        <td class="border border-base-content text-center">{{ $item->kro }}</td>
+                        <td class="border border-base-content text-center">{{ $item->ro }}</td>
+                        <td class="border border-base-content text-center">{{ $item->komponen }}</td>
+                        <td class="border border-base-content text-center">{{ $item->subkomponen }}</td>
+                        <td class="border border-base-content text-center">{{ $item->akun }}</td>
+                        <td class="border border-base-content text-right">Rp{{ number_format($item->anggaran, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-center">
+                            @if ($item->unit)
+                                {{ $item->unit->namaunit }}
+                            @endif
+                        </td>
+                        <td class="border border-base-content text-center">
+                            <div class="join">
+                                <a href="/pagu/{{ $item->id }}/edit"
+                                    class="btn btn-xs btn-outline btn-neutral join-item">Ubah</a>
+                                <form action="/pagu/{{ $item->id }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-xs btn-outline btn-error join-item"
+                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @php
+                        $i++;
+                    @endphp
+                @endforeach
+            </tbody>
+        </table>
     </div>
-    <div class="row">
-        <div class="col-lg-6">
-            {{ $data->links() }}
-        </div>
-    </div>
-
-</main>
+@endsection
+@section('pagination')
+    {{ $data->links() }}
 @endsection

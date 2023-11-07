@@ -1,76 +1,75 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">COA</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">COA</h1>
     </div>
-    <div class="row mb-3">
-        <div class="col-lg-7">
-            <a href="/monitoring-tagihan" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
+    <div class="flex flex-col lg:flex-row px-4 gap-2 justify-between">
+        <div class="lg:basis-5/12 flex gap-2">
+            <a href="/monitoring-tagihan" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
-        <div class="col-lg-5">
+        <div class="lg:basis-7/12 overflow-hidden max-w-full shrink">
             <form action="" method="get" autocomplete="off">
-                <div class="input-group">
-                    <input type="text" name="program" class="form-control" value="{{request('program')}}" placeholder="Program" >
-                    <input type="text" name="kegiatan" class="form-control" value="{{request('kegiatan')}}" placeholder="Kegiatan">
-                    <input type="text" name="kro" class="form-control" value="{{request('kro')}}" placeholder="KRO">
-                    <input type="text" name="ro" class="form-control" value="{{request('ro')}}" placeholder="RO">
-                    <input type="text" name="komponen" class="form-control" value="{{request('komponen')}}" placeholder="Komponen">
-                    <input type="text" name="subkomponen" class="form-control" value="{{request('subkomponen')}}" placeholder="Subkomponen">
-                    <input type="text" name="akun" class="form-control" value="{{request('akun')}}" placeholder="Akun">
-                    <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
+                <div class="join flex max-w-full justify-end">
+                    <input type="text" name="program" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('program') }}" placeholder="Program">
+                    <input type="text" name="kegiatan" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('kegiatan') }}" placeholder="Kegiatan">
+                    <input type="text" name="kro" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('kro') }}" placeholder="KRO">
+                    <input type="text" name="ro" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('ro') }}" placeholder="RO">
+                    <input type="text" name="komponen" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('komponen') }}" placeholder="Komponen">
+                    <input type="text" name="subkomponen" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('subkomponen') }}" placeholder="Subkomponen">
+                    <input type="text" name="akun" class="input input-sm input-bordered join-item w-full"
+                        value="{{ request('akun') }}" placeholder="Akun">
+                    <button class="btn btn-sm btn-outline join-item" type="submit">Cari</button>
                 </div>
             </form>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="text-center">
-                        <tr class="align-middle">
-                            <th>No</th>
-                            <th>Program</th>
-                            <th>Kegiatan</th>
-                            <th>KRO</th>
-                            <th>RO</th>
-                            <th>Komponen</th>
-                            <th>Subkomponen</th>
-                            <th>Akun</th>
-                            <th>Realisasi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $i=1;
-                        @endphp
-                        @foreach ($data as $item)
-                        <tr>
-                            <td class="text-center">{{ $i }}</td>
-                            <td>{{ $item->pagu->program }}</td>
-                            <td>{{ $item->pagu->kegiatan }}</td>
-                            <td>{{ $item->pagu->kro }}</td>
-                            <td>{{ $item->pagu->ro }}</td>
-                            <td>{{ $item->pagu->komponen }}</td>
-                            <td>{{ $item->pagu->subkomponen }}</td>
-                            <td>{{ $item->pagu->akun }}</td>
-                            <td class="text-right">{{ number_format($item->realisasi, 2, ',', '.') }}</td>
-                        </tr>
-                        @php
-                            $i++;
-                        @endphp
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="px-4 gap-2 overflow-y-auto">
+        <table class="table border-collapse w-full">
+            <thead class="text-center">
+                <tr class="align-middle">
+                    <th class="border border-base-content">No</th>
+                    <th class="border border-base-content">Program</th>
+                    <th class="border border-base-content">Kegiatan</th>
+                    <th class="border border-base-content">KRO</th>
+                    <th class="border border-base-content">RO</th>
+                    <th class="border border-base-content">Komponen</th>
+                    <th class="border border-base-content">Subkomponen</th>
+                    <th class="border border-base-content">Akun</th>
+                    <th class="border border-base-content">Realisasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $i = 1;
+                @endphp
+                @foreach ($data as $item)
+                    <tr>
+                        <td class="text-center border border-base-content">{{ $i }}</td>
+                        <td class="border border-base-content text-center">{{ $item->pagu->program }}</td>
+                        <td class="border border-base-content text-center">{{ $item->pagu->kegiatan }}</td>
+                        <td class="border border-base-content text-center">{{ $item->pagu->kro }}</td>
+                        <td class="border border-base-content text-center">{{ $item->pagu->ro }}</td>
+                        <td class="border border-base-content text-center">{{ $item->pagu->komponen }}</td>
+                        <td class="border border-base-content text-center">{{ $item->pagu->subkomponen }}</td>
+                        <td class="border border-base-content text-center">{{ $item->pagu->akun }}</td>
+                        <td class="text-right border border-base-content">{{ number_format($item->realisasi, 2, ',', '.') }}</td>
+                    </tr>
+                    @php
+                        $i++;
+                    @endphp
+                @endforeach
+            </tbody>
+        </table>
     </div>
-    <div class="row">
-        <div class="col-lg-6">
-            {{$data->links()}}
-        </div>
-    </div>
+@endsection
 
-</main>
+@section('pagination')
+    {{ $data->links() }}
 @endsection

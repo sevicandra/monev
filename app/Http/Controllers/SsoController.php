@@ -46,6 +46,8 @@ class SsoController extends Controller
                         $request->session()->regenerate();
                         $request->session()->put('tahun', date('Y'));
                         $request->session()->put('nik', $userinfo['g2c_Nik']);
+                        $request->session()->put('id_token', $token['id_token']);
+                        $request->session()->put('gravatar', $userinfo['gravatar']);
                         return redirect()->intended('/dashboard');
                     }
                     return redirect('/')->with('gagal','Pengguna tidak terdaftar');

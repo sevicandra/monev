@@ -49,7 +49,7 @@ class pphrekanan extends Model
 
     public function scopeTahunpajak($data)
     {
-        $data->whereYear('tanggalntpn',session()->get('tahun'))->orwherehas('tagihan', function($val){
+        return $data->whereYear('tanggalntpn',session()->get('tahun'))->orwherehas('tagihan', function($val){
             $val->where('jnstagihan', '1')->wherehas('spm', function($val2){
                 $val2->whereYear('tanggal_sp2d', session()->get('tahun'));
             });
@@ -59,7 +59,7 @@ class pphrekanan extends Model
     public function scopeMasapajak($data)
     {
         if (request('bulan')) {
-            $data->whereMonth('tanggalntpn',request('bulan'))->orwherehas('tagihan', function($val){
+            return $data->whereMonth('tanggalntpn',request('bulan'))->orwherehas('tagihan', function($val){
                 $val->where('jnstagihan', '1')->wherehas('spm', function($val2){
                     $val2->whereMonth('tanggal_sp2d', request('bulan'));
                 });

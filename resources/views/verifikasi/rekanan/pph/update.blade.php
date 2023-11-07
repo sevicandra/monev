@@ -1,49 +1,76 @@
 @extends('layout.main')
 
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Tambah Tagihan</h1>
+<div class="bg-primary p-4">
+    <h1 class="text-xl text-primary-content">Edit PPh</h1>
+</div>
+<div class="px-4">
+    <form id="inputForm" action="/verifikasi/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/{{ $data->id }}" method="post" autocomplete="off">
+        @csrf
+        @method('PATCH')
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Objek Pajak:</span>
+            </label>
+            <select type="text" name="objek"
+                class="select select-sm select-bordered w-full max-w-xs @error('objek') select-error @enderror">
+                @foreach ($objekpajak as $obj)
+                    <option value="{{ $obj->kode }}" @if ($obj->kode === $data->objekpajak_id) selected @endif>{{ $obj->kode }} / {{ $obj->nama }} - {{ $obj->jenis }}
+                    </option>
+                @endforeach
+            </select>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Dasar Pengenaan Pajak:</span>
+                </label>
+                <input id="dpp" type="text" name="pph"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('pph') input-error @enderror"
+                    value="{{ $data->pph }}" />
+                <label class="label">
+                    @error('pph')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <label class="label">
+                @error('objek')
+                    <span class="label-text-alt text-red-500">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </label>
         </div>
-        <form action="/verifikasi/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/{{ $data->id }}" method="post" autocomplete="off">
-            @csrf
-            @method('PATCH')
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group mb-2">
-                        <label for="">Objek Pajak:</label>
-                        <select class="form-select form-select-sm mb-3" name="objek">
-                            @foreach ($objekpajak as $obj)
-                                <option value="{{$obj->id}}" @if ($obj->id === $data->objekpajak_id) selected @endif>{{$obj->kode}} / {{$obj->nama}} - {{$obj->jenis}}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('objek')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Dasar Pengenaan Pajak:</label>
-                        <input type="text" name="pph" class="form-control @error('pph') is-invalid @enderror" value="{{ $data->pph }}">
-                        <div class="invalid-feedback">
-                            @error('pph')
-                                {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="form-group">
-                        <a href="/verifikasi/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph" class="btn btn-sm btn-outline-secondary">Batal</a>
-                        <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                    </div>
-                </div>
-            </div>
-
-        </form>
-
-    </main>
+        <div>
+            <a href="/verifikasi/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph"
+                class="btn btn-sm btn-accent">Batal</a>
+            <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
+        </div>
+    </form>
+</div>
+@endsection
+@section('foot')
+    <script>
+        $(document).ready(function() {
+            let value = $('#dpp').val()
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            $('#dpp').val(value);
+            $('#dpp').on('input', function() {
+                let value = $(this).val();
+                value = value.replace(/[^0-9,.]/g, '');
+                value = value.replace(/,+/g, ',');
+                value = value.replace(/\./g, '');
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $(this).val(value);
+            });
+            $("#inputForm").submit(function(event) {
+                event.preventDefault();
+                var inputValue = $("#dpp").val();
+                var sanitizedValue = inputValue.replace(/\./g, "");
+                $("#dpp").val(sanitizedValue);
+                this.submit();
+            });
+        });
+    </script>
 @endsection

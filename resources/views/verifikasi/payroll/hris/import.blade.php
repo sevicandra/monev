@@ -1,153 +1,245 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Impor Payroll</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Impor Payroll</h1>
     </div>
-    <div class="row">
-        <div class="col">
-            @include('layout.flashmessage')
-        </div>
+    <div class="">
+        @include('layout.flashmessage')
     </div>
-    <div class="row mb-3">
-        <div class="col-lg-7">
-            <a href="/verifikasi/{{ $tagihan->id }}/payroll" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
+    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+        <div class="">
+            <a href="/verifikasi/{{ $tagihan->id }}/payroll" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
-        <div class="col-lg-5">
+        <div>
             <form action="" method="get" autocomplete="off">
-            <div class="input-group">
-                <input type="text" name="nip" class="form-control" placeholder="NIP Pegawai">
-                <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
-            </div>
+                <div class="join">
+                    <input type="text" name="nip" class="input input-sm input-bordered join-item"
+                        placeholder="NIP Penerima">
+                    <div class="indicator">
+                        <button class="btn join-item btn-sm btn-neutral">Cari</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="text-center">
-                        <tr class="align-middle">
-                            <th>No</th>
-                            <th>Nama Pemilik Rekening</th>
-                            <th>Nomor Rekening</th>
-                            <th>Nama Bank</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $i=1;
-                        @endphp
-                        @foreach ($data as $item)
-                            <tr>
-                                <td class="text-center">{{ $i++ }}</td>
-                                <td id="nama_{{ $item->IdpegawaiRekening }}">{{  $item->NamaPemilikRekening  }}</td>
-                                <td id="norek_{{ $item->IdpegawaiRekening }}">{{  $item->NomorRekening  }}</td>
-                                <td id="bank_{{ $item->IdpegawaiRekening }}">{{  $item->NamaBank  }}</td>
-                                <td class="pb-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <button id="{{ $item->IdpegawaiRekening }}" type="button" class="import-btn btn btn-sm btn-outline-secondary pt-0 pb-0">Pilih</button>
-                                    </div>
-                                </td>
-                            </tr>
-                         @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            
-        </div>
-    </div>
+    <div class="px-4 gap-2 overflow-y-auto">
+        <table class="table border-collapse w-full">
+            <thead class="text-center">
+                <tr class="align-middle">
+                    <th class="border border-base-content">No</th>
+                    <th class="border border-base-content">Nama Pemilik Rekening</th>
+                    <th class="border border-base-content">Nomor Rekening</th>
+                    <th class="border border-base-content">Nama Bank</th>
+                    <th class="border border-base-content">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $i = 1;
+                @endphp
+                @foreach ($data as $item)
+                    <tr>
+                        <td class="text-center border border-base-content">{{ $i++ }}</td>
+                        <td class="border border-base-content" id="nama_{{ $item->IdpegawaiRekening }}">{{ $item->NamaPemilikRekening }}</td>
+                        <td class="border border-base-content" id="norek_{{ $item->IdpegawaiRekening }}">{{ $item->NomorRekening }}</td>
+                        <td class="border border-base-content" id="bank_{{ $item->IdpegawaiRekening }}">{{ $item->NamaBank }}</td>
+                        <td class="border border-base-content">
+                            <div class="join">
+                                <button id="{{ $item->IdpegawaiRekening }}" type="button"
+                                    class="import-btn btn btn-sm btn-outline btn-neutral join-item">Pilih</button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-</main>
+    </div>
 @endsection
 
 @section('foot')
-<div class="modal fade" id="importModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="importModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-            <form action="/verifikasi/{{ $tagihan->id }}/payroll/import" method="post" autocomplete="off">
+    <dialog id="my_modal_3" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" id="import-btn-close">✕</button>
+            </form>
+            <form id="inputPayroll" action="/verifikasi/{{ $tagihan->id }}/payroll/import" method="post" autocomplete="off">
                 @csrf
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group mb-2">
-                            <label for="">Nama Pemilik Rekening:</label>
-                            <input required id="formnama" type="text" name="nama" class="form-control" value="" readonly="readonly">
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="">Nomor Rekening:</label>
-                            <input required id="formnorek" type="text" name="norek" class="form-control" value="" readonly="readonly">
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="">Nama Bank:</label>
-                            <input required id="formbank" type="text" name="bank" class="form-control" value="" readonly="readonly">
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="">Bruto:</label>
-                            <input required type="text" name="bruto" class="form-control @error('bruto') is-invalid @enderror" value="{{ old('bruto') }}">
-                            <div class="invalid-feedback">
-                                @error('bruto')
-                                    {{$message}}
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="">Potongan Pajak:</label>
-                            <input required type="text" name="pajak" class="form-control @error('pajak') is-invalid @enderror" value="{{ old('pajak') }}">
-                            <div class="invalid-feedback">
-                                @error('pajak')
-                                    {{$message}}
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="">Biaya Administrasi:</label>
-                            <input required type="text" name="admin" class="form-control @error('admin') is-invalid @enderror" value="{{ old('admin') }}">
-                            <div class="invalid-feedback">
-                                @error('admin')
-                                    {{$message}}
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Nama Pemilik Rekening:</span>
+                    </label>
+                    <input type="text" name="nama" id="formnama" readonly required
+                        class="input input-sm input-bordered  w-full max-w-xs @error('nama') input-error @enderror"
+                        value="{{ old('nama') }}" />
+                    <label class="label">
+                        @error('nama')
+                            <span class="label-text-alt text-red-500">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
                 </div>
-                <div class="row mt-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <button type="button" class="import-btn-close btn btn-sm btn-outline-secondary">Batal</button>
-                            <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                        </div>
-                    </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Nomor Rekening:</span>
+                    </label>
+                    <input type="text" name="norek" id="formnorek" readonly required
+                        class="input input-sm input-bordered  w-full max-w-xs @error('norek') input-error @enderror"
+                        value="{{ old('norek') }}" />
+                    <label class="label">
+                        @error('norek')
+                            <span class="label-text-alt text-red-500">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Nomor Rekening:</span>
+                    </label>
+                    <input type="text" name="bank" id="formbank" readonly required
+                        class="input input-sm input-bordered  w-full max-w-xs @error('bank') input-error @enderror"
+                        value="{{ old('bank') }}" />
+                    <label class="label">
+                        @error('bank')
+                            <span class="label-text-alt text-red-500">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Bruto:</span>
+                    </label>
+                    <input type="text" name="bruto" id="bruto"
+                        class="input input-sm input-bordered  w-full max-w-xs @error('bruto') input-error @enderror"
+                        value="{{ old('bruto') }}" />
+                    <label class="label">
+                        @error('bruto')
+                            <span class="label-text-alt text-red-500">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Potongan Pajak:</span>
+                    </label>
+                    <input type="text" name="pajak" id="pajak"
+                        class="input input-sm input-bordered  w-full max-w-xs @error('pajak') input-error @enderror"
+                        value="{{ old('pajak') }}" />
+                    <label class="label">
+                        @error('pajak')
+                            <span class="label-text-alt text-red-500">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Biaya Administrasi:</span>
+                    </label>
+                    <input type="text" name="admin" id="admin"
+                        class="input input-sm input-bordered  w-full max-w-xs @error('admin') input-error @enderror"
+                        value="{{ old('admin') }}" />
+                    <label class="label">
+                        @error('admin')
+                            <span class="label-text-alt text-red-500">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
                 </div>
             </form>
         </div>
-      </div>
-    </div>
-</div>
-<script>
-    $(document).ready(function(){
-        $(".import-btn").click(function(){
-            const id = $(this).attr('id')
-            const formnama = $("#nama_"+id).text()
-            const formnorek = $("#norek_"+id).text()
-            const formbank = $("#bank_"+id).text()
-            $("#formnama").attr('value', formnama)
-            $("#formnorek").attr('value', formnorek)
-            $("#formbank").attr('value', formbank)
-            $("#importModal").modal('toggle');
+    </dialog>
+    <script>
+        $(document).ready(function() {
+            $(".import-btn").click(function() {
+                my_modal_3.showModal()
+                const id = $(this).attr('id')
+                const formnama = $("#nama_" + id).text()
+                const formnorek = $("#norek_" + id).text()
+                const formbank = $("#bank_" + id).text()
+                $("#formnama").attr('value', formnama)
+                $("#formnorek").attr('value', formnorek)
+                $("#formbank").attr('value', formbank)
+                $("#importModal").modal('toggle');
+            });
+            $("#import-btn-close").click(function() {
+                $("#formnama").attr('value', '')
+                $("#formnorek").attr('value', '')
+                $("#formbank").attr('value', '')
+                $("#importModal").modal('toggle');
+            });
         });
-        $(".import-btn-close").click(function(){
-            $("#formnama").attr('value', '')
-            $("#formnorek").attr('value', '')
-            $("#formbank").attr('value', '')
-            $("#importModal").modal('toggle');
-        });
-    });
-</script>
+    </script>
+        <script>
+            $(document).ready(function() {
+                let valueBruto = $('#bruto').val()
+                valueBruto = valueBruto.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $('#bruto').val(valueBruto);
+    
+                let valuePajak = $('#pajak').val()
+                valuePajak = valuePajak.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $('#pajak').val(valuePajak);
+    
+                let valueAdmin = $('#admin').val()
+                valueAdmin = valueAdmin.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $('#admin').val(valueAdmin);
+
+                $('#bruto').on('input', function() {
+                    let value = $(this).val();
+                    value = value.replace(/[^0-9,.]/g, '');
+                    value = value.replace(/,+/g, ',');
+                    value = value.replace(/\./g, '');
+                    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    $(this).val(value);
+                });
+    
+                $('#pajak').on('input', function() {
+                    let value = $(this).val();
+                    value = value.replace(/[^0-9,.]/g, '');
+                    value = value.replace(/,+/g, ',');
+                    value = value.replace(/\./g, '');
+                    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    $(this).val(value);
+                });
+    
+                $('#admin').on('input', function() {
+                    let value = $(this).val();
+                    value = value.replace(/[^0-9,.]/g, '');
+                    value = value.replace(/,+/g, ',');
+                    value = value.replace(/\./g, '');
+                    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    $(this).val(value);
+                });
+    
+                $("#inputPayroll").submit(function(event) {
+                    event.preventDefault();
+                    var inputValueBruto = $("#bruto").val();
+                    var sanitizedValueBruto = inputValueBruto.replace(/\./g, "");
+                    $("#bruto").val(sanitizedValueBruto);
+    
+                    var inputValuePajak = $("#pajak").val();
+                    var sanitizedValuePajak = inputValuePajak.replace(/\./g, "");
+                    $("#pajak").val(sanitizedValuePajak);
+    
+                    var inputValueAdmin = $("#admin").val();
+                    var sanitizedValueAdmin = inputValueAdmin.replace(/\./g, "");
+                    $("#admin").val(sanitizedValueAdmin);
+    
+                    this.submit();
+                });
+            });
+        </script>
 @endsection

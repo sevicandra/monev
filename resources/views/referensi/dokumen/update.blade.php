@@ -1,66 +1,104 @@
 @extends('layout.main')
 
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Update Dokumen </h1>
-        </div>
-
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Ubah Dokumen </h1>
+    </div>
+    <div class="px-4 gap-2 overflow-y-auto">
         <form action="/dokumen/{{ $data->id }}" method="post" autocomplete="off">
             @method('PATCH')
             @csrf
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="form-group mb-2">
-                        <label for="">Kode Dokumen:</label>
-                        <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ $data->kodedokumen }}">
-                        <div class="invalid-feedback">
-                            @error('kode')
-                            {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">nama Dokumen:</label>
-                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ $data->namadokumen }}">
-                        <div class="invalid-feedback">
-                            @error('nama')
-                            {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Status DNP:</label>
-                        <select class="form-select form-select-sm mb-3" name="statusdnp">
-                            <option value="0" @if ($data->statusdnp === '0') selected @endif>Non DNP</option>
-                            <option value="1" @if ($data->statusdnp === '1') selected @endif>DNP</option>
-                        </select>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Status PPH:</label>
-                        <select class="form-select form-select-sm mb-3" name="statuspph">
-                            <option value="0" @if ($data->statuspph === '0') selected @endif>Non PPH</option>
-                            <option value="1" @if ($data->statuspph === '1') selected @endif>PPH</option>
-                        </select>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="">Status Rekanan:</label>
-                        <select class="form-select form-select-sm mb-3" name="statusrekanan">
-                            <option value="0" @if ($data->statusrekanan === '0') selected @endif>Non Rekanan</option>
-                            <option value="1" @if ($data->statusrekanan === '1') selected @endif>Rekanan</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Kode Dokumen:</span>
+                </label>
+                <input type="text" name="kode"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('kode') input-error @enderror"
+                    value="{{ $data->kodedokumen }}" />
+                <label class="label">
+                    @error('kode')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
             </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="form-group">
-                        <a href="/dokumen" class="btn btn-sm btn-outline-secondary">Batal</a>
-                        <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-                    </div>
-                </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Nama Dokumen:</span>
+                </label>
+                <input type="text" name="nama"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('nama') input-error @enderror"
+                    value="{{ $data->namadokumen }}" />
+                <label class="label">
+                    @error('nama')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Status DNP:</span>
+                </label>
+                <select type="text" name="statusdnp"
+                    class="select select-sm select-bordered w-full max-w-xs @error('statusdnp') select-error @enderror">
+                    <option value="0" @if ($data->statusdnp == 0) selected @endif>
+                        Non DNP</option>
+                    <option value="1" @if ($data->statusdnp == 1) selected @endif>
+                        DNP</option>
+                </select>
+                <label class="label">
+                    @error('statusdnp')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Status PPh:</span>
+                </label>
+                <select type="text" name="statuspph"
+                    class="select select-sm select-bordered w-full max-w-xs @error('statuspph') select-error @enderror">
+                    <option value="0" @if ($data->statuspph == 0) selected @endif>
+                        Non PPh</option>
+                    <option value="1" @if ($data->statuspph == 1) selected @endif>
+                        PPh</option>
+                </select>
+                <label class="label">
+                    @error('statuspph')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Status Rekanan:</span>
+                </label>
+                <select type="text" name="statusrekanan"
+                    class="select select-sm select-bordered w-full max-w-xs @error('statusrekanan') select-error @enderror">
+                    <option value="0" @if ($data->statusrekanan == 0) selected @endif>
+                        Non Rekanan</option>
+                    <option value="1" @if ($data->statusrekanan == 1) selected @endif>
+                        Rekanan</option>
+                </select>
+                <label class="label">
+                    @error('statusrekanan')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div>
+                <a href="/dokumen" class="btn btn-sm btn-accent">Batal</a>
+                <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
             </div>
         </form>
-
-    </main>
+    </div>
 @endsection

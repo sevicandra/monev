@@ -45,7 +45,7 @@ class RoleController extends Controller
             'role'=>$request->role
         ]);
 
-        return Redirect('/role');
+        return Redirect('/role')->with('berhasil', 'Data Berhasil Ditambahkan');
     }
 
     public function show(role $role)
@@ -85,7 +85,7 @@ class RoleController extends Controller
             'role'=>$request->role
         ]);
 
-        return Redirect('/role');
+        return Redirect('/role')->with('berhasil', 'Data Berhasil Diubah');
     }
 
     public function destroy(role $role)

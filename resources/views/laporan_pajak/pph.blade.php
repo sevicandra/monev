@@ -1,96 +1,99 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Rekap PPh</h1>
+    <div class="bg-primary p-4">
+        <h1 class="text-xl text-primary-content">Rekap PPh</h1>
     </div>
-    <div class="row mb-3">
-        <div class="col-lg-7">
-            <a href="/laporan-pajak/pph" class="btn btn-sm btn-outline-primary mt-1">PPh</a>
-            <a href="/laporan-pajak/ppn" class="btn btn-sm btn-outline-primary mt-1 ml-2">PPN</a>
+    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+        <div>
+            <a href="/laporan-pajak/pph" class="btn btn-sm btn-neutral">PPh</a>
+            <a href="/laporan-pajak/ppn" class="btn btn-sm btn-neutral">PPN</a>
         </div>
-        <div class="col-lg-5">
+        <div>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col-lg-7">
+    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+        <div>
             @for ($i = 1; $i < 13; $i++)
-            <a href="/laporan-pajak/pph?bulan={{$i}}" class="btn btn-sm btn-outline-primary mt-1">{{$i}}</a>
+                <a href="/laporan-pajak/pph?bulan={{ $i }}" class="btn btn-sm btn-neutral">{{ $i }}</a>
             @endfor
         </div>
-        <div class="col-lg-5 d-flex flex-row-reverse ">
+        <div>
             @if (request('bulan'))
-                <a href="/laporan-pajak/pph/cetak?bulan={{request('bulan')}}" class="btn btn-sm btn-outline-success mt-1 ">cetak</a>
+                <a href="/laporan-pajak/pph/cetak?bulan={{ request('bulan') }}" class="btn btn-sm btn-neutral">cetak</a>
             @endif
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col-lg-12">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="text-center">
-                        <tr class="align-middle">
-                            <th>No</th>
-                            <th>SPM</th>
-                            <th>SPBy</th>
-                            <th>NTPN/SP2D</th>
-                            <th>Tanggal NTPN/SP2D</th>
-                            <th>NPWP</th>
-                            <th>No. NPWP/NIK</th>
-                            <th>Rekanan</th>
-                            <th>Kode Objek Pajak</th>
-                            <th>Tarif</th>
-                            <th>PPh</th>
-                            <th>NOP</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $i=1;
-                        @endphp
-                        @foreach ($data as $item)
-                            <tr>
-                                <td>{{$i}}</td>
-                                <td>@if ($item->tagihan->jnstagihan === '1') {{$item->tagihan->notagihan}} @endif</td>
-                                <td>@if ($item->tagihan->jnstagihan === '0') {{$item->tagihan->notagihan}} @endif</td>
-                                @if ($item->tagihan->jnstagihan === '1')
-                                <td>
-                                    @if ($item->tagihan->spm)
-                                        {{$item->tagihan->spm->nomor_sp2d}}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($item->tagihan->spm)
-                                        {{$item->tagihan->spm->tanggal_sp2d}}
-                                    @endif
-                                </td>
-                                @else
-                                <td> {{$item->ntpn}} </td>
-                                <td>{{$item->tanggalntpn}}</td>
+    <div class="px-4 gap-2 overflow-y-auto">
+        <table class="table border-collapse w-full">
+            <thead class="text-center">
+                <tr class="align-middle">
+                    <th class="border border-base-content">No</th>
+                    <th class="border border-base-content">SPM</th>
+                    <th class="border border-base-content">SPBy</th>
+                    <th class="border border-base-content">NTPN/SP2D</th>
+                    <th class="border border-base-content">Tanggal NTPN/SP2D</th>
+                    <th class="border border-base-content">NPWP</th>
+                    <th class="border border-base-content">No. NPWP/NIK</th>
+                    <th class="border border-base-content">Rekanan</th>
+                    <th class="border border-base-content">Kode Objek Pajak</th>
+                    <th class="border border-base-content">Tarif</th>
+                    <th class="border border-base-content">PPh</th>
+                    <th class="border border-base-content">NOP</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $i = 1;
+                @endphp
+                @foreach ($data as $item)
+                    <tr>
+                        <td class="border border-base-content">{{ $i }}</td>
+                        <td class="border border-base-content">
+                            @if ($item->tagihan->jnstagihan === '1')
+                                {{ $item->tagihan->notagihan }}
+                            @endif
+                        </td>
+                        <td class="border border-base-content">
+                            @if ($item->tagihan->jnstagihan === '0')
+                                {{ $item->tagihan->notagihan }}
+                            @endif
+                        </td>
+                        @if ($item->tagihan->jnstagihan === '1')
+                            <td class="border border-base-content">
+                                @if ($item->tagihan->spm)
+                                    {{ $item->tagihan->spm->nomor_sp2d }}
                                 @endif
-                                <td>{{$item->rekanan->npwp}}</td>
-                                <td>{{$item->rekanan->idpajak}}</td>
-                                <td>{{$item->rekanan->nama}}</td>
-                                <td>{{$item->objekpajak->kode}}</td>
-                                @if ($item->rekanan->npwp === 1)
-                                <td>{{ $item->objekpajak->tarif}}%</td>
-                                <td>{{ number_format(floor($item->pph*($item->objekpajak->tarif/100)), 2, ',', '.')}}</td>
-                                <td>{{ number_format($item->pph, 2, ',', '.')}}</td>
-                                @else
-                                <td>{{ $item->objekpajak->tarifnonnpwp}}%</td>
-                                <td>{{ number_format(floor($item->pph*($item->objekpajak->tarifnonnpwp/100)), 2, ',', '.')}}</td>
-                                <td>{{ number_format($item->pph, 2, ',', '.')}}</td>
+                            </td>
+                            <td class="border border-base-content">
+                                @if ($item->tagihan->spm)
+                                    {{ $item->tagihan->spm->tanggal_sp2d }}
                                 @endif
-                            </tr>
-                            @php
-                                $i++;
-                            @endphp
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                            </td>
+                        @else
+                            <td class="border border-base-content"> {{ $item->ntpn }} </td>
+                            <td class="border border-base-content">{{ $item->tanggalntpn }}</td>
+                        @endif
+                        <td class="border border-base-content">{{ $item->rekanan->npwp }}</td>
+                        <td class="border border-base-content">{{ $item->rekanan->idpajak }}</td>
+                        <td class="border border-base-content">{{ $item->rekanan->nama }}</td>
+                        <td class="border border-base-content">{{ $item->objekpajak->kode }}</td>
+                        @if ($item->rekanan->npwp === 1)
+                            <td class="border border-base-content">{{ $item->objekpajak->tarif }}%</td>
+                            <td class="border border-base-content">{{ number_format(floor($item->pph * ($item->objekpajak->tarif / 100)), 2, ',', '.') }}</td>
+                            <td class="border border-base-content">{{ number_format($item->pph, 2, ',', '.') }}</td>
+                        @else
+                            <td class="border border-base-content">{{ $item->objekpajak->tarifnonnpwp }}%</td>
+                            <td class="border border-base-content">{{ number_format(floor($item->pph * ($item->objekpajak->tarifnonnpwp / 100)), 2, ',', '.') }}
+                            </td>
+                            <td class="border border-base-content">{{ number_format($item->pph, 2, ',', '.') }}</td>
+                        @endif
+                    </tr>
+                    @php
+                        $i++;
+                    @endphp
+                @endforeach
+            </tbody>
+        </table>
     </div>
-</main>
 @endsection

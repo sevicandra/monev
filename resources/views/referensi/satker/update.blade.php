@@ -1,55 +1,62 @@
 @extends('layout.main')
 
 @section('content')
-<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Ubah Satuan Kerja</h1>
-    </div>
-
+<div class="bg-primary p-4">
+    <h1 class="text-xl text-primary-content">Ubah Satuan Kerja </h1>
+</div>
+<div class="px-4 gap-2 overflow-y-auto">
     <form action="/satker/{{ $data->id }}" method="post" autocomplete="off">
-    @method('PATCH')
-    @csrf
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="form-group mb-2">
-                <label for="">Kode Satker:</label>
-                <input type="text" name="kodesatker" class="form-control @error('kodesatker') is-invalid @enderror" value="{{ $data->kodesatker }}">
-                <div class="invalid-feedback">
-                    @error('kodesatker')
-                    {{$message}}
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group mb-2">
-                <label for="">Kode Satker Koordinator:</label>
-                <input type="text" name="kodesatkerkoordinator" class="form-control @error('kodesatkerkoordinator') is-invalid @enderror" value="{{ $data->kodesatkerkoordinator }}">
-                <div class="invalid-feedback">
-                    @error('kodesatkerkoordinator')
-                    {{$message}}
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group mb-2">
-                <label for="">Nama Satker:</label>
-                <input type="namasatker" name="namasatker" class="form-control @error('namasatker') is-invalid @enderror" value="{{ $data->namasatker }}">
-                <div class="invalid-feedback">
-                    @error('namasatker')
-                    {{$message}}
-                    @enderror
-                </div>
-            </div>
+        @method('PATCH')
+        @csrf
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Kode Satker:</span>
+            </label>
+            <input type="text" name="kodesatker"
+                class="input input-sm input-bordered  w-full max-w-xs @error('kodesatker') input-error @enderror"
+                value="{{ $data->kodesatker }}" />
+            <label class="label">
+                @error('kodesatker')
+                    <span class="label-text-alt text-red-500">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </label>
         </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col">
-            <div class="form-group">
-                <a href="/satker" class="btn btn-sm btn-outline-secondary">Batal</a>
-                <button type="submit" class="btn btn-sm btn-outline-secondary ml-1">Simpan</button>
-            </div>
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Kode Satker Koordinator:</span>
+            </label>
+            <input type="text" name="kodesatkerkoordinator"
+                class="input input-sm input-bordered  w-full max-w-xs @error('kodesatkerkoordinator') input-error @enderror"
+                value="{{ $data->kodesatkerkoordinator }}" />
+            <label class="label">
+                @error('kodesatkerkoordinator')
+                    <span class="label-text-alt text-red-500">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </label>
         </div>
-    </div>
-
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Nama Satker:</span>
+            </label>
+            <input type="text" name="namasatker"
+                class="input input-sm input-bordered  w-full max-w-xs @error('namasatker') input-error @enderror"
+                value="{{ $data->namasatker }}" />
+            <label class="label">
+                @error('namasatker')
+                    <span class="label-text-alt text-red-500">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </label>
+        </div>
+        <div>
+            <a href="/satker" class="btn btn-sm btn-accent">Batal</a>
+            <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
+        </div>
     </form>
-
-</main>
+</div>
 @endsection
