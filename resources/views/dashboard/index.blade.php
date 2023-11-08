@@ -14,10 +14,10 @@
     <div class="lg:flex lg:flex-row px-4 gap-2 overflow-y-auto">
         <div class="lg:basis-8/12 w-full overflow-hidden lg:max-h-full flex flex-col gap-2">
             <div class="overflow-x-auto flex flex-col shrink-0">
-                <table class="table border-collapse min-w-full">
+                <table class="table border-collapse min-w-full whitespace-nowrap">
                     <thead class="text-center">
                         <tr class="align-middle">
-                            <th class="border border-base-content">Nomor</th>
+                            <th class="border border-base-content">No.</th>
                             <th class="border border-base-content">Jenis Belanja</th>
                             <th class="border border-base-content">Pagu</th>
                             <th class="border border-base-content">Realisasi</th>
@@ -83,8 +83,6 @@
                                 @endif
                             </td>
                         </tr>
-
-
                     </tbody>
                 </table>
             </div>
@@ -104,8 +102,8 @@
             </div>
         </div>
         <div class="lg:basis-4/12">
-            <table class="table border border-base-content border-collapse w-full">
-                <tr>
+            <table class="table table-sm border border-base-content border-collapse w-full">
+                <tr class="border border-base-content">
                     <th class="text-start">Realisasi per PPK</th>
                     <th class="text-end">Persentase</th>
                 </tr>

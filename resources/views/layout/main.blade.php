@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="">
+<html lang="en" data-theme="" class="transition-colors duration-200">
 
 <head>
     @vite('resources/css/app.css')
@@ -9,17 +9,6 @@
     <title>Monev</title>
     <link rel="shortcut icon" href="/img/monev.png" type=" image/x-icon">
     <style>
-        #message {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-        }
-
-        #inner-message {
-            margin: 0 auto;
-        }
-
         /* Hide vertical scrollbar */
         ::-webkit-scrollbar {
             width: 0;

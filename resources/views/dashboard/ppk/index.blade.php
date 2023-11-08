@@ -35,7 +35,7 @@
                     <tr>
                         <td class="border border-base-content text-center">{{ $i }}</td>
                         <td class="border border-base-content ">
-                            <a class="link link-neutral" href="ppk/{{ $item->id }}">{{ $item->nama }}</a>
+                            <a class="link link-base-content" href="ppk/{{ $item->id }}">{{ $item->nama }}</a>
                         </td>
                         <td class="border border-base-content text-end">
                             {{ number_format($item->paguppk->sum('anggaran'), 2, ',', '.') }}

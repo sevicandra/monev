@@ -25,20 +25,20 @@
                 @foreach ($data as $item)
                     <tr>
                         <td class="border border-base-content text-center">
-                            <a class="link link-neutral" target="_blank"
+                            <a class="link link-base-content" target="_blank"
                                 href="/dashboard/unit/{{ $unit->id }}/{{ $item->bulan }}?sp2d={{ request('sp2d') }}">
                                 {{ $item->namabulan }}
                             </a>
                         </td>
                         <td class="border border-base-content text-end">
                             @if ($item->bulan)
-                                <a class="link link-neutral"
+                                <a class="link link-base-content"
                                     href="/dashboard/unit/{{ $unit->id }}/{{ $item->bulan }}/tagihan/?sp2d={{ request('sp2d') }}"
                                     target="_blank">
                                     Rp {{ number_format($item->total_realisasi, 2, ',', '.') }}
                                 </a>
                             @else
-                                <a class="link link-neutral"
+                                <a class="link link-base-content"
                                     href="/dashboard/unit/{{ $unit->id }}/null/tagihan/?sp2d={{ request('sp2d') }}"
                                     target="_blank">
                                     Rp {{ number_format($item->total_realisasi, 2, ',', '.') }}
