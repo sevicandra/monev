@@ -41,9 +41,15 @@
                 @foreach ($data as $item)
                     <tr>
                         <td class="text-center border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content" id="nama_{{ $item->id }}">{{ $item->nama }}</td>
-                        <td class="border border-base-content" id="norek_{{ $item->id }}">{{ $item->norek }}</td>
-                        <td class="border border-base-content" id="bank_{{ $item->id }}">@if ($item->bank === 'Other'){{ $item->otherbank }}@else{{ $item->bank }}@endif</td>
+                        <td class="border border-base-content">
+                            <input id="nama_{{ $item->id }}" type="text" value="{{ $item->nama }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
+                        </td>
+                        <td class="border border-base-content">
+                            <input id="norek_{{ $item->id }}" type="text" value="{{ $item->norek }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
+                        </td>
+                        <td class="border border-base-content">
+                            <input id="bank_{{ $item->id }}" type="text" value="@if ($item->bank === 'Other'){{ $item->otherbank }}@else{{ $item->bank }}@endif" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
+                        </td>
                         <td class="border border-base-content text-center">
                             <div class="join">
                                 <button id="{{ $item->id }}" type="button"
@@ -171,9 +177,9 @@
             $(".import-btn").click(function() {
                 my_modal_3.showModal()
                 const id = $(this).attr('id')
-                const formnama = $("#nama_" + id).text()
-                const formnorek = $("#norek_" + id).text()
-                const formbank = $("#bank_" + id).text()
+                const formnama = $("#nama_" + id).val()
+                const formnorek = $("#norek_" + id).val()
+                const formbank = $("#bank_" + id).val()
                 $("#formnama").attr('value', formnama)
                 $("#formnorek").attr('value', formnorek)
                 $("#formbank").attr('value', formbank)

@@ -41,12 +41,14 @@
                     <tr>
                         <td class="text-center border border-base-content">{{ $i++ }}</td>
                         <td class="border border-base-content">
-                            <input id="nama_{{ $item->id }}" type="text" value="{{ $item->nama }}" class="input input-sm w-full input-ghost" readonly="readonly" disabled>
+                            <input id="nama_{{ $item->id }}" type="text" value="{{ $item->nama }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
                         </td>
                         <td class="border border-base-content">
-                            <input id="norek_{{ $item->id }}" type="text" value="{{ $item->norek }}" class="input input-sm w-full input-ghost" readonly="readonly" disabled>
+                            <input id="norek_{{ $item->id }}" type="text" value="{{ $item->norek }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
                         </td>
-                        <td class="border border-base-content" id="bank_{{ $item->id }}">@if ($item->bank === 'Other'){{ $item->otherbank }}@else{{ $item->bank }}@endif</td>
+                        <td class="border border-base-content">
+                            <input id="bank_{{ $item->id }}" type="text" value="@if ($item->bank === 'Other'){{ $item->otherbank }}@else{{ $item->bank }}@endif" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
+                        </td>
                         <td class="border border-base-content text-center">
                             <div class="join">
                                 <button id="{{ $item->id }}" type="button"
@@ -203,9 +205,6 @@
                 let valueAdmin = $('#admin').val()
                 valueAdmin = valueAdmin.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 $('#admin').val(valueAdmin);
-    
-    
-    
     
                 $('#bruto').on('input', function() {
                     let value = $(this).val();
