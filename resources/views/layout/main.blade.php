@@ -5,7 +5,7 @@
     @vite('resources/css/app.css')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="Monitoring Tagihan DJKN">
     <title>Monev</title>
     <link rel="shortcut icon" href="/img/monev.png" type=" image/x-icon">
     <style>
@@ -26,8 +26,8 @@
 
 <body class="bg-base-100 h-screen flex flex-col relative">
     <header class="navbar bg-neutral px-4 flex-none flex justify-between z-20">
-        <div class="flex-1 order-2 lg:order-1 flex justify-center lg:justify-start">
-            <a class="normal-case text-xl" href="/"><img src="/img/monev.png" width="25" height="25"></a>
+        <div class="flex-1 order-2 lg:order-1 flex justify-center lg:justify-start gap-1">
+            <a href="/"><img src="/img/monev.png" width="25" height="25" alt="logo"></a>
             <a class="normal-case text-xl text-neutral-content" href="/session/tahun-anggaran">&nbsp;MonevTagihan
                 {{ session()->get('tahun') }}</a>
         </div>
@@ -35,7 +35,7 @@
             <div class="dropdown lg:dropdown-end">
                 <label tabindex="0" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
-                        <img src="{{ session()->get('gravatar') }}" />
+                        <img src="{{ session()->get('gravatar') }}" alt="profile"/>
                     </div>
                 </label>
                 <ul tabindex="0"
@@ -101,12 +101,12 @@
         </div>
     </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     flatpickr("#myFlat", {
         dateFormat: "d-m-Y",
     });
-</script>
+</script> --}}
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
     crossorigin="anonymous"></script>
