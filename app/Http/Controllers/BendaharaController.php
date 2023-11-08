@@ -721,6 +721,11 @@ class BendaharaController extends Controller
                 'tanggalntpn'=>'required'
             ]);
         }
+        if($rekanan->npwp){
+            $tarif = objekpajak::where('kode',$request->objek)->first()->tarif;
+        }else{
+            $tarif = objekpajak::where('kode',$request->objek)->first()->tarifnonnpwp;
+        }
 
         pphrekanan::create([
             'objekpajak_id'=>$request->objek,
@@ -729,6 +734,7 @@ class BendaharaController extends Controller
             'rekanan_id'=>$rekanan->id,
             'ntpn'=>$request->ntpn,
             'tanggalntpn'=>$request->tanggalntpn,
+            'tarif'=>$tarif
         ]);
 
         return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil Ditambahkan.');
@@ -780,13 +786,17 @@ class BendaharaController extends Controller
                 'tanggalntpn'=>'required'
             ]);
         }
-
-
+        if($rekanan->npwp){
+            $tarif = objekpajak::where('kode',$request->objek)->first()->tarif;
+        }else{
+            $tarif = objekpajak::where('kode',$request->objek)->first()->tarifnonnpwp;
+        }
         $pph->update([
             'objekpajak_id'=>$request->objek,
             'pph'=>$request->pph,
             'ntpn'=>$request->ntpn,
             'tanggalntpn'=>$request->tanggalntpn,
+            'tarif'=>$tarif
         ]);
         return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil di Ubah.');
     }

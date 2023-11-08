@@ -19,7 +19,7 @@ return new class extends Migration
             $table->uuid('tagihan_id');
             $table->string('nomorfaktur');
             $table->date('tanggalfaktur');
-            $table->double('tarif',3,2);
+            $table->double('tarif',5,3);
             $table->double('ppn',16,2);
             $table->string('ntpn',16)->nullable();
             $table->date('tanggalntpn')->nullable();

@@ -27,16 +27,9 @@
                     <tr>
                         <td class="text-center border border-base-content">{{ $i }}</td>
                         <td class="border border-base-content">{{ $item->objekpajak->nama }}</td>
-                        @if ($item->rekanan->npwp === 1)
-                            <td class="border border-base-content text-center">{{ $item->objekpajak->tarif }}%</td>
-                            <td class="border border-base-content text-right">{{ number_format(floor($item->pph * ($item->objekpajak->tarif / 100)), 2, ',', '.') }}</td>
+                            <td class="border border-base-content text-center">{{ $item->tarif }}%</td>
+                            <td class="border border-base-content text-right">{{ number_format(floor($item->pph * ($item->tarif / 100)), 2, ',', '.') }}</td>
                             <td class="border border-base-content text-right">{{ number_format($item->pph, 2, ',', '.') }}</td>
-                        @else
-                            <td class="border border-base-content text-center">{{ $item->objekpajak->tarifnonnpwp }}%</td>
-                            <td class="border border-base-content text-right">{{ number_format(floor($item->pph * ($item->objekpajak->tarifnonnpwp / 100)), 2, ',', '.') }}
-                            </td>
-                            <td class="border border-base-content text-right">{{ number_format($item->pph, 2, ',', '.') }}</td>
-                        @endif
                     </tr>
                     @php
                         $i++;

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('rekanan_id');
             $table->uuid('tagihan_id');
             $table->uuid('objekpajak_id');
+            $table->double('tarif',3,2);
             $table->string('ntpn',16)->nullable();
             $table->date('tanggalntpn')->nullable();
             $table->double('pph',16,2);

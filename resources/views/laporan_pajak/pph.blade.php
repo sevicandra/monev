@@ -78,16 +78,9 @@
                         <td class="border border-base-content">{{ $item->rekanan->idpajak }}</td>
                         <td class="border border-base-content">{{ $item->rekanan->nama }}</td>
                         <td class="border border-base-content">{{ $item->objekpajak->kode }}</td>
-                        @if ($item->rekanan->npwp === 1)
-                            <td class="border border-base-content">{{ $item->objekpajak->tarif }}%</td>
-                            <td class="border border-base-content">{{ number_format(floor($item->pph * ($item->objekpajak->tarif / 100)), 2, ',', '.') }}</td>
+                            <td class="border border-base-content">{{ $item->tarif }}%</td>
+                            <td class="border border-base-content">{{ number_format(floor($item->pph * ($item->tarif / 100)), 2, ',', '.') }}</td>
                             <td class="border border-base-content">{{ number_format($item->pph, 2, ',', '.') }}</td>
-                        @else
-                            <td class="border border-base-content">{{ $item->objekpajak->tarifnonnpwp }}%</td>
-                            <td class="border border-base-content">{{ number_format(floor($item->pph * ($item->objekpajak->tarifnonnpwp / 100)), 2, ',', '.') }}
-                            </td>
-                            <td class="border border-base-content">{{ number_format($item->pph, 2, ',', '.') }}</td>
-                        @endif
                     </tr>
                     @php
                         $i++;

@@ -568,12 +568,19 @@ class TagihanController extends Controller
             'objek'=>'required',
             'pph'=>'required|numeric',
         ]);
+        
+        if($rekanan->npwp){
+            $tarif = objekpajak::where('kode',$request->objek)->first()->tarif;
+        }else{
+            $tarif = objekpajak::where('kode',$request->objek)->first()->tarifnonnpwp;
+        }
 
         pphrekanan::create([
             'objekpajak_id'=>$request->objek,
             'pph'=>$request->pph,
             'tagihan_id'=>$tagihan->id,
             'rekanan_id'=>$rekanan->id,
+            'tarif'=>$tarif
         ]);
 
         return redirect('/tagihan/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil Ditambahkan.');
@@ -616,11 +623,16 @@ class TagihanController extends Controller
             'objek'=>'required',
             'pph'=>'required|numeric',
         ]);
-
+        if($rekanan->npwp){
+            $tarif = objekpajak::where('kode',$request->objek)->first()->tarif;
+        }else{
+            $tarif = objekpajak::where('kode',$request->objek)->first()->tarifnonnpwp;
+        }
 
         $pph->update([
             'objekpajak_id'=>$request->objek,
             'pph'=>$request->pph,
+            'tarif'=>$tarif
         ]);
         return redirect('/tagihan/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil di Ubah.');
     }

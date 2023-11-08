@@ -58,22 +58,20 @@ class LaporanPajakController extends Controller
                 $D=$key->ntpn;
                 $E=$key->tanggalntpn;
             }
-            
-
             if ($key->rekanan->npwp === 1) {
                 $F='NPWP';
                 $G=$key->rekanan->idpajak;
                 $H=null;
-                $K=$key->objekpajak->tarif;
-                $L=floor($key->pph*($key->objekpajak->tarif/100));
+                $K=$key->tarif;
+                $L=floor($key->pph*($key->tarif/100));
                 $M=$key->pph;
                 $N=$key->pph;
             }else{
                 $F='NIK';
                 $G=null;
                 $H=$key->rekanan->idpajak;
-                $K=$key->objekpajak->tarifnonnpwp;
-                $L=floor($key->pph*($key->objekpajak->tarifnonnpwp/100));
+                $K=$key->tarifnonnpwp;
+                $L=floor($key->pph*($key->tarifnonnpwp/100));
                 $M=$key->pph;
                 $N=$key->pph;
             }

@@ -18,6 +18,7 @@ class pphrekanan extends Model
         'pph',
         'ntpn',
         'tanggalntpn',
+        'tarif'
     ];
 
     public function objekpajak()
