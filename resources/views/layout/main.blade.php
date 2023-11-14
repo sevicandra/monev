@@ -112,7 +112,7 @@
     crossorigin="anonymous"></script>
 <script>
     $(document).ready(function() {
-        var dataTheme = sessionStorage.getItem('dataTheme');
+        var dataTheme = localStorage.getItem('dataTheme');
         $("html").attr('data-theme', dataTheme)
     })
 </script>
@@ -146,7 +146,7 @@
 <script>
     $(document).ready(function() {
         $("#themeMenu").children("div").click(function() {
-            sessionStorage.setItem('dataTheme', $(this).data("setTheme"));
+            localStorage.setItem('dataTheme', $(this).data("setTheme"));
             $("html").attr('data-theme', $(this).data("setTheme"))
         })
     })
