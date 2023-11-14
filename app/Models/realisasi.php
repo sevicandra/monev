@@ -49,6 +49,7 @@ class realisasi extends Model
                 });
             });
         }
+        return $data;
     }
 
     public function scopeSearchprogram($data)

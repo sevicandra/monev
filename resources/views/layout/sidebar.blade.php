@@ -152,6 +152,20 @@
             </li>
             {{--  Akhir Admin  --}}
         @endcanany
+        @canany(['admin_satker', 'sys_admin'], auth()->user()->id)
+        {{--  Admin  --}}
+        <li>
+            <details close>
+                <summary>Data Cleansing</summary>
+                <ul>
+                    @canany(['sys_admin', 'admin_satker'], auth()->user()->id)
+                        <li><a href="/sp2d">SP2D</a></li>
+                    @endcan
+                </ul>
+            </details>
+        </li>
+        {{--  Akhir Admin  --}}
+    @endcanany
         <li class="">Version : 2.3.0</li>
     </menu>
 </div>

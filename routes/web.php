@@ -39,6 +39,7 @@ use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\MonitoringTagihanController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RefRekeningController;
+use App\Http\Controllers\SP2DController;
 
 /*
 |--------------------------------------------------------------------------
@@ -383,4 +384,9 @@ Route::controller(PayrollController::class)->group(function(){
     Route::get('/payroll/{tagihan}/upload', 'upload')->middleware('auth');
     Route::patch('/payroll/{tagihan}/upload', 'upload')->middleware('auth');
     Route::delete('/payroll/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth');
+});
+
+Route::controller(SP2DController::class)->group(function(){
+    Route::get('/sp2d', 'index');
+    Route::delete('/sp2d/{spm}', 'delete');
 });
