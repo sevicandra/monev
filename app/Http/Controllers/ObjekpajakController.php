@@ -41,7 +41,8 @@ class ObjekpajakController extends Controller
             'kode'=>$request->kode,
             'nama'=>$request->nama,
             'jenis'=>$request->jenis,
-            'tarif'=>$request->tarif
+            'tarif'=>$request->tarif,
+            'tarifnonnpwp'=>$request->tarifnonnpwp,
         ]);
         return redirect('/referensi/objek-pajak')->with('berhasil', 'Data Berhasil Ditambahkan');
     }
@@ -78,7 +79,8 @@ class ObjekpajakController extends Controller
             'kode'=>$request->kode,
             'nama'=>$request->nama,
             'jenis'=>$request->jenis,
-            'tarif'=>$request->tarif
+            'tarif'=>$request->tarif,
+            'tarifnonnpwp'=>$request->tarifnonnpwp
         ]);
         return redirect('/referensi/objek-pajak')->with('berhasil', 'Data Berhasil di Ubah');
     }

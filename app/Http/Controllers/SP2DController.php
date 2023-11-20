@@ -13,7 +13,7 @@ class SP2DController extends Controller
         if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
             abort(403);
         }
-        return view("SP2D.index",[
+        return view("data_cleansing.SP2D.index",[
             "data"=> spm::duplicate()->get(),
         ]);
     }
@@ -29,6 +29,6 @@ class SP2DController extends Controller
         };
 
         $spm->delete();
-        return redirect('/sp2d')->with("berhasil","Data Berhasilah Dihapus");
+        return redirect('/cleansing/sp2d')->with("berhasil","Data Berhasilah Dihapus");
     }
 }

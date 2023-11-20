@@ -4,7 +4,7 @@
     <div class="bg-primary p-4">
         <h1 class="text-xl text-primary-content">Ubah Tagihan</h1>
     </div>
-    <div class="px-4">
+    <div class="px-4 gap-2 overflow-y-auto">
         <form action="/tagihan/{{ $data->id }}" method="post" autocomplete="off">
             @csrf
             @method('PATCH')
@@ -42,9 +42,9 @@
                 <label class="label">
                     <span class="label-text">Uraian Tagihan:</span>
                 </label>
-                <input type="text" name="uraian"
-                    class="input input-sm input-bordered w-full max-w-xs @error('uraian') input-error @enderror"
-                    value="{{ $data->uraian }}" />
+                <textarea type="text" name="uraian" maxlength="255"
+                    class="textarea textarea-sm textarea-bordered  w-full max-w-xs @error('uraian') textarea-error @enderror"
+                    >{{ $data->uraian }}</textarea>
                 <label class="label">
                     @error('uraian')
                         <span class="label-text-alt text-red-500">

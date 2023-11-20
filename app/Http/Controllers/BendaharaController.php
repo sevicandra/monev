@@ -33,7 +33,7 @@ class BendaharaController extends Controller
         }
 
         return view('bendahara.index',[
-           'data'=>tagihan::tagihansatker()->tagihansatker()->bendahara()->search()->order()->paginate(15)->withQueryString()
+           'data'=>tagihan::tagihansatker()->bendahara()->search()->order()->paginate(15)->withQueryString()
         ]);
     }
 
@@ -105,26 +105,32 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-
-        $request->validate([
-            'tanggal_spm'=>'required',
-            'tanggal_sp2d'=>'required',
-            'nomor_sp2d'=>'required|min:15|max:15'
-        ]);
-
-        $request->validate([
-            'nomor_sp2d'=>'numeric'
-        ]);
+        if($request->nomor_sp2d || $request->tanggal_sp2d)
+        {
+            $request->validate([
+                'no_spm'=>'required|min_digits:5|max_digits:5',
+                'tanggal_spm'=>'required',
+                'tanggal_sp2d'=>'required',
+                'nomor_sp2d'=>'required|min_digits:15|max_digits:15'
+            ]);
+        }else{
+            $request->validate([
+                'no_spm'=>'required|min_digits:5|max_digits:5',
+                'tanggal_spm'=>'required',
+            ]);
+        }
 
         if (isset($tagihan->spm)) {
             $tagihan->spm->update([
                 'tanggal_spm'=>$request->tanggal_spm,
+                'no_spm'=>$request->no_spm,
                 'tanggal_sp2d'=>$request->tanggal_sp2d,
                 'nomor_sp2d'=>$request->nomor_sp2d
             ]);
             return redirect('/bendahara')->with('berhasil', 'Data SP2D Berhasi Ditambahkan');
         }else{
             spm::create([
+                'no_spm'=>$request->no_spm,
                 'tagihan_id'=>$tagihan->id,
                 'tanggal_spm'=>$request->tanggal_spm,
                 'tanggal_sp2d'=>$request->tanggal_sp2d,

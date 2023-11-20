@@ -159,7 +159,11 @@
                 <summary>Data Cleansing</summary>
                 <ul>
                     @canany(['sys_admin', 'admin_satker'], auth()->user()->id)
-                        <li><a href="/sp2d">SP2D</a></li>
+                        <li><a href="/cleansing/tagihan">Tagihan</a></li>
+                        <li><a href="/cleansing/sp2d">SP2D</a></li>
+                        <li><a href="/cleansing/spby">SPBy</a></li>
+                        <li><a href="/cleansing/kkp">KKP</a></li>
+                        <li><a href="/cleansing/spp">SPP</a></li>
                     @endcan
                 </ul>
             </details>

@@ -14,6 +14,7 @@ class spm extends Model
 
     protected $fillable = [
         'tagihan_id',
+        'no_spm',
         'tanggal_spm',
         'nomor_sp2d',
         'tanggal_sp2d',

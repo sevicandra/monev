@@ -7,6 +7,7 @@ use App\Http\Controllers\PphController;
 use App\Http\Controllers\SsoController;
 use App\Http\Controllers\PaguController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SP2DController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArsipController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\TahunController;
 use App\Http\Controllers\BerkasController;
 use App\Http\Controllers\SatkerController;
 use App\Http\Controllers\DokumenController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RekananController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TagihanController;
@@ -31,15 +33,17 @@ use App\Http\Controllers\RealisasiController;
 use App\Http\Controllers\NominaldnpController;
 use App\Http\Controllers\ObjekpajakController;
 use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\RefRekeningController;
+use App\Http\Controllers\CleansingKkpController;
+use App\Http\Controllers\CleansingSppController;
 use App\Http\Controllers\LaporanPajakController;
 use App\Http\Controllers\ArsipRegisterController;
+use App\Http\Controllers\CleansingSpbyController;
 use App\Http\Controllers\MapingstafppkController;
 use App\Http\Controllers\PegawainondjknController;
 use App\Http\Controllers\RegisterTagihanController;
+use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\MonitoringTagihanController;
-use App\Http\Controllers\PayrollController;
-use App\Http\Controllers\RefRekeningController;
-use App\Http\Controllers\SP2DController;
 
 /*
 |--------------------------------------------------------------------------
@@ -363,30 +367,57 @@ Route::controller(LaporanPajakController::class)->group(function(){
 Route::get('/file-view/{path}/{file}', [FileViewController::class, 'view'])->middleware('auth');
 
 Route::controller(ArsipRegisterController::class)->group(function(){
-    Route::get('/arsip-register', 'index');
+    Route::get('/arsip-register', 'index')->middleware('auth');
 });
 
 Route::controller(RefRekeningController::class)->group(function(){
-    Route::get('referensi-rekening', 'index');
-    Route::get('referensi-rekening/create', 'create');
-    Route::post('referensi-rekening/create', 'store');
-    Route::get('referensi-rekening/{rekening}/edit', 'edit');
-    Route::patch('referensi-rekening/{rekening}/edit', 'update');
-    Route::delete('referensi-rekening/{rekening}', 'destroy');
+    Route::get('referensi-rekening', 'index')->middleware('auth');
+    Route::get('referensi-rekening/create', 'create')->middleware('auth');
+    Route::post('referensi-rekening/create', 'store')->middleware('auth');
+    Route::get('referensi-rekening/{rekening}/edit', 'edit')->middleware('auth');
+    Route::patch('referensi-rekening/{rekening}/edit', 'update')->middleware('auth');
+    Route::delete('referensi-rekening/{rekening}', 'destroy')->middleware('auth');
 });
 
 Route::controller(PayrollController::class)->group(function(){
-    Route::get('/payroll', 'index');
-    Route::get('/payroll/{tagihan}', 'show')->middleware('auth');
-    Route::get('/payroll/{tagihan}/cetak', 'cetak')->middleware('auth');
-    Route::get('/payroll/{tagihan}/dokumen', 'dokumen')->middleware('auth');
-    Route::get('/payroll/{tagihan}/approve', 'approve')->middleware('auth');
-    Route::get('/payroll/{tagihan}/upload', 'upload')->middleware('auth');
-    Route::patch('/payroll/{tagihan}/upload', 'upload')->middleware('auth');
-    Route::delete('/payroll/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth');
+    Route::get('/payroll', 'index')->middleware('auth');
+    Route::get('/payroll/{tagihan}', 'show')->middleware('auth')->middleware('auth');
+    Route::get('/payroll/{tagihan}/cetak', 'cetak')->middleware('auth')->middleware('auth');
+    Route::get('/payroll/{tagihan}/dokumen', 'dokumen')->middleware('auth')->middleware('auth');
+    Route::get('/payroll/{tagihan}/approve', 'approve')->middleware('auth')->middleware('auth');
+    Route::get('/payroll/{tagihan}/upload', 'upload')->middleware('auth')->middleware('auth');
+    Route::patch('/payroll/{tagihan}/upload', 'upload')->middleware('auth')->middleware('auth');
+    Route::delete('/payroll/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth')->middleware('auth');
 });
 
 Route::controller(SP2DController::class)->group(function(){
-    Route::get('/sp2d', 'index');
-    Route::delete('/sp2d/{spm}', 'delete');
+    Route::get('/cleansing/sp2d', 'index')->middleware('auth');
+    Route::delete('/cleansing/sp2d/{spm}', 'delete')->middleware('auth');
+});
+
+Route::controller(CleansingSpbyController::class)->group(function(){
+    Route::get('/cleansing/spby', 'index')->middleware('auth');
+    Route::get('/cleansing/spby/download', 'download')->middleware('auth');
+    Route::get('/cleansing/spby/import', 'import')->middleware('auth');
+    Route::post('/cleansing/spby/import', 'store')->middleware('auth');
+
+});
+
+Route::controller(CleansingSppController::class)->group(function(){
+    Route::get('/cleansing/spp', 'index')->middleware('auth');
+    Route::get('/cleansing/spp/download', 'download')->middleware('auth');
+    Route::get('/cleansing/spp/import', 'import')->middleware('auth');
+    Route::post('/cleansing/spp/import', 'store')->middleware('auth');
+});
+
+Route::controller(CleansingKkpController::class)->group(function(){
+    Route::get('/cleansing/kkp', 'index')->middleware('auth');
+    Route::get('/cleansing/kkp/download', 'download')->middleware('auth');
+    Route::get('/cleansing/kkp/import', 'import')->middleware('auth');
+    Route::post('/cleansing/kkp/import', 'store')->middleware('auth');
+});
+
+Route::controller(CleansingTagihanController::class)->group(function(){
+    Route::get('/cleansing/tagihan', 'index')->middleware('auth');
+    Route::get('/cleansing/tagihan/{jns}/{nomor}', 'detail')->middleware('auth');
 });

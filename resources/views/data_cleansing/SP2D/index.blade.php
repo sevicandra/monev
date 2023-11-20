@@ -55,7 +55,7 @@
                         <td class="border border-base-content">{{ $item->nomor_sp2d }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tanggal_sp2d) }}</td>
                         <td class="border border-base-content">
-                            <form action="/sp2d/{{ $item->id }}" method="post" onsubmit="return confirm('Apakah anda yakin?')">
+                            <form action="/cleansing/sp2d/{{ $item->id }}" method="post" onsubmit="return confirm('Apakah anda yakin?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-xs btn-error btn-outline">Hapus</button>

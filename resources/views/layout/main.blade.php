@@ -7,12 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Monitoring Tagihan DJKN">
     <title>Monev</title>
+    <script>
+        try {
+            document.documentElement.setAttribute("data-theme", localStorage.getItem("dataTheme"))
+        } catch (e) {}
+    </script>
     <link rel="shortcut icon" href="/img/monev.png" type=" image/x-icon">
     <style>
-        /* Hide vertical scrollbar */
+        /* Hide vertical scrollbar
         ::-webkit-scrollbar {
             width: 0;
-        }
+        } */
 
         /* Hide horizontal scrollbar */
         ::-webkit-scrollbar-thumb {
@@ -110,12 +115,6 @@
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
     crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function() {
-        var dataTheme = localStorage.getItem('dataTheme');
-        $("html").attr('data-theme', dataTheme)
-    })
-</script>
 <script>
     $(document).ready(function() {
         $("#toggleSidebar").click(function() {
