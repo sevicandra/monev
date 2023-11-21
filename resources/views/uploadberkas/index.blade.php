@@ -32,7 +32,7 @@
                 @foreach ($data->berkasupload as $item)
                     <tr>
                         <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->berkas->namaberkas }}</td>
+                        <td class="border border-base-content">{{ optional($item->berkas)->namaberkas }}</td>
                         <td class="border border-base-content">{{ $item->uraian }}</td>
                         <td class="border border-base-content">{{ $item->created_at }}</td>
                         <td class="text-center border border-base-content">

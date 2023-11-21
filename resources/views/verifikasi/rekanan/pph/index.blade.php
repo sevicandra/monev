@@ -32,7 +32,7 @@
                 @foreach ($data as $item)
                     <tr>
                         <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->objekpajak->nama }}</td>
+                        <td class="border border-base-content">{{ optional($item->objekpajak)->nama }}</td>
                             <td class="border border-base-content">{{ $item->tarif }}%</td>
                             <td class="border border-base-content">{{ number_format(floor($item->pph * ($item->tarif / 100)), 2, ',', '.') }}</td>
                             <td class="border border-base-content">{{ number_format($item->pph, 2, ',', '.') }}</td>

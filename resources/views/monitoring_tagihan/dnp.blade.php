@@ -49,15 +49,9 @@
                                 <td>{{ $item->nip }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->kodegolongan }}</td>
-                                @if ($item->nominal) 
-                                <td class="text-right">{{  number_format($item->nominal->bruto, 2, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($item->nominal->pph, 2, ',', '.') }}</td>
-                                <td class="text-right">{{ number_format($item->nominal->netto, 2, ',', '.') }}</td>
-                                @else 
-                                <td class="text-right"></td>
-                                <td class="text-right"></td>
-                                <td class="text-right"></td>
-                                @endif
+                                <td class="text-right">{{  number_format(optional($item->nominal)->bruto, 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format(optional($item->nominal)->pph, 2, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format(optional($item->nominal)->netto, 2, ',', '.') }}</td>
                                 <td>{{ $item->rekening }}</td>
                                 <td>{{ $item->namabank }}</td>
                             </tr>

@@ -54,13 +54,13 @@
                 @foreach ($data as $item)
                     <tr>
                         <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->pagu->program }}</td>
-                        <td class="border border-base-content">{{ $item->pagu->kegiatan }}</td>
-                        <td class="border border-base-content">{{ $item->pagu->kro }}</td>
-                        <td class="border border-base-content">{{ $item->pagu->ro }}</td>
-                        <td class="border border-base-content">{{ $item->pagu->komponen }}</td>
-                        <td class="border border-base-content">{{ $item->pagu->subkomponen }}</td>
-                        <td class="border border-base-content">{{ $item->pagu->akun }}</td>
+                        <td class="border border-base-content">{{ optional($item->pagu)->program }}</td>
+                        <td class="border border-base-content">{{ optional($item->pagu)->kegiatan }}</td>
+                        <td class="border border-base-content">{{ optional($item->pagu)->kro }}</td>
+                        <td class="border border-base-content">{{ optional($item->pagu)->ro }}</td>
+                        <td class="border border-base-content">{{ optional($item->pagu)->komponen }}</td>
+                        <td class="border border-base-content">{{ optional($item->pagu)->subkomponen }}</td>
+                        <td class="border border-base-content">{{ optional($item->pagu)->akun }}</td>
                         <td class="text-right border border-base-content">{{ number_format($item->realisasi, 2, ',', '.') }}</td>
                         <td class="text-right border border-base-content">
                             @if (isset($item->sspb))

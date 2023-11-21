@@ -61,13 +61,11 @@
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
                         <td class="border border-base-content">
-                            @if (isset($item->spm))
-                                {{ indonesiaDate($item->spm->tanggal_spm) }}
-                            @endif
+                                {{ indonesiaDate(optional($item->spm)->tanggal_spm) }}
                         </td>
-                        <td class="border border-base-content">{{ $item->unit->namaunit }}</td>
-                        <td class="border border-base-content">{{ $item->ppk->nama }}</td>
-                        <td class="border border-base-content">{{ $item->dokumen->namadokumen }}</td>
+                        <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
+                        <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
+                        <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
                         <td class="text-right border border-base-content">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
                         <td class="border border-base-content">
                             <div class="join">

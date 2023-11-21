@@ -54,10 +54,10 @@
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
                         <td class="border border-base-content" style="white-space:normal; min-width:300px">{{ $item->uraian }}</td>
-                        <td class="border border-base-content">{{ $item->unit->namaunit }}</td>
-                        <td class="border border-base-content">{{ $item->dokumen->namadokumen }}</td>
+                        <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
+                        <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
                         <td class="border border-base-content text-right">
-                            Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
+                            Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
                     </tr>
                     @php
                         $i++;

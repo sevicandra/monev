@@ -44,7 +44,7 @@
                                 <td class="text-center">{{ $i }}</td>
                                 <td>{{ $item->nomor }}{{ $item->ekstensi }}{{ $item->tahun }}</td>
                                 <td>{{ $item->dokumen_date }}</td>
-                                <td>{{ $item->ppk->nama }}</td>
+                                <td>{{ optional($item->ppk)->nama }}</td>
                                 <td>
                                     <a href="{{ config('app.url').'/file-view/'.$item->file }}" class="btn btn-sm btn-outline-success pt-0 pb-0" target="_blank">Dokumen</a>
                                 </td>

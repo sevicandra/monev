@@ -58,13 +58,13 @@
                 @foreach ($data as $item)
                     <tr>
                         <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content text-center">{{ $item->pagu->program }}</td>
-                        <td class="border border-base-content text-center">{{ $item->pagu->kegiatan }}</td>
-                        <td class="border border-base-content text-center">{{ $item->pagu->kro }}</td>
-                        <td class="border border-base-content text-center">{{ $item->pagu->ro }}</td>
-                        <td class="border border-base-content text-center">{{ $item->pagu->komponen }}</td>
-                        <td class="border border-base-content text-center">{{ $item->pagu->subkomponen }}</td>
-                        <td class="border border-base-content text-center">{{ $item->pagu->akun }}</td>
+                        <td class="border border-base-content text-center">{{ optional($item->pagu)->program }}</td>
+                        <td class="border border-base-content text-center">{{ optional($item->pagu)->kegiatan }}</td>
+                        <td class="border border-base-content text-center">{{ optional($item->pagu)->kro }}</td>
+                        <td class="border border-base-content text-center">{{ optional($item->pagu)->ro }}</td>
+                        <td class="border border-base-content text-center">{{ optional($item->pagu)->komponen }}</td>
+                        <td class="border border-base-content text-center">{{ optional($item->pagu)->subkomponen }}</td>
+                        <td class="border border-base-content text-center">{{ optional($item->pagu)->akun }}</td>
                         <td class="border border-base-content text-right">{{ number_format($item->realisasi, 2, ',', '.') }}</td>
                         <td class="border border-base-content text-center">
                             <div class="join">
