@@ -13,17 +13,6 @@
         } catch (e) {}
     </script>
     <link rel="shortcut icon" href="/img/monev.png" type=" image/x-icon">
-    <style>
-        /* Hide vertical scrollbar
-        ::-webkit-scrollbar {
-            width: 0;
-        } */
-
-        /* Hide horizontal scrollbar */
-        ::-webkit-scrollbar-thumb {
-            background: transparent;
-        }
-    </style>
     @section('head')
 
     @show
@@ -106,13 +95,6 @@
         </div>
     </div>
 </body>
-{{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-    flatpickr("#myFlat", {
-        dateFormat: "d-m-Y",
-    });
-</script> --}}
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
     crossorigin="anonymous"></script>
 <script>
