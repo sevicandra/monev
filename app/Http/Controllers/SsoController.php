@@ -40,17 +40,22 @@ class SsoController extends Controller
                 if ($response2) {
                     $userinfo =  json_decode($response2->getBody()->getContents(), true);
                     $nip = $userinfo['nip'];
-                    $user=User::where('nip', $nip)->first();
-                    if (isset($user->id)) {
-                        Auth::loginUsingId($user->id);
-                        $request->session()->regenerate();
-                        $request->session()->put('tahun', date('Y'));
-                        $request->session()->put('nik', $userinfo['g2c_Nik']);
-                        $request->session()->put('id_token', $token['id_token']);
-                        $request->session()->put('gravatar', $userinfo['gravatar']);
-                        return redirect()->intended('/dashboard');
-                    }
-                    return redirect('/')->with('gagal','Pengguna tidak terdaftar');
+                    $nama = $userinfo['name'];
+                    $kode_satker = $userinfo['kode_satker'];
+                    $user = User::updateOrCreate([
+                        'nip' => $nip,
+                    ], [
+                        'nama' => $nama,
+                        'satker' => $kode_satker,
+                    ]);
+                 
+                    Auth::login($user);
+                    $request->session()->regenerate();
+                    $request->session()->put('tahun', date('Y'));
+                    $request->session()->put('nik', $userinfo['g2c_Nik']);
+                    $request->session()->put('id_token', $token['id_token']);
+                    $request->session()->put('gravatar', $userinfo['gravatar']);
+                    return redirect()->intended('/dashboard');
                 } else {
                     redirect('/')->with('gagal','Request Error');
                 }

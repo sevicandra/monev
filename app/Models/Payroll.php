@@ -33,10 +33,11 @@ class Payroll extends Model
                         ->where('tagihans.kodesatker', auth()->user()->satker)
                         ->leftJoin('tagihans', 'payrolls.tagihan_id', '=', 'tagihans.id')
                         ->leftJoin('units', 'tagihans.kodeunit', '=', 'units.kodeunit')
-                        ->leftJoin('users', 'tagihans.ppk_id', '=', 'users.nip')
+                        ->leftJoin('ref_ppks', 'tagihans.ppk_id', '=', 'ref_ppks.nip')
                         ->leftJoin('realisasis', 'tagihans.id', '=', 'realisasis.tagihan_id')
+                        ->where('tagihans.tahun', session()->get('tahun'))
                         ->groupBy('payrolls.tagihan_id')
-                        ->selectRaw('tagihans.*, namaunit, users.nama as ppk, sum(realisasis.realisasi) as realisasi, sum(bruto) as payroll')
+                        ->selectRaw('tagihans.*, namaunit, ref_ppks.nama as ppk, sum(realisasis.realisasi) as realisasi, sum(bruto) as payroll')
         ;
     }
 

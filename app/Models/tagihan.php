@@ -29,7 +29,7 @@ class tagihan extends Model
 
     public function ppk()
     {
-        return $this->belongsTo(User::class, 'ppk_id', 'nip');
+        return $this->belongsTo(RefPPK::class, 'ppk_id', 'nip');
     }
 
     public function unit()

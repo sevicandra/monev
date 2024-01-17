@@ -17,8 +17,15 @@ class MonitoringTagihanController extends Controller
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
+
+        if (Gate::allows('PPK', auth()->user()->id)) {
+            $data = tagihan::tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
+        }else{
+            $data = tagihan::tagihansatker()->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
+
+        }
         return view('monitoring_tagihan.index',[
-            'data'=>tagihan::tagihansatker()->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString()
+            'data'=>$data
         ]);
     }
 

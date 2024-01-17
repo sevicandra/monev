@@ -54,7 +54,7 @@ class pagu extends Model
 
     public function ppk()
     {
-        return $this->belongsToMany(User::class, 'mapingpaguppks', 'pagu_id', 'user_id', 'id', 'nip');
+        return $this->belongsToMany(RefPPK::class, 'mapingpaguppks', 'pagu_id', 'user_id', 'id', 'nip');
     }
 
     public function scopePagustafppk($data )

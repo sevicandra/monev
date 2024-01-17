@@ -52,15 +52,17 @@
                             </a>
                         </li> --}}
                         {{--  Akhir Pejabat Pembuat Komitmen  --}}
-                        <li>
-                            <details close>
-                                <summary>Referensi</summary>
-                                <ul>
-                                    <li><a href="/referensi-rekening">Rekening</a></li>
-                                    <li><a href="/rekanan">Rekanan</a></li>
-                                </ul>
-                            </details>                            
-                        </li>
+                        @can('Staf_PPK', auth()->user()->id)
+                            <li>
+                                <details close>
+                                    <summary>Referensi</summary>
+                                    <ul>
+                                        <li><a href="/referensi-rekening">Rekening</a></li>
+                                        <li><a href="/rekanan">Rekanan</a></li>
+                                    </ul>
+                                </details>                            
+                            </li>
+                        @endcan
                     </ul>
                 </details>
             </li>

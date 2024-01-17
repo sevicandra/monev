@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\pagu;
 use App\Models\unit;
-use App\Models\User;
 use App\Models\bulan;
+use App\Models\RefPPK;
 use App\Models\tagihan;
 use App\Models\realisasi;
 
@@ -20,7 +20,7 @@ class DashboardController extends Controller
             'realisasibelanjapegawai'=>realisasi::sp2d()->realisaijenisbelanja('51')->get(),
             'realisasibelanjabarang'=>realisasi::sp2d()->realisaijenisbelanja('52')->get(),
             'realisasibelanjamodal'=>realisasi::sp2d()->realisaijenisbelanja('53')->get(),
-            'ppk'=>User::pegawaisatker()->ppk()->whereHas('paguppk')->get(),
+            'ppk'=>RefPPK::PPKsatker()->whereHas('paguppk')->get(),
             'unit'=>unit::myunit()->whereHas('pagu')->get(),
         ]);
     }
@@ -69,11 +69,11 @@ class DashboardController extends Controller
     public function ppk_index()
     {
         return view('dashboard.ppk.index',[
-            'ppk'=>User::pegawaisatker()->ppk()->whereHas('paguppk')->get(),
+            'ppk'=>RefPPK::PPKsatker()->whereHas('paguppk')->get(),
         ]);
     }
 
-    public function ppk_detail(User $ppk)
+    public function ppk_detail(RefPPK $ppk)
     {
         return view('dashboard.ppk.detail',[
             'data'=>tagihan::realisasiBulananPpk($ppk->nip)->orderBy('bulan')->get(),
@@ -81,7 +81,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function ppk_detail_bulan(User $ppk, $bulan)
+    public function ppk_detail_bulan(RefPPK $ppk, $bulan)
     {
         $bulanModel= bulan::where('kodebulan', $bulan)->first();
         return view('dashboard.ppk.detail-pok',[
@@ -91,7 +91,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function ppk_detail_tagihan(User $ppk, $bulan)
+    public function ppk_detail_tagihan(RefPPK $ppk, $bulan)
     {
         if ($bulan === 'null') {
             $bulanModel=new bulan();

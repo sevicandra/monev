@@ -40,16 +40,24 @@ class User extends Authenticatable
     ];
 
 
-    public function satker(){
-        return $this->belongsTo(satker::class, 'satker','kodesatker');
+    public function satker()
+    {
+        return $this->belongsTo(satker::class, 'satker', 'kodesatker');
     }
 
-    public function role(){
+    public function role()
+    {
         return $this->belongsToMany(role::class, 'role_user', 'user_id', 'role_id', 'nip', 'koderole');
     }
 
-    public function is($access){
-        foreach($this->role()->get() as $role){
+    public function ppk()
+    {
+        return $this->hasMany(RefPPK::class, 'nip', 'nip');
+    }
+
+    public function is($access)
+    {
+        foreach ($this->role()->get() as $role) {
             if ($role->koderole === $access) {
                 return true;
             }
@@ -57,25 +65,28 @@ class User extends Authenticatable
         return false;
     }
 
-    public function scopePegawaisatker($data){
-        return $data->where('satker', auth()->user()->satker);
+    public function isPpk()
+    {
+        if ($this->ppk()->first()) {
+            return true;
+        }
+        return false;
     }
 
-    public function scopePpk($data){
-        return $data->wherehas('role', function($val){
+    public function scopePegawaisatker($data)
+    {
+        return $data->where('satker', auth()->user()->satker);
+    }
+    public function scopePpk($data)
+    {
+        return $data->wherehas('role', function ($val) {
             $val->where('koderole', '05');
         });
     }
-
-    public function scopeStafppk($data){
-        return $data->wherehas('role', function($val){
+    public function scopeStafppk($data)
+    {
+        return $data->wherehas('role', function ($val) {
             $val->where('koderole', '06');
-        });
-    }
-
-    public function scopeVerifikator($data){
-        return $data->wherehas('role', function($val){
-            $val->where('koderole', '09');
         });
     }
 
@@ -86,14 +97,15 @@ class User extends Authenticatable
 
     public function realisasippk()
     {
-        $realisasi= realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')->sp2d()
-        ->join('users', 'mapingpaguppks.user_id', '=', 'users.nip')->leftjoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')->where('users.nip', $this->nip);
+        $realisasi = realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')->sp2d()
+            ->join('users', 'mapingpaguppks.user_id', '=', 'users.nip')->leftjoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')->where('users.nip', $this->nip);
         if ($realisasi->first()) {
             return $realisasi;
         }
         $real = new Collection();
-        
-        $real->push((object)['realisasi' => '0',
+
+        $real->push((object)[
+            'realisasi' => '0',
         ]);
 
         return $real;
@@ -101,15 +113,16 @@ class User extends Authenticatable
 
     public function sspbppk()
     {
-        $sspb= sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')
-        ->join('users', 'mapingpaguppks.user_id', '=', 'users.nip')->where('users.nip', $this->nip);
+        $sspb = sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')
+            ->join('users', 'mapingpaguppks.user_id', '=', 'users.nip')->where('users.nip', $this->nip);
 
         if ($sspb->first()) {
             return $sspb;
         }
         $real = new Collection();
-        
-        $real->push((object)['nominal_sspb' => '0',
+
+        $real->push((object)[
+            'nominal_sspb' => '0',
         ]);
 
         return $real;
@@ -117,21 +130,21 @@ class User extends Authenticatable
 
     public function stafppk()
     {
-        return $this->belongsToMany(User::class, 'mapingstafppks', 'ppk_id', 'staf_id', 'nip', 'nip');
+        return $this->belongsToMany(RefPPK::class, 'mapingstafppks', 'ppk_id', 'staf_id', 'nip', 'nip');
     }
 
     public function mapingstafppk()
     {
         return $this->hasOne(mapingstafppk::class, 'staf_id', 'nip');
     }
-    
+
     public function scopeStafnoppk($data)
     {
-        $data->wherehas('role', function($val){
+        $data->wherehas('role', function ($val) {
             $val->where('koderole', '06');
         })->doesntHave('mapingstafppk');
     }
-    
+
     public function unitstafppk()
     {
         return $this->belongsToMany(unit::class, 'mapingunitstafppks', 'user_id', 'unit_id', 'nip', 'kodeunit');
@@ -144,16 +157,16 @@ class User extends Authenticatable
 
     public function scopeVerifikatornonsign($data, $unit)
     {
-        $var=$unit;
-        return $data->whereDoesntHave('verifikator', function($val)use($var){
+        $var = $unit;
+        return $data->whereDoesntHave('verifikator', function ($val) use ($var) {
             $val->where('id', $var);
         });
     }
 
     public function verifikatorunit($val)
     {
-       
-        foreach ($this->verifikator()->get() as $unit ) {
+
+        foreach ($this->verifikator()->get() as $unit) {
             if ($unit->id === $val) {
                 return true;
             }
@@ -163,16 +176,15 @@ class User extends Authenticatable
     public function scopeSearch($data)
     {
         if (request('search')) {
-            return $data    ->where('nama', 'like', '%'.request('search').'%')
-                            ->orwhere('nip', 'like', '%'.request('search').'%');
+            return $data->where('nama', 'like', '%' . request('search') . '%')
+                ->orwhere('nip', 'like', '%' . request('search') . '%');
         }
     }
 
     public function scopeRealisasiBulanan($data, $ppk_id, $bulan)
     {
-        $data   ->belongsToMany(pagu::class, 'mapingpaguppks')
-                ->where('tahun', session()->get('tahun'))
-                ->leftJoin('realisasis', 'mapingpaguppks.pagu_id', '=', 'realisasis.pagu_id')
-        ;
+        $data->belongsToMany(pagu::class, 'mapingpaguppks')
+            ->where('tahun', session()->get('tahun'))
+            ->leftJoin('realisasis', 'mapingpaguppks.pagu_id', '=', 'realisasis.pagu_id');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\pagu;
 use App\Models\User;
+use App\Models\RefPPK;
 use App\Models\mapingpaguppk;
 use App\Models\mapingstafppk;
 use Illuminate\Support\Facades\Gate;
@@ -15,13 +16,12 @@ class MapingppkController extends Controller
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
         }
-
         return view('referensi.maping_ppk.index',[
-            'data'=>User::pegawaisatker()->ppk()->search()->paginate(15)->withQueryString()
+            'data'=>RefPPK::PPKsatker()->whereHas('paguppk')->search()->paginate(15)->withQueryString()
         ]);
     }
 
-    public function showpagu(User $ppk)
+    public function showpagu(RefPPK $ppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
@@ -30,7 +30,6 @@ class MapingppkController extends Controller
         if($ppk->satker != auth()->user()->satker){
             abort(403);
         }
-
         return view('referensi.maping_ppk.pagu.detail',[
             'data'=>$ppk->paguppk() ->searchprogram()  
                                     ->searchkegiatan()
@@ -43,7 +42,7 @@ class MapingppkController extends Controller
         ]);
     }
 
-    public function showstaf(User $ppk)
+    public function showstaf(RefPPK $ppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
@@ -59,7 +58,7 @@ class MapingppkController extends Controller
         ]);
     }
 
-    public function editpagu(User $ppk)
+    public function editpagu(RefPPK $ppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
@@ -81,7 +80,7 @@ class MapingppkController extends Controller
         ]);
     }
 
-    public function editstaf(User $ppk)
+    public function editstaf(RefPPK $ppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
@@ -97,7 +96,7 @@ class MapingppkController extends Controller
         ]);
     }
 
-    public function updatepagu(User $ppk, pagu $pagu)
+    public function updatepagu(RefPPK $ppk, pagu $pagu)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
@@ -119,7 +118,7 @@ class MapingppkController extends Controller
         return redirect('/maping-ppk/'.$ppk->id.'/pagu/edit')->with('berhasil', 'Pagu Berhasil Ditambahkan Ke PPK '.$ppk->nama);
     }
 
-    public function updatestaf(User $ppk, User $staf)
+    public function updatestaf(RefPPK $ppk, User $staf)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
@@ -140,7 +139,7 @@ class MapingppkController extends Controller
         return redirect('/maping-ppk/'.$ppk->id.'/staf/edit')->with('berhasil', 'staf Berhasil Ditambahkan Ke PPK '.$ppk->nama);
     }
 
-    public function destroypagu(User $ppk, mapingpaguppk $mapingppk)
+    public function destroypagu(RefPPK $ppk, mapingpaguppk $mapingppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);
@@ -154,7 +153,7 @@ class MapingppkController extends Controller
         return redirect('/maping-ppk/'.$ppk->id.'/pagu')->with('berhasil', 'Pagu Berhasil Di Hapus dari PPK');
     }
 
-    public function destroystaf(User $ppk, mapingstafppk $mapingstafppk)
+    public function destroystaf(RefPPK $ppk, mapingstafppk $mapingstafppk)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);

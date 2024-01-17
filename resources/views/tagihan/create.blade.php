@@ -54,7 +54,7 @@
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
-                    <span class="label-text">Unit:</span>
+                    <span class="label-text">Jenis tagihan:</span>
                 </label>
                 <select type="text" name="jnstagihan"
                     class="select select-sm select-bordered w-full max-w-xs @error('jnstagihan') select-error @enderror">
@@ -72,7 +72,7 @@
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
-                    <span class="label-text">Jenis tagihan:</span>
+                    <span class="label-text">Unit:</span>
                 </label>
                 <select type="text" name="kodeunit"
                     class="select select-sm select-bordered w-full max-w-xs @error('kodeunit') select-error @enderror">
