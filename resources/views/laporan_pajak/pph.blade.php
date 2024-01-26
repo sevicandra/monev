@@ -61,26 +61,26 @@
                         </td>
                         @if ($item->tagihan->jnstagihan === '1')
                             <td class="border border-base-content">
-                                @if ($item->tagihan->spm)
-                                    {{ $item->tagihan->spm->nomor_sp2d }}
-                                @endif
+                                {{ $item->tagihan->nomor_sp2d }}
                             </td>
                             <td class="border border-base-content">
-                                @if ($item->tagihan->spm)
-                                    {{ $item->tagihan->spm->tanggal_sp2d }}
-                                @endif
+                                {{ $item->tagihan->tanggal_sp2d }}
                             </td>
                         @else
                             <td class="border border-base-content"> {{ $item->ntpn }} </td>
                             <td class="border border-base-content">{{ $item->tanggalntpn }}</td>
                         @endif
-                        <td class="border border-base-content">{{ $item->rekanan->npwp }}</td>
+                        <td class="border border-base-content">
+                            @switch($item->rekanan->npwp)
+                                @case(1) Ya @break @default Tidak @endswitch
+                        </td>
                         <td class="border border-base-content">{{ $item->rekanan->idpajak }}</td>
                         <td class="border border-base-content">{{ $item->rekanan->nama }}</td>
                         <td class="border border-base-content">{{ $item->objekpajak->kode }}</td>
-                            <td class="border border-base-content">{{ $item->tarif }}%</td>
-                            <td class="border border-base-content">{{ number_format(floor($item->pph * ($item->tarif / 100)), 2, ',', '.') }}</td>
-                            <td class="border border-base-content">{{ number_format($item->pph, 2, ',', '.') }}</td>
+                        <td class="border border-base-content">{{ $item->tarif }}%</td>
+                        <td class="border border-base-content">
+                            {{ number_format(floor($item->pph * ($item->tarif / 100)), 2, ',', '.') }}</td>
+                        <td class="border border-base-content">{{ number_format($item->pph, 2, ',', '.') }}</td>
                     </tr>
                     @php
                         $i++;

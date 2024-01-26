@@ -212,10 +212,6 @@ class BendaharaController extends Controller
             abort(403);
         }
 
-        if (!isset($tagihan->spm)) {
-            return back()->with('gagal','Data tidak dapat dikirim karena SPM belum di input');
-        }
-
         if ($tagihan->tanggal_sp2d === null || $tagihan->tanggal_sp2d === '0000-00-00' || $tagihan->nomor_sp2d === null || $tagihan->nomor_sp2d === '') {
             return back()->with('gagal','Data tidak dapat dikirim karena SP2D belum di input');
         }

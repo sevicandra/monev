@@ -28,7 +28,7 @@ class Notification
 
     public function payroll()
     {
-        return Payroll::BelumTransfer()->count();
+        return Payroll::BelumTransferCount()->count();
     }
 
     public function ppspm()

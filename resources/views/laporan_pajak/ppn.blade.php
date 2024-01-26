@@ -61,14 +61,10 @@
                         </td>
                         @if ($item->tagihan->jnstagihan === '1')
                             <td class="border border-base-content">
-                                @if ($item->tagihan->spm)
-                                    {{ $item->tagihan->spm->nomor_sp2d }}
-                                @endif
+                                {{ $item->tagihan->nomor_sp2d }}
                             </td>
                             <td class="border border-base-content">
-                                @if ($item->tagihan->spm)
-                                    {{ indonesiaDate($item->tagihan->spm->tanggal_sp2d) }}
-                                @endif
+                                {{ indonesiaDate($item->tagihan->tanggal_sp2d) }}
                             </td>
                         @else
                             <td class="border border-base-content"> {{ $item->ntpn }} </td>

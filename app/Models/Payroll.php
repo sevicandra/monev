@@ -28,29 +28,41 @@ class Payroll extends Model
 
     public function scopeBelumTransfer($data)
     {
-        return  $data   ->where('payrolls.status', 0)
-                        ->where('tagihans.status', 4)
-                        ->where('tagihans.kodesatker', auth()->user()->satker)
-                        ->leftJoin('tagihans', 'payrolls.tagihan_id', '=', 'tagihans.id')
-                        ->leftJoin('units', 'tagihans.kodeunit', '=', 'units.kodeunit')
-                        ->leftJoin('ref_ppks', 'tagihans.ppk_id', '=', 'ref_ppks.nip')
-                        ->leftJoin('realisasis', 'tagihans.id', '=', 'realisasis.tagihan_id')
-                        ->where('tagihans.tahun', session()->get('tahun'))
-                        ->groupBy('payrolls.tagihan_id')
-                        ->orderBy('tagihans.updated_at', 'asc')
-                        ->selectRaw('tagihans.*, namaunit, ref_ppks.nama as ppk, avg(realisasis.realisasi) as realisasi, sum(bruto) as payroll')
-        ;
+        return  $data->where('payrolls.status', 0)
+            ->where('tagihans.status', 4)
+            ->where('tagihans.kodesatker', auth()->user()->satker)
+            ->leftJoin('tagihans', 'payrolls.tagihan_id', '=', 'tagihans.id')
+            ->leftJoin('units', 'tagihans.kodeunit', '=', 'units.kodeunit')
+            ->leftJoin('ref_ppks', 'tagihans.ppk_id', '=', 'ref_ppks.nip')
+            ->leftJoin('realisasis', 'tagihans.id', '=', 'realisasis.tagihan_id')
+            ->where('tagihans.tahun', session()->get('tahun'))
+            ->groupBy('payrolls.tagihan_id')
+            ->orderBy('tagihans.updated_at', 'asc')
+            ->selectRaw('tagihans.*, namaunit, ref_ppks.nama as ppk, avg(realisasis.realisasi) as realisasi, sum(bruto) as payroll');
+    }
+
+    public function scopeBelumTransferCount()
+    {
+        return $this->where('payrolls.status', 0)
+            ->whereHas('tagihan', function ($q) {
+                $q->where('tagihans.status', 4)
+                    ->where('tagihans.kodesatker', auth()->user()->satker)
+                    ->where('tagihans.tahun', session()->get('tahun'));
+            })
+            ->groupBy('payrolls.tagihan_id')
+            ->select('payrolls.tagihan_id')
+            ->get();
     }
 
     public function scopeBelumApprove($data)
     {
-        return $data ->where('status', 0);
+        return $data->where('status', 0);
     }
 
     public function scopeSearch($data)
     {
         if (request('search')) {
-            $data = $data->where('nama','like','%'. request('search').'%');
+            $data = $data->where('nama', 'like', '%' . request('search') . '%');
         }
         return $data;
     }
