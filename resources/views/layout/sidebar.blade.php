@@ -34,7 +34,11 @@
                                 <a href="/tagihan">
                                     Data Tagihan
                                     @if (isset($notifikasi->tagihan) && $notifikasi->tagihan > 0)
-                                        <div class="badge badge-primary">{{ $notifikasi->tagihan }}</div>
+                                        @if ($notifikasi->tagihan > 99)
+                                            <div class="badge badge-primary">99+</div>
+                                        @else
+                                            <div class="badge badge-primary">{{ $notifikasi->tagihan }}</div>
+                                        @endif
                                     @endif
                                 </a>
                             </li>
@@ -82,7 +86,11 @@
                                 <a href="/verifikasi">
                                     Verifikasi
                                     @if (isset($notifikasi->verifikasi) && $notifikasi->verifikasi > 0)
-                                        <div class="badge badge-primary">{{ $notifikasi->verifikasi }}</div>
+                                        @if ($notifikasi->verifikasi > 99)
+                                            <div class="badge badge-primary">99+</div>
+                                        @else
+                                            <div class="badge badge-primary">{{ $notifikasi->verifikasi }}</div>
+                                        @endif
                                     @endif
                                 </a>
                             </li>
@@ -92,7 +100,11 @@
                                 <a href="/ppspm">
                                     PPSPM
                                     @if (isset($notifikasi->ppspm) && $notifikasi->ppspm > 0)
-                                        <div class="badge badge-primary">{{ $notifikasi->ppspm }}</div>
+                                        @if ($notifikasi->ppspm > 99)
+                                            <div class="badge badge-primary">99+</div>
+                                        @else
+                                            <div class="badge badge-primary">{{ $notifikasi->ppspm }}</div>
+                                        @endif
                                     @endif
                                 </a>
                             </li>
@@ -102,7 +114,11 @@
                                 <a href="/payroll">
                                     Payroll
                                     @if (isset($notifikasi->payroll) && $notifikasi->payroll > 0)
-                                        <div class="badge badge-primary">{{ $notifikasi->payroll }}</div>
+                                        @if ($notifikasi->payroll > 99)
+                                            <div class="badge badge-primary">99+</div>
+                                        @else
+                                            <div class="badge badge-primary">{{ $notifikasi->payroll }}</div>
+                                        @endif
                                     @endif
                                 </a>
                             </li>
@@ -110,7 +126,11 @@
                                 <a href="/bendahara">
                                     Bendahara
                                     @if (isset($notifikasi->bendahara) && $notifikasi->bendahara > 0)
-                                        <div class="badge badge-primary">{{ $notifikasi->bendahara }}</div>
+                                        @if ($notifikasi->bendahara > 99)
+                                            <div class="badge badge-primary">99+</div>
+                                        @else
+                                            <div class="badge badge-primary">{{ $notifikasi->bendahara }}</div>
+                                        @endif
                                     @endif
                                 </a>
                             </li>
