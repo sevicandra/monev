@@ -8,6 +8,7 @@ use App\Models\bulan;
 use App\Models\RefPPK;
 use App\Models\tagihan;
 use App\Models\realisasi;
+use App\Helper\Notification;
 
 class DashboardController extends Controller
 {
@@ -22,6 +23,7 @@ class DashboardController extends Controller
             'realisasibelanjamodal'=>realisasi::sp2d()->realisaijenisbelanja('53')->get(),
             'ppk'=>RefPPK::PPKsatker()->whereHas('paguppk')->get(),
             'unit'=>unit::myunit()->whereHas('pagu')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -29,6 +31,7 @@ class DashboardController extends Controller
     {
         return view('dashboard.unit.index',[
             'unit'=>unit::myunit()->whereHas('pagu')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -36,7 +39,8 @@ class DashboardController extends Controller
     {
         return view('dashboard.unit.detail',[
             'data'=>tagihan::realisasiBulananUnit($unit)->orderBy('bulan')->get(),
-            'unit'=>$unit
+            'unit'=>$unit,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -46,7 +50,8 @@ class DashboardController extends Controller
         return view('dashboard.unit.detail-pok',[
             'data'=>pagu::RealisasiBulananUnit($unit, $bulanModel->kodebulan)->orderBy('pok')->get(),
             'unit'=>$unit,
-            'bulan'=>$bulanModel
+            'bulan'=>$bulanModel,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -62,7 +67,8 @@ class DashboardController extends Controller
         return view('dashboard.unit.detail-tagihan',[
             'data'=> tagihan::realisasiTagihanPerBulanUnit($unit, $bulan)->get(),
             'unit'=>$unit,
-            'bulan'=>$bulanModel
+            'bulan'=>$bulanModel,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -70,6 +76,7 @@ class DashboardController extends Controller
     {
         return view('dashboard.ppk.index',[
             'ppk'=>RefPPK::PPKsatker()->whereHas('paguppk')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -77,7 +84,8 @@ class DashboardController extends Controller
     {
         return view('dashboard.ppk.detail',[
             'data'=>tagihan::realisasiBulananPpk($ppk->nip)->orderBy('bulan')->get(),
-            'ppk'=>$ppk
+            'ppk'=>$ppk,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -87,7 +95,8 @@ class DashboardController extends Controller
         return view('dashboard.ppk.detail-pok',[
             'data'=>pagu::RealisasiBulananPpk($ppk->nip, $bulanModel->kodebulan)->orderBy('pok')->get(),
             'ppk'=>$ppk,
-            'bulan'=>$bulanModel
+            'bulan'=>$bulanModel,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -104,7 +113,8 @@ class DashboardController extends Controller
         return view('dashboard.ppk.detail-tagihan',[
             'data'=> tagihan::realisasiTagihanPerBulanPpk($ppk->nip, $bulan)->get(),
             'ppk'=>$ppk,
-            'bulan'=>$bulanModel
+            'bulan'=>$bulanModel,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 }

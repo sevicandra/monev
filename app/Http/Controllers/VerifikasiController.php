@@ -14,6 +14,7 @@ use App\Models\pphrekanan;
 use App\Models\ppnrekanan;
 use App\Models\RefRekening;
 use Illuminate\Support\Str;
+use App\Helper\Notification;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -32,6 +33,7 @@ class VerifikasiController extends Controller
         
         return view('verifikasi.index',[
             'data'=>tagihan::tagihansatker()->tagihanverifikator()->unverified()->search()->order()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -52,7 +54,8 @@ class VerifikasiController extends Controller
             'data'=>$verifikasi,
             'back'=>'/verifikasi',
             'upload'=>'/verifikasi/'.$verifikasi->id.'/upload',
-            'delete'=>'/verifikasi/'.$verifikasi->id.'/upload/'
+            'delete'=>'/verifikasi/'.$verifikasi->id.'/upload/',
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -73,7 +76,8 @@ class VerifikasiController extends Controller
             abort(403);
         }
         return view('verifikasi.spm',[
-            'data'=>$verifikasi
+            'data'=>$verifikasi,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -229,7 +233,8 @@ class VerifikasiController extends Controller
             'berkas'=>berkas::keuangan()->orderby('kodeberkas')->get(),
             'data'=>$tagihan,
             'back'=>'/verifikasi/'.$tagihan->id,
-            'upload'=>'/verifikasi/'.$tagihan->id.'/upload'
+            'upload'=>'/verifikasi/'.$tagihan->id.'/upload',
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -248,7 +253,8 @@ class VerifikasiController extends Controller
         }
         return view('verifikasi.rekanan.index',[
             'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -267,7 +273,8 @@ class VerifikasiController extends Controller
         }
         return view('verifikasi.rekanan.create',[
             'tagihan'=>$tagihan,
-            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString()
+            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -324,7 +331,8 @@ class VerifikasiController extends Controller
         return view('verifikasi.rekanan.ppn.index',[
             'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -344,7 +352,8 @@ class VerifikasiController extends Controller
         return view('verifikasi.rekanan.ppn.create',[
             'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -396,7 +405,8 @@ class VerifikasiController extends Controller
         return view('verifikasi.rekanan.ppn.update',[
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
-            'data'=>$ppn
+            'data'=>$ppn,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -466,7 +476,8 @@ class VerifikasiController extends Controller
         return view('verifikasi.rekanan.pph.index',[
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -487,7 +498,8 @@ class VerifikasiController extends Controller
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
-            'objekpajak'=>objekpajak::all()
+            'objekpajak'=>objekpajak::all(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -543,7 +555,8 @@ class VerifikasiController extends Controller
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
             'data'=>$pph,
-            'objekpajak'=>objekpajak::all()
+            'objekpajak'=>objekpajak::all(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -618,7 +631,8 @@ class VerifikasiController extends Controller
                                             ->searchkomponen()
                                             ->searchsubkomponen()
                                             ->searchakun()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -637,7 +651,8 @@ class VerifikasiController extends Controller
         }
         return view('verifikasi.payroll.index',[
            'data'   => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
-           'tagihan' => $tagihan  
+           'tagihan' => $tagihan,
+           'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -655,7 +670,8 @@ class VerifikasiController extends Controller
             return abort(403);
         }
         return view('verifikasi.payroll.create',[
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -734,7 +750,8 @@ class VerifikasiController extends Controller
         }
         return view('verifikasi.payroll.hris.import',[
             'data'=>$data,
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -754,7 +771,8 @@ class VerifikasiController extends Controller
 
         return view('verifikasi.payroll.monev.import',[
             'data'=>RefRekening::search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\user;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -16,10 +17,12 @@ class UserController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             return view('referensi.user.index',[
                 'data'=>User::pegawaisatker()->search()->paginate(15)->withQueryString(),
+                'notifikasi'=>Notification::Notif()
             ]);
         }
         return view('referensi.user.index',[
             'data'=>User::search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -27,7 +30,9 @@ class UserController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.user.create');
+        return view('referensi.user.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
     
     public function store(Request $request){
@@ -63,7 +68,8 @@ class UserController extends Controller
             abort(403);
         }
         return view('referensi.user.update',[
-            'data'=> $user
+            'data'=> $user,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

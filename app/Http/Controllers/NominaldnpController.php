@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\dnp;
 use App\Models\tagihan;
 use App\Models\nominaldnp;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -20,7 +21,8 @@ class NominaldnpController extends Controller
         }
         return view('tagihan.dnp.nominal_dnp.index',[
             'tagihan'=>$tagihan->id,
-            'dnp'=>$dnp
+            'dnp'=>$dnp,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -66,7 +68,8 @@ class NominaldnpController extends Controller
         return view('tagihan.dnp.nominal_dnp.update',[
             'data'=>$nominaldnp,
             'tagihan'=>$tagihan->id,
-            'dnp'=>$dnp
+            'dnp'=>$dnp,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

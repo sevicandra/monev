@@ -9,6 +9,7 @@ use App\Models\register;
 use App\Models\logtagihan;
 use Endroid\QrCode\QrCode;
 use Illuminate\Support\Str;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Spipu\Html2Pdf\Html2Pdf;
 use Endroid\QrCode\Logo\Logo;
@@ -37,26 +38,29 @@ class RegisterController extends Controller
 
     public function index()
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-        return view('register_tagihan.index',[
-            'data'=>register::registerppk()->where('status' , 0)->where('tahun', session()->get('tahun'))->search()->orderby('nomor', 'DESC')->paginate(15)->withQueryString()
+        return view('register_tagihan.index', [
+            'data' => register::registerppk()->where('status', 0)->where('tahun', session()->get('tahun'))->search()->orderby('nomor', 'DESC')->paginate(15)->withQueryString(),
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
 
     public function create()
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-        return view('register_tagihan.create');
+        return view('register_tagihan.create', [
+            'notifikasi' => Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
 
@@ -68,25 +72,25 @@ class RegisterController extends Controller
             $ppk_id = auth()->user()->mapingstafppk->ppk_id;
         }
 
-        $nomor=nomor::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->first();
+        $nomor = nomor::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->first();
         register::create([
-            'tahun'=>session()->get('tahun'),
-            'kodesatker'=>auth()->user()->satker,
-            'ppk_id'=>$ppk_id,
-            'nomor'=>$nomor->nomor,
-            'ekstensi'=>$nomor->ekstensi,
-            'status'=>0,
-            'file'=>'register/'.Str::uuid()->toString().'.pdf'
+            'tahun' => session()->get('tahun'),
+            'kodesatker' => auth()->user()->satker,
+            'ppk_id' => $ppk_id,
+            'nomor' => $nomor->nomor,
+            'ekstensi' => $nomor->ekstensi,
+            'status' => 0,
+            'file' => 'register/' . Str::uuid()->toString() . '.pdf'
         ]);
         $nomor->update([
-            'nomor'=>$nomor->nomor+1
+            'nomor' => $nomor->nomor + 1
         ]);
         return redirect('/register')->with('berhasil', 'Register Berhasil Ditambahkan');
     }
 
     public function show(register $register)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
 
@@ -102,15 +106,16 @@ class RegisterController extends Controller
             }
         }
 
-        return view('register_tagihan.detail',[
-            'data'=>$register->tagihan,
-            'register'=>$register
+        return view('register_tagihan.detail', [
+            'data' => $register->tagihan,
+            'register' => $register,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
     public function destroy(register $register)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
 
@@ -134,7 +139,7 @@ class RegisterController extends Controller
 
     public function detailcreate(register $register)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
         if (Gate::allows('PPK', auth()->user()->id)) {
@@ -148,57 +153,58 @@ class RegisterController extends Controller
                 abort(403);
             }
         }
-        return view('register_tagihan.create_detail',[
-        'data'=>tagihan::tagihansatker()->tagihanppk()->notregistered()->get(),
-        'register'=>$register
+        return view('register_tagihan.create_detail', [
+            'data' => tagihan::tagihansatker()->tagihanppk()->notregistered()->get(),
+            'register' => $register,
+            'notifikasi' => Notification::Notif()
         ]);
     }
-    
+
     public function preview(register $register)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
         if (Gate::allows('PPK', auth()->user()->id)) {
             if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
-            $ppk=auth()->user()->nama;
+            $ppk = auth()->user()->nama;
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
             if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
                 abort(403);
             }
-            $ppk=auth()->user()->mapingstafppk->ppk->nama;
+            $ppk = auth()->user()->mapingstafppk->ppk->nama;
         }
         ob_start();
         $html2pdf = ob_get_clean();
         $html2pdf = new Html2Pdf('P', 'A4', 'en', false, 'UTF-8', array(5, 5, 5, 5));
         $html2pdf->addFont('Arial');
-        $html2pdf->writeHTML(view('register_tagihan.surat',[
-            'data'=>$register->tagihan,
-            'register'=>$register,
-            'ppk'=>$ppk,
+        $html2pdf->writeHTML(view('register_tagihan.surat', [
+            'data' => $register->tagihan,
+            'register' => $register,
+            'ppk' => $ppk,
         ]));
         $html2pdf->output('register_tagihan.pdf');
     }
 
     public function esign(Request $request, register $register)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK', auth()->user()->id)) {
             abort(403);
         }
         if (Gate::allows('PPK', auth()->user()->id)) {
             if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
-            $ppk=auth()->user()->nama;
+            $ppk = auth()->user()->nama;
         }
 
         if ($request->_method === 'POST') {
             $request->validate([
-                'passphrase'=>'required'
+                'passphrase' => 'required'
             ]);
 
             $qr = config('app.url') .  '/file-view/' . $register->file;
@@ -211,36 +217,36 @@ class RegisterController extends Controller
                 ->setRoundBlockSizeMode(new RoundBlockSizeModeShrink())
                 ->setForegroundColor(new Color(0, 0, 0))
                 ->setBackgroundColor(new Color(255, 255, 255));
-                $image_path = 'img/logo.jpeg';
-                $image_data = base64_encode(file_get_contents($image_path));
-                $image_type = pathinfo($image_path, PATHINFO_EXTENSION);
-                // Generate data URI
-                $src_img = 'data:image/' . $image_type . ';base64,' . $image_data;
+            $image_path = 'img/logo.jpeg';
+            $image_data = base64_encode(file_get_contents($image_path));
+            $image_type = pathinfo($image_path, PATHINFO_EXTENSION);
+            // Generate data URI
+            $src_img = 'data:image/' . $image_type . ';base64,' . $image_data;
 
             $logo = Logo::create($src_img)
                 ->setResizeToWidth(20);
 
             $result = $writer->write($qrCode, $logo);
             $qrcode = $result->getDataUri();
-    
+
             Pdf::setOption(['dpi' => 1000, 'defaultFont' => 'Arial']);
             Pdf::setOption('A4', 'portrait');
-            $pdf = Pdf::loadView('register_tagihan.surat_esign',[
-                'data'=>$register->tagihan,
-                'register'=>$register,
-                'qrcode'=>$qrcode,
-                'ppk'=>$ppk
+            $pdf = Pdf::loadView('register_tagihan.surat_esign', [
+                'data' => $register->tagihan,
+                'register' => $register,
+                'qrcode' => $qrcode,
+                'ppk' => $ppk
             ]);
             $content = $pdf->download()->getOriginalContent();
             Storage::delete($register->file);
-            Storage::put($register->file,$content) ;
+            Storage::put($register->file, $content);
             try {
                 $response = $this->_client->request('POST', 'pdf', [
                     'query' => [
                         'nik' => $request->session()->get('nik'),
                         'passphrase' => $request->passphrase,
                         'jenis_dokumen' => 'Register Tagihan',
-                        'nomor' => $register->nomor.$register->ekstensi.$register->tahun,
+                        'nomor' => $register->nomor . $register->ekstensi . $register->tahun,
                         'tujuan' => 'Pejabat Penandatangan SPM',
                         'perihal' => 'Register Tagihan',
                         'info' => 'Register Tagihan',
@@ -254,11 +260,11 @@ class RegisterController extends Controller
                         ]
                     ]
                 ]);
-                
+
                 $result_header = $response->getHeaders();
                 $result_body = $response->getBody()->getContents();
 
-                Storage::put($register->file, $result_body) ;
+                Storage::put($register->file, $result_body);
                 $register->update([
                     'dokumen_date' => $result_header['Date'][0],
                     'dokumen_id' => $result_header['id_dokumen'][0],
@@ -266,22 +272,24 @@ class RegisterController extends Controller
                 ]);
 
                 foreach ($register->tagihan as $tagihan) {
-                    $tagihan->update(['status'=>2]);
+                    $tagihan->update(['status' => 2]);
                     logtagihan::create([
-                        'tagihan_id'=>$tagihan->id,
-                        'action'=>'Esign',
-                        'user'=>auth()->user()->nama,
-                        'catatan'=>''
+                        'tagihan_id' => $tagihan->id,
+                        'action' => 'Esign',
+                        'user' => auth()->user()->nama,
+                        'catatan' => ''
                     ]);
                 }
 
-                return redirect('/register')->with('berhasil','Proses penandatanganan berhasil!');
+                return redirect('/register')->with('berhasil', 'Proses penandatanganan berhasil!');
             } catch (ClientException $th) {
                 $response = $th->getResponse();
                 $responseBodyAsString = json_decode($response->getBody()->getContents(), true);
-                return redirect('/register')->with('gagal',$responseBodyAsString['error']);
+                return redirect('/register')->with('gagal', $responseBodyAsString['error']);
             }
         }
-        return view('register_tagihan.esign');
+        return view('register_tagihan.esign', [
+            'notifikasi' => Notification::Notif()
+        ]);
     }
 }

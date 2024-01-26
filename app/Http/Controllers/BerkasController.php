@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\berkas;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +15,8 @@ class BerkasController extends Controller
             abort(403);
         }
         return view('referensi.berkas.index',[
-            'data'=>berkas::orderby('kodeberkas')->get()
+            'data'=>berkas::orderby('kodeberkas')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -23,7 +25,9 @@ class BerkasController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.berkas.create');
+        return view('referensi.berkas.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -51,7 +55,8 @@ class BerkasController extends Controller
             abort(403);
         }
         return view('referensi.berkas.update',[
-            'data'=>$berka
+            'data'=>$berka,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

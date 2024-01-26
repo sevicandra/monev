@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\dokumen;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +15,8 @@ class DokumenController extends Controller
             abort(403);
         }
         return view('referensi.dokumen.index',[
-            'data'=>dokumen::orderby('kodedokumen')->get()
+            'data'=>dokumen::orderby('kodedokumen')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -23,7 +25,9 @@ class DokumenController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.dokumen.create');
+        return view('referensi.dokumen.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -60,7 +64,8 @@ class DokumenController extends Controller
             abort(403);
         }
         return view('referensi.dokumen.update',[
-            'data'=>$dokuman
+            'data'=>$dokuman,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

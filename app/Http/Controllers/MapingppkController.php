@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\pagu;
 use App\Models\User;
 use App\Models\RefPPK;
+use App\Helper\Notification;
 use App\Models\mapingpaguppk;
 use App\Models\mapingstafppk;
 use Illuminate\Support\Facades\Gate;
@@ -17,7 +18,8 @@ class MapingppkController extends Controller
             abort(403);
         }
         return view('referensi.maping_ppk.index',[
-            'data'=>RefPPK::PPKsatker()->search()->paginate(15)->withQueryString()
+            'data'=>RefPPK::PPKsatker()->search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -38,7 +40,8 @@ class MapingppkController extends Controller
                                     ->searchkomponen()
                                     ->searchsubkomponen()
                                     ->searchakun()->paginate(15)->withQueryString(),
-            'ppk'=>$ppk
+            'ppk'=>$ppk,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -54,7 +57,8 @@ class MapingppkController extends Controller
 
         return view('referensi.maping_ppk.staf.detail',[
             'data'=>$ppk->stafppk()->search()->paginate(15)->withQueryString(),
-            'ppk'=>$ppk
+            'ppk'=>$ppk,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -76,7 +80,8 @@ class MapingppkController extends Controller
                                                                                                                                         ->searchkomponen()
                                                                                                                                         ->searchsubkomponen()
                                                                                                                                         ->searchakun()->paginate(15)->withQueryString(),
-            'ppk'=>$ppk
+            'ppk'=>$ppk,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -92,7 +97,8 @@ class MapingppkController extends Controller
 
         return view('referensi.maping_ppk.staf.update',[
             'data'=>User::stafnoppk()->search()->paginate(15)->withQueryString(),
-            'ppk'=>$ppk
+            'ppk'=>$ppk,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

@@ -16,6 +16,7 @@ use App\Models\pphrekanan;
 use App\Models\ppnrekanan;
 use App\Models\RefRekening;
 use Illuminate\Support\Str;
+use App\Helper\Notification;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -33,7 +34,8 @@ class BendaharaController extends Controller
         }
 
         return view('bendahara.index',[
-           'data'=>tagihan::tagihansatker()->bendahara()->search()->order()->paginate(15)->withQueryString()
+           'data'=>tagihan::tagihansatker()->bendahara()->search()->order()->paginate(15)->withQueryString(),
+           'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -55,7 +57,8 @@ class BendaharaController extends Controller
                                             ->searchkomponen()
                                             ->searchsubkomponen()
                                             ->searchakun()->paginate(15)->withQueryString(),
-            'tagihan'=>$bendahara
+            'tagihan'=>$bendahara,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -73,7 +76,8 @@ class BendaharaController extends Controller
             abort(403);
         }
         return view('bendahara.sp2d',[
-            'data'=>$tagihan
+            'data'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -88,7 +92,8 @@ class BendaharaController extends Controller
         }
         return view('bendahara.sspb',[
             'tagihan'=>$tagihan,
-            'realisasi'=>$realisasi
+            'realisasi'=>$realisasi,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -386,7 +391,7 @@ class BendaharaController extends Controller
             'data'=>$tagihan,
             'back'=>'/bendahara/',
             'upload'=>'/bendahara/'.$tagihan->id.'/upload',
-            
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -408,7 +413,8 @@ class BendaharaController extends Controller
             'data'=>$tagihan,
             'back'=>'/bendahara',
             'upload'=>'/bendahara/'.$tagihan->id.'/upload',
-            'delete'=>'/bendahara/'.$tagihan->id.'/upload/'
+            'delete'=>'/bendahara/'.$tagihan->id.'/upload/',
+            'notifikasi'=>Notification::Notif()
         ]);
 
     }
@@ -428,7 +434,8 @@ class BendaharaController extends Controller
         }
         return view('bendahara.rekanan.index',[
             'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -447,7 +454,8 @@ class BendaharaController extends Controller
         }
         return view('bendahara.rekanan.create',[
             'tagihan'=>$tagihan,
-            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString()
+            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -504,7 +512,8 @@ class BendaharaController extends Controller
         return view('bendahara.rekanan.ppn.index',[
             'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -524,7 +533,8 @@ class BendaharaController extends Controller
         return view('bendahara.rekanan.ppn.create',[
             'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -585,7 +595,8 @@ class BendaharaController extends Controller
         return view('bendahara.rekanan.ppn.update',[
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
-            'data'=>$ppn
+            'data'=>$ppn,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -664,7 +675,8 @@ class BendaharaController extends Controller
         return view('bendahara.rekanan.pph.index',[
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -685,7 +697,8 @@ class BendaharaController extends Controller
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
-            'objekpajak'=>objekpajak::all()
+            'objekpajak'=>objekpajak::all(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -751,7 +764,8 @@ class BendaharaController extends Controller
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
             'data'=>$pph,
-            'objekpajak'=>objekpajak::all()
+            'objekpajak'=>objekpajak::all(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -830,7 +844,8 @@ class BendaharaController extends Controller
         }
         return view('bendahara.payroll.index',[
            'data'   => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
-           'tagihan' => $tagihan  
+           'tagihan' => $tagihan,
+           'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -848,7 +863,8 @@ class BendaharaController extends Controller
             abort(403);
         }
         return view('bendahara.payroll.create',[
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -927,7 +943,8 @@ class BendaharaController extends Controller
         }
         return view('bendahara.payroll.hris.import',[
             'data'=>$data,
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -947,7 +964,8 @@ class BendaharaController extends Controller
 
         return view('bendahara.payroll.monev.import',[
             'data'=>RefRekening::search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\satker;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,7 +16,8 @@ class SatkerController extends Controller
             abort(403);
         }
         return view('referensi.satker.index',[
-            'data'=>satker::search()->paginate(15)->withQueryString()
+            'data'=>satker::search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -24,7 +26,9 @@ class SatkerController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.satker.create');
+        return view('referensi.satker.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -73,7 +77,8 @@ class SatkerController extends Controller
             abort(403);
         }
         return view('referensi.satker.update',[
-            'data'=> $satker
+            'data'=> $satker,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

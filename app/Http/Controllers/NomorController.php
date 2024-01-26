@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\nomor;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,7 +17,8 @@ class NomorController extends Controller
         }
 
         return view('referensi.nomor.index',[
-            'data'=>nomor::search()->paginate(15)->withQueryString()
+            'data'=>nomor::search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -26,7 +28,9 @@ class NomorController extends Controller
             abort(403);
         }
         
-        return view('referensi.nomor.create');
+        return view('referensi.nomor.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -63,7 +67,8 @@ class NomorController extends Controller
         }
 
         return view('referensi.nomor.update',[
-            'data'=>$nomor
+            'data'=>$nomor,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\spm;
 use App\Models\tagihan;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -20,6 +21,7 @@ class CleansingKkpController extends Controller
 
         return view("data_cleansing.KKP.index",[
             'data'=>tagihan::cleansingKKP()->search()->order()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -125,7 +127,9 @@ class CleansingKkpController extends Controller
         if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
             abort(403);
         }
-        return view('data_cleansing.KKP.import');
+        return view('data_cleansing.KKP.import',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)

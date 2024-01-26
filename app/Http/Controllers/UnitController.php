@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\pagu;
 use App\Models\unit;
 use App\Models\User;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,7 +18,8 @@ class UnitController extends Controller
         }
 
         return view('referensi.unit.index',[
-            'data'=>unit::myunit()->search()->orderby('kodeunit')->paginate(15)->withQueryString()
+            'data'=>unit::myunit()->search()->orderby('kodeunit')->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -27,7 +29,9 @@ class UnitController extends Controller
             abort(403);
         }
 
-        return view('referensi.unit.create');
+        return view('referensi.unit.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -62,7 +66,8 @@ class UnitController extends Controller
         }
 
         return view('referensi.unit.verifikator.index',[
-            'data'=>$unit
+            'data'=>$unit,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -77,7 +82,8 @@ class UnitController extends Controller
         }
 
         return view('referensi.unit.update',[
-            'data'=>$unit
+            'data'=>$unit,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -93,7 +99,8 @@ class UnitController extends Controller
 
         return view('referensi.unit.verifikator.create',[
             'data'=>User::where('satker', auth()->user()->satker)->verifikator()->verifikatornonsign($unit->id)->search()->paginate(15)->withQueryString(),
-            'unit'=>$unit
+            'unit'=>$unit,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\role;
 use App\Models\User;
+use App\Helper\Notification;
 use Illuminate\Support\Facades\Gate;
 
 class RoleUserController extends Controller
@@ -37,7 +38,8 @@ class RoleUserController extends Controller
         }
 
         return view('referensi.user.role_user.index',[
-            'data'=>$role_user
+            'data'=>$role_user,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -55,7 +57,8 @@ class RoleUserController extends Controller
 
         return view('referensi.user.role_user.create',[
             'data'=>role::orderby('koderole')->ofUser($role_user->id),
-            'user'=>$role_user
+            'user'=>$role_user,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

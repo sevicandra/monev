@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\pphrekanan;
 use App\Models\ppnrekanan;
 use Illuminate\Support\Str;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,7 +17,9 @@ class LaporanPajakController extends Controller
         if (! Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
             abort(403);
         }
-        return view('laporan_pajak.index');
+        return view('laporan_pajak.index',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function showpph()
@@ -25,7 +28,8 @@ class LaporanPajakController extends Controller
             abort(403);
         }
         return view('laporan_pajak.pph',[
-            'data'=>pphrekanan::Pphunit()->tahunpajak()->masapajak()->get()
+            'data'=>pphrekanan::Pphunit()->tahunpajak()->masapajak()->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -106,7 +110,8 @@ class LaporanPajakController extends Controller
             abort(403);
         }
         return view('laporan_pajak.ppn',[
-            'data'=>ppnrekanan::Ppnunit()->tahunpajak()->masapajak()->get()
+            'data'=>ppnrekanan::Ppnunit()->tahunpajak()->masapajak()->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

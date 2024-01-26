@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\tahun;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +15,8 @@ class TahunController extends Controller
             abort(403);
         }
         return view('referensi.tahun.index',[
-            'data'=>tahun::orderby('tahun')->get()
+            'data'=>tahun::orderby('tahun')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -23,7 +25,9 @@ class TahunController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.tahun.create');
+        return view('referensi.tahun.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -56,7 +60,8 @@ class TahunController extends Controller
             abort(403);
         }
         return view('referensi.tahun.update',[
-            'data'=>$tahun
+            'data'=>$tahun,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

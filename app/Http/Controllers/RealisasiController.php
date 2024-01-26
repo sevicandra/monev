@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\pagu;
 use App\Models\tagihan;
 use App\Models\realisasi;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,28 +13,29 @@ class RealisasiController extends Controller
 {
     public function index(tagihan $tagihan)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
         if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
 
-        return view('tagihan.realisasi.index',[
-            'data'=>$tagihan->realisasi()   ->searchprogram()  
-                                            ->searchkegiatan()
-                                            ->searchkro()
-                                            ->searchro()
-                                            ->searchkomponen()
-                                            ->searchsubkomponen()
-                                            ->searchakun()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+        return view('tagihan.realisasi.index', [
+            'data' => $tagihan->realisasi()->searchprogram()
+                ->searchkegiatan()
+                ->searchkro()
+                ->searchro()
+                ->searchkomponen()
+                ->searchsubkomponen()
+                ->searchakun()->paginate(15)->withQueryString(),
+            'tagihan' => $tagihan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
     public function store(tagihan $tagihan, pagu $pagu)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
 
@@ -48,37 +50,38 @@ class RealisasiController extends Controller
             return abort(403);
         }
         realisasi::create([
-            'pagu_id'=>$pagu->id,
-            'tagihan_id'=>$tagihan->id,
-            'realisasi'=>0
+            'pagu_id' => $pagu->id,
+            'tagihan_id' => $tagihan->id,
+            'realisasi' => 0
         ]);
-        return redirect('/tagihan/'.$tagihan->id.'/realisasi')->with('berhasil', 'Realisasi Berhasil Di Tambahkan');
+        return redirect('/tagihan/' . $tagihan->id . '/realisasi')->with('berhasil', 'Realisasi Berhasil Di Tambahkan');
     }
 
     public function show(tagihan $realisasi)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
         if ($realisasi->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
 
-        return view('tagihan.realisasi.tarik_detail_akun',[
-            'data'=>$realisasi,
-            'pagu'=>pagu::Pagusatker()->paguppk()->pagustafppk()    ->searchprogram()  
-                                                                    ->searchkegiatan()
-                                                                    ->searchkro()
-                                                                    ->searchro()
-                                                                    ->searchkomponen()
-                                                                    ->searchsubkomponen()
-                                                                    ->searchakun()->paginate(15)->withQueryString()
-        ]); 
+        return view('tagihan.realisasi.tarik_detail_akun', [
+            'data' => $realisasi,
+            'pagu' => pagu::Pagusatker()->paguppk()->pagustafppk()->searchprogram()
+                ->searchkegiatan()
+                ->searchkro()
+                ->searchro()
+                ->searchkomponen()
+                ->searchsubkomponen()
+                ->searchakun()->paginate(15)->withQueryString(),
+            'notifikasi' => Notification::Notif()
+        ]);
     }
 
     public function edit(realisasi $realisasi)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
         if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
@@ -88,14 +91,15 @@ class RealisasiController extends Controller
         if ($realisasi->tagihan->status != 0) {
             return abort(403);
         }
-        return view('tagihan.realisasi.update',[
-            'data'=>$realisasi,
+        return view('tagihan.realisasi.update', [
+            'data' => $realisasi,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
     public function update(Request $request, realisasi $realisasi)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
         if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
@@ -107,19 +111,19 @@ class RealisasiController extends Controller
         }
 
         $request->validate([
-            'realisasi'=>'required|numeric'
+            'realisasi' => 'required|numeric'
         ]);
 
         $realisasi->update([
-            'realisasi'=>$request->realisasi
+            'realisasi' => $request->realisasi
         ]);
 
-        return redirect('/tagihan/'.$realisasi->tagihan->id.'/realisasi')->with('berhasil', 'Realisasi Berhasil Di Ubah.');
+        return redirect('/tagihan/' . $realisasi->tagihan->id . '/realisasi')->with('berhasil', 'Realisasi Berhasil Di Ubah.');
     }
 
     public function destroy(realisasi $realisasi)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
         if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
@@ -129,9 +133,8 @@ class RealisasiController extends Controller
         if ($realisasi->tagihan->status > 0) {
             return abort(403);
         }
-        $tagihan=$realisasi->tagihan;
+        $tagihan = $realisasi->tagihan;
         $realisasi->delete();
-        return redirect('/tagihan/'.$tagihan->id.'/realisasi')->with('berhasil', 'Realisasi Berhasil Di Hapus');
+        return redirect('/tagihan/' . $tagihan->id . '/realisasi')->with('berhasil', 'Realisasi Berhasil Di Hapus');
     }
-    
 }

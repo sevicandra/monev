@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\spm;
 use App\Models\tagihan;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -19,6 +20,7 @@ class CleansingSppController extends Controller
         }
         return view("data_cleansing.SPP.index", [
             'data' => tagihan::cleansingSPP()->search()->order()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -124,7 +126,9 @@ class CleansingSppController extends Controller
         if (!Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
             abort(403);
         }
-        return view('data_cleansing.SPP.import');
+        return view('data_cleansing.SPP.import',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)

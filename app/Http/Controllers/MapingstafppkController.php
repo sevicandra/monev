@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\unit;
 use App\Models\User;
+use App\Helper\Notification;
 use App\Models\mapingunitstafppk;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,7 +17,8 @@ class MapingstafppkController extends Controller
         }
 
         return view('referensi.maping_staf_ppk.index',[
-            'data'=>User::pegawaisatker()->stafppk()->search()->paginate(15)->withQueryString()
+            'data'=>User::pegawaisatker()->stafppk()->search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -32,7 +34,8 @@ class MapingstafppkController extends Controller
         
         return view('referensi.maping_staf_ppk.unit.detail',[
             'data'=>$stafppk->unitstafppk()->search()->orderby('kodeunit')->paginate(15)->withQueryString(),
-            'stafppk'=>$stafppk
+            'stafppk'=>$stafppk,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -48,7 +51,8 @@ class MapingstafppkController extends Controller
 
         return view('referensi.maping_staf_ppk.unit.update',[
             'data'=>unit::Nostafppk($stafppk->nip)->search()->orderby('kodeunit')->paginate(15)->withQueryString(),
-            'stafppk'=>$stafppk
+            'stafppk'=>$stafppk,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

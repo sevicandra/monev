@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\bulan;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,7 +16,8 @@ class BulanController extends Controller
             abort(403);
         }
         return view('referensi.bulan.index',[
-            'data'=>bulan::orderby('kodebulan')->get()
+            'data'=>bulan::orderby('kodebulan')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -24,7 +26,9 @@ class BulanController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.bulan.create');
+        return view('referensi.bulan.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -52,7 +56,8 @@ class BulanController extends Controller
             abort(403);
         }
         return view('referensi.bulan.update',[
-            'data'=>$bulan
+            'data'=>$bulan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

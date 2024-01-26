@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\dnp;
 use App\Models\tagihan;
+use App\Helper\Notification;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Models\pegawainondjkn;
 use Illuminate\Support\Facades\Gate;
@@ -23,7 +24,8 @@ class DnpController extends Controller
 
         return view('tagihan.dnp.index',[
             'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -52,12 +54,14 @@ class DnpController extends Controller
             ]);
             return view('tagihan.dnp.tarik_pegawai_gaji',[
                 'data'=>collect(json_decode($response->getBody()->getContents(), false)),
-                'tagihan'=>$tagihan
+                'tagihan'=>$tagihan,
+                'notifikasi'=>Notification::Notif()
             ]);
         }else{
             return view('tagihan.dnp.tarik_pegawai_gaji',[
                 'data'=>[],
-                'tagihan'=>$tagihan
+                'tagihan'=>$tagihan,
+                'notifikasi'=>Notification::Notif()
             ]);
         }
     }
@@ -78,7 +82,8 @@ class DnpController extends Controller
         }
         return view('tagihan.dnp.tarik_pegawai_nondjkn',[
             'data'=>pegawainondjkn::search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

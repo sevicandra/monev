@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use App\Models\pegawainondjkn;
 use Illuminate\Support\Facades\Gate;
@@ -14,7 +15,8 @@ class PegawainondjknController extends Controller
             abort(403);
         }
         return view('pegawai_nondjkn.index',[
-            'data'=>pegawainondjkn::search()->paginate(15)->withQueryString()
+            'data'=>pegawainondjkn::search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -23,7 +25,9 @@ class PegawainondjknController extends Controller
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-        return view('pegawai_nondjkn.create');
+        return view('pegawai_nondjkn.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -56,7 +60,8 @@ class PegawainondjknController extends Controller
             abort(403);
         }
         return view('pegawai_nondjkn.update',[
-            'data'=>$pegawai_nondjkn
+            'data'=>$pegawai_nondjkn,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

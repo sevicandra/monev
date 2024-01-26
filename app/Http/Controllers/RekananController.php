@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\rekanan;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +15,8 @@ class RekananController extends Controller
             abort(403);
         }
         return view('referensi.rekanan.index',[
-            'data'=>rekanan::rekanansatker()->search()->paginate(15)->withQueryString()
+            'data'=>rekanan::rekanansatker()->search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -23,7 +25,9 @@ class RekananController extends Controller
         if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.rekanan.create');
+        return view('referensi.rekanan.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -72,7 +76,8 @@ class RekananController extends Controller
             abort(403);
         }
         return view('referensi.rekanan.update',[
-            'data'=>$rekanan
+            'data'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

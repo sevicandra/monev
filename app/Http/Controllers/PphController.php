@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\pph;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +15,8 @@ class PphController extends Controller
             abort(403);
         }
         return view('referensi.pph.index',[
-            'data'=>pph::orderby('kodegolongan', 'DESC')->get()
+            'data'=>pph::orderby('kodegolongan', 'DESC')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -23,7 +25,9 @@ class PphController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.pph.create');
+        return view('referensi.pph.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -53,7 +57,8 @@ class PphController extends Controller
             abort(403);
         }
         return view('referensi.pph.update',[
-            'data'=>$pph
+            'data'=>$pph,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\spm;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,6 +16,7 @@ class SP2DController extends Controller
         }
         return view("data_cleansing.SP2D.index",[
             "data"=> spm::duplicate()->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

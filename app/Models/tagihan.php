@@ -123,7 +123,11 @@ class tagihan extends Model
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            return $data->where('ppk_id', auth()->user()->mapingstafppk->ppk_id);
+            if (optional(auth()->user()->mapingstafppk)->ppk_id) {
+                return $data->where('ppk_id', auth()->user()->mapingstafppk->ppk_id);
+            }else{
+                return $data->where('ppk_id', null);
+            }
         }
     }
 

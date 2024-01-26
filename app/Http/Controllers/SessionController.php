@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\tahun;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 
 class SessionController extends Controller
@@ -14,7 +15,8 @@ class SessionController extends Controller
         }
         
         return view('session.tahun_anggaran',[
-            'tahun'=>tahun::orderBy('tahun', 'desc')->get()
+            'tahun'=>tahun::orderBy('tahun', 'desc')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

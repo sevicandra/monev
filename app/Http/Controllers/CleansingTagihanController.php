@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\tagihan;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +15,8 @@ class CleansingTagihanController extends Controller
             abort(403);
         }
         return view('data_cleansing.tagihan.index', [
-            'data' => tagihan::CleansingTagihan()->paginate(15)->withQueryString()
+            'data' => tagihan::CleansingTagihan()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -24,7 +26,8 @@ class CleansingTagihanController extends Controller
             abort(403);
         }
         return view('data_cleansing.tagihan.detail', [
-            'data' => tagihan::CleansingDetailTagihan($jns, $nomor)->paginate(15)->withQueryString()
+            'data' => tagihan::CleansingDetailTagihan($jns, $nomor)->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 }

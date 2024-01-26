@@ -6,6 +6,7 @@ use App\Models\berkas;
 use App\Models\Payroll;
 use App\Models\tagihan;
 use Illuminate\Support\Str;
+use App\Helper\Notification;
 use App\Models\berkasupload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -22,7 +23,8 @@ class PayrollController extends Controller
         }
 
         return view('payroll.index', [
-            'data'  => Payroll::BelumTransfer()->paginate(15)->withQueryString()
+            'data'  => Payroll::BelumTransfer()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -77,7 +79,7 @@ class PayrollController extends Controller
             'data' => $tagihan,
             'back' => '/payroll/',
             'upload' => '/payroll/' . $tagihan->id . '/upload',
-
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -99,7 +101,8 @@ class PayrollController extends Controller
             'data' => $tagihan,
             'back' => '/payroll',
             'upload' => '/payroll/' . $tagihan->id . '/upload',
-            'delete' => '/payroll/' . $tagihan->id . '/upload/'
+            'delete' => '/payroll/' . $tagihan->id . '/upload/',
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -136,7 +139,8 @@ class PayrollController extends Controller
         }
         return view('payroll.show', [
             'data' => $tagihan->payroll()->belumApprove()->search()->paginate(15)->withQueryString(),
-            'tagihan' => $tagihan
+            'tagihan' => $tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

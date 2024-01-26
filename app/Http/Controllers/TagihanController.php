@@ -14,9 +14,10 @@ use App\Models\logtagihan;
 use App\Models\objekpajak;
 use App\Models\pphrekanan;
 use App\Models\ppnrekanan;
-use Illuminate\Support\Str;
-use App\Models\berkasupload;
 use App\Models\RefRekening;
+use Illuminate\Support\Str;
+use App\Helper\Notification;
+use App\Models\berkasupload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,8 @@ class TagihanController extends Controller
             abort(403);
         }
         return view('tagihan.index',[
-            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->order()->paginate(15)->withQueryString()
+            'data'=>tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->order()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -43,7 +45,8 @@ class TagihanController extends Controller
         }
         return view('tagihan.create',[
             'dokumen'=>dokumen::orderby('kodedokumen')->get(),
-            'unit'=>unit::Myunit()->stafppk()->get()
+            'unit'=>unit::Myunit()->stafppk()->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -111,7 +114,8 @@ class TagihanController extends Controller
         return view('tagihan.update',[
             'data'=>$tagihan,
             'dokumen'=>dokumen::orderby('kodedokumen')->get(),
-            'unit'=>unit::Myunit()->stafppk()->get()
+            'unit'=>unit::Myunit()->stafppk()->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -198,7 +202,8 @@ class TagihanController extends Controller
             'data'=>$tagihan,
             'back'=>'/tagihan',
             'upload'=>'/tagihan/'.$tagihan->id.'/upload/create',
-            'delete'=>'/tagihan/'.$tagihan->id.'/upload/'
+            'delete'=>'/tagihan/'.$tagihan->id.'/upload/',
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -252,6 +257,7 @@ class TagihanController extends Controller
             'data'=>$tagihan,
             'back'=>'/tagihan/'.$tagihan->id.'/upload',
             'upload'=>'/tagihan/'.$tagihan->id.'/upload',
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -317,7 +323,8 @@ class TagihanController extends Controller
         }
         return view('tagihan.rekanan.index',[
             'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -335,7 +342,8 @@ class TagihanController extends Controller
         }
         return view('tagihan.rekanan.create',[
             'tagihan'=>$tagihan,
-            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString()
+            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -391,7 +399,8 @@ class TagihanController extends Controller
         return view('tagihan.rekanan.ppn.index',[
             'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -410,7 +419,8 @@ class TagihanController extends Controller
         return view('tagihan.rekanan.ppn.create',[
             'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -460,7 +470,8 @@ class TagihanController extends Controller
         return view('tagihan.rekanan.ppn.update',[
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
-            'data'=>$ppn
+            'data'=>$ppn,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -527,7 +538,8 @@ class TagihanController extends Controller
         return view('tagihan.rekanan.pph.index',[
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan
+            'rekanan'=>$rekanan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -547,7 +559,8 @@ class TagihanController extends Controller
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
-            'objekpajak'=>objekpajak::orderBy('kode')->get()
+            'objekpajak'=>objekpajak::orderBy('kode')->get(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -603,7 +616,8 @@ class TagihanController extends Controller
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
             'data'=>$pph,
-            'objekpajak'=>objekpajak::all()
+            'objekpajak'=>objekpajak::all(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -671,7 +685,8 @@ class TagihanController extends Controller
         }
         return view('tagihan.payroll.index',[
            'data'   => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
-           'tagihan' => $tagihan  
+           'tagihan' => $tagihan,
+           'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -688,7 +703,8 @@ class TagihanController extends Controller
             return abort(403);
         }
         return view('tagihan.payroll.create',[
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -765,7 +781,8 @@ class TagihanController extends Controller
         }
         return view('tagihan.payroll.hris.import',[
             'data'=>$data,
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -784,7 +801,8 @@ class TagihanController extends Controller
 
         return view('tagihan.payroll.monev.import',[
             'data'=>RefRekening::search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan
+            'tagihan'=>$tagihan,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 

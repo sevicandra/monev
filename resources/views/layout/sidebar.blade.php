@@ -33,6 +33,9 @@
                             <li>
                                 <a href="/tagihan">
                                     Data Tagihan
+                                    @if (isset($notifikasi->tagihan) && $notifikasi->tagihan > 0)
+                                        <div class="badge badge-primary">{{ $notifikasi->tagihan }}</div>
+                                    @endif
                                 </a>
                             </li>
                         @endcan
@@ -60,14 +63,14 @@
                                         <li><a href="/referensi-rekening">Rekening</a></li>
                                         <li><a href="/rekanan">Rekanan</a></li>
                                     </ul>
-                                </details>                            
+                                </details>
                             </li>
                         @endcan
                     </ul>
                 </details>
             </li>
         @endcanany
-    
+
         @canany(['PPSPM', 'Bendahara', 'Validator'], auth()->user()->id)
             {{--  Bagian Keuangan  --}}
             <li>
@@ -78,6 +81,9 @@
                             <li>
                                 <a href="/verifikasi">
                                     Verifikasi
+                                    @if (isset($notifikasi->verifikasi) && $notifikasi->verifikasi > 0)
+                                        <div class="badge badge-primary">{{ $notifikasi->verifikasi }}</div>
+                                    @endif
                                 </a>
                             </li>
                         @endcan
@@ -85,6 +91,9 @@
                             <li>
                                 <a href="/ppspm">
                                     PPSPM
+                                    @if (isset($notifikasi->ppspm) && $notifikasi->ppspm > 0)
+                                        <div class="badge badge-primary">{{ $notifikasi->ppspm }}</div>
+                                    @endif
                                 </a>
                             </li>
                         @endcan
@@ -92,11 +101,17 @@
                             <li>
                                 <a href="/payroll">
                                     Payroll
+                                    @if (isset($notifikasi->payroll) && $notifikasi->payroll > 0)
+                                        <div class="badge badge-primary">{{ $notifikasi->payroll }}</div>
+                                    @endif
                                 </a>
                             </li>
                             <li>
                                 <a href="/bendahara">
                                     Bendahara
+                                    @if (isset($notifikasi->bendahara) && $notifikasi->bendahara > 0)
+                                        <div class="badge badge-primary">{{ $notifikasi->bendahara }}</div>
+                                    @endif
                                 </a>
                             </li>
                         @endcan
@@ -135,7 +150,7 @@
                             <li><a href="/maping-ppk">Maping PPK</a></li>
                             <li><a href="/maping-staf-ppk">Maping Staf PPK</a></li>
                         @endcan
-    
+
                         @canany(['Staf_KPA', 'KPA'], auth()->user()->id)
                             <li><a href="/pagu">Pagu</a></li>
                         @endcanany
@@ -155,23 +170,23 @@
             {{--  Akhir Admin  --}}
         @endcanany
         @canany(['admin_satker', 'sys_admin'], auth()->user()->id)
-        {{--  Admin  --}}
-        <li>
-            <details close>
-                <summary>Data Cleansing</summary>
-                <ul>
-                    @canany(['sys_admin', 'admin_satker'], auth()->user()->id)
-                        <li><a href="/cleansing/tagihan">Tagihan</a></li>
-                        <li><a href="/cleansing/sp2d">SP2D</a></li>
-                        <li><a href="/cleansing/spby">SPBy</a></li>
-                        <li><a href="/cleansing/kkp">KKP</a></li>
-                        <li><a href="/cleansing/spp">SPP</a></li>
-                    @endcan
-                </ul>
-            </details>
-        </li>
-        {{--  Akhir Admin  --}}
-    @endcanany
+            {{--  Admin  --}}
+            <li>
+                <details close>
+                    <summary>Data Cleansing</summary>
+                    <ul>
+                        @canany(['sys_admin', 'admin_satker'], auth()->user()->id)
+                            <li><a href="/cleansing/tagihan">Tagihan</a></li>
+                            <li><a href="/cleansing/sp2d">SP2D</a></li>
+                            <li><a href="/cleansing/spby">SPBy</a></li>
+                            <li><a href="/cleansing/kkp">KKP</a></li>
+                            <li><a href="/cleansing/spp">SPP</a></li>
+                        @endcan
+                    </ul>
+                </details>
+            </li>
+            {{--  Akhir Admin  --}}
+        @endcanany
         <li class="">Version : 2.3.0</li>
     </menu>
 </div>

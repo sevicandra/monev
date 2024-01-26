@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\objekpajak;
+use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,7 +15,8 @@ class ObjekpajakController extends Controller
             abort(403);
         }
         return view('referensi.objekpajak.index',[
-            'data'=>objekpajak::search()->orderBy('kode')->paginate(10)->withQueryString()
+            'data'=>objekpajak::search()->orderBy('kode')->paginate(10)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
@@ -23,7 +25,9 @@ class ObjekpajakController extends Controller
         if (! Gate::allows('sys_admin', auth()->user()->id)) {
             abort(403);
         }
-        return view('referensi.objekpajak.create');
+        return view('referensi.objekpajak.create',[
+            'notifikasi'=>Notification::Notif()
+        ]);
     }
 
     public function store(Request $request)
@@ -60,7 +64,8 @@ class ObjekpajakController extends Controller
             abort(403);
         }
         return view('referensi.objekpajak.update',[
-            'data'=>$objek_pajak
+            'data'=>$objek_pajak,
+            'notifikasi'=>Notification::Notif()
         ]);
     }
 
