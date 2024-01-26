@@ -96,18 +96,10 @@ class VerifikasiController extends Controller
         $request->validate([
             'tanggal_spm'=>'required'
         ]);
-        if (isset($verifikasi->spm)) {
-            $verifikasi->spm->update([
-                'tanggal_spm'=>$request->tanggal_spm
-            ]);
-            return redirect('/verifikasi')->with('berhasil','Tanggal SPM Berhasil Ditambahkan');
-        }else{
-            spm::create([
-                'tagihan_id'=>$verifikasi->id,
-                'tanggal_spm'=>$request->tanggal_spm
-            ]);
-            return redirect('/verifikasi')->with('berhasil','Tanggal SPM Berhasil Ditambahkan');
-        }
+        $verifikasi->update([
+            'tanggal_spm'=>$request->tanggal_spm
+        ]);
+        return redirect('/verifikasi')->with('berhasil','Tanggal SPM Berhasil Ditambahkan');
     }
 
     public function tolak(tagihan $tagihan){
@@ -160,7 +152,7 @@ class VerifikasiController extends Controller
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
                 break;
             case 1:
-                if (!isset($tagihan->spm)) {
+                if ($tagihan->tanggal_spm == null) {
                     return back()->with('gagal','Data tidak dapat dikirim karena tanggal SPM belum di input');
                 }
                 $tagihan->update([
@@ -964,6 +956,15 @@ class VerifikasiController extends Controller
         foreach ($spreadsheet->getActiveSheet()->getColumnIterator() as $column) {
             $spreadsheet->getActiveSheet()->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
+
+        $totalCol =  $nonBNIcol + $j + 6;
+        $spreadsheet->getActiveSheet()
+            ->setCellValue('E' . $totalCol, "=E" . $nonBNIcol + 3 + $j . "+" . 'E' . ($i + 7))
+            ->setCellValue('F' . $totalCol, "=F" . $nonBNIcol + 3 + $j . "+" . 'F' . ($i + 7))
+            ->setCellValue('G' . $totalCol, "=G" . $nonBNIcol + 3 + $j . "+" . 'G' . ($i + 7))
+            ->setCellValue('H' . $totalCol, "=H" . $nonBNIcol + 3 + $j . "+" . 'H' . ($i + 7));
+        $spreadsheet->getActiveSheet()
+            ->getStyle("E" . $totalCol . ":H" . $totalCol )->getNumberFormat()->setFormatCode('#,##0.00');
         // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Payroll '.$type.' '.$tagihan->notagihan.'-'.date('D, d M Y H:i:s').'.xlsx"');

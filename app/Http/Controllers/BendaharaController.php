@@ -108,36 +108,22 @@ class BendaharaController extends Controller
         if($request->nomor_sp2d || $request->tanggal_sp2d)
         {
             $request->validate([
-                'no_spm'=>'required|min_digits:5|max_digits:5',
                 'tanggal_spm'=>'required',
                 'tanggal_sp2d'=>'required',
                 'nomor_sp2d'=>'required|min_digits:15|max_digits:15'
             ]);
         }else{
             $request->validate([
-                'no_spm'=>'required|min_digits:5|max_digits:5',
                 'tanggal_spm'=>'required',
             ]);
         }
 
-        if (isset($tagihan->spm)) {
-            $tagihan->spm->update([
-                'tanggal_spm'=>$request->tanggal_spm,
-                'no_spm'=>$request->no_spm,
-                'tanggal_sp2d'=>$request->tanggal_sp2d,
-                'nomor_sp2d'=>$request->nomor_sp2d
-            ]);
-            return redirect('/bendahara')->with('berhasil', 'Data SP2D Berhasi Ditambahkan');
-        }else{
-            spm::create([
-                'no_spm'=>$request->no_spm,
-                'tagihan_id'=>$tagihan->id,
-                'tanggal_spm'=>$request->tanggal_spm,
-                'tanggal_sp2d'=>$request->tanggal_sp2d,
-                'nomor_sp2d'=>$request->nomor_sp2d
-            ]);
-            return redirect('/bendahara')->with('berhasil', 'Data SP2D Berhasi Ditambahkan');
-        }
+        $tagihan->update([
+            'tanggal_spm'=>$request->tanggal_spm,
+            'tanggal_sp2d'=>$request->tanggal_sp2d,
+            'nomor_sp2d'=>$request->nomor_sp2d
+        ]);
+        return redirect('/bendahara')->with('berhasil', 'Data SP2D Berhasi Ditambahkan');
     }
 
     public function updatesspb(Request $request, tagihan $tagihan, realisasi $realisasi)
@@ -172,6 +158,7 @@ class BendaharaController extends Controller
         }else{
             sspb::create([
                 'realisasi_id'=>$realisasi->id,
+                'tagihan_id'=>$tagihan->id,
                 'pagu_id'=>$realisasi->pagu->id,
                 'nominal_sspb'=>$request->nominal_sspb,
                 'tanggal_sspb'=>$request->tanggal_sspb,
@@ -224,7 +211,7 @@ class BendaharaController extends Controller
             return back()->with('gagal','Data tidak dapat dikirim karena SPM belum di input');
         }
 
-        if ($tagihan->spm->tanggal_sp2d === null || $tagihan->spm->nominal_sp2d) {
+        if ($tagihan->tanggal_sp2d === null || $tagihan->tanggal_sp2d === '0000-00-00' || $tagihan->nomor_sp2d === null || $tagihan->nomor_sp2d === '') {
             return back()->with('gagal','Data tidak dapat dikirim karena SP2D belum di input');
         }
 
@@ -1165,6 +1152,15 @@ class BendaharaController extends Controller
         foreach ($spreadsheet->getActiveSheet()->getColumnIterator() as $column) {
             $spreadsheet->getActiveSheet()->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
+
+        $totalCol =  $nonBNIcol + $j + 6;
+        $spreadsheet->getActiveSheet()
+            ->setCellValue('E' . $totalCol, "=E" . $nonBNIcol + 3 + $j . "+" . 'E' . ($i + 7))
+            ->setCellValue('F' . $totalCol, "=F" . $nonBNIcol + 3 + $j . "+" . 'F' . ($i + 7))
+            ->setCellValue('G' . $totalCol, "=G" . $nonBNIcol + 3 + $j . "+" . 'G' . ($i + 7))
+            ->setCellValue('H' . $totalCol, "=H" . $nonBNIcol + 3 + $j . "+" . 'H' . ($i + 7));
+        $spreadsheet->getActiveSheet()
+            ->getStyle("E" . $totalCol . ":H" . $totalCol )->getNumberFormat()->setFormatCode('#,##0.00');
         // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Payroll '.$type.' '.$tagihan->notagihan.'-'.date('D, d M Y H:i:s').'.xlsx"');

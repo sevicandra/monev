@@ -80,18 +80,10 @@ class PpspmController extends Controller
         $request->validate([
             'tanggal_spm'=>'required'
         ]);
-        if (isset($ppspm->spm)) {
-            $ppspm->spm->update([
-                'tanggal_spm'=>$request->tanggal_spm
-            ]);
-            return redirect('/ppspm');
-        }else{
-            spm::create([
-                'tagihan_id'=>$ppspm->id,
-                'tanggal_spm'=>$request->tanggal_spm
-            ]);
-            return redirect('/ppspm')->with('berhasil', 'Tanggal SPM Berhasil Ditambahkan');
-        }
+        $ppspm->update([
+            'tanggal_spm'=>$request->tanggal_spm
+        ]);
+        return redirect('/ppspm');
     }
 
     public function tolak(tagihan $tagihan){
@@ -130,7 +122,7 @@ class PpspmController extends Controller
         if ($tagihan->status != 3) {
             abort(403);
         }
-        if (!isset($tagihan->spm)) {
+        if ($tagihan->tanggal_spm == null || $tagihan->tanggal_spm == '0000-00-00') {
             return back()->with('gagal','Data tidak dapat dikirim karena tanggal SPM belum di input');
         }
         $tagihan->update([

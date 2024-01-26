@@ -64,13 +64,13 @@
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate(optional($item->spm)->tanggal_spm) }}
+                                {{ indonesiaDate($item->tanggal_spm) }}
                         </td>
                         <td class="border border-base-content">
-                                {{ optional($item->spm)->nomor_sp2d }}
+                                {{ $item->nomor_sp2d }}
                         </td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate(optional($item->spm)->tanggal_sp2d) }}
+                                {{ indonesiaDate($item->tanggal_sp2d) }}
                         </td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>

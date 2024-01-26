@@ -37,7 +37,8 @@ class Payroll extends Model
                         ->leftJoin('realisasis', 'tagihans.id', '=', 'realisasis.tagihan_id')
                         ->where('tagihans.tahun', session()->get('tahun'))
                         ->groupBy('payrolls.tagihan_id')
-                        ->selectRaw('tagihans.*, namaunit, ref_ppks.nama as ppk, sum(realisasis.realisasi) as realisasi, sum(bruto) as payroll')
+                        ->orderBy('updated_at', 'asc')
+                        ->selectRaw('tagihans.*, namaunit, ref_ppks.nama as ppk, avg(realisasis.realisasi) as realisasi, sum(bruto) as payroll')
         ;
     }
 

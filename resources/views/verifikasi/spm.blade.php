@@ -13,7 +13,7 @@
                 </label>
                 <input type="date" name="tanggal_spm"
                     class="input input-sm input-bordered  w-full max-w-xs @error('tanggal_spm') input-error @enderror"
-                    @if (isset($data->spm)) value="{{ $data->spm->tanggal_spm }}" @endif />
+                    value="{{ $data->tanggal_spm }}" />
                 <label class="label">
                     @error('tanggal_spm')
                         <span class="label-text-alt text-red-500">

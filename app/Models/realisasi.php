@@ -44,9 +44,7 @@ class realisasi extends Model
     {
         if (request('sp2d') === 'ya') {
             return $data->wherehas('tagihan', function($val){
-                $val->wherehas('spm', function($val2){
-                    $val2->where('nomor_sp2d', '!=' ,null);
-                });
+                $val->where('nomor_sp2d', '!=', null);
             });
         }
         return $data;

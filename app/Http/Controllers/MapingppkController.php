@@ -17,7 +17,7 @@ class MapingppkController extends Controller
             abort(403);
         }
         return view('referensi.maping_ppk.index',[
-            'data'=>RefPPK::PPKsatker()->whereHas('paguppk')->search()->paginate(15)->withQueryString()
+            'data'=>RefPPK::PPKsatker()->search()->paginate(15)->withQueryString()
         ]);
     }
 

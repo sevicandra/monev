@@ -983,6 +983,15 @@ class TagihanController extends Controller
         foreach ($spreadsheet->getActiveSheet()->getColumnIterator() as $column) {
             $spreadsheet->getActiveSheet()->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
+
+        $totalCol =  $nonBNIcol + $j + 6;
+        $spreadsheet->getActiveSheet()
+            ->setCellValue('E' . $totalCol, "=E" . $nonBNIcol + 3 + $j . "+" . 'E' . ($i + 7))
+            ->setCellValue('F' . $totalCol, "=F" . $nonBNIcol + 3 + $j . "+" . 'F' . ($i + 7))
+            ->setCellValue('G' . $totalCol, "=G" . $nonBNIcol + 3 + $j . "+" . 'G' . ($i + 7))
+            ->setCellValue('H' . $totalCol, "=H" . $nonBNIcol + 3 + $j . "+" . 'H' . ($i + 7));
+        $spreadsheet->getActiveSheet()
+            ->getStyle("E" . $totalCol . ":H" . $totalCol )->getNumberFormat()->setFormatCode('#,##0.00');
         // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Payroll '.$type.' '.$tagihan->notagihan.'-'.date('D, d M Y H:i:s').'.xlsx"');

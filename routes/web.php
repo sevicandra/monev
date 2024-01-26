@@ -39,11 +39,13 @@ use App\Http\Controllers\CleansingSppController;
 use App\Http\Controllers\LaporanPajakController;
 use App\Http\Controllers\ArsipRegisterController;
 use App\Http\Controllers\CleansingSpbyController;
+use App\Http\Controllers\CleansingSpmController;
 use App\Http\Controllers\MapingstafppkController;
 use App\Http\Controllers\PegawainondjknController;
 use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\MonitoringTagihanController;
+use App\Http\Controllers\RefPpkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -420,4 +422,17 @@ Route::controller(CleansingKkpController::class)->group(function(){
 Route::controller(CleansingTagihanController::class)->group(function(){
     Route::get('/cleansing/tagihan', 'index')->middleware('auth');
     Route::get('/cleansing/tagihan/{jns}/{nomor}', 'detail')->middleware('auth');
+});
+
+Route::controller(CleansingSpmController::class)->group(function(){
+    Route::get('/cleansing/spm', 'update')->middleware('auth');
+});
+
+Route::controller(RefPpkController::class)->group(function(){
+    Route::get('ref-ppk', 'index')->middleware('auth');
+    Route::get('ref-ppk/create', 'create')->middleware('auth');
+    Route::post('ref-ppk/create', 'store')->middleware('auth');
+    Route::get('ref-ppk/{ppk}/edit', 'edit')->middleware('auth');
+    Route::patch('ref-ppk/{ppk}/edit', 'update')->middleware('auth');
+    Route::delete('ref-ppk/{ppk}', 'destroy')->middleware('auth');
 });

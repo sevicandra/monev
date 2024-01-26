@@ -17,7 +17,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.index',[
-            'data'=>tagihan::tagihansatker()->arsip()->orderby('notagihan', 'desc')->search()->order()->paginate(15)->withQueryString()
+            'data'=>tagihan::tagihansatker()->orderby('notagihan', 'desc')->search()->order()->paginate(15)->withQueryString()
          ]);
     }
 
@@ -31,9 +31,6 @@ class ArsipController extends Controller
             abort(403);
         }
 
-        if ($tagihan->status != 5) {
-            abort(403);
-        }
         return view('arsip.dokumen',[
             'data'=>$tagihan
         ]);
@@ -49,9 +46,6 @@ class ArsipController extends Controller
             abort(403);
         }
 
-        if ($tagihan->status != 5) {
-            abort(403);
-        }
         return view('arsip.coa',[
             'data'=>$tagihan->realisasi()   ->searchprogram()  
                                             ->searchkegiatan()
@@ -73,9 +67,6 @@ class ArsipController extends Controller
             abort(403);
         }
 
-        if ($tagihan->status != 5) {
-            abort(403);
-        }
         return view('arsip.dnp',[
             'data'=>$tagihan->dnp()->search()->paginate(15)->withQueryString()
         ]);
@@ -110,9 +101,6 @@ class ArsipController extends Controller
             abort(403);
         }
 
-        if ($tagihan->status != 5) {
-            abort(403);
-        }
         return view('arsip.rekanan.index',[
             'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
             'tagihan'=>$tagihan
@@ -129,9 +117,6 @@ class ArsipController extends Controller
             abort(403);
         }
 
-        if ($tagihan->status != 5) {
-            abort(403);
-        }
         return view('arsip.rekanan.ppn.index',[
             'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
@@ -149,9 +134,6 @@ class ArsipController extends Controller
             abort(403);
         }
 
-        if ($tagihan->status != 5) {
-            abort(403);
-        }
         return view('arsip.rekanan.pph.index',[
             'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,

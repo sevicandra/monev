@@ -63,13 +63,13 @@
                         <td class="border border-base-content text-center">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate(optional($item->spm)->tanggal_spm) }}
+                                {{ indonesiaDate($item->tanggal_spm) }}
                         </td>
                         <td class="border border-base-content">
-                                {{ optional($item->spm)->nomor_sp2d }}
+                                {{ $item->nomor_sp2d }}
                         </td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate(optional($item->spm)->tanggal_sp2d) }}
+                                {{ indonesiaDate($item->tanggal_sp2d) }}
                         </td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
@@ -77,11 +77,14 @@
                         <td class="border border-base-content text-right">Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
                         <td class="border border-base-content">
                             <div class="join">
+                                @if ($item->status > 4)
                                 @can('admin_satker', auth()->user()->id)
                                     <a href="/arsip/{{ $item->id }}/tolak"
                                         class="btn btn-xs btn-outline btn-error join-item"
                                         onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
                                 @endcan
+                                    
+                                @endif
                                 @if ($item->dokumen->statusdnp === '1')
                                     <a href="/arsip/{{ $item->id }}/dnp"
                                         class="btn btn-xs btn-outline btn-neutral join-item">DNP</a>

@@ -15,6 +15,7 @@ class sspb extends Model
         'realisasi_id',
         'tanggal_sspb',
         'nominal_sspb',
+        'tagihan_id',
         'pagu_id'
     ];
 
