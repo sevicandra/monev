@@ -57,7 +57,7 @@
                         <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
                         <td class="border border-base-content">
                             <div>
-                                <form action="/tagihan/{{ $item->tagihan_id }}/payroll/{{ $item->id }}"
+                                <form action="/bendahara/{{ $item->tagihan_id }}/payroll/{{ $item->id }}"
                                     method="post">
                                     @csrf
                                     @method('DELETE')
