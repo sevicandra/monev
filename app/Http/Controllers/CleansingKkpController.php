@@ -213,22 +213,11 @@ class CleansingKkpController extends Controller
                 $detail->row=$item[0];
                 $detail->status=TRUE;
                 $errors->push($detail);
-                if (tagihan::find($item[1])->spm) {
-                    tagihan::find($item[1])->spm()->update([
-                        'no_spm' => $item[4],
-                        'tanggal_spm' => $item[5],
-                        'nomor_sp2d' => $item[6],
-                        'tanggal_sp2d' => $item[7],
-                    ]);
-                }else{
-                    spm::create([
-                        'tagihan_id' => $item[1],
-                        'no_spm' => $item[4],
-                        'tanggal_spm' => $item[5],
-                        'nomor_sp2d' => $item[6],
-                        'tanggal_sp2d' => $item[7],
-                    ]);
-                }
+                tagihan::find($item[1])->update([
+                    'tanggal_spm' => $item[5],
+                    'nomor_sp2d' => $item[6],
+                    'tanggal_sp2d' => $item[7],
+                ]);
             }
         }
         
