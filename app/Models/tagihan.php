@@ -133,11 +133,18 @@ class tagihan extends Model
 
     public function scopeTagihanverifikator($data)
     {
-        return $data->wherehas('unit', function ($val) {
+        return $data->where('jnstagihan', '!=', '2')->wherehas('unit', function ($val) {
             $val->wherehas('verifikator', function ($val) {
                 $val->where('id', auth()->user()->id);
             });
         });
+    }
+
+    public function scopeTagihanverifikatorKKP($data)
+    {
+        return $data
+        ->where('jnstagihan', 2)
+        ;
     }
 
     public function scopeTagihansatker($data)

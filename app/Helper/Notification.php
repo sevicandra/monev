@@ -21,6 +21,11 @@ class Notification
         return tagihan::tagihansatker()->tagihanverifikator()->unverified()->count();
     }
 
+    public function verifikasiKKP()
+    {
+        return tagihan::tagihansatker()->tagihanverifikatorKKP()->unverified()->count();
+    }
+
     public function bendahara()
     {
         return tagihan::tagihansatker()->bendahara()->count();
@@ -56,6 +61,10 @@ class Notification
 
         if (Gate::allows('PPSPM', auth()->user()->id)) {
             $notif->ppspm = $notificationInstance->ppspm();
+        }
+
+        if (Gate::allows('ValidatorKKP', auth()->user()->id)) {
+            $notif->verifikasiKKP = $notificationInstance->verifikasiKKP();
         }
 
         return $notif;

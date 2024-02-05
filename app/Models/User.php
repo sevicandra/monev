@@ -155,6 +155,12 @@ class User extends Authenticatable
         return $this->belongsToMany(unit::class, 'verifikatorunits', 'user_id', 'unit_id', 'nip', 'kodeunit');
     }
 
+    public function scopeVerifikator($data){
+        return $data->wherehas('role', function($val){
+            $val->where('koderole', '09');
+        });
+    }
+
     public function scopeVerifikatornonsign($data, $unit)
     {
         $var = $unit;

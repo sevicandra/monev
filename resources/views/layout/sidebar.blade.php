@@ -95,6 +95,20 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('ValidatorKKP', auth()->user()->id)
+                            <li>
+                                <a href="/verifikasi-kkp">
+                                    Verifikasi KKP
+                                    @if (isset($notifikasi->verifikasiKKP) && $notifikasi->verifikasiKKP > 0)
+                                        @if ($notifikasi->verifikasiKKP > 99)
+                                            <div class="badge badge-primary">99+</div>
+                                        @else
+                                            <div class="badge badge-primary">{{ $notifikasi->verifikasiKKP }}</div>
+                                        @endif
+                                    @endif
+                                </a>
+                            </li>
+                        @endcan
                         @can('PPSPM', auth()->user()->id)
                             <li>
                                 <a href="/ppspm">

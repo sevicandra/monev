@@ -64,6 +64,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->is('09') === true;
         });
 
+        Gate::define('ValidatorKKP', function (User $user) {
+            return $user->is('09') === true;
+        });
+
         Gate::define('tahun', function ($key) {
             return $key === session()->get('tahun');
         });

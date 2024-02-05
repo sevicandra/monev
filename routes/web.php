@@ -46,6 +46,7 @@ use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\MonitoringTagihanController;
 use App\Http\Controllers\RefPpkController;
+use App\Http\Controllers\VerifikasiKKPController;
 
 /*
 |--------------------------------------------------------------------------
@@ -436,3 +437,14 @@ Route::controller(RefPpkController::class)->group(function(){
     Route::patch('ref-ppk/{ppk}/edit', 'update')->middleware('auth');
     Route::delete('ref-ppk/{ppk}', 'destroy')->middleware('auth');
 });
+
+Route::controller(VerifikasiKKPController::class)->group(function(){
+    Route::get('/verifikasi-kkp/{tagihan}/upload', 'upload')->middleware('auth');
+    Route::patch('/verifikasi-kkp/{tagihan}/upload', 'upload')->middleware('auth');
+    Route::delete('/verifikasi-kkp/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth');
+    Route::get('/verifikasi-kkp/{tagihan}/tolak', 'tolak')->middleware('auth');
+    Route::get('/verifikasi-kkp/{tagihan}/approve', 'approve')->middleware('auth');
+    Route::get('/verifikasi-kkp/{tagihan}/coa', 'coa')->middleware('auth');
+});
+
+Route::resource('/verifikasi-kkp', VerifikasiKKPController::class)->middleware('auth')->except('create');
