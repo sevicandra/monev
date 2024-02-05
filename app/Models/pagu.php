@@ -153,7 +153,7 @@ class pagu extends Model
                     ->where('pagus.tahun', session()->get('tahun'))
                     ->leftJoin('view_realisasipagubulanan', function(JoinClause $join)use($bulan){
                         $join->on('pagus.id', '=', 'view_realisasipagubulanan.pagu_id')
-                        ->where('view_realisasipagubulanan.bulan_sp2d', '<=', $bulan);
+                        ->where('view_realisasipagubulanan.bulan_sp2d', '=', $bulan);
                     })
                     ->selectRaw('CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, anggaran, sum(realisasi) as realisasi, sum(pengembalian) as total_sspb')
                     ->groupBy('pagus.id')
@@ -187,7 +187,7 @@ class pagu extends Model
                     ->where('pagus.tahun', session()->get('tahun'))
                     ->leftJoin('view_realisasipagubulanan', function(JoinClause $join)use($bulan){
                         $join->on('pagus.id', '=', 'view_realisasipagubulanan.pagu_id')
-                        ->where('view_realisasipagubulanan.bulan_sp2d', '<=', $bulan);
+                        ->where('view_realisasipagubulanan.bulan_sp2d', '=', $bulan);
                     })
                     ->selectRaw('CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, anggaran, sum(realisasi) as realisasi, sum(pengembalian) as total_sspb')
                     ->groupBy('pagus.id')
