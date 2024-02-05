@@ -23,7 +23,7 @@ class PayrollController extends Controller
         }
 
         return view('payroll.index', [
-            'data'  => Payroll::BelumTransfer()->paginate(15)->withQueryString(),
+            'data'  => Payroll::search()->BelumTransfer()->paginate(15)->withQueryString(),
             'notifikasi'=>Notification::Notif()
         ]);
     }

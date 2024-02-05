@@ -40,7 +40,7 @@
                     $i = 1;
                 @endphp
                 @foreach ($data as $item)
-                    <tr class="whitespace-nowrap">
+                    <tr class="">
                         <td class="border border-base-content text-center">{{ $i++ }}</td>
                         <td class="border border-base-content text-center">
                             @switch($item->jnstagihan)
@@ -58,8 +58,8 @@
                             @endswitch
                         </td>
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
-                        <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
-                        <td class="border border-base-content">{{ $item->namaunit }}</td>
+                        <td class="border border-base-content whitespace-nowrap">{{ indonesiaDate($item->tgltagihan) }}</td>
+                        <td class="border border-base-content whitespace-normal">{{ $item->namaunit }}</td>
                         <td class="border border-base-content">{{ $item->ppk }}</td>
                         <td class="border border-base-content text-right">Rp{{ number_format($item->realisasi, 2, ',', '.') }}</td>
                         <td class="border border-base-content text-right">Rp{{ number_format($item->payroll, 2, ',', '.') }}</td>
