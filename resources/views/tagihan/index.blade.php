@@ -31,6 +31,7 @@
                     <th class="border border-base-content">Nomor</th>
                     <th class="border border-base-content">Tanggal</th>
                     <th class="border border-base-content">Uraian</th>
+                    <th class="border border-base-content">PPK</th>
                     <th class="border border-base-content">Unit</th>
                     <th class="border border-base-content">Jenis Dokumen</th>
                     <th class="border border-base-content">Bruto</th>
@@ -62,6 +63,7 @@
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
                         <td class="border border-base-content" style="white-space:normal; min-width:300px">{{ $item->uraian }}</td>
+                        <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
                         <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
                         <td class="border border-base-content text-right">

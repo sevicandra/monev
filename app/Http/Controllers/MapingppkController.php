@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\pagu;
 use App\Models\User;
 use App\Models\RefPPK;
+use App\Models\RefStafPPK;
 use App\Helper\Notification;
 use App\Models\mapingpaguppk;
 use App\Models\mapingstafppk;
@@ -18,7 +19,7 @@ class MapingppkController extends Controller
             abort(403);
         }
         return view('referensi.maping_ppk.index',[
-            'data'=>RefPPK::PPKsatker()->search()->paginate(15)->withQueryString(),
+            'data'=>RefPPK::PPKsatker()->search()->orderBy('nip')->paginate(15)->withQueryString(),
             'notifikasi'=>Notification::Notif()
         ]);
     }
@@ -96,7 +97,7 @@ class MapingppkController extends Controller
         }
 
         return view('referensi.maping_ppk.staf.update',[
-            'data'=>User::stafnoppk()->search()->paginate(15)->withQueryString(),
+            'data'=>RefStafPPK::Satker()->notStaf($ppk->nip)->search()->paginate(15)->withQueryString(),
             'ppk'=>$ppk,
             'notifikasi'=>Notification::Notif()
         ]);
@@ -124,7 +125,7 @@ class MapingppkController extends Controller
         return redirect('/maping-ppk/'.$ppk->id.'/pagu/edit')->with('berhasil', 'Pagu Berhasil Ditambahkan Ke PPK '.$ppk->nama);
     }
 
-    public function updatestaf(RefPPK $ppk, User $staf)
+    public function updatestaf(RefPPK $ppk, RefStafPPK $staf)
     {
         if (! Gate::allows('admin_satker', auth()->user()->id)) {
             abort(403);

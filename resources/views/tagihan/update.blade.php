@@ -92,6 +92,25 @@
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
+                    <span class="label-text">PPK:</span>
+                </label>
+                <select type="text" name="ppk"
+                    class="select select-sm select-bordered w-full max-w-xs @error('ppk') select-error @enderror">
+                    @foreach ($ppk as $item)
+                        <option value="{{ $item->nip }}" @if ($data->ppk_id === $item->nip) selected @endif>
+                            {{ $item->nama }}</option>
+                    @endforeach
+                </select>
+                <label class="label">
+                    @error('ppk')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
                     <span class="label-text">Jenis Dokumen:</span>
                 </label>
                 <select type="text" name="kodedokumen"

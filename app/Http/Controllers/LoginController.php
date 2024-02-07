@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RefStafPPK;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class LoginController extends Controller
 {
@@ -17,6 +19,12 @@ class LoginController extends Controller
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
             $request->session()->put('tahun', date('Y'));
+            if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+                $ppk = RefStafPPK::getPPK();
+                $request->session()->put('ppk', $ppk);
+                $unit = RefStafPPK::getUnit();
+                $request->session()->put('unit', $unit);
+            }
             return redirect()->intended('/dashboard');
         }
 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\RefStafPPK;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 
 class SsoController extends Controller
@@ -55,6 +57,12 @@ class SsoController extends Controller
                     $request->session()->put('nik', $userinfo['g2c_Nik']);
                     $request->session()->put('id_token', $token['id_token']);
                     $request->session()->put('gravatar', $userinfo['gravatar']);
+                    if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+                        $ppk = RefStafPPK::getPPK();
+                        $request->session()->put('ppk', $ppk);
+                        $unit = RefStafPPK::getUnit();
+                        $request->session()->put('unit', $unit);
+                    }
                     return redirect()->intended('/dashboard');
                 } else {
                     redirect('/')->with('gagal','Request Error');

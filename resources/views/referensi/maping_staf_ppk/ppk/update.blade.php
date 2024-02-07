@@ -2,15 +2,14 @@
 
 @section('content')
     <div class="bg-primary p-4">
-        <h1 class="text-xl text-primary-content">Staf PPk {{ $ppk->nama }}</h1>
+        <h1 class="text-xl text-primary-content">Tambah Staf PPk {{ $stafppk->nama }}</h1>
     </div>
     <div class="">
         @include('layout.flashmessage')
     </div>
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div>
-            <a href="/maping-ppk" class="btn btn-sm btn-neutral"> Kembali</a>
-            <a href="/maping-ppk/{{ $ppk->id }}/staf/edit" class="btn btn-sm btn-neutral"> Tambah Data</a>
+            <a href="/maping-staf-ppk/{{ $stafppk->id }}/ppk" class="btn btn-sm btn-neutral"> Kembali</a>
         </div>
         <div>
             <form action="" method="get" autocomplete="off">
@@ -44,13 +43,8 @@
                         <td class="border border-base-content text-center">{{ $item->nip }}</td>
                         <td class="border border-base-content text-center">
                             <div class="join">
-                                <form action="/maping-ppk/{{ $ppk->id }}/staf/{{ $item->id }}"
-                                    method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-xs btn-outline btn-error"
-                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                </form>
+                                <a href="/maping-staf-ppk/{{ $stafppk->id }}/ppk/{{ $item->id }}"
+                                    class="btn btn-xs btn-outline btn-neutral">Pilih</a>
                             </div>
                         </td>
                     </tr>
