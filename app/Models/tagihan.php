@@ -118,11 +118,16 @@ class tagihan extends Model
 
     public function scopeTagihanppk($data)
     {
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            return $data->whereIn('ppk_id', session()->get('ppk'))->whereIn('kodeunit', session()->get('unit'));
-        }
         if (Gate::allows('PPK', auth()->user()->id)) {
             return $data->where('ppk_id', auth()->user()->nip);
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (optional(auth()->user()->mapingstafppk)->ppk_id) {
+                return $data->where('ppk_id', auth()->user()->mapingstafppk->ppk_id);
+            }else{
+                return $data->where('ppk_id', null);
+            }
         }
     }
 

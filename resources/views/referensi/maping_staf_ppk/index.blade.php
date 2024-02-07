@@ -9,7 +9,7 @@
     </div>
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div>
-            <a href="/ref-staf-ppk/create" class="btn btn-sm btn-neutral">Tambah Data</a>
+
         </div>
         <div>
             <form action="" method="get" autocomplete="off">
@@ -44,18 +44,8 @@
                         <td class="border border-base-content">{{ $item->satker }}</td>
                         <td class="border border-base-content text-center">
                             <div class="join">
-                                <a href="/ref-staf-ppk/{{ $item->id }}/edit"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">Ubah</a>
                                 <a href="/maping-staf-ppk/{{ $item->id }}/unit"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">Unit</a>
-                                <a href="/maping-staf-ppk/{{ $item->id }}/ppk"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">PPK</a>
-                                <form action="/ref-staf-ppk/{{ $item->id }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-xs btn-outline btn-error join-item"
-                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                </form>
+                                    class="btn btn-xs btn-outline btn-neutral">Unit</a>
                             </div>
                         </td>
                     </tr>

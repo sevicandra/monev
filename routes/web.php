@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DnpController;
 use App\Http\Controllers\PphController;
 use App\Http\Controllers\SsoController;
 use App\Http\Controllers\PaguController;
@@ -16,7 +17,6 @@ use App\Http\Controllers\NomorController;
 use App\Http\Controllers\PpspmController;
 use App\Http\Controllers\TahunController;
 use App\Http\Controllers\BerkasController;
-use App\Http\Controllers\RefPpkController;
 use App\Http\Controllers\SatkerController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\PayrollController;
@@ -30,22 +30,23 @@ use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MapingppkController;
 use App\Http\Controllers\RealisasiController;
+use App\Http\Controllers\NominaldnpController;
 use App\Http\Controllers\ObjekpajakController;
-use App\Http\Controllers\RefStafPpkController;
 use App\Http\Controllers\VerifikasiController;
 use App\Http\Controllers\RefRekeningController;
 use App\Http\Controllers\CleansingKkpController;
-use App\Http\Controllers\CleansingSpmController;
 use App\Http\Controllers\CleansingSppController;
 use App\Http\Controllers\LaporanPajakController;
 use App\Http\Controllers\ArsipRegisterController;
 use App\Http\Controllers\CleansingSpbyController;
+use App\Http\Controllers\CleansingSpmController;
 use App\Http\Controllers\MapingstafppkController;
-use App\Http\Controllers\VerifikasiKKPController;
 use App\Http\Controllers\PegawainondjknController;
 use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\MonitoringTagihanController;
+use App\Http\Controllers\RefPpkController;
+use App\Http\Controllers\VerifikasiKKPController;
 
 /*
 |--------------------------------------------------------------------------
@@ -347,10 +348,6 @@ Route::controller(MapingstafppkController::class)->group(function(){
     Route::get('maping-staf-ppk/{stafppk}/unit/edit', 'editunit')->middleware('auth');
     Route::get('maping-staf-ppk/{stafppk}/unit/{unit}', 'updateunit')->middleware('auth');
     Route::delete('maping-staf-ppk/{stafppk}/unit/{unit}', 'destroyunit')->middleware('auth');
-    Route::get('maping-staf-ppk/{stafppk}/ppk', 'showppk')->middleware('auth');
-    Route::get('maping-staf-ppk/{stafppk}/ppk/edit', 'editppk')->middleware('auth');
-    Route::get('maping-staf-ppk/{stafppk}/ppk/{ppk}', 'updateppk')->middleware('auth');
-    Route::delete('maping-staf-ppk/{stafppk}/ppk/{ppk}', 'destroyppk')->middleware('auth');
 });
 
 Route::controller(SessionController::class)->group(function(){
@@ -451,12 +448,3 @@ Route::controller(VerifikasiKKPController::class)->group(function(){
 });
 
 Route::resource('/verifikasi-kkp', VerifikasiKKPController::class)->middleware('auth')->except('create');
-
-Route::controller(RefStafPpkController::class)->group(function(){
-    Route::get('ref-staf-ppk', 'index')->middleware('auth');
-    Route::get('ref-staf-ppk/create', 'create')->middleware('auth');
-    Route::post('ref-staf-ppk/create', 'store')->middleware('auth');
-    Route::get('ref-staf-ppk/{stafppk}/edit', 'edit')->middleware('auth');
-    Route::patch('ref-staf-ppk/{stafppk}/edit', 'update')->middleware('auth');
-    Route::delete('ref-staf-ppk/{stafppk}', 'destroy')->middleware('auth');
-});

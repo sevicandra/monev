@@ -16,7 +16,7 @@ class RealisasiController extends Controller
         if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
 
@@ -39,11 +39,10 @@ class RealisasiController extends Controller
             abort(403);
         }
 
-        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+        if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
-
-        if (!in_array($pagu->mapingppk->user_id, session()->get('ppk')) || !in_array($pagu->kodeunit, session()->get('unit')) || $pagu->kodesatker != auth()->user()->satker) {
+        if ($pagu->mapingppk->user_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
 
@@ -63,14 +62,13 @@ class RealisasiController extends Controller
         if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-
-        if (!in_array($realisasi->ppk_id, session()->get('ppk')) || !in_array($realisasi->kodeunit, session()->get('unit')) || $realisasi->kodesatker != auth()->user()->satker) {
+        if ($realisasi->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
 
         return view('tagihan.realisasi.tarik_detail_akun', [
             'data' => $realisasi,
-            'pagu' => pagu::Pagusatker()->paguppk($realisasi->ppk_id)->PaguUnit($realisasi->kodeunit)->searchprogram()
+            'pagu' => pagu::Pagusatker()->paguppk()->pagustafppk()->searchprogram()
                 ->searchkegiatan()
                 ->searchkro()
                 ->searchro()
@@ -86,8 +84,7 @@ class RealisasiController extends Controller
         if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-
-        if (!in_array($realisasi->tagihan->ppk_id, session()->get('ppk')) || !in_array($realisasi->tagihan->kodeunit, session()->get('unit')) || $realisasi->tagihan->kodesatker != auth()->user()->satker) {
+        if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
 
@@ -105,8 +102,7 @@ class RealisasiController extends Controller
         if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-
-        if (!in_array($realisasi->tagihan->ppk_id, session()->get('ppk')) || !in_array($realisasi->tagihan->kodeunit, session()->get('unit')) || $realisasi->tagihan->kodesatker != auth()->user()->satker) {
+        if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
 
@@ -130,11 +126,10 @@ class RealisasiController extends Controller
         if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
             abort(403);
         }
-
-        if (!in_array($realisasi->tagihan->ppk_id, session()->get('ppk')) || !in_array($realisasi->tagihan->kodeunit, session()->get('unit')) || $realisasi->tagihan->kodesatker != auth()->user()->satker) {
+        if ($realisasi->tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
             abort(403);
         }
-        
+
         if ($realisasi->tagihan->status > 0) {
             return abort(403);
         }

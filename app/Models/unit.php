@@ -24,9 +24,21 @@ class unit extends Model
         return $this->belongsTo(satker::class, 'kodesatker', 'kodesatker');
     }
 
+    public function stafppk()
+    {
+        return $this->belongsToMany(User::class, 'mapingunitstafppks', 'unit_id', 'user_id', 'kodeunit', 'nip');
+    }
+
     public function scopeMyunit()
     {
         return $this->where('kodesatker', auth()->user()->satker)->orderby('kodeunit');
+    }
+
+    public function scopeStafppk()
+    {
+        return $this->whereHas('stafppk', function($val){
+            $val->where('nip', auth()->user()->nip);
+        });
     }
 
     public function scopeNostafppk($data, $stafppk)
@@ -84,30 +96,5 @@ class unit extends Model
         if (request('search')) {
             return $data->where('namaunit', 'like', '%'.request('search').'%');
         }
-    }
-
-    public function stafppk()
-    {
-        return $this->belongsToMany(RefStafPPK::class, 'mapingunitstafppks', 'unit_id', 'user_id', 'kodeunit', 'nip')->where('satker', $this->satker);
-    }
-
-    public function stafppks()
-    {
-        return $this->belongsToMany(RefStafPPK::class, 'mapingunitstafppks', 'unit_id', 'user_id', 'kodeunit', 'nip');
-    }
-
-    public function scopeStafppk($data)
-    {
-        return $data->whereHas('stafppks', function($val){
-            $val->where('nip', auth()->user()->nip)->where('satker', auth()->user()->satker);
-        });
-    }
-
-    public function scopeNotStaf($data, $nip)
-    {
-        $var = $nip;
-        return $data->whereDoesntHave('stafppks', function ($query) use ($var) {
-            $query->where('nip', $var);
-        });
     }
 }

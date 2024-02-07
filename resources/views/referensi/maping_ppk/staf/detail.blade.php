@@ -44,7 +44,7 @@
                         <td class="border border-base-content text-center">{{ $item->nip }}</td>
                         <td class="border border-base-content text-center">
                             <div class="join">
-                                <form action="/maping-ppk/{{ $ppk->id }}/staf/{{ $item->id }}"
+                                <form action="/maping-ppk/{{ $ppk->id }}/staf/{{ $item->mapingstafppk->id }}"
                                     method="post">
                                     @csrf
                                     @method('DELETE')

@@ -76,16 +76,17 @@ class pagu extends Model
         return $data->doesntHave('ppk');
     }
 
-    public function scopePaguppk($data, $nip)
+    public function scopePaguppk($data)
     {
-        return $data->wherehas('ppk', function($val) use($nip){
-            return $val->where('user_id', $nip);
+        return $data->wherehas('ppk', function($val){
+            if (Gate::allows('PPK', auth()->user()->id)) {
+                return $val->where('user_id', auth()->user()->nip);
+            }
+    
+            if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+                return $val->where('user_id', auth()->user()->mapingstafppk->ppk_id);
+            }
         });
-    }
-
-    public function scopePaguUnit($data, $kodeunit)
-    {
-        return $data->where('kodeunit', $kodeunit);
     }
 
     public function scopeJenisbelanja($data, $jenis)

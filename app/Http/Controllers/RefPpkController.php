@@ -37,7 +37,7 @@ class RefPpkController extends Controller
             'nip' => $request->nip,
             'satker' => auth()->user()->satker
         ]);
-        return redirect('/maping-ppk')->with('berhasil', 'Data Berhasil Di Tambah');
+        return redirect('/ref-ppk')->with('berhasil', 'Data Berhasil Di Tambah');
     }
     public function edit(RefPPK $ppk)
     {
@@ -58,11 +58,11 @@ class RefPpkController extends Controller
             'nip' => $request->nip,
             'satker' => auth()->user()->satker
         ]);
-        return redirect('/maping-ppk')->with('berhasil', 'Data Berhasil Di Ubah');
+        return redirect('/ref-ppk')->with('berhasil', 'Data Berhasil Di Ubah');
     }
     public function destroy(RefPPK $ppk)
     {
         $ppk->delete();
-        return redirect('/maping-ppk')->with('berhasil', 'Data Berhasil Di Hapus');
+        return redirect('/ref-ppk')->with('berhasil', 'Data Berhasil Di Hapus');
     }
 }

@@ -49,7 +49,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('Staf_PPK', function (User $user) {
-            return $user->isStafPpk() === true;
+            return $user->is('06') === true;
         });
 
         Gate::define('PPSPM', function (User $user) {
