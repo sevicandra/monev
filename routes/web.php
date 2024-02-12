@@ -46,6 +46,7 @@ use App\Http\Controllers\PegawainondjknController;
 use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\MonitoringTagihanController;
+use App\Http\Controllers\RealisasiBulananController;
 
 /*
 |--------------------------------------------------------------------------
@@ -459,4 +460,11 @@ Route::controller(RefStafPpkController::class)->group(function(){
     Route::get('ref-staf-ppk/{stafppk}/edit', 'edit')->middleware('auth');
     Route::patch('ref-staf-ppk/{stafppk}/edit', 'update')->middleware('auth');
     Route::delete('ref-staf-ppk/{stafppk}', 'destroy')->middleware('auth');
+});
+
+Route::controller(RealisasiBulananController::class)->group(function(){
+   Route::get('cleansing/realisasi-bulanan', 'index')->middleware('auth');
+   Route::get('cleansing/realisasi-bulanan/{bulan}', 'index')->middleware('auth');
+   Route::get('cleansing/realisasi-bulanan/{bulan}/download', 'download')->middleware('auth');
+   Route::get('cleansing/realisasi-bulanan/{bulan}/download-with-sum', 'downloadWithSum')->middleware('auth');
 });

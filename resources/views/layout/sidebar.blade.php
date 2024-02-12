@@ -215,6 +215,7 @@
                             <li><a href="/cleansing/spby">SPBy</a></li>
                             <li><a href="/cleansing/kkp">KKP</a></li>
                             <li><a href="/cleansing/spp">SPP</a></li>
+                            <li><a href="/cleansing/realisasi-bulanan">Realisasi</a></li>
                         @endcan
                     </ul>
                 </details>
