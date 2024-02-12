@@ -38,7 +38,7 @@
                 </label>
             </div>
             <div>
-                <a href="/ref-ppk" class="btn btn-sm btn-accent">Batal</a>
+                <a href="/maping-ppk" class="btn btn-sm btn-accent">Batal</a>
                 <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
             </div>
         </form>

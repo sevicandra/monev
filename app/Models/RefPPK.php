@@ -16,7 +16,6 @@ class RefPPK extends Model
     protected $fillable = [
         'nama',
         'nip',
-        'tahun',
         'satker',
     ];
     public function paguppk()
@@ -69,6 +68,26 @@ class RefPPK extends Model
 
     public function stafppk()
     {
-        return $this->belongsToMany(User::class, 'mapingstafppks', 'ppk_id', 'staf_id', 'nip', 'nip');
+        return $this->belongsToMany(RefStafPPK::class, 'mapingstafppks', 'ppk_id', 'staf_id', 'nip', 'nip')->where('satker', $this->satker);
+    }
+
+    public function stafppks()
+    {
+        return $this->belongsToMany(RefStafPPK::class, 'mapingstafppks', 'ppk_id', 'staf_id', 'nip', 'nip');
+    }
+
+    public function scopeStafppk($data)
+    {
+        return $data->whereHas('stafppks', function($val){
+            $val->where('nip', auth()->user()->nip)->where('satker', auth()->user()->satker);
+        });
+    }
+
+    public function scopeNotPPK($data, $nip)
+    {
+        $var = $nip;
+        return $data->whereDoesntHave('stafppks', function ($query) use ($var) {
+            $query->where('nip', $var);
+        });
     }
 }

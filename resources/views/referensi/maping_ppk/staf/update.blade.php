@@ -45,7 +45,7 @@
                             <div class="join">
                                 <form action="/maping-ppk/{{ $ppk->id }}/staf/{{ $item->id }}" method="post">
                                     @csrf
-                                    <button class="btn btn-sm btn-outline btn-beutral"
+                                    <button class="btn btn-xs btn-outline btn-beutral"
                                         onclick="return confirm('Apakah Anda yakin akan menambahkan data ini?');">Tambah</button>
                                 </form>
                             </div>
