@@ -8,9 +8,9 @@
         <form action="/pagu/import" method="post" autocomplete="off" enctype="multipart/form-data">
             @csrf
             <div class="form-control w-full max-w-xs">
-                <input type="file" name="file"
-                    class="file-input file-input-sm file-input-bordered  w-full max-w-xs @error('file') file-input-error @enderror"
-                    value="{{ old('file') }}" />
+                <input type="file" name="berkas_excel"
+                    class="file-input file-input-sm file-input-bordered  w-full max-w-xs @error('berkas_excel') file-input-error @enderror"
+                    value="{{ old('berkas_excel') }}" />
                 <label class="label">
                     @error('file')
                         <span class="label-text-alt text-red-500">

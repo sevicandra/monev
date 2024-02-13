@@ -12,6 +12,7 @@
             <a href="/tagihan/{{ $tagihan->id }}/payroll/create" class="btn btn-sm btn-neutral">Tambah</a>
             <a href="/tagihan/{{ $tagihan->id }}/payroll/import-hris" class="btn btn-sm btn-neutral">Import DB HRIS</a>
             <a href="/tagihan/{{ $tagihan->id }}/payroll/import-monev" class="btn btn-sm btn-neutral">Import DB Monev</a>
+            <a href="/tagihan/{{ $tagihan->id }}/payroll/import-excel" class="btn btn-sm btn-neutral">Import Excel</a>
             <a href="/tagihan/{{ $tagihan->id }}/payroll/cetak" class="btn btn-sm btn-neutral" target="_blank">Cetak</a>
         </div>
         <div>

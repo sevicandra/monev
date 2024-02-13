@@ -171,6 +171,9 @@ Route::controller(TagihanController::class)->group(function(){
     Route::post('/tagihan/{tagihan}/payroll/create', 'storePayroll')->middleware('auth');
     Route::get('/tagihan/{tagihan}/payroll/import-hris', 'importHrisPayroll')->middleware('auth');
     Route::get('/tagihan/{tagihan}/payroll/import-monev', 'importMonevPayroll')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/payroll/import-excel', 'importExcelPayroll')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/payroll/import-excel', 'storeExcelPayroll')->middleware('auth');
+    Route::get('/tagihan/payroll/excel/template', 'templateExcelPayroll')->middleware('auth');
     Route::post('/tagihan/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/tagihan/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
     Route::get('/tagihan/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
