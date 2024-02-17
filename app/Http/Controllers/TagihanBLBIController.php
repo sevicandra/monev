@@ -14,6 +14,7 @@ use App\Models\logtagihan;
 use App\Models\objekpajak;
 use App\Models\pphrekanan;
 use App\Models\ppnrekanan;
+use App\Models\DnpPerjadin;
 use App\Models\RefRekening;
 use Illuminate\Support\Str;
 use App\Helper\Notification;
@@ -25,26 +26,27 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class TagihanController extends Controller
+class TagihanBLBIController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
-        return view('tagihan.index', [
-            'data' => tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->search()->order()->paginate(15)->withQueryString(),
+
+        return view('tagihan-blbi.index', [
+            'data' => tagihan::TagihanBLBI()->tagihanppk()->search()->order()->paginate(15)->withQueryString(),
             'notifikasi' => Notification::Notif(),
         ]);
     }
 
     public function create()
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
-        return view('tagihan.create', [
-            'dokumen' => dokumen::NotBLBI()->orderby('kodedokumen')->get(),
+        return view('tagihan-blbi.create', [
+            'dokumen' => dokumen::BLBI()->orderby('kodedokumen')->get(),
             'unit' => unit::Myunit()->stafppk()->get(),
             'ppk' => RefPPK::PPKsatker()->stafppk()->get(),
             'notifikasi' => Notification::Notif(),
@@ -53,12 +55,11 @@ class TagihanController extends Controller
 
     public function store(Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
+
         $request->validate([
-            'notagihan' => 'required|min:5|max:5',
-            'tgltagihan' => 'required',
             'uraian' => 'required',
             'jnstagihan' => 'required',
             'kodeunit' => 'required',
@@ -66,13 +67,9 @@ class TagihanController extends Controller
             'ppk' => 'required',
         ]);
 
-        $request->validate([
-            'notagihan' => 'numeric',
-        ]);
-
         $tagihan = tagihan::create([
-            'notagihan' => $request->notagihan,
-            'tgltagihan' => $request->tgltagihan,
+            'notagihan' => $request->notagihan ?? '',
+            'tgltagihan' => $request->tgltagihan ?? '0000-00-00',
             'uraian' => $request->uraian,
             'jnstagihan' => $request->jnstagihan,
             'kodeunit' => $request->kodeunit,
@@ -82,6 +79,7 @@ class TagihanController extends Controller
             'kodesatker' => auth()->user()->satker,
             'bruto' => 0,
             'ppk_id' => $request->ppk,
+            'staf_ppk'=>auth()->user()->nip
         ]);
 
         logtagihan::create([
@@ -91,20 +89,15 @@ class TagihanController extends Controller
             'catatan' => '',
         ]);
 
-        return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Dibuat.');
-    }
-
-    public function show(tagihan $tagihan)
-    {
-        //
+        return redirect('/tagihan-blbi')->with('berhasil', 'Tagihan Berhasil Dibuat.');
     }
 
     public function edit(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
-
+        
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
             abort(403);
         }
@@ -112,7 +105,8 @@ class TagihanController extends Controller
         if ($tagihan->status != 0) {
             return abort(403);
         }
-        return view('tagihan.update', [
+
+        return view('tagihan-blbi.update', [
             'data' => $tagihan,
             'dokumen' => dokumen::orderby('kodedokumen')->get(),
             'unit' => unit::Myunit()->stafppk()->get(),
@@ -123,9 +117,10 @@ class TagihanController extends Controller
 
     public function update(Request $request, tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
+
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
             abort(403);
         }
@@ -161,12 +156,12 @@ class TagihanController extends Controller
             'ppk_id' => $request->ppk,
         ]);
 
-        return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Di Ubah.');
+        return redirect('/tagihan-blbi')->with('berhasil', 'Tagihan Berhasil Di Ubah.');
     }
 
     public function destroy(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
 
@@ -190,12 +185,12 @@ class TagihanController extends Controller
         //     $item->delete();
         // }
         $tagihan->delete();
-        return redirect('/tagihan')->with('berhasil', 'Tagihan Berhasil Di Hapus.');
+        return redirect('/tagihan-blbi')->with('berhasil', 'Tagihan Berhasil Di Hapus.');
     }
 
     public function uploadindex(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
 
@@ -205,16 +200,16 @@ class TagihanController extends Controller
 
         return view('uploadberkas.index', [
             'data' => $tagihan,
-            'back' => '/tagihan',
-            'upload' => '/tagihan/' . $tagihan->id . '/upload/create',
-            'delete' => '/tagihan/' . $tagihan->id . '/upload/',
+            'back' => '/tagihan-blbi',
+            'upload' => '/tagihan-blbi/' . $tagihan->id . '/upload/create',
+            'delete' => '/tagihan-blbi/' . $tagihan->id . '/upload/',
             'notifikasi' => Notification::Notif(),
         ]);
     }
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
 
@@ -241,7 +236,7 @@ class TagihanController extends Controller
                 'uraian' => $request->uraian,
                 'file' => $file,
             ]);
-            return redirect('/tagihan/' . $tagihan->id . '/upload')->with('berhasil', 'Dokumen Berhasil Di Upload.');
+            return redirect('/tagihan-blbi/' . $tagihan->id . '/upload')->with('berhasil', 'Dokumen Berhasil Di Upload.');
         }
 
         if ($request->_method === 'DELETE') {
@@ -252,7 +247,7 @@ class TagihanController extends Controller
             if ($berkas->berkas->kodeberkas === '01' || $berkas->berkas->kodeberkas === '02') {
                 Storage::delete($berkas->file);
                 $berkas->delete();
-                return redirect('/tagihan/' . $tagihan->id . '/upload')->with('berhasil', 'Dokumen Berhasil Di Hapus.');
+                return redirect('/tagihan-blbi/' . $tagihan->id . '/upload')->with('berhasil', 'Dokumen Berhasil Di Hapus.');
             } else {
                 abort(403);
             }
@@ -261,15 +256,15 @@ class TagihanController extends Controller
         return view('uploadberkas.upload', [
             'berkas' => berkas::ppk()->orderby('kodeberkas')->get(),
             'data' => $tagihan,
-            'back' => '/tagihan/' . $tagihan->id . '/upload',
-            'upload' => '/tagihan/' . $tagihan->id . '/upload',
+            'back' => '/tagihan-blbi/' . $tagihan->id . '/upload',
+            'upload' => '/tagihan-blbi/' . $tagihan->id . '/upload',
             'notifikasi' => Notification::Notif(),
         ]);
     }
 
     public function kirim(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
 
@@ -324,7 +319,7 @@ class TagihanController extends Controller
 
     public function showrekanan(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -334,7 +329,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.rekanan.index', [
+        return view('tagihan-blbi.rekanan.index', [
             'data' => $tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
@@ -343,7 +338,7 @@ class TagihanController extends Controller
 
     public function createrekanan(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -353,7 +348,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.rekanan.create', [
+        return view('tagihan-blbi.rekanan.create', [
             'tagihan' => $tagihan,
             'data' => rekanan::rekanansatker()
                 ->ofTagihan($tagihan->id)
@@ -366,7 +361,7 @@ class TagihanController extends Controller
 
     public function storerekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -378,12 +373,12 @@ class TagihanController extends Controller
         }
         $tagihan->rekanan()->attach($rekanan->id);
 
-        return redirect('/tagihan/' . $tagihan->id . '/rekanan')->with('berhasil', 'Data berhasil Ditambahkan.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function deleterekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -402,12 +397,12 @@ class TagihanController extends Controller
             ->where('tagihan_id', $tagihan->id)
             ->delete();
 
-        return redirect('/tagihan/' . $tagihan->id . '/rekanan')->with('berhasil', 'Data berhasil di Hapus.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan')->with('berhasil', 'Data berhasil di Hapus.');
     }
 
     public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -417,7 +412,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.rekanan.ppn.index', [
+        return view('tagihan-blbi.rekanan.ppn.index', [
             'data' => ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
@@ -427,7 +422,7 @@ class TagihanController extends Controller
 
     public function createppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -437,7 +432,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.rekanan.ppn.create', [
+        return view('tagihan-blbi.rekanan.ppn.create', [
             'data' => ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
@@ -447,7 +442,7 @@ class TagihanController extends Controller
 
     public function storeppnrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -473,12 +468,12 @@ class TagihanController extends Controller
             'rekanan_id' => $rekanan->id,
         ]);
 
-        return redirect('/tagihan/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil Ditambahkan.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function editppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -488,7 +483,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.rekanan.ppn.update', [
+        return view('tagihan-blbi.rekanan.ppn.update', [
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
             'data' => $ppn,
@@ -498,7 +493,7 @@ class TagihanController extends Controller
 
     public function updateppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -521,12 +516,12 @@ class TagihanController extends Controller
             'tarif' => $request->tarif,
             'ppn' => $request->ppn,
         ]);
-        return redirect('/tagihan/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil di Ubah.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil di Ubah.');
     }
 
     public function deleteppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -538,15 +533,15 @@ class TagihanController extends Controller
         }
         if ($ppn->rekanan_id === $rekanan->id && $ppn->tagihan_id === $tagihan->id) {
             $ppn->delete();
-            return redirect('/tagihan/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil di Hapus.');
+            return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil di Hapus.');
         } else {
-            return redirect('/tagihan/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('gagal', 'Link Error.');
+            return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('gagal', 'Link Error.');
         }
     }
 
     public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -556,7 +551,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.rekanan.pph.index', [
+        return view('tagihan-blbi.rekanan.pph.index', [
             'data' => pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
@@ -566,7 +561,7 @@ class TagihanController extends Controller
 
     public function createpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -576,7 +571,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.rekanan.pph.create', [
+        return view('tagihan-blbi.rekanan.pph.create', [
             'data' => pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
@@ -587,7 +582,7 @@ class TagihanController extends Controller
 
     public function storepphrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -617,12 +612,12 @@ class TagihanController extends Controller
             'tarif' => $tarif,
         ]);
 
-        return redirect('/tagihan/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil Ditambahkan.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function editpphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -632,7 +627,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.rekanan.pph.update', [
+        return view('tagihan-blbi.rekanan.pph.update', [
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
             'data' => $pph,
@@ -643,7 +638,7 @@ class TagihanController extends Controller
 
     public function updatepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -668,12 +663,12 @@ class TagihanController extends Controller
             'pph' => $request->pph,
             'tarif' => $tarif,
         ]);
-        return redirect('/tagihan/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil di Ubah.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil di Ubah.');
     }
 
     public function deletepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -685,15 +680,15 @@ class TagihanController extends Controller
         }
         if ($pph->rekanan_id === $rekanan->id && $pph->tagihan_id === $tagihan->id) {
             $pph->delete();
-            return redirect('/tagihan/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil di Hapus.');
+            return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil di Hapus.');
         } else {
-            return redirect('/tagihan/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('gagal', 'Link Error.');
+            return redirect('/tagihan-blbi/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('gagal', 'Link Error.');
         }
     }
 
     public function payroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -703,7 +698,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.payroll.index', [
+        return view('tagihan-blbi.payroll.index', [
             'data' => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
@@ -712,7 +707,7 @@ class TagihanController extends Controller
 
     public function createPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -722,7 +717,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.payroll.create', [
+        return view('tagihan-blbi.payroll.create', [
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
         ]);
@@ -730,7 +725,7 @@ class TagihanController extends Controller
 
     public function storePayroll(tagihan $tagihan, request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -779,12 +774,12 @@ class TagihanController extends Controller
                 'netto' => $request->bruto - $request->pajak - $request->admin,
             ]);
         }
-        return redirect('/tagihan/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function importHrisPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -799,7 +794,7 @@ class TagihanController extends Controller
         } else {
             $data = [];
         }
-        return view('tagihan.payroll.hris.import', [
+        return view('tagihan-blbi.payroll.hris.import', [
             'data' => $data,
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
@@ -808,7 +803,7 @@ class TagihanController extends Controller
 
     public function importMonevPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -819,7 +814,7 @@ class TagihanController extends Controller
             return abort(403);
         }
 
-        return view('tagihan.payroll.monev.import', [
+        return view('tagihan-blbi.payroll.monev.import', [
             'data' => RefRekening::search()->paginate(15)->withQueryString(),
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
@@ -828,7 +823,7 @@ class TagihanController extends Controller
 
     public function importExcelPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -837,7 +832,7 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        return view('tagihan.payroll.excel.import', [
+        return view('tagihan-blbi.payroll.excel.import', [
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
         ]);
@@ -845,7 +840,7 @@ class TagihanController extends Controller
 
     public function templateExcelPayroll()
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
 
@@ -933,7 +928,7 @@ class TagihanController extends Controller
 
     public function storeExcelPayroll(Request $request, tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -1124,9 +1119,9 @@ class TagihanController extends Controller
                     'netto' => floatval(str_replace(',', '', $item[3])) - floatval(str_replace(',', '', $item[4])) - floatval(str_replace(',', '', $item[5])),
                 ]);
             }
-            return redirect('/tagihan/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
+            return redirect('/tagihan-blbi/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
         } else {
-            return redirect('/tagihan/' . $tagihan->id . '/payroll/import-excel')
+            return redirect('/tagihan-blbi/' . $tagihan->id . '/payroll/import-excel')
                 ->with('gagal', 'Data gagal ditambahkan. Silahkan cek kembali.')
                 ->with('bniErrors', collect($bniErrors->skip(1)))
                 ->with('nonBniErrors', collect($nonBniErrors->skip(1)));
@@ -1135,7 +1130,7 @@ class TagihanController extends Controller
 
     public function storeImportPayroll(tagihan $tagihan, request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -1166,12 +1161,12 @@ class TagihanController extends Controller
             'tagihan_id' => $tagihan->id,
             'netto' => $request->bruto - $request->pajak - $request->admin,
         ]);
-        return redirect('/tagihan/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function deletePayroll(tagihan $tagihan, Payroll $payroll)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -1182,12 +1177,12 @@ class TagihanController extends Controller
             return abort(403);
         }
         $payroll->delete();
-        return redirect('/tagihan/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil di Hapus.');
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil di Hapus.');
     }
 
     public function cetakPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -1362,5 +1357,86 @@ class TagihanController extends Controller
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
         exit();
+    }
+
+    public function dnpPerjadin(tagihan $tagihan)
+    {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
+            abort(403);
+        }
+        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
+
+        return view('tagihan-blbi.dnp_perjadin.index', [
+            'tagihan' => $tagihan,
+            'data' => $tagihan->dnpperjadin()->paginate(15),
+            'notifikasi' => Notification::Notif(),
+        ]);
+    }
+
+    public function dnpPerjadinCreate(tagihan $tagihan)
+    {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
+            abort(403);
+        }
+        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
+        return view('tagihan-blbi.dnp_perjadin.create', [
+            'tagihan' => $tagihan,
+            'data' => $tagihan->dnpperjadin,
+            'notifikasi' => Notification::Notif(),
+        ]);
+    }
+
+    public function dnpPerjadinStore(tagihan $tagihan, Request $request)
+    {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
+            abort(403);
+        }
+        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
+
+        $request->validate([
+            'nama' => 'required',
+            'nip' => 'required|max_digits:18|min_digits:10',
+            'unit' => 'required',
+            'st' => 'required',
+            'lokasi' => 'required',
+            'durasi' => 'required',
+            'norek' => 'required|numeric',
+            'namarek' => 'required',
+            'bank' => 'required',
+        ]);
+
+        DnpPerjadin::create([
+            'tagihan_id' => $tagihan->id,
+            'nama' => $request->nama,
+            'nip' => $request->nip,
+            'unit' => $request->unit,
+            'st' => $request->st,
+            'lokasi' => $request->lokasi,
+            'durasi' => $request->durasi,
+            'norek' => $request->rekening,
+            'namarek' => $request->namarekening,
+            'bank' => $request->bank,
+            'transport' => json_encode([]),
+            'transportLain' => json_encode([]),
+            'uangharian' => json_encode([]),
+            'penginapan' => json_encode([]),
+            'representatif' => json_encode([]),
+        ]);
+        return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-perjadin')->with('success', 'DNP Perjadin Berhasiltahkan');
     }
 }

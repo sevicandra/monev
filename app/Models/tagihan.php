@@ -26,6 +26,7 @@ class tagihan extends Model
         'tahun',
         'uraian',
         'ppk_id',
+        'staf_ppk',
         'tanggal_spm',
         'tanggal_sp2d',
         'nomor_sp2d',
@@ -34,6 +35,11 @@ class tagihan extends Model
     public function ppk()
     {
         return $this->belongsTo(RefPPK::class, 'ppk_id', 'nip');
+    }
+
+    public function stafPpk()
+    {
+        return $this->belongsTo(RefStafPPK::class, 'staf_ppk', 'nip');
     }
 
     public function unit()
@@ -59,6 +65,11 @@ class tagihan extends Model
     public function dnp()
     {
         return $this->hasMany(dnp::class);
+    }
+
+    public function dnpPerjadin()
+    {
+        return $this->hasMany(DnpPerjadin::class);
     }
 
     public function nominaldnp()
@@ -147,6 +158,15 @@ class tagihan extends Model
         return $data->where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'));
     }
 
+    public function scopeTagihanBLBI($data)
+    {
+        return $data    ->where('kodesatker', auth()->user()->satker)
+                        ->wherehas('dokumen', function ($val) {
+                            $val->where('blbi', true);
+                        })
+                        ->where('tahun', session()->get('tahun'));
+    }
+
     public function log()
     {
         return $this->hasMany(logtagihan::class);
@@ -167,7 +187,9 @@ class tagihan extends Model
     public function scopeOrder($data)
     {
         return $data->orderby('tgltagihan', 'DESC')
-            ->orderby('notagihan', 'DESC');
+            ->orderby('notagihan', 'DESC')
+            ->orderby('created_at', 'DESC')
+            ;
     }
 
     public function scopeRealisasiBulananPpk($data, $nip)

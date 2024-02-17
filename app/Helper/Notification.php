@@ -17,6 +17,11 @@ class Notification
         return tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->count();
     }
 
+    public function tagihanBlbi()
+    {
+        return tagihan::where('status', 0)->tagihanBLBI()->tagihanppk()->count();
+    }
+
     public function verifikasi()
     {
         return tagihan::tagihansatker()->tagihanverifikator()->unverified()->count();
@@ -49,6 +54,10 @@ class Notification
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
             $notif->tagihan = $notificationInstance->tagihan();
+        }
+
+        if (Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
+            $notif->tagihanBlbi = $notificationInstance->tagihanBlbi();
         }
 
         if (Gate::allows('Validator', auth()->user()->id)) {

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PphController;
@@ -33,7 +34,9 @@ use App\Http\Controllers\RealisasiController;
 use App\Http\Controllers\ObjekpajakController;
 use App\Http\Controllers\RefStafPpkController;
 use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\DnpPerjadinController;
 use App\Http\Controllers\RefRekeningController;
+use App\Http\Controllers\TagihanBLBIController;
 use App\Http\Controllers\CleansingKkpController;
 use App\Http\Controllers\CleansingSpmController;
 use App\Http\Controllers\CleansingSppController;
@@ -41,12 +44,13 @@ use App\Http\Controllers\LaporanPajakController;
 use App\Http\Controllers\ArsipRegisterController;
 use App\Http\Controllers\CleansingSpbyController;
 use App\Http\Controllers\MapingstafppkController;
+use App\Http\Controllers\RealisasiBLBIController;
 use App\Http\Controllers\VerifikasiKKPController;
 use App\Http\Controllers\PegawainondjknController;
 use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\CleansingTagihanController;
-use App\Http\Controllers\MonitoringTagihanController;
 use App\Http\Controllers\RealisasiBulananController;
+use App\Http\Controllers\MonitoringTagihanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -471,3 +475,68 @@ Route::controller(RealisasiBulananController::class)->group(function(){
    Route::get('cleansing/realisasi-bulanan/{bulan}/download', 'download')->middleware('auth');
    Route::get('cleansing/realisasi-bulanan/{bulan}/download-with-sum', 'downloadWithSum')->middleware('auth');
 });
+
+Route::controller(TagihanBLBIController::class)->group(function(){
+    Route::get('/tagihan-blbi', 'index')->middleware('auth');
+    Route::post('/tagihan-blbi', 'store')->middleware('auth');
+    Route::get('/tagihan-blbi/create', 'create')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/edit', 'edit')->middleware('auth');
+    Route::patch('/tagihan-blbi/{tagihan}/edit', 'update')->middleware('auth');
+    Route::delete('/tagihan-blbi/{tagihan}', 'destroy')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/upload', 'uploadindex')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/upload/create', 'upload')->middleware('auth');
+    Route::patch('/tagihan-blbi/{tagihan}/upload', 'upload')->middleware('auth');
+    Route::delete('/tagihan-blbi/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/rekanan/create', 'createrekanan')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/rekanan/{rekanan}', 'storerekanan')->middleware('auth');
+    Route::delete('/tagihan-blbi/{tagihan}/rekanan/{rekanan}', 'deleterekanan')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/ppn', 'showppnrekanan')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/ppn/create', 'createppnrekanan')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/ppn', 'storeppnrekanan')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/ppn/{ppn}/edit', 'editppnrekanan')->middleware('auth');
+    Route::patch('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/ppn/{ppn}', 'updateppnrekanan')->middleware('auth');
+    Route::delete('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/ppn/{ppn}', 'deleteppnrekanan')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/pph', 'showpphrekanan')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/pph/create', 'createpphrekanan')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/pph', 'storepphrekanan')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/pph/{pph}/edit', 'editpphrekanan')->middleware('auth');
+    Route::patch('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'updatepphrekanan')->middleware('auth');
+    Route::delete('/tagihan-blbi/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'deletepphrekanan')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/payroll', 'payroll')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/payroll/create', 'createPayroll')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/payroll/create', 'storePayroll')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/payroll/import-hris', 'importHrisPayroll')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/payroll/import-monev', 'importMonevPayroll')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/payroll/import-excel', 'importExcelPayroll')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/payroll/import-excel', 'storeExcelPayroll')->middleware('auth');
+    Route::get('/tagihan-blbi/payroll/excel/template', 'templateExcelPayroll')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
+    Route::delete('/tagihan-blbi/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin', 'dnpPerjadin')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin/create', 'dnpPerjadinCreate')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/dnp-perjadin/create', 'dnpPerjadinStore')->middleware('auth');
+});
+
+Route::resource('/tagihan-blbi', TagihanBLBIController::class)->middleware('auth');
+
+Route::controller(RealisasiBLBIController::class)->group(function(){
+    Route::get('/tagihan-blbi/{tagihan}/realisasi', 'index')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/realisasi/{pagu}', 'store')->middleware('auth');
+});
+
+Route::resource('/tagihan-blbi/realisasi', RealisasiBLBIController::class)->middleware('auth')->except('index|store');
+
+Route::controller(DnpPerjadinController::class)->group(function(){
+    Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin/import', 'import')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/dnp-perjadin/import', 'importStore')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin/cetak', 'cetak')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin/{dnp}', 'index')->middleware('auth');
+    Route::patch('/tagihan-blbi/{tagihan}/dnp-perjadin/{dnp}', 'update')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin/{dnp}/create', 'create')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/dnp-perjadin/{dnp}/create', 'store')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin/{dnp}/cetak', 'cetakKuitansi')->middleware('auth');
+    Route::get('/dnp-perjadin/template', 'template')->middleware('auth');
+});
+

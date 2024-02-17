@@ -22,9 +22,12 @@
                     <th class="border border-base-content">No</th>
                     <th class="border border-base-content">Kode Dokumen</th>
                     <th class="border border-base-content">Nama Dokumen</th>
-                    <th class="border border-base-content">Status DNP</th>
+                    {{-- <th class="border border-base-content">Status DNP</th>
                     <th class="border border-base-content">Status PPh</th>
-                    <th class="border border-base-content">Status Rekanan</th>
+                    <th class="border border-base-content">Status Rekanan</th> --}}
+                    <th class="border border-base-content">Status DNP Perjadin</th>
+                    <th class="border border-base-content">Status DNP HONOR</th>
+                    <th class="border border-base-content">BLBI</th>
                     <th class="border border-base-content">Aksi</th>
                 </tr>
             </thead>
@@ -37,9 +40,12 @@
                         <td class="border border-base-content text-center">{{ $i }}</td>
                         <td class="border border-base-content">{{ $item->kodedokumen }}</td>
                         <td class="border border-base-content">{{ $item->namadokumen }}</td>
-                        <td class="border border-base-content text-center">{{ $item->statusdnp }}</td>
+                        {{-- <td class="border border-base-content text-center">{{ $item->statusdnp }}</td>
                         <td class="border border-base-content text-center">{{ $item->statuspph }}</td>
-                        <td class="border border-base-content text-center">{{ $item->statusrekanan }}</td>
+                        <td class="border border-base-content text-center">{{ $item->statusrekanan }}</td> --}}
+                        <td class="border border-base-content text-center">{{ $item->dnp_perjadin }}</td>
+                        <td class="border border-base-content text-center">{{ $item->dnp_honor }}</td>
+                        <td class="border border-base-content text-center">{{ $item->blbi }}</td>
                         <td class="border border-base-content text-center">
                             <div class="join">
                                 <a href="/dokumen/{{ $item->id }}/edit"

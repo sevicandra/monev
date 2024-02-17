@@ -37,63 +37,48 @@
                     @enderror
                 </label>
             </div>
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
+            {{-- <div class="form-control">
+                <label class="label cursor-pointer">
                     <span class="label-text">Status DNP:</span>
-                </label>
-                <select type="text" name="statusdnp"
-                    class="select select-sm select-bordered w-full max-w-xs @error('statusdnp') select-error @enderror">
-                    <option value="0" @if (old('statusdnp') == 0) selected @endif>
-                        Non DNP</option>
-                    <option value="1" @if (old('statusdnp') == 1) selected @endif>
-                        DNP</option>
-                </select>
-                <label class="label">
-                    @error('statusdnp')
-                        <span class="label-text-alt text-red-500">
-                            {{ $message }}
-                        </span>
-                    @enderror
+                    <input type="checkbox" name="statusdnp" class="checkbox checkbox-primary" value="TRUE" />
                 </label>
             </div>
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
+
+            <div class="form-control">
+                <label class="label cursor-pointer">
                     <span class="label-text">Status PPh:</span>
-                </label>
-                <select type="text" name="statuspph"
-                    class="select select-sm select-bordered w-full max-w-xs @error('statuspph') select-error @enderror">
-                    <option value="0" @if (old('statuspph') == 0) selected @endif>
-                        Non PPh</option>
-                    <option value="1" @if (old('statuspph') == 1) selected @endif>
-                        PPh</option>
-                </select>
-                <label class="label">
-                    @error('statuspph')
-                        <span class="label-text-alt text-red-500">
-                            {{ $message }}
-                        </span>
-                    @enderror
+                    <input type="checkbox" name="statuspph" class="checkbox checkbox-primary" value="TRUE" />
                 </label>
             </div>
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
+
+            <div class="form-control">
+                <label class="label cursor-pointer">
                     <span class="label-text">Status Rekanan:</span>
+                    <input type="checkbox" name="statusrekanan" class="checkbox checkbox-primary" value="TRUE" />
                 </label>
-                <select type="text" name="statusrekanan"
-                    class="select select-sm select-bordered w-full max-w-xs @error('statusrekanan') select-error @enderror">
-                    <option value="0" @if (old('statusrekanan') == 0) selected @endif>
-                        Non Rekanan</option>
-                    <option value="1" @if (old('statusrekanan') == 1) selected @endif>
-                        Rekanan</option>
-                </select>
-                <label class="label">
-                    @error('statusrekanan')
-                        <span class="label-text-alt text-red-500">
-                            {{ $message }}
-                        </span>
-                    @enderror
+            </div> --}}
+
+            <div class="form-control w-full max-w-xs">
+                <label class="label cursor-pointer">
+                    <span class="label-text">DNP Perjadin:</span>
+                    <input type="checkbox" name="dnpperjadin" class="checkbox checkbox-primary" value=1 @if (old('dnpperjadin')) checked @endif />
                 </label>
             </div>
+
+            <div class="form-control w-full max-w-xs">
+                <label class="label cursor-pointer">
+                    <span class="label-text">DNP Honor:</span>
+                    <input type="checkbox" name="dnphonor" class="checkbox checkbox-primary" value=1 @if (old('dnphonor')) checked @endif/>
+                </label>
+            </div>
+
+            <div class="form-control w-full max-w-xs">
+                <label class="label cursor-pointer">
+                    <span class="label-text">BLBI:</span>
+                    <input type="checkbox" name="blbi" class="checkbox checkbox-primary" value=1 @if (old('blbi')) checked @endif/>
+                </label>
+            </div>
+
             <div>
                 <a href="/dokumen" class="btn btn-sm btn-accent">Batal</a>
                 <button type="submit" class="btn btn-sm btn-accent">Simpan</button>

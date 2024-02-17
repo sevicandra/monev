@@ -36,24 +36,18 @@ class DokumenController extends Controller
             abort(403);
         }
         $request->validate([
-            'kode'=>'required|min:2|max:2',
+            'kode'=>'required|min_digits:2|max_digits:2',
             'nama'=>'required',
-            'statusdnp'=>'required|min:1|max:1',
-            'statuspph'=>'required|min:1|max:1',
         ]);
-
-        
-        $request->validate([
-            'statusdnp'=>'numeric',
-            'statuspph'=>'numeric',
-            'kode'=>'numeric',
-        ]);
-
         dokumen::create([
             'kodedokumen'=>$request->kode,
             'namadokumen'=>$request->nama,
-            'statusdnp'=>$request->statusdnp,
-            'statuspph'=>$request->statuspph,
+            'statusdnp'=>$request->statusdnp ?? false,
+            'statuspph'=>$request->statuspph ?? false,
+            'statusrekanan'=>$request->statusrekanan ?? false,
+            'dnp_perjadin'=>$request->dnpperjadin ?? false,
+            'dnp_honor'=>$request->dnphonor ?? false,
+            'blbi'=>$request->blbi ?? false,
         ]);
         return redirect('/dokumen');
     }
@@ -75,26 +69,19 @@ class DokumenController extends Controller
             abort(403);
         }
         $request->validate([
-            'kode'=>'required|min:2|max:2',
+            'kode'=>'required|min_digits:2|max_digits:2',
             'nama'=>'required',
-            'statusdnp'=>'required|min:1|max:1',
-            'statuspph'=>'required|min:1|max:1',
-            'statusrekanan'=>'required|min:1|max:1',
         ]);
 
-        
-        $request->validate([
-            'statusdnp'=>'numeric',
-            'statuspph'=>'numeric',
-            'statusrekanan'=>'numeric',
-            'kode'=>'numeric',
-        ]);
         $dokuman->update([
             'kodedokumen'=>$request->kode,
             'namadokumen'=>$request->nama,
-            'statusdnp'=>$request->statusdnp,
-            'statuspph'=>$request->statuspph,
-            'statusrekanan'=>$request->statusrekanan,
+            'statusdnp'=>$request->statusdnp ?? false,
+            'statuspph'=>$request->statuspph ?? false,
+            'statusrekanan'=>$request->statusrekanan ?? false,
+            'dnp_perjadin'=>$request->dnpperjadin ?? false,
+            'dnp_honor'=>$request->dnphonor ?? false,
+            'blbi'=>$request->blbi ?? false,
         ]);
         return redirect('/dokumen');
     }

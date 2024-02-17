@@ -14,17 +14,20 @@ return new class extends Migration
         Schema::create('dnp_perjadins', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('tagihan_id');
-            $table->uuid('nama');
-            $table->uuid('nip');
-            $table->uuid('golongan');
-            $table->uuid('provinsi');
-            $table->double('frekuensi',3,0);
-            $table->double('uangharian');
-            $table->double('hotel');
-            $table->double('transport');
-            $table->double('transportdalkot');
+            $table->string('nama');
+            $table->string('nip', 18);
+            $table->string('unit');
+            $table->string('st');
+            $table->string('lokasi');
+            $table->string('durasi');
             $table->double('norek');
+            $table->string('namarek');
             $table->double('bank');
+            $table->json('uangharian')->nullable();
+            $table->json('penginapan')->nullable();
+            $table->json('representatif')->nullable();
+            $table->json('transport')->nullable();
+            $table->json('transportLain')->nullable();
             $table->timestamps();
         });
     }

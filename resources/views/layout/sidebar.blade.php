@@ -42,6 +42,20 @@
                                     @endif
                                 </a>
                             </li>
+                            @if (session()->get('staf_ppk_blbi') == 1)
+                                <li>
+                                    <a href="/tagihan-blbi">
+                                        Data Tagihan BLBI
+                                        @if (isset($notifikasi->tagihanBlbi) && $notifikasi->tagihanBlbi > 0)
+                                            @if ($notifikasi->tagihanBlbi > 99)
+                                                <div class="badge badge-primary">99+</div>
+                                            @else
+                                                <div class="badge badge-primary">{{ $notifikasi->tagihanBlbi }}</div>
+                                            @endif
+                                        @endif
+                                    </a>
+                                </li>
+                            @endif
                         @endcan
                         {{-- <li>
                             <a href="/register">

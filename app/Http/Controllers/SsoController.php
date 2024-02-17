@@ -62,6 +62,7 @@ class SsoController extends Controller
                         $request->session()->put('ppk', $ppk);
                         $unit = RefStafPPK::getUnit();
                         $request->session()->put('unit', $unit);
+                        $request->session()->put('staf_ppk_blbi', auth()->user()->stafppk->first()->satgasBLBI);
                     }
                     return redirect()->intended('/dashboard');
                 } else {

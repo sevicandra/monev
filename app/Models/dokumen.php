@@ -16,6 +16,20 @@ class dokumen extends Model
         'namadokumen',
         'statusdnp',
         'statuspph',
-        'statusrekanan'
+        'statusrekanan',
+        'dnp_perjadin',
+        'dnp_honor',
+        'blbi',
     ];
+
+
+    public function scopeNotBLBI($data)
+    {
+        return $data    ->where('blbi', false);
+    }
+
+    public function scopeBLBI($data)
+    {
+        return $data    ->where('blbi', true);
+    }
 }
