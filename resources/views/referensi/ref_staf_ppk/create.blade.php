@@ -37,6 +37,12 @@
                     @enderror
                 </label>
             </div>
+            <div class="form-control w-full max-w-xs">
+                <label class="label cursor-pointer">
+                    <span class="label-text">Satgas BLBI:</span>
+                    <input type="checkbox" name="satgasBLBI" class="checkbox checkbox-primary" value=1 @if (old('satgasBLBI')) checked @endif />
+                </label>
+            </div>
             <div>
                 <a href="/maping-staf-ppk" class="btn btn-sm btn-accent">Batal</a>
                 <button type="submit" class="btn btn-sm btn-accent">Simpan</button>

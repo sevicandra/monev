@@ -36,7 +36,8 @@ class RefStafPpkController extends Controller
         RefStafPPK::create([
             'nama' => $request->nama,
             'nip' => $request->nip,
-            'satker' => auth()->user()->satker
+            'satker' => auth()->user()->satker,
+            'satgasBLBI'=>$request->satgasBLBI ?? false,
         ]);
         return redirect('/maping-staf-ppk')->with('berhasil', 'Data Berhasil Di Tambah');
     }
@@ -57,7 +58,8 @@ class RefStafPpkController extends Controller
         $stafppk->update([
             'nama' => $request->nama,
             'nip' => $request->nip,
-            'satker' => auth()->user()->satker
+            'satker' => auth()->user()->satker,
+            'satgasBLBI'=>$request->satgasBLBI ?? false,
         ]);
         return redirect('/maping-staf-ppk')->with('berhasil', 'Data Berhasil Di Ubah');
     }

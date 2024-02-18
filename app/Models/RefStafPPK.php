@@ -11,7 +11,7 @@ class RefStafPPK extends Model
     use HasFactory, Uuids;
     protected $table = 'ref_staf_ppks';
 
-    protected $fillable = ['nama', 'nip', 'satker'];
+    protected $fillable = ['nama', 'nip', 'satker', 'satgasBLBI'];
 
     public function scopeSearch($data)
     {
