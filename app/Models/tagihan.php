@@ -30,6 +30,7 @@ class tagihan extends Model
         'tanggal_spm',
         'tanggal_sp2d',
         'nomor_sp2d',
+        'catatan',
     ];
 
     public function ppk()

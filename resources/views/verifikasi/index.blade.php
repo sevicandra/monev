@@ -61,12 +61,13 @@
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate($item->tanggal_spm) }}
+                            {{ indonesiaDate($item->tanggal_spm) }}
                         </td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
-                        <td class="text-right border border-base-content">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
+                        <td class="text-right border border-base-content">
+                            Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
                         <td class="border border-base-content">
                             <div class="join">
                                 @if ($item->jnstagihan === '1')
@@ -83,9 +84,8 @@
                                     <a href="/verifikasi/{{ $item->id }}/rekanan"
                                         class="btn btn-xs btn-outline btn-neutral join-item">Rekanan</a>
                                 @endif
-                                <a href="/verifikasi/{{ $item->id }}/tolak"
-                                    class="btn btn-xs btn-outline btn-error join-item"
-                                    onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
+                                <button value="{{ $item->id }}"
+                                    class="btn btn-xs btn-outline btn-error join-item reject-btn">Tolak</button>
                                 <a href="/verifikasi/{{ $item->id }}/approve"
                                     class="btn btn-xs btn-outline btn-success join-item"
                                     onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
@@ -99,8 +99,61 @@
             </tbody>
         </table>
     </div>
+    <dialog id="reject_modal" class="modal">
+        <div class="modal-box w-full max-w-md p-0">
+            <div class="relative bg-primary py-2 px-4 flex justify-between align-middle text-primary-content">
+                <p>Apakah anda yakin ingin menolak tagihan ini?</p>
+                <button class="btn btn-sm btn-ghost reject-close-btn">✕</button>
+            </div>
+            <div class="p-4">
+                <form action="@if (Session::has('tagihan_id'))/verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
+                    id="form-tolak" method="post">
+                    @method('PATCH')
+                    @csrf
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">Catatan:</span>
+                        </label>
+                        <input type="text" name="catatan"
+                            class="input input-sm input-bordered  w-full @error('catatan') input-error @enderror"
+                            value="{{ old('catatan') }}" />
+                        <label class="label">
+                            @error('catatan')
+                                <span class="label-text-alt text-red-500">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </label>
+                    </div>
+                    <button class="btn btn-sm btn-accent">Submit</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    @error('catatan')
+        <script>
+            reject_modal.showModal();
+        </script>
+    @enderror
 @endsection
 
 @section('pagination')
     {{ $data->links() }}
+@endsection
+
+@section('foot')
+    <script>
+        $(document).ready(function() {
+            $(".reject-btn").click(function() {
+                reject_modal.showModal()
+                const action = "/verifikasi/" + $(this).val() + "/tolak"
+                $("#form-tolak").attr("action", action);
+            });
+            $(".reject-close-btn").click(function() {
+                reject_modal.close()
+                const action = ""
+                $("#form-tolak").attr("action", action);
+            })
+        });
+    </script>
 @endsection

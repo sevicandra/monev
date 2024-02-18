@@ -43,7 +43,7 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($monitoring_tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            if (!in_array($monitoring_tagihan->ppk_id, session()->get('ppk')) || !in_array($monitoring_tagihan->kodeunit, session()->get('unit')) || $monitoring_tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
         }
@@ -77,7 +77,7 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
         }
@@ -130,7 +130,7 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
         }
@@ -154,7 +154,7 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
         }
@@ -179,7 +179,7 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
         }
@@ -208,7 +208,7 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
+            if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
         }

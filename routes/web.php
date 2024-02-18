@@ -243,7 +243,7 @@ Route::controller(VerifikasiController::class)->group(function(){
     Route::get('/verifikasi/{tagihan}/upload', 'upload')->middleware('auth');
     Route::patch('/verifikasi/{tagihan}/upload', 'upload')->middleware('auth');
     Route::delete('/verifikasi/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth');
-    Route::get('/verifikasi/{tagihan}/tolak', 'tolak')->middleware('auth');
+    Route::patch('/verifikasi/{tagihan}/tolak', 'tolak')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/approve', 'approve')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/rekanan/create', 'createrekanan')->middleware('auth');

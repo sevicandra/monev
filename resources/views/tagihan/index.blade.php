@@ -43,8 +43,8 @@
                     $i = 1;
                 @endphp
                 @foreach ($data as $item)
-                    <tr class="whitespace-nowrap">
-                        <td class="border border-base-content text-center">{{ $i }}</td>
+                    <tr class="whitespace-nowrap @if ($item->catatan) text-error @endif">
+                        <td class="border border-base-content text-center" @if ($item->catatan) rowspan="2" @endif>{{ $i }}</td>
                         <td class="border border-base-content">
                             @switch($item->jnstagihan)
                                 @case('0')
@@ -68,7 +68,7 @@
                         <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
                         <td class="border border-base-content text-right">
                             Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
-                        <td class="border border-base-content">
+                        <td class="border border-base-content" @if ($item->catatan) rowspan="2" @endif>
                             <div class="join">
                                 <a href="/tagihan/{{ $item->id }}/edit"
                                     class="btn btn-xs btn-neutral btn-outline join-item">Ubah</a>
@@ -99,6 +99,14 @@
                             </div>
                         </td>
                     </tr>
+                    @if ($item->catatan)
+                        <tr>
+                            <td colspan="8" class="border border-base-content text-error py-0 border-dashed">
+                                Catatan: {{ $item->catatan }}
+                            </td>
+                        </tr>
+                        
+                    @endif
                     @php
                         $i++;
                     @endphp

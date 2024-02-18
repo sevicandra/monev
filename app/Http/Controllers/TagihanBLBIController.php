@@ -307,6 +307,7 @@ class TagihanBLBIController extends Controller
 
         $tagihan->update([
             'status' => '2',
+            'catatan' => null
         ]);
         logtagihan::create([
             'tagihan_id' => $tagihan->id,

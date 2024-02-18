@@ -106,7 +106,7 @@ class VerifikasiController extends Controller
         return redirect('/verifikasi')->with('berhasil','Tanggal SPM Berhasil Ditambahkan');
     }
 
-    public function tolak(tagihan $tagihan){
+    public function tolak(Request $request, tagihan $tagihan){
         if (! Gate::allows('Validator', auth()->user()->id)) {
             abort(403);
         }
@@ -118,14 +118,30 @@ class VerifikasiController extends Controller
         if ($tagihan->status != 2) {
             abort(403);
         }
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'catatan'=>'required'
+            ],
+            [
+                'catatan.required' => 'Catatan harus diisi',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->with('tagihan_id' ,$tagihan->id)->withInput();
+        }
+
         $tagihan->update([
-            'status'=>0
+            'status'=>0,
+            'catatan'=>$request->catatan
         ]);
         logtagihan::create([
             'tagihan_id'=>$tagihan->id,
             'action'=>'Tolak',
             'user'=>auth()->user()->nama,
-            'catatan'=>''
+            'catatan'=>$request->catatan
         ]);
         return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Dikembalikan');
     }
