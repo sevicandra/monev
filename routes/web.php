@@ -182,10 +182,10 @@ Route::controller(TagihanController::class)->group(function(){
     Route::post('/tagihan/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/tagihan/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
     Route::get('/tagihan/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/kirim', 'kirim')->middleware('auth');
 });
 
 Route::resource('/tagihan', TagihanController::class)->middleware('auth');
-Route::post('/tagihan/{tagihan}/kirim', [TagihanController::class,'kirim'])->middleware('auth');
 
 Route::controller(RealisasiController::class)->group(function(){
     Route::get('/tagihan/{tagihan}/realisasi', 'index')->middleware('auth');
@@ -515,6 +515,7 @@ Route::controller(TagihanBLBIController::class)->group(function(){
     Route::post('/tagihan-blbi/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/tagihan-blbi/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
     Route::get('/tagihan-blbi/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/kirim', 'kirim')->middleware('auth');
 });
 
 Route::resource('/tagihan-blbi', TagihanBLBIController::class)->middleware('auth');

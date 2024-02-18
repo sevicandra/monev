@@ -173,6 +173,15 @@ class tagihan extends Model
                         ->where('tahun', session()->get('tahun'));
     }
 
+    public function scopeTagihanNonBLBI($data)
+    {
+        return $data    ->where('kodesatker', auth()->user()->satker)
+                        ->wherehas('dokumen', function ($val) {
+                            $val->where('blbi', false);
+                        })
+                        ->where('tahun', session()->get('tahun'));
+    }
+
     public function log()
     {
         return $this->hasMany(logtagihan::class);

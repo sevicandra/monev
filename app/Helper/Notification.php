@@ -14,7 +14,7 @@ class Notification
 {
     public function tagihan()
     {
-        return tagihan::where('status', 0)->where('tahun', session()->get('tahun'))->tagihanppk()->count();
+        return tagihan::where('status', 0)->TagihanNonBLBI()->tagihanppk()->count();
     }
 
     public function tagihanBlbi()

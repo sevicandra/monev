@@ -93,6 +93,11 @@
                                     <button class="btn btn-xs btn-error btn-outline join-item"
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
+                                <form action="/tagihan-blbi/{{ $item->id }}/kirim" method="post">
+                                    @csrf
+                                    <button class="btn btn-xs btn-success btn-outline join-item"
+                                        onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Kirim</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
