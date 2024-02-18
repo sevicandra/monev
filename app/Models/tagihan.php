@@ -72,6 +72,11 @@ class tagihan extends Model
         return $this->hasMany(DnpPerjadin::class);
     }
 
+    public function dnpHonor()
+    {
+        return $this->hasMany(DnpHonorarium::class);
+    }
+
     public function nominaldnp()
     {
         return $this->hasManyThrough(nominaldnp::class, dnp::class);

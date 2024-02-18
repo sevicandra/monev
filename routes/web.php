@@ -43,6 +43,7 @@ use App\Http\Controllers\CleansingSppController;
 use App\Http\Controllers\LaporanPajakController;
 use App\Http\Controllers\ArsipRegisterController;
 use App\Http\Controllers\CleansingSpbyController;
+use App\Http\Controllers\DnpHonorariumController;
 use App\Http\Controllers\MapingstafppkController;
 use App\Http\Controllers\RealisasiBLBIController;
 use App\Http\Controllers\VerifikasiKKPController;
@@ -538,5 +539,19 @@ Route::controller(DnpPerjadinController::class)->group(function(){
     Route::post('/tagihan-blbi/{tagihan}/dnp-perjadin/{dnp}/create', 'store')->middleware('auth');
     Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin/{dnp}/cetak', 'cetakKuitansi')->middleware('auth');
     Route::get('/dnp-perjadin/template', 'template')->middleware('auth');
+});
+
+Route::controller(DnpHonorariumController::class)->group(function(){
+    Route::get('/tagihan-blbi/{tagihan}/dnp-honorarium', 'index')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-honorarium/import', 'import')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/dnp-honorarium/import', 'importStore')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-honorarium/cetak', 'cetak')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-honorarium/create', 'create')->middleware('auth');
+    Route::post('/tagihan-blbi/{tagihan}/dnp-honorarium/create', 'store')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/dnp-honorarium/{dnp}', 'edit')->middleware('auth');
+    Route::patch('/tagihan-blbi/{tagihan}/dnp-honorarium/{dnp}', 'update')->middleware('auth');
+    Route::delete('/tagihan-blbi/{tagihan}/dnp-honorarium/{dnp}', 'destroy')->middleware('auth');
+    Route::get('/dnp-honorarium/template', 'template')->middleware('auth');
+
 });
 

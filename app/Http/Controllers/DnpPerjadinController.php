@@ -359,7 +359,7 @@ class DnpPerjadinController extends Controller
                     'representatif'=> json_encode($representatif),
                 ]);
             }
-            return redirect('/tagihan-blbi/'.$tagihan->id.'/dnp-perjadin')->with('berhasil', 'Data DNP Perjadin Berhasil');
+            return redirect('/tagihan-blbi/'.$tagihan->id.'/dnp-perjadin')->with('berhasil', 'Data DNP Perjadin Berhasil Ditambahkan');
         }else{
             return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-perjadin/import')
             ->with('gagal', 'Data gagal ditambahkan. Silahkan cek kembali.')
@@ -495,7 +495,7 @@ class DnpPerjadinController extends Controller
 
         // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="DNP -' . date('D, d M Y H:i:s') . '.xlsx"');
+        header('Content-Disposition: attachment;filename="DNP - Perjadin ' . date('D, d M Y H:i:s') . '.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

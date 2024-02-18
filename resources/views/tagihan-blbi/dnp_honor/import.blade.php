@@ -23,8 +23,8 @@
                 </label>
             </div>
             <div>
-                <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin" class="btn btn-sm btn-accent">Batal</a>
-                <a href="/dnp-perjadin/template" target="_blank"
+                <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-honorarium" class="btn btn-sm btn-accent">Batal</a>
+                <a href="/dnp-honorarium/template" target="_blank"
                     class="btn btn-sm btn-accent">Template</a>
                 <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
             </div>
@@ -43,10 +43,13 @@
                             <th class="border border-base-content">No</th>
                             <th class="border border-base-content">Nama</th>
                             <th class="border border-base-content">NIP/NIK/NRP/DLL</th>
-                            <th class="border border-base-content">Unit Kerja</th>
-                            <th class="border border-base-content">Surat Tugas</th>
-                            <th class="border border-base-content">Lokasi</th>
-                            <th class="border border-base-content">Durasi</th>
+                            <th class="border border-base-content">Dasar Pembayaran</th>
+                            <th class="border border-base-content">Jabatan</th>
+                            <th class="border border-base-content">Golongan</th>
+                            <th class="border border-base-content">NPWP</th>
+                            <th class="border border-base-content">Frekuensi</th>
+                            <th class="border border-base-content">Tarif</th>
+                            <th class="border border-base-content">Pajak</th>
                             <th class="border border-base-content">Nomor Rekening</th>
                             <th class="border border-base-content">Nama Rekening</th>
                             <th class="border border-base-content">Bank</th>
@@ -56,15 +59,18 @@
                         @foreach (Session::get('Errors') as $item)
                             <tr class="@if ($item->status) text-success @else text-error @endif">
                                 <td class="border border-base-content text-center">{{ $item->row }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->NAMA }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->NIP }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->Unit_Kerja }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->Surat_Tugas }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->Lokasi }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->Durasi }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->Nomor_Rekening }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->Nama_Rekening }}</td>
-                                <td class="border border-base-content text-center">{{ $item->errors->Bank }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->nama }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->nip }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->dasar }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->jabatan }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->gol }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->npwp }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->frekuensi }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->nilai }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->pajak }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->norek }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->namarek }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->bank }}</td>
                             </tr>
                         @endforeach
                     </tbody>

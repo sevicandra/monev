@@ -80,7 +80,7 @@
                                         class="btn btn-xs btn-neutral btn-outline join-item">DNP Perjadin</a>
                                 @endif
                                 @if ($item->dokumen->dnp_honor)
-                                    <a href="/tagihan-blbi/{{ $item->id }}/realisasi"
+                                    <a href="/tagihan-blbi/{{ $item->id }}/dnp-honorarium"
                                         class="btn btn-xs btn-neutral btn-outline join-item">DNP Honor</a>
                                 @endif
                                 <a href="/tagihan-blbi/{{ $item->id }}/upload"

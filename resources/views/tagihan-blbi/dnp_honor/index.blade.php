@@ -1,92 +1,90 @@
 @extends('layout.main')
 @section('content')
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">DNP Honorarium</h1>
+    <div class="bg-primary p-4">
+        <h1 class="h2">DNP Honorarium</h1>
+    </div>
+    <div class="">
+        @include('layout.flashmessage')
+    </div>
+    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+        <div class="">
+            <a href="/tagihan-blbi" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-honorarium/create" class="btn btn-sm btn-neutral">Tambah</a>
+            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-honorarium/import" class="btn btn-sm btn-neutral">Import</a>
+            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-honorarium/cetak" target="_blank" class="btn btn-sm btn-neutral">Cetak</a>
         </div>
-        <div class="row">
-            <div class="col">
-                @include('layout.flashmessage')
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-lg-7">
-                <a href="/tagihan-blbi" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2">Sebelumnya</a>
-                <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp/cetak" class="btn btn-sm btn-outline-secondary mt-1 mb-1 ml-2" target="_blank">Cetak</a>
-            </div>
-            <div class="col-lg-5">
-                <form action="" method="get" autocomplete="off">
-                    <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Nama Pegawai" value="{{request('search')}}">
-                        <button class="btn btn-sm btn-outline-secondary" type="submit">Cari</button>
+        <div class="">
+            <form action="" method="get" autocomplete="off">
+                <div class="join">
+                    <input type="text" name="search" class="input input-sm input-bordered join-item"
+                        placeholder="Nomor Tagihan">
+                    <div class="indicator">
+                        <button class="btn join-item btn-sm btn-neutral">Cari</button>
                     </div>
-                </form>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="text-center">
-                            <tr class="align-middle">
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>NIP</th>
-                                <th>Golongan</th>
-                                <th>Jabatan</th>
-                                <th>Netto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $i=1;
-                            @endphp
-                            @foreach ($data as $item)
-                            <tr>
-                                <td class="text-center">{{ $i }}</td>
-                                <td>{{ $item->nip }}</td>
-                                <td>{{ $item->nama }}</td>
-                                <td>{{ $item->kodegolongan }}</td>
-                                @if ($item->nominal) 
-                                    <td class="text-right">{{ number_format($item->nominal->bruto, 2, ',', '.') }}</td>
-                                    <td class="text-right">{{ number_format($item->nominal->pph, 2, ',', '.') }}</td>
-                                    <td class="text-right">{{ number_format($item->nominal->netto, 2, ',', '.') }}</td>
-                                @else 
-                                    <td class="text-right"></td>
-                                    <td class="text-right"></td>
-                                    <td class="text-right"></td>
-                                @endif
-                                <td>{{ $item->rekening }}</td>
-                                <td>{{ $item->namabank }}</td>
-                                <td class="pb-0">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        @if ($item->nominal)
-                                            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp/{{ $item->id }}/nominal/{{ $item->nominal->id }}/update/" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Nominal</a>
-                                        @else
-                                            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp/{{ $item->id }}/nominal/" class="btn btn-sm btn-outline-secondary pt-0 pb-0">Nominal</a>
-                                        @endif
-                                        <form action="/tagihan-blbi/{{ $tagihan->id }}/dnp/{{ $item->id }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-secondary pt-0 pb-0" onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @php
-                                $i++;
-                            @endphp
-                            @endforeach
-                        </tbody>
-                    </table>
                 </div>
-            </div>
+            </form>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                {{$data->links()}}
-            </div>
-        </div>
+    </div>
+    <div class="px-4 gap-2 overflow-y-auto">
+        <table class="table border-collapse w-full whitespace-nowrap">
+            <thead class="text-center">
+                <tr class="align-middle">
+                    <th class="border border-base-content">No</th>
+                    <th class="border border-base-content">Nama</th>
+                    <th class="border border-base-content">NIP/NIK/NRP/DLL</th>
+                    <th class="border border-base-content">Dasar Penugasan</th>
+                    <th class="border border-base-content">Jabatan</th>
+                    <th class="border border-base-content">Golongan</th>
+                    <th class="border border-base-content">NPWP</th>
+                    <th class="border border-base-content">Frekuensi</th>
+                    <th class="border border-base-content">Nilai Satuan</th>
+                    <th class="border border-base-content">Bruto</th>
+                    <th class="border border-base-content">Pajak</th>
+                    <th class="border border-base-content">Netto</th>
+                    <th class="border border-base-content">Rekening</th>
+                    <th class="border border-base-content">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $no = 1;
+                @endphp
+                @foreach ($data as $item)
+                    <tr>
+                        <td class="border border-base-content">{{ $no++ }}</td>
+                        <td class="border border-base-content">{{ $item->nama }}</td>
+                        <td class="border border-base-content">{{ $item->nip }}</td>
+                        <td class="border border-base-content">{{ $item->dasar }}</td>
+                        <td class="border border-base-content">{{ $item->jabatan }}</td>
+                        <td class="border border-base-content">{{ $item->gol }}</td>
+                        <td class="border border-base-content">{{ $item->npwp }}</td>
+                        <td class="border border-base-content">{{ $item->frekuensi }}</td>
+                        <td class="border border-base-content">{{ number_format($item->nilai, 0, ',', '.') }}</td>
+                        <td class="border border-base-content">{{ number_format($item->bruto, 0, ',', '.') }}</td>
+                        <td class="border border-base-content">{{ number_format($item->pajak, 0, ',', '.') }}</td>
+                        <td class="border border-base-content">{{ number_format($item->netto, 0, ',', '.') }}</td>
+                        <td class="border border-base-content">{{ $item->bank }} {{ $item->norek }} <br> a.n.
+                            {{ $item->namarek }}</td>
+                        <td class="border border-base-content">
+                            <div class="join">
+                                <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-honorarium/{{ $item->id }}"
+                                    class="btn btn-xs btn-outline btn-neutral join-item">Edit</a>
+                                <form action="/tagihan-blbi/{{ $tagihan->id }}/dnp-honorarium/{{ $item->id }}"
+                                    method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-xs btn-outline btn-error join-item"
+                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@endsection
 
-    </main>
+@section('pagination')
+
 @endsection
