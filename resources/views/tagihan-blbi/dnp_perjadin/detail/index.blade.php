@@ -8,8 +8,7 @@
     </div>
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div class="">
-            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin" class="btn btn-sm btn-neutral">Sebelumnya</a>
-            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp/cetak" class="btn btn-sm btn-neutral">Cetak</a>
+            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-hidden ">

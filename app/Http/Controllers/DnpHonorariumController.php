@@ -24,6 +24,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -32,13 +33,15 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
         return view('tagihan-blbi.dnp_honor.index', [
             'tagihan' => $tagihan,
             'data' => $tagihan->dnpHonor()->get(),
-            'notifikasi' => Notification::Notif()
+            'notifikasi' => Notification::Notif(),
+            'base_url' => $base_url
         ]);
     }
 
@@ -52,6 +55,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -60,12 +64,14 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
         return view('tagihan-blbi.dnp_honor.create', [
             'notifikasi' => Notification::Notif(),
-            'tagihan' => $tagihan
+            'tagihan' => $tagihan,
+            'base_url' => $base_url
         ]);
     }
 
@@ -79,6 +85,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -87,6 +94,7 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -153,6 +161,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -161,6 +170,7 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -172,7 +182,8 @@ class DnpHonorariumController extends Controller
         return view('tagihan-blbi.dnp_honor.edit', [
             'tagihan' => $tagihan,
             'data' => $dnp,
-            'notifikasi' => Notification::Notif()
+            'notifikasi' => Notification::Notif(),
+            'base_url' => $base_url
         ]);
     }
 
@@ -186,6 +197,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -194,6 +206,7 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -265,6 +278,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -273,6 +287,7 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -295,6 +310,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -303,6 +319,7 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -310,6 +327,7 @@ class DnpHonorariumController extends Controller
         return view('tagihan-blbi.dnp_honor.import', [
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
+            'base_url' => $base_url
         ]);
     }
 
@@ -323,6 +341,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -331,6 +350,7 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -625,6 +645,7 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
+            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -633,6 +654,7 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+            $base_url= '/verifikasi';
         } else {
             abort(403);
         }

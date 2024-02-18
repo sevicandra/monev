@@ -23,7 +23,7 @@
                 </label>
             </div>
             <div>
-                <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-honorarium" class="btn btn-sm btn-accent">Batal</a>
+                <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-honorarium" class="btn btn-sm btn-accent">Batal</a>
                 <a href="/dnp-honorarium/template" target="_blank"
                     class="btn btn-sm btn-accent">Template</a>
                 <button type="submit" class="btn btn-sm btn-accent">Simpan</button>

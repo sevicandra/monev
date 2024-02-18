@@ -78,6 +78,14 @@
                                     class="btn btn-xs btn-outline btn-neutral join-item">Dokumen</a>
                                 <a href="/verifikasi/{{ $item->id }}/coa"
                                     class="btn btn-xs btn-outline btn-neutral join-item">COA</a>
+                                @if ($item->dokumen->dnp_perjadin)
+                                    <a href="/verifikasi/{{ $item->id }}/dnp-perjadin"
+                                        class="btn btn-xs btn-neutral btn-outline join-item">DNP Perjadin</a>
+                                @endif
+                                @if ($item->dokumen->dnp_honor)
+                                    <a href="/verifikasi/{{ $item->id }}/dnp-honorarium"
+                                        class="btn btn-xs btn-neutral btn-outline join-item">DNP Honor</a>
+                                @endif
                                 <a href="/verifikasi/{{ $item->id }}/payroll"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Payroll</a>
                                 @if ($item->dokumen->statusrekanan === '1')
@@ -106,7 +114,7 @@
                 <button class="btn btn-sm btn-ghost reject-close-btn">✕</button>
             </div>
             <div class="p-4">
-                <form action="@if (Session::has('tagihan_id'))/verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
+                <form action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
                     id="form-tolak" method="post">
                     @method('PATCH')
                     @csrf

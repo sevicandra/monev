@@ -8,10 +8,10 @@
     </div>
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div class="">
-            <a href="/tagihan-blbi" class="btn btn-sm btn-neutral">Sebelumnya</a>
-            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin/create" class="btn btn-sm btn-neutral">Tambah</a>
-            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin/import" class="btn btn-sm btn-neutral">Import</a>
-            <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin/cetak" target="_blank" class="btn btn-sm btn-neutral">Cetak</a>
+            <a href="{{ $base_url }}" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/create" class="btn btn-sm btn-neutral">Tambah</a>
+            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/import" class="btn btn-sm btn-neutral">Import</a>
+            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/cetak" target="_blank" class="btn btn-sm btn-neutral">Cetak</a>
         </div>
         <div class="">
             <form action="" method="get" autocomplete="off">
@@ -85,13 +85,13 @@
                             {{ $item->namarek }}</td>
                         <td class="border border-base-content">
                             <div class="join">
-                                <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}/edit"
+                                <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}/edit"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Edit</a>
-                                <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}"
+                                <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Detail</a>
-                                <a href="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}/cetak"
+                                <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}/cetak"
                                     class="btn btn-xs btn-outline btn-neutral join-item" target="_blank">Cetak</a>
-                                <form action="/tagihan-blbi/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}"
+                                <form action="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}"
                                     method="post">
                                     @csrf
                                     @method('DELETE')

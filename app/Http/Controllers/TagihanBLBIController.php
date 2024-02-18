@@ -35,7 +35,7 @@ class TagihanBLBIController extends Controller
         }
 
         return view('tagihan-blbi.index', [
-            'data' => tagihan::TagihanBLBI()->tagihanppk()->search()->order()->paginate(15)->withQueryString(),
+            'data' => tagihan::where('status', 0)->TagihanBLBI()->tagihanppk()->search()->order()->paginate(15)->withQueryString(),
             'notifikasi' => Notification::Notif(),
         ]);
     }
@@ -1358,86 +1358,5 @@ class TagihanBLBIController extends Controller
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
         exit();
-    }
-
-    public function dnpPerjadin(tagihan $tagihan)
-    {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
-            abort(403);
-        }
-        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
-            abort(403);
-        }
-        if ($tagihan->status > 0) {
-            return abort(403);
-        }
-
-        return view('tagihan-blbi.dnp_perjadin.index', [
-            'tagihan' => $tagihan,
-            'data' => $tagihan->dnpperjadin()->paginate(15),
-            'notifikasi' => Notification::Notif(),
-        ]);
-    }
-
-    public function dnpPerjadinCreate(tagihan $tagihan)
-    {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
-            abort(403);
-        }
-        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
-            abort(403);
-        }
-        if ($tagihan->status > 0) {
-            return abort(403);
-        }
-        return view('tagihan-blbi.dnp_perjadin.create', [
-            'tagihan' => $tagihan,
-            'data' => $tagihan->dnpperjadin,
-            'notifikasi' => Notification::Notif(),
-        ]);
-    }
-
-    public function dnpPerjadinStore(tagihan $tagihan, Request $request)
-    {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
-            abort(403);
-        }
-        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
-            abort(403);
-        }
-        if ($tagihan->status > 0) {
-            return abort(403);
-        }
-
-        $request->validate([
-            'nama' => 'required',
-            'nip' => 'required|max_digits:18|min_digits:10',
-            'unit' => 'required',
-            'st' => 'required',
-            'lokasi' => 'required',
-            'durasi' => 'required',
-            'norek' => 'required|numeric',
-            'namarek' => 'required',
-            'bank' => 'required',
-        ]);
-
-        DnpPerjadin::create([
-            'tagihan_id' => $tagihan->id,
-            'nama' => $request->nama,
-            'nip' => $request->nip,
-            'unit' => $request->unit,
-            'st' => $request->st,
-            'lokasi' => $request->lokasi,
-            'durasi' => $request->durasi,
-            'norek' => $request->rekening,
-            'namarek' => $request->namarekening,
-            'bank' => $request->bank,
-            'transport' => json_encode([]),
-            'transportLain' => json_encode([]),
-            'uangharian' => json_encode([]),
-            'penginapan' => json_encode([]),
-            'representatif' => json_encode([]),
-        ]);
-        return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-perjadin')->with('success', 'DNP Perjadin Berhasiltahkan');
     }
 }
