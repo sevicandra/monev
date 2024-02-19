@@ -691,7 +691,7 @@ class VerifikasiController extends Controller
         ]);
     }
 
-    public function storePayroll(tagihan $tagihan, request $request)
+    public function storePayroll(tagihan $tagihan, Request $request)
     {
         if (! Gate::allows('Validator', auth()->user()->id)) {
             abort(403);
@@ -733,6 +733,90 @@ class VerifikasiController extends Controller
                 'admin'=>'required|numeric',
             ]);
             Payroll::create([
+                'nama'=>$request->nama,
+                'norek'=>$request->norek,
+                'bank'=>$request->bank,
+                'bruto'=>$request->bruto,
+                'pajak'=>$request->pajak,
+                'admin'=>$request->admin,
+                'tagihan_id'=>$tagihan->id,
+                'netto'=>$request->bruto-$request->pajak-$request->admin,
+            ]);
+        }
+        return redirect('/verifikasi/'.$tagihan->id.'/payroll')->with('berhasil','Data berhasil Ditambahkan.');
+    }
+
+    public function editPayroll(tagihan $tagihan, Payroll $payroll)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+       
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if($tagihan->id != $payroll->tagihan_id){
+            return abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            return abort(403);
+        }
+        return view('verifikasi.payroll.edit',[
+            'tagihan'=>$tagihan,
+            'data'=>$payroll,
+            'notifikasi'=>Notification::Notif()
+        ]);
+    }
+
+    public function updatePayroll(tagihan $tagihan, Payroll $payroll, Request $request)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+       
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+
+        if($tagihan->id != $payroll->tagihan_id){
+            return abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            return abort(403);
+        }
+        if ($request->bank === "Other") {
+            $request->validate([
+                'nama'=>'required',
+                'norek'=>'required|numeric',
+                'otherBank'=>'required',
+                'bruto'=>'required|numeric',
+                'pajak'=>'required|numeric',
+                'admin'=>'required|numeric',
+            ]);
+            $payroll->update([
+                'nama'=>$request->nama,
+                'norek'=>$request->norek,
+                'bank'=>$request->otherBank,
+                'bruto'=>$request->bruto,
+                'pajak'=>$request->pajak,
+                'admin'=>$request->admin,
+                'tagihan_id'=>$tagihan->id,
+                'netto'=>$request->bruto-$request->pajak-$request->admin,
+            ]);
+        }else{
+            $request->validate([
+                'nama'=>'required',
+                'norek'=>'required|numeric',
+                'bank'=>'required',
+                'bruto'=>'required|numeric',
+                'pajak'=>'required|numeric',
+                'admin'=>'required|numeric',
+            ]);
+            $payroll->update([
                 'nama'=>$request->nama,
                 'norek'=>$request->norek,
                 'bank'=>$request->bank,

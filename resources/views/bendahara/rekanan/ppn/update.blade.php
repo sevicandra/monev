@@ -4,9 +4,10 @@
         <h1 class="text-xl text-primary-content">Tambah Tagihan</h1>
     </div>
     <div class="px-4">
-        <form id="inputForm" action="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/ppn" method="post"
+        <form id="inputForm" action="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/ppn/{{ $data->id }}" method="post"
             autocomplete="off">
             @csrf
+            @method('PATCH')
             <div class="form-control w-full max-w-xs">
                 <label class="label">
                     <span class="label-text">Nomor Faktur:</span>

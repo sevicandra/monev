@@ -57,12 +57,13 @@
                         <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
                         <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
                         <td class="border border-base-content">
-                            <div>
+                            <div class="join">
+                                <a class="btn btn-xs btn-primary btn-outline join-item" href="/tagihan-blbi/{{ $item->tagihan_id }}/payroll/{{ $item->id }}/edit">Edit</a>
                                 <form action="/tagihan-blbi/{{ $item->tagihan_id }}/payroll/{{ $item->id }}"
                                     method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-xs btn-error btn-outline round"
+                                    <button class="btn btn-xs btn-error btn-outline join-item"
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
                             </div>

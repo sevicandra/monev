@@ -783,6 +783,89 @@ class TagihanController extends Controller
         return redirect('/tagihan/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
+    public function editPayroll(tagihan $tagihan, Payroll $payroll)
+    {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
+
+        if($tagihan->id != $payroll->tagihan_id){
+            return abort(403);
+        }
+
+        return view('tagihan.payroll.edit',[
+            'tagihan'=>$tagihan,
+            'data'=>$payroll,
+            'notifikasi'=>Notification::Notif()
+        ]);
+    }
+
+    public function updatePayroll(tagihan $tagihan, Payroll $payroll, Request $request)
+    {
+        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            abort(403);
+        }
+        if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status > 0) {
+            return abort(403);
+        }
+
+        if($tagihan->id != $payroll->tagihan_id){
+            return abort(403);
+        }
+
+        if ($request->bank === "Other") {
+            $request->validate([
+                'nama'=>'required',
+                'norek'=>'required|numeric',
+                'otherBank'=>'required',
+                'bruto'=>'required|numeric',
+                'pajak'=>'required|numeric',
+                'admin'=>'required|numeric',
+            ]);
+            $payroll->update([
+                'nama'=>$request->nama,
+                'norek'=>$request->norek,
+                'bank'=>$request->otherBank,
+                'bruto'=>$request->bruto,
+                'pajak'=>$request->pajak,
+                'admin'=>$request->admin,
+                'tagihan_id'=>$tagihan->id,
+                'netto'=>$request->bruto-$request->pajak-$request->admin,
+            ]);
+        }else{
+            $request->validate([
+                'nama'=>'required',
+                'norek'=>'required|numeric',
+                'bank'=>'required',
+                'bruto'=>'required|numeric',
+                'pajak'=>'required|numeric',
+                'admin'=>'required|numeric',
+            ]);
+            $payroll->update([
+                'nama'=>$request->nama,
+                'norek'=>$request->norek,
+                'bank'=>$request->bank,
+                'bruto'=>$request->bruto,
+                'pajak'=>$request->pajak,
+                'admin'=>$request->admin,
+                'tagihan_id'=>$tagihan->id,
+                'netto'=>$request->bruto-$request->pajak-$request->admin,
+            ]);
+        }
+        return redirect('/tagihan/'.$tagihan->id.'/payroll')->with('berhasil','Data berhasil Ditambahkan.');
+    }
+
     public function importHrisPayroll(tagihan $tagihan)
     {
         if (!Gate::allows('Staf_PPK', auth()->user()->id)) {

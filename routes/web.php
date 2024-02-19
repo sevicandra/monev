@@ -178,6 +178,8 @@ Route::controller(TagihanController::class)->group(function(){
     Route::get('/tagihan/{tagihan}/payroll/import-monev', 'importMonevPayroll')->middleware('auth');
     Route::get('/tagihan/{tagihan}/payroll/import-excel', 'importExcelPayroll')->middleware('auth');
     Route::post('/tagihan/{tagihan}/payroll/import-excel', 'storeExcelPayroll')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/payroll/{payroll}/edit', 'editPayroll')->middleware('auth');
+    Route::patch('/tagihan/{tagihan}/payroll/{payroll}/edit', 'updatePayroll')->middleware('auth');
     Route::get('/tagihan/payroll/excel/template', 'templateExcelPayroll')->middleware('auth');
     Route::post('/tagihan/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/tagihan/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
@@ -265,6 +267,8 @@ Route::controller(VerifikasiController::class)->group(function(){
     Route::get('/verifikasi/{tagihan}/payroll', 'payroll')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/payroll/create', 'createPayroll')->middleware('auth');
     Route::post('/verifikasi/{tagihan}/payroll/create', 'storePayroll')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/payroll/{payroll}/edit', 'editPayroll')->middleware('auth');
+    Route::patch('/verifikasi/{tagihan}/payroll/{payroll}/edit', 'updatePayroll')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/payroll/import-hris', 'importHrisPayroll')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/payroll/import-monev', 'importMonevPayroll')->middleware('auth');
     Route::post('/verifikasi/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
@@ -511,6 +515,8 @@ Route::controller(TagihanBLBIController::class)->group(function(){
     Route::get('/tagihan-blbi/{tagihan}/payroll/import-monev', 'importMonevPayroll')->middleware('auth');
     Route::get('/tagihan-blbi/{tagihan}/payroll/import-excel', 'importExcelPayroll')->middleware('auth');
     Route::post('/tagihan-blbi/{tagihan}/payroll/import-excel', 'storeExcelPayroll')->middleware('auth');
+    Route::get('/tagihan-blbi/{tagihan}/payroll/{payroll}/edit', 'editPayroll')->middleware('auth');
+    Route::patch('/tagihan-blbi/{tagihan}/payroll/{payroll}/edit', 'updatePayroll')->middleware('auth');
     Route::get('/tagihan-blbi/payroll/excel/template', 'templateExcelPayroll')->middleware('auth');
     Route::post('/tagihan-blbi/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/tagihan-blbi/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
