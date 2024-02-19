@@ -534,6 +534,21 @@ Route::controller(RealisasiBLBIController::class)->group(function(){
 Route::resource('/tagihan-blbi/realisasi', RealisasiBLBIController::class)->middleware('auth')->except('index|store');
 
 Route::controller(DnpPerjadinController::class)->group(function(){
+    Route::get('/tagihan/{tagihan}/dnp-perjadin', 'dnpPerjadin')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-perjadin/create', 'dnpPerjadinCreate')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/dnp-perjadin/create', 'dnpPerjadinStore')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-perjadin/import', 'import')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/dnp-perjadin/import', 'importStore')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-perjadin/cetak', 'cetak')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-perjadin/{dnp}', 'index')->middleware('auth');
+    Route::patch('/tagihan/{tagihan}/dnp-perjadin/{dnp}', 'updateDetail')->middleware('auth');
+    Route::delete('/tagihan/{tagihan}/dnp-perjadin/{dnp}', 'destroy')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-perjadin/{dnp}/create', 'create')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/dnp-perjadin/{dnp}/create', 'store')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-perjadin/{dnp}/cetak', 'cetakKuitansi')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-perjadin/{dnp}/edit', 'edit')->middleware('auth');
+    Route::patch('/tagihan/{tagihan}/dnp-perjadin/{dnp}/edit', 'update')->middleware('auth');
+
     Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin', 'dnpPerjadin')->middleware('auth');
     Route::get('/tagihan-blbi/{tagihan}/dnp-perjadin/create', 'dnpPerjadinCreate')->middleware('auth');
     Route::post('/tagihan-blbi/{tagihan}/dnp-perjadin/create', 'dnpPerjadinStore')->middleware('auth');
@@ -568,6 +583,16 @@ Route::controller(DnpPerjadinController::class)->group(function(){
 });
 
 Route::controller(DnpHonorariumController::class)->group(function(){
+    Route::get('/tagihan/{tagihan}/dnp-honorarium', 'index')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-honorarium/import', 'import')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/dnp-honorarium/import', 'importStore')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-honorarium/cetak', 'cetak')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-honorarium/create', 'create')->middleware('auth');
+    Route::post('/tagihan/{tagihan}/dnp-honorarium/create', 'store')->middleware('auth');
+    Route::get('/tagihan/{tagihan}/dnp-honorarium/{dnp}', 'edit')->middleware('auth');
+    Route::patch('/tagihan/{tagihan}/dnp-honorarium/{dnp}', 'update')->middleware('auth');
+    Route::delete('/tagihan/{tagihan}/dnp-honorarium/{dnp}', 'destroy')->middleware('auth');
+
     Route::get('/tagihan-blbi/{tagihan}/dnp-honorarium', 'index')->middleware('auth');
     Route::get('/tagihan-blbi/{tagihan}/dnp-honorarium/import', 'import')->middleware('auth');
     Route::post('/tagihan-blbi/{tagihan}/dnp-honorarium/import', 'importStore')->middleware('auth');
@@ -577,6 +602,7 @@ Route::controller(DnpHonorariumController::class)->group(function(){
     Route::get('/tagihan-blbi/{tagihan}/dnp-honorarium/{dnp}', 'edit')->middleware('auth');
     Route::patch('/tagihan-blbi/{tagihan}/dnp-honorarium/{dnp}', 'update')->middleware('auth');
     Route::delete('/tagihan-blbi/{tagihan}/dnp-honorarium/{dnp}', 'destroy')->middleware('auth');
+
     Route::get('/verifikasi/{tagihan}/dnp-honorarium', 'index')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/dnp-honorarium/import', 'import')->middleware('auth');
     Route::post('/verifikasi/{tagihan}/dnp-honorarium/import', 'importStore')->middleware('auth');

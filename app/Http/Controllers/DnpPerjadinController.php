@@ -14,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class DnpPerjadinController extends Controller
 {
-    public function index(tagihan $tagihan, DnpPerjadin $dnp)
+    public function index(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -24,7 +24,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -33,13 +32,15 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_perjadin.detail.index', [
             'dnp' => $dnp,
             'tagihan' => $tagihan,
@@ -48,7 +49,7 @@ class DnpPerjadinController extends Controller
         ]);
     }
 
-    public function edit(tagihan $tagihan,  DnpPerjadin $dnp)
+    public function edit(tagihan $tagihan,  DnpPerjadin $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -58,7 +59,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -67,7 +67,6 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -75,6 +74,9 @@ class DnpPerjadinController extends Controller
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_perjadin.update', [
             'tagihan' => $tagihan,
             'data'=>$dnp,
@@ -94,7 +96,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -103,15 +104,16 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
-
+        
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         $request->validate([
             'nama' => 'required',
             'nip' => 'required|max_digits:18|min_digits:10',
@@ -134,7 +136,7 @@ class DnpPerjadinController extends Controller
             'namarek' => $request->namarekening,
             'bank' => $request->bank,
         ]);
-        return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-perjadin')->with('berhasil', 'DNP Perjadin Berhasiltahkan');
+        return redirect($base_url. '/' . $tagihan->id . '/dnp-perjadin')->with('berhasil', 'DNP Perjadin Berhasiltahkan');
     }
 
     public function updateDetail(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
@@ -147,7 +149,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -156,13 +157,15 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         $biayaAngkutan = null;
         $biayaTransportasiLain = null;
         $uangHarian = null;
@@ -223,10 +226,10 @@ class DnpPerjadinController extends Controller
             'representatif' => json_encode($uangRepresentatif) ?? json_encode([]),
         ]);
 
-        return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-perjadin/' . $dnp->id)->with('berhasil', 'Data dnp perjadin diperbarui');
+        return redirect($base_url . '/' . $tagihan->id . '/dnp-perjadin/' . $dnp->id)->with('berhasil', 'Data dnp perjadin diperbarui');
     }
 
-    public function import(tagihan $tagihan)
+    public function import(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -236,7 +239,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -245,11 +247,12 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_perjadin.import.index', [
             'tagihan' => $tagihan,
             'notifikasi'=>Notification::Notif(),
@@ -267,7 +270,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -276,11 +278,12 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         $file = $request->file('file');
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load($file);
@@ -463,9 +466,9 @@ class DnpPerjadinController extends Controller
                     'representatif'=> json_encode($representatif),
                 ]);
             }
-            return redirect('/tagihan-blbi/'.$tagihan->id.'/dnp-perjadin')->with('berhasil', 'Data DNP Perjadin Berhasil Ditambahkan');
+            return redirect($base_url . '/'.$tagihan->id.'/dnp-perjadin')->with('berhasil', 'Data DNP Perjadin Berhasil Ditambahkan');
         }else{
-            return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-perjadin/import')
+            return redirect($base_url . '/' . $tagihan->id . '/dnp-perjadin/import')
             ->with('gagal', 'Data gagal ditambahkan. Silahkan cek kembali.')
             ->with('Errors', collect($Errors));
         }
@@ -624,7 +627,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -633,7 +635,6 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -661,7 +662,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -670,7 +670,6 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -692,7 +691,7 @@ class DnpPerjadinController extends Controller
         $html2pdf->output('DNP Perjadin.pdf', 'I');
     }
 
-    public function dnpPerjadin(tagihan $tagihan)
+    public function dnpPerjadin(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -702,7 +701,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -711,11 +709,12 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_perjadin.index', [
             'tagihan' => $tagihan,
             'data' => $tagihan->dnpperjadin()->paginate(15),
@@ -724,7 +723,7 @@ class DnpPerjadinController extends Controller
         ]);
     }
 
-    public function dnpPerjadinCreate(tagihan $tagihan)
+    public function dnpPerjadinCreate(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -734,7 +733,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -743,10 +741,12 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_perjadin.create', [
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
@@ -764,7 +764,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -773,11 +772,12 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         $request->validate([
             'nama' => 'required',
             'nip' => 'required|max_digits:18|min_digits:10',
@@ -807,7 +807,7 @@ class DnpPerjadinController extends Controller
             'penginapan' => json_encode([]),
             'representatif' => json_encode([]),
         ]);
-        return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-perjadin')->with('success', 'DNP Perjadin Berhasiltahkan');
+        return redirect($base_url . '/' . $tagihan->id . '/dnp-perjadin')->with('success', 'DNP Perjadin Berhasiltahkan');
     }
 
     public function Destroy(tagihan $tagihan, DnpPerjadin $dnp)
@@ -820,7 +820,6 @@ class DnpPerjadinController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -829,14 +828,12 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
-
         $dnp->delete();
         return back()->with('berhasil', 'DNP Perjadin Berhasil di Hapus');
     }

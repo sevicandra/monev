@@ -180,6 +180,8 @@ class TagihanBLBIController extends Controller
         foreach ($tagihan->realisasi as $item) {
             $item->delete();
         }
+        $tagihan->dnpPerjadin()->delete();
+        $tagihan->dnpHonor()->delete();
         // foreach ($tagihan->dnp as $item) {
         //     $item->nominal->delete();
         //     $item->delete();

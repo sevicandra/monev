@@ -14,7 +14,8 @@
         <div class="">
             <form action="" method="get" autocomplete="off">
                 <div class="join">
-                    <input type="text" name="search" class="input input-sm input-bordered join-item" placeholder="Nomor Tagihan">
+                    <input type="text" name="search" class="input input-sm input-bordered join-item"
+                        placeholder="Nomor Tagihan">
                     <div class="indicator">
                         <button class="btn join-item btn-sm btn-neutral">Cari</button>
                     </div>
@@ -45,7 +46,8 @@
                 @endphp
                 @foreach ($data as $item)
                     <tr class="whitespace-nowrap @if ($item->catatan) text-error @endif">
-                        <td class="border border-base-content text-center" @if ($item->catatan) rowspan="2" @endif>{{ $i }}</td>
+                        <td class="border border-base-content text-center"
+                            @if ($item->catatan) rowspan="2" @endif>{{ $i }}</td>
                         <td class="border border-base-content">
                             @switch($item->jnstagihan)
                                 @case('0')
@@ -63,7 +65,8 @@
                         </td>
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
-                        <td class="border border-base-content" style="white-space:normal; min-width:300px">{{ $item->uraian }}</td>
+                        <td class="border border-base-content" style="white-space:normal; min-width:300px">
+                            {{ $item->uraian }}</td>
                         <td class="border border-base-content">{{ optional($item->stafPpk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
@@ -79,6 +82,14 @@
                                 {{-- @if ($item->dokumen->statusdnp === '1')
                                         <a href="/tagihan/{{ $item->id }}/dnp" class="btn btn-xs btn-neutral btn-outline join-item">DNP</a>
                                         @endif --}}
+                                @if ($item->dokumen->dnp_perjadin)
+                                    <a href="/tagihan/{{ $item->id }}/dnp-perjadin"
+                                        class="btn btn-xs btn-neutral btn-outline join-item">DNP Perjadin</a>
+                                @endif
+                                @if ($item->dokumen->dnp_honor)
+                                    <a href="/tagihan/{{ $item->id }}/dnp-honorarium"
+                                        class="btn btn-xs btn-neutral btn-outline join-item">DNP Honor</a>
+                                @endif
                                 @if ($item->dokumen->statusrekanan === '1')
                                     <a href="/tagihan/{{ $item->id }}/rekanan"
                                         class="btn btn-xs btn-neutral btn-outline join-item">Rekanan</a>
@@ -107,7 +118,6 @@
                                 Catatan: {{ $item->catatan }}
                             </td>
                         </tr>
-                        
                     @endif
                     @php
                         $i++;

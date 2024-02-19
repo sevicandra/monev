@@ -42,21 +42,21 @@
                     <span class="label-text">Status DNP:</span>
                     <input type="checkbox" name="statusdnp" class="checkbox checkbox-primary" value="TRUE" />
                 </label>
-            </div>
+            </div> --}}
 
-            <div class="form-control">
+            {{-- <div class="form-control">
                 <label class="label cursor-pointer">
                     <span class="label-text">Status PPh:</span>
                     <input type="checkbox" name="statuspph" class="checkbox checkbox-primary" value="TRUE" />
                 </label>
-            </div>
+            </div> --}}
 
-            <div class="form-control">
+            <div class="form-control w-full max-w-xs">
                 <label class="label cursor-pointer">
                     <span class="label-text">Status Rekanan:</span>
-                    <input type="checkbox" name="statusrekanan" class="checkbox checkbox-primary" value="TRUE" />
+                    <input type="checkbox" name="statusrekanan" class="checkbox checkbox-primary" value=1 @if (old('statusrekanan')) checked @endif />
                 </label>
-            </div> --}}
+            </div>
 
             <div class="form-control w-full max-w-xs">
                 <label class="label cursor-pointer">

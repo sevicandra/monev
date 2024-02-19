@@ -14,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class DnpHonorariumController extends Controller
 {
-    public function index(tagihan $tagihan)
+    public function index(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -24,7 +24,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -33,10 +32,12 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_honor.index', [
             'tagihan' => $tagihan,
             'data' => $tagihan->dnpHonor()->get(),
@@ -45,7 +46,7 @@ class DnpHonorariumController extends Controller
         ]);
     }
 
-    public function create(tagihan $tagihan)
+    public function create(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -55,7 +56,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -64,10 +64,12 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_honor.create', [
             'notifikasi' => Notification::Notif(),
             'tagihan' => $tagihan,
@@ -85,7 +87,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -94,11 +95,12 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         $request->validate([
             'nama' => 'required',
             'nip' => 'required|numeric',
@@ -148,10 +150,10 @@ class DnpHonorariumController extends Controller
             'namarek' => $request->namarek,
             'bank' => $request->bank,
         ]);
-        return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-honorarium')->with('berhasil', 'DNP Honorarium berhasil ditambahkan');
+        return redirect($base_url . '/' . $tagihan->id . '/dnp-honorarium')->with('berhasil', 'DNP Honorarium berhasil ditambahkan');
     }
 
-    public function edit(tagihan $tagihan, DnpHonorarium $dnp)
+    public function edit(tagihan $tagihan, DnpHonorarium $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -161,7 +163,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -170,7 +171,6 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -178,7 +178,9 @@ class DnpHonorariumController extends Controller
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_honor.edit', [
             'tagihan' => $tagihan,
             'data' => $dnp,
@@ -197,7 +199,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -206,7 +207,6 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -214,7 +214,9 @@ class DnpHonorariumController extends Controller
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         $request->validate([
             'nama' => 'required',
             'nip' => 'required|numeric',
@@ -265,10 +267,11 @@ class DnpHonorariumController extends Controller
             'namarek' => $request->namarek,
             'bank' => $request->bank,
         ]);
-        return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-honorarium')->with('berhasil', 'DNP Honorarium berhasil diperbarui');
+
+        return redirect($base_url . '/' . $tagihan->id . '/dnp-honorarium')->with('berhasil', 'DNP Honorarium berhasil diperbarui');
     }
 
-    public function destroy(tagihan $tagihan, DnpHonorarium $dnp)
+    public function destroy(tagihan $tagihan, DnpHonorarium $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -278,7 +281,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -287,7 +289,6 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
@@ -295,12 +296,14 @@ class DnpHonorariumController extends Controller
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         $dnp->delete();
-        return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-honorarium')->with('berhasil', 'DNP Honorarium berhasil dihapus');
+        return redirect($base_url . '/' . $tagihan->id . '/dnp-honorarium')->with('berhasil', 'DNP Honorarium berhasil dihapus');
     }
 
-    public function import(tagihan $tagihan)
+    public function import(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
             if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
@@ -310,7 +313,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -319,11 +321,12 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         return view('tagihan-blbi.dnp_honor.import', [
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
@@ -341,7 +344,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -350,11 +352,12 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
-
+        $currentPath = $request->path();
+        $parts = explode('/', $currentPath);
+        $base_url = '/' . $parts[0];
         $file = $request->file('file');
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load($file);
@@ -522,9 +525,9 @@ class DnpHonorariumController extends Controller
                     'bank' => $item[12],
                 ]);
             }
-            return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-honorarium')->with('berhasil', 'Data DNP Honorarium Berhasil Ditambahkan');
+            return redirect($base_url . '/' . $tagihan->id . '/dnp-honorarium')->with('berhasil', 'Data DNP Honorarium Berhasil Ditambahkan');
         } else {
-            return redirect('/tagihan-blbi/' . $tagihan->id . '/dnp-honorarium/import')
+            return redirect($base_url . '/' . $tagihan->id . '/dnp-honorarium/import')
                 ->with('gagal', 'Data gagal ditambahkan. Silahkan cek kembali.')
                 ->with('Errors', collect($Errors));
         }
@@ -645,7 +648,6 @@ class DnpHonorariumController extends Controller
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
-            $base_url='/tagihan-blbi';
         } elseif ($tagihan->status == 2) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
@@ -654,7 +656,6 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
-            $base_url= '/verifikasi';
         } else {
             abort(403);
         }
