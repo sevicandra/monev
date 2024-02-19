@@ -29,6 +29,7 @@
                     <th class="border border-base-content">Nomor</th>
                     <th class="border border-base-content">Tanggal</th>
                     <th class="border border-base-content">Tgl SPM</th>
+                    <th class="border border-base-content">PIC</th>
                     <th class="border border-base-content">Unit</th>
                     <th class="border border-base-content">PPK</th>
                     <th class="border border-base-content">Jenis Dokumen</th>
@@ -63,6 +64,7 @@
                         <td class="border border-base-content">
                             {{ indonesiaDate($item->tanggal_spm) }}
                         </td>
+                        <td class="border border-base-content">{{ optional($item->stafPpk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
