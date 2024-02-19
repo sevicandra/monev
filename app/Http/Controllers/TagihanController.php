@@ -77,6 +77,7 @@ class TagihanController extends Controller
             'jnstagihan' => $request->jnstagihan,
             'kodeunit' => $request->kodeunit,
             'kodedokumen' => $request->kodedokumen,
+            'staf_ppk'=>auth()->user()->nip,
             'status' => 0,
             'tahun' => session()->get('tahun'),
             'kodesatker' => auth()->user()->satker,
