@@ -61,17 +61,18 @@ class RealisasiBulananController extends Controller
         $realisasiProgram->setTitle('Realisasi Anggaran');
         $spreadsheet
             ->setActiveSheetIndexByName('Realisasi Anggaran')
-            ->setCellValue('B3', 'Realisasi Anggaran')
-            ->mergeCells('B3:K3')
-            ->setCellValue('B4', $bulanModel->namabulan . ' ' . session()->get('tahun'))
-            ->mergeCells('B4:K4');
+            ->setCellValue('A3', 'Realisasi Anggaran')
+            ->mergeCells('A3:K3')
+            ->setCellValue('A4', $bulanModel->namabulan . ' ' . session()->get('tahun'))
+            ->mergeCells('A4:K4');
         $spreadsheet->getActiveSheet()
-            ->getStyle('B3:B4')
+            ->getStyle('A3:B4')
             ->applyFromArray($textcenter);
         $spreadsheet->getActiveSheet()
-            ->getStyle('B6:L6')
+            ->getStyle('A6:L6')
             ->applyFromArray($textcenter);
         $spreadsheet->getActiveSheet()
+            ->setCellValue('A6', 'POK')
             ->setCellValue('B6', 'Program')
             ->setCellValue('C6', 'Kegiatan')
             ->setCellValue('D6', 'KRO')
@@ -85,12 +86,14 @@ class RealisasiBulananController extends Controller
         $programs = $data->groupBy('program');
         $row = 7;
         foreach ($programs as $program) {
+            $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->getActiveSheet()->getCell('L' . $row)->setValueExplicit('Program', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->getActiveSheet()->setCellValue('J' . $row, $program->sum('realisasi'));
             $row++;
             $kegiatans = $program->groupBy('kegiatan');
             foreach ($kegiatans as $kegiatan) {
+                $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kegiatan->first()->program.".".$kegiatan->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kegiatan->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($kegiatan->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('L' . $row)->setValueExplicit('Kegiatan', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -99,6 +102,7 @@ class RealisasiBulananController extends Controller
                 $row++;
                 $kros = $kegiatan->groupBy('kro');
                 foreach ($kros as $kro) {
+                    $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kro->first()->program.".".$kro->first()->kegiatan.".".$kro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($kro->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($kro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -108,6 +112,7 @@ class RealisasiBulananController extends Controller
                     $row++;
                     $ros = $kro->groupBy('ro');
                     foreach ($ros as $ro) {
+                        $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($ro->first()->program.".".$ro->first()->kegiatan.".".$ro->first()->kro.".".$ro->first()->ro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($ro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($ro->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($ro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -118,6 +123,7 @@ class RealisasiBulananController extends Controller
                         $row++;
                         $komponens = $ro->groupBy('komponen');
                         foreach ($komponens as $komponen) {
+                            $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($komponen->first()->program.".".$komponen->first()->kegiatan.".".$komponen->first()->kro.".".$komponen->first()->ro.".".$komponen->first()->komponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($komponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($komponen->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($komponen->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -129,6 +135,7 @@ class RealisasiBulananController extends Controller
                             $row++;
                             $subKomponens = $komponen->groupBy('subkomponen');
                             foreach ($subKomponens as $subKomponen) {
+                                $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($subKomponen->first()->program.".".$subKomponen->first()->kegiatan.".".$subKomponen->first()->kro.".".$subKomponen->first()->ro.".".$subKomponen->first()->komponen.".".$subKomponen->first()->subkomponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($subKomponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($subKomponen->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($subKomponen->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -141,6 +148,7 @@ class RealisasiBulananController extends Controller
                                 $row++;
                                 $akuns = $subKomponen->groupBy('akun');
                                 foreach ($akuns as $akun) {
+                                    $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($akun->first()->program.".".$akun->first()->kegiatan.".".$akun->first()->kro.".".$akun->first()->ro.".".$akun->first()->komponen.".".$akun->first()->subkomponen.".".$akun->first()->akun, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($akun->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($akun->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($akun->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -161,7 +169,7 @@ class RealisasiBulananController extends Controller
             }
         }
         $spreadsheet->setActiveSheetIndex(0)->getStyle('I7:J' . $row)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-        $spreadsheet->setActiveSheetIndex(0)->getStyle('B6:L' . $row)->applyFromArray($styleBorder);
+        $spreadsheet->setActiveSheetIndex(0)->getStyle('A6:L' . $row)->applyFromArray($styleBorder);
 
         foreach ($spreadsheet->setActiveSheetIndex(0)->getColumnIterator() as $column) {
             $spreadsheet->setActiveSheetIndex(0)->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
@@ -218,17 +226,18 @@ class RealisasiBulananController extends Controller
         $realisasiProgram->setTitle('Realisasi Anggaran');
         $spreadsheet
             ->setActiveSheetIndexByName('Realisasi Anggaran')
-            ->setCellValue('B3', 'Realisasi Anggaran')
-            ->mergeCells('B3:K3')
+            ->setCellValue('A3', 'Realisasi Anggaran')
+            ->mergeCells('A3:K3')
             ->setCellValue('B4', 'Sampai Dengan ' . $bulanModel->namabulan . ' ' . session()->get('tahun'))
-            ->mergeCells('B4:K4');
+            ->mergeCells('A4:K4');
         $spreadsheet->getActiveSheet()
-            ->getStyle('B3:B4')
+            ->getStyle('A3:B4')
             ->applyFromArray($textcenter);
         $spreadsheet->getActiveSheet()
-            ->getStyle('B6:L6')
+            ->getStyle('A6:L6')
             ->applyFromArray($textcenter);
         $spreadsheet->getActiveSheet()
+            ->setCellValue('A6', 'POK')
             ->setCellValue('B6', 'Program')
             ->setCellValue('C6', 'Kegiatan')
             ->setCellValue('D6', 'KRO')
@@ -243,12 +252,14 @@ class RealisasiBulananController extends Controller
         $programs = $data->groupBy('program');
         $row = 7;
         foreach ($programs as $program) {
+            $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->getActiveSheet()->getCell('L' . $row)->setValueExplicit('Program', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->getActiveSheet()->setCellValue('J' . $row, $program->sum('realisasi'))->setCellValue('I' . $row, $program->sum('anggaran'));
             $row++;
             $kegiatans = $program->groupBy('kegiatan');
             foreach ($kegiatans as $kegiatan) {
+                $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kegiatan->first()->program.'.'.$kegiatan->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kegiatan->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($kegiatan->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('L' . $row)->setValueExplicit('Kegiatan', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -258,6 +269,7 @@ class RealisasiBulananController extends Controller
                 $row++;
                 $kros = $kegiatan->groupBy('kro');
                 foreach ($kros as $kro) {
+                    $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kro->first()->program.'.'.$kro->first()->kegiatan.'.'.$kro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($kro->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($kro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -268,6 +280,7 @@ class RealisasiBulananController extends Controller
                     $row++;
                     $ros = $kro->groupBy('ro');
                     foreach ($ros as $ro) {
+                        $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($ro->first()->program.'.'.$ro->first()->kegiatan.'.'.$ro->first()->kro.'.'.$ro->first()->ro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($ro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($ro->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($ro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -279,6 +292,7 @@ class RealisasiBulananController extends Controller
                         $row++;
                         $komponens = $ro->groupBy('komponen');
                         foreach ($komponens as $komponen) {
+                            $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($komponen->first()->program.'.'.$komponen->first()->kegiatan.'.'.$komponen->first()->kro.'.'.$komponen->first()->ro.'.'.$komponen->first()->komponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($komponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($komponen->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($komponen->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -291,6 +305,7 @@ class RealisasiBulananController extends Controller
                             $row++;
                             $subKomponens = $komponen->groupBy('subkomponen');
                             foreach ($subKomponens as $subKomponen) {
+                                $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($subKomponen->first()->program.'.'.$subKomponen->first()->kegiatan.'.'.$subKomponen->first()->kro.'.'.$subKomponen->first()->ro.'.'.$subKomponen->first()->komponen.'.'.$subKomponen->first()->subkomponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($subKomponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($subKomponen->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($subKomponen->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -304,6 +319,7 @@ class RealisasiBulananController extends Controller
                                 $row++;
                                 $akuns = $subKomponen->groupBy('akun');
                                 foreach ($akuns as $akun) {
+                                    $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($akun->first()->program.'.'.$akun->first()->kegiatan.'.'.$akun->first()->kro.'.'.$akun->first()->ro.'.'.$akun->first()->komponen.'.'.$akun->first()->subkomponen.'.'.$akun->first()->akun, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($akun->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('C' . $row)->setValueExplicit($akun->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($akun->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -325,7 +341,7 @@ class RealisasiBulananController extends Controller
             }
         }
         $spreadsheet->setActiveSheetIndex(0)->getStyle('I7:J' . $row)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-        $spreadsheet->setActiveSheetIndex(0)->getStyle('B6:L' . $row)->applyFromArray($styleBorder);
+        $spreadsheet->setActiveSheetIndex(0)->getStyle('A6:L' . $row)->applyFromArray($styleBorder);
 
         foreach ($spreadsheet->setActiveSheetIndex(0)->getColumnIterator() as $column) {
             $spreadsheet->setActiveSheetIndex(0)->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
