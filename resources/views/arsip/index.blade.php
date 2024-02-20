@@ -35,6 +35,7 @@
                     <th class="border border-base-content">PPK</th>
                     <th class="border border-base-content">Jenis Dokumen</th>
                     <th class="border border-base-content">Bruto</th>
+                    <th class="border border-base-content">Status</th>
                     <th class="border border-base-content">Aksi</th>
                 </tr>
             </thead>
@@ -75,6 +76,26 @@
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
                         <td class="border border-base-content text-right">Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-center">
+                            @switch($item->status)
+                                @case(0)
+                                    Staf PPK
+                                    @break
+                                @case(2)
+                                    Verifikator
+                                    @break
+                                @case(3)
+                                    PPSPM
+                                    @break
+                                @case(4)
+                                    Bendahara
+                                    @break
+                                @case(5)
+                                    Arsip
+                                    @break
+                                @default
+                            @endswitch
+                        </td>
                         <td class="border border-base-content">
                             <div class="join">
                                 @if ($item->status > 4)
