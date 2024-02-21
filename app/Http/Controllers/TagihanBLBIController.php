@@ -314,7 +314,7 @@ class TagihanBLBIController extends Controller
         logtagihan::create([
             'tagihan_id' => $tagihan->id,
             'action' => 'Kirim',
-            'user' => auth()->user()->nama,
+            'user' => auth()->user()->nama. " / Staf PPK",
             'catatan' => '',
         ]);
         return back()->with('berhasil', 'Data berhasil dikirim.');

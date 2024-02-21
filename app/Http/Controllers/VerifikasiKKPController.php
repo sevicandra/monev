@@ -59,7 +59,7 @@ class VerifikasiKKPController extends Controller
         logtagihan::create([
             'tagihan_id'=>$tagihan->id,
             'action'=>'Tolak',
-            'user'=>auth()->user()->nama,
+            'user'=>auth()->user()->nama . " / Verifikator KKP",
             'catatan'=>''
         ]);
         return redirect('/verifikasi-kkp')->with('berhasil','Data Tagihan Berhasil Dikembalikan');
@@ -81,7 +81,7 @@ class VerifikasiKKPController extends Controller
                 logtagihan::create([
                     'tagihan_id'=>$tagihan->id,
                     'action'=>'Approve',
-                    'user'=>auth()->user()->nama,
+                    'user'=>auth()->user()->nama . " / Verifikator KKP",
                     'catatan'=>''
                 ]);
                 return redirect('/verifikasi-kkp')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
@@ -96,7 +96,7 @@ class VerifikasiKKPController extends Controller
                 logtagihan::create([
                     'tagihan_id'=>$tagihan->id,
                     'action'=>'Approve',
-                    'user'=>auth()->user()->nama,
+                    'user'=>auth()->user()->nama . " / Verifikator KKP",
                     'catatan'=>''
                 ]);
                 return redirect('/verifikasi-kkp')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
@@ -108,7 +108,7 @@ class VerifikasiKKPController extends Controller
                 logtagihan::create([
                     'tagihan_id'=>$tagihan->id,
                     'action'=>'Approve',
-                    'user'=>auth()->user()->nama,
+                    'user'=>auth()->user()->nama . " / Verifikator KKP",
                     'catatan'=>''
                 ]);
                 return redirect('/verifikasi-kkp')->with('berhasil','Data Tagihan Berhasil Diverifikasi');

@@ -109,7 +109,7 @@ class PpspmController extends Controller
         logtagihan::create([
             'tagihan_id' => $tagihan->id,
             'action' => 'Tolak',
-            'user' => auth()->user()->nama,
+            'user' => auth()->user()->nama . " / PPSPM",
             'catatan' => ''
         ]);
         return redirect('/ppspm')->with('berhasil', 'Tagihan Berhasil Ditolak');
@@ -137,7 +137,7 @@ class PpspmController extends Controller
         logtagihan::create([
             'tagihan_id' => $tagihan->id,
             'action' => 'Approve',
-            'user' => auth()->user()->nama,
+            'user' => auth()->user()->nama." / PPSPM",
             'catatan' => ''
         ]);
         return redirect('/ppspm')->with('berhasil', 'Tagihan Berhasil Diverifikasi');

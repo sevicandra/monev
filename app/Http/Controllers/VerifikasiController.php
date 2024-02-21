@@ -140,7 +140,7 @@ class VerifikasiController extends Controller
         logtagihan::create([
             'tagihan_id'=>$tagihan->id,
             'action'=>'Tolak',
-            'user'=>auth()->user()->nama,
+            'user'=>auth()->user()->nama . " / Verifikator",
             'catatan'=>$request->catatan
         ]);
         return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Dikembalikan');
@@ -166,7 +166,7 @@ class VerifikasiController extends Controller
                 logtagihan::create([
                     'tagihan_id'=>$tagihan->id,
                     'action'=>'Approve',
-                    'user'=>auth()->user()->nama,
+                    'user'=>auth()->user()->nama ." / Verifikator",
                     'catatan'=>''
                 ]);
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
@@ -181,7 +181,7 @@ class VerifikasiController extends Controller
                 logtagihan::create([
                     'tagihan_id'=>$tagihan->id,
                     'action'=>'Approve',
-                    'user'=>auth()->user()->nama,
+                    'user'=>auth()->user()->nama." / Verifikator",
                     'catatan'=>''
                 ]);
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
@@ -193,7 +193,7 @@ class VerifikasiController extends Controller
                 logtagihan::create([
                     'tagihan_id'=>$tagihan->id,
                     'action'=>'Approve',
-                    'user'=>auth()->user()->nama,
+                    'user'=>auth()->user()->nama." / Verifikator",
                     'catatan'=>''
                 ]);
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');

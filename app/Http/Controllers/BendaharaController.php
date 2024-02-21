@@ -193,7 +193,7 @@ class BendaharaController extends Controller
         logtagihan::create([
             'tagihan_id'=>$tagihan->id,
             'action'=>'Tolak',
-            'user'=>auth()->user()->nama,
+            'user'=>auth()->user()->nama . " / Bendahara",
             'catatan'=>''
         ]);
         return redirect('/bendahara')->with('berhasil', 'Tagihan Berhasil Di Tolak');
