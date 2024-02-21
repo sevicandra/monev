@@ -9,8 +9,9 @@
     </div>
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div class="lg:basis-5/12 flex gap-2 shrink max-w-full">
-            <a href="/pagu/create" class="btn btn-sm btn-neutral"> Tambah Data</a>
-            <a href="/pagu/import" class="btn btn-sm btn-neutral"> Impor Data</a>
+            <a href="/pagu/create" class="btn btn-sm btn-neutral">Tambah Data</a>
+            <a href="/pagu/import" class="btn btn-sm btn-neutral">Impor Data</a>
+            <a href="/pagu/mass-update" class="btn btn-sm btn-neutral">Update</a>
         </div>
         <div class="lg:basis-7/12 overflow-hidden max-w-full shrink">
             <form action="" method="get" autocomplete="off">

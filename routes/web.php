@@ -109,6 +109,9 @@ Route::controller(PaguController::class)->group(function(){
     Route::get('/pagu/import', 'import')->middleware('auth');
     Route::get('/pagu/template', 'template')->middleware('auth');
     Route::post('/pagu/import', 'import')->middleware('auth');
+    Route::get('/pagu/cetak', 'cetak')->middleware('auth');
+    Route::get('/pagu/mass-update', 'massUpdate')->middleware('auth');
+    Route::post('/pagu/mass-update', 'storeMassUpdate')->middleware('auth');
 });
 
 Route::resource('pagu', PaguController::class)->middleware('auth');
