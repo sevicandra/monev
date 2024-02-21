@@ -5,7 +5,7 @@
         <h1 class="text-xl text-primary-content">Ubah Tagihan</h1>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <form action="/tagihan-blbi/{{ $data->id }}" method="post" autocomplete="off">
+        <form action="" method="post" autocomplete="off">
             @csrf
             @method('PATCH')
             <div class="form-control w-full max-w-xs">
