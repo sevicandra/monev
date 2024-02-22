@@ -55,7 +55,7 @@ class RealisasiController extends Controller
             'tagihan_id' => $tagihan->id,
             'realisasi' => 0
         ]);
-        return redirect('/tagihan/' . $tagihan->id . '/realisasi')->with('berhasil', 'Realisasi Berhasil Di Tambahkan');
+        return redirect('/tagihan/' . $tagihan->id . '/realisasi')->with('berhasil', 'Akun Belanja Berhasil Di Tambahkan');
     }
 
     public function show(tagihan $realisasi)

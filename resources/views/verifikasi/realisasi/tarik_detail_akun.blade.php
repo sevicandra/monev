@@ -2,15 +2,14 @@
 
 @section('content')
     <div class="bg-primary p-4">
-        <h1 class="text-xl text-primary-content">COA</h1>
+        <h1 class="text-xl text-primary-content">Tambah Detail Akun</h1>
     </div>
     <div class="">
         @include('layout.flashmessage')
     </div>
     <div class="flex flex-col lg:flex-row px-4 gap-2 justify-between">
         <div class="lg:basis-5/12 flex gap-2">
-            <a href="/verifikasi" class="btn btn-sm btn-neutral">Sebelumnya</a>
-            <a href="/verifikasi/{{ $tagihan->id }}/coa/create" class="btn btn-sm btn-neutral">Tambah</a>
+            <a href="/tagihan/{{ $data->id }}/realisasi" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
         <div class="lg:basis-7/12 overflow-hidden max-w-full shrink">
             <form action="" method="get" autocomplete="off">
@@ -34,6 +33,7 @@
             </form>
         </div>
     </div>
+
     <div class="px-4 gap-2 overflow-y-auto">
         <table class="table border-collapse w-full">
             <thead class="text-center">
@@ -46,7 +46,9 @@
                     <th class="border border-base-content">Komponen</th>
                     <th class="border border-base-content">Subkomponen</th>
                     <th class="border border-base-content">Akun</th>
+                    <th class="border border-base-content">Pagu</th>
                     <th class="border border-base-content">Realisasi</th>
+                    <th class="border border-base-content">Sisa Anggaran</th>
                     <th class="border border-base-content">Aksi</th>
                 </tr>
             </thead>
@@ -54,32 +56,30 @@
                 @php
                     $i = 1;
                 @endphp
-                @foreach ($data as $item)
+                @foreach ($pagu as $item)
                     <tr>
-                        <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->program }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->kegiatan }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->kro }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->ro }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->komponen }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->subkomponen }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->akun }}</td>
-                        <td class="text-right border border-base-content">{{ number_format($item->realisasi, 2, ',', '.') }}</td>
-                        <td class="text-center border border-base-content">
-                            <div class="join">
-                                <a href="/verifikasi/{{ $tagihan->id }}/coa/{{ $item->id }}/edit"
-                                    class="btn btn-xs btn-primary join-item">Edit</a>
-                                <form action="/verifikasi/{{ $tagihan->id }}/coa/{{ $item->id }}" method="post" onsubmit="return confirm('Apakah Anda yakin akan menghapus data ini?');">
+                        <td class="border border-base-content text-center">{{ $i++ }}</td>
+                        <td class="border border-base-content text-center">{{ $item->program }}</td>
+                        <td class="border border-base-content text-center">{{ $item->kegiatan }}</td>
+                        <td class="border border-base-content text-center">{{ $item->kro }}</td>
+                        <td class="border border-base-content text-center">{{ $item->ro }}</td>
+                        <td class="border border-base-content text-center">{{ $item->komponen }}</td>
+                        <td class="border border-base-content text-center">{{ $item->subkomponen }}</td>
+                        <td class="border border-base-content text-center">{{ $item->akun }}</td>
+                        <td class="border border-base-content text-right">Rp{{ number_format($item->anggaran, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">
+                            Rp{{ number_format($item->realisasi->sum('realisasi') - $item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
+                        </td>
+                        <td class="border border-base-content text-right">
+                            Rp{{ number_format($item->anggaran - $item->realisasi->sum('realisasi') + $item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
+                        </td>
+                        <td class="border border-base-content">
+                                <form action="/verifikasi/{{ $data->id }}/coa/{{ $item->id }}" method="post">
                                     @csrf
-                                    @method('delete')
-                                    <button type="submit"  class="btn btn-xs btn-error join-item">Hapus</button>
+                                    <button class="btn btn-xs btn-outline btn-neutral">Pilih</button>
                                 </form>
-                            </div>
                         </td>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
             </tbody>
         </table>
@@ -87,5 +87,5 @@
 @endsection
 
 @section('pagination')
-    {{ $data->links() }}
+    {{ $pagu->links() }}
 @endsection

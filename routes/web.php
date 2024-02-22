@@ -267,6 +267,11 @@ Route::controller(VerifikasiController::class)->group(function(){
     Route::patch('/verifikasi/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'updatepphrekanan')->middleware('auth');
     Route::delete('/verifikasi/{tagihan}/rekanan/{rekanan}/pph/{pph}', 'deletepphrekanan')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/coa', 'coa')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/coa/create', 'createCoa')->middleware('auth');
+    Route::post('/verifikasi/{tagihan}/coa/{pagu}', 'storeCoa')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/coa/{coa}/edit', 'editCoa')->middleware('auth');
+    Route::patch('/verifikasi/{tagihan}/coa/{coa}/edit', 'updateCoa')->middleware('auth');
+    Route::delete('/verifikasi/{tagihan}/coa/{coa}', 'destroyCoa')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/payroll', 'payroll')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/payroll/create', 'createPayroll')->middleware('auth');
     Route::post('/verifikasi/{tagihan}/payroll/create', 'storePayroll')->middleware('auth');

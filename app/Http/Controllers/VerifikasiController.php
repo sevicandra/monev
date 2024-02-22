@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\spm;
 use App\Helper\Hris;
+use App\Models\pagu;
 use App\Models\berkas;
 use App\Models\Payroll;
 use App\Models\rekanan;
 use App\Models\tagihan;
+use App\Models\realisasi;
 use App\Models\logtagihan;
 use App\Models\objekpajak;
 use App\Models\pphrekanan;
@@ -638,6 +640,10 @@ class VerifikasiController extends Controller
         if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
             abort(403);
         }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
         
         return view('verifikasi.coa',[
             'data'=>$tagihan->realisasi() ->searchprogram()  
@@ -650,6 +656,119 @@ class VerifikasiController extends Controller
             'tagihan'=>$tagihan,
             'notifikasi'=>Notification::Notif()
         ]);
+    }
+
+    public function createCoa(tagihan $tagihan)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        
+        return view('verifikasi.realisasi.tarik_detail_akun',[
+            'data' => $tagihan,
+            'pagu' => pagu::Pagusatker()->paguppk($tagihan->ppk_id)->PaguUnit($tagihan->kodeunit)->searchprogram()
+                ->searchkegiatan()
+                ->searchkro()
+                ->searchro()
+                ->searchkomponen()
+                ->searchsubkomponen()
+                ->searchakun()->paginate(15)->withQueryString(),
+            'notifikasi' => Notification::Notif()
+        ]);
+    }
+
+    public function storeCoa(tagihan $tagihan, pagu $pagu)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+        
+        realisasi::create([
+            'pagu_id' => $pagu->id,
+            'tagihan_id' => $tagihan->id,
+            'realisasi' => 0
+        ]);
+        return redirect('/verifikasi/' . $tagihan->id . '/coa')->with('berhasil', 'Akun Belanja Berhasil Di Tambahkan');
+    }
+
+    public function editCoa(tagihan $tagihan, realisasi $coa)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+
+        return view('verifikasi.realisasi.update', [
+            'data' => $coa,
+            'tagihan'=>$tagihan,
+            'notifikasi' => Notification::Notif()
+        ]);
+    }
+
+    public function updateCoa(tagihan $tagihan, realisasi $coa, Request $request)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+
+        $request->validate([
+            'realisasi' => 'required|numeric'
+        ]);
+
+        $coa->update([
+            'realisasi' => $request->realisasi
+        ]);
+
+        return redirect('/verifikasi/' . $tagihan->id . '/coa')->with('berhasil', 'Realisasi Berhasil Di Ubah.');
+    }
+
+    public function destroyCoa(tagihan $tagihan, realisasi $coa)
+    {
+        if (! Gate::allows('Validator', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            abort(403);
+        }
+
+        $coa->delete();
+        return redirect('/verifikasi/' . $tagihan->id . '/coa')->with('berhasil', 'Realisasi Berhasil Di Hapus');
     }
 
     public function payroll(tagihan $tagihan)
