@@ -333,6 +333,11 @@ Route::controller(BendaharaController::class)->group(function(){
     Route::post('/bendahara/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/bendahara/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
     Route::get('/bendahara/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/coa/create', 'createCoa')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/coa/{pagu}', 'storeCoa')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/coa/{coa}/edit', 'editCoa')->middleware('auth');
+    Route::patch('/bendahara/{tagihan}/coa/{coa}/edit', 'updateCoa')->middleware('auth');
+    Route::delete('/bendahara/{tagihan}/coa/{coa}', 'destroyCoa')->middleware('auth');
 });
 
 Route::resource('/bendahara', BendaharaController::class)->middleware('auth');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\spm;
 use App\Helper\Hris;
+use App\Models\pagu;
 use App\Models\sspb;
 use App\Models\berkas;
 use App\Models\Payroll;
@@ -60,6 +61,119 @@ class BendaharaController extends Controller
             'tagihan'=>$bendahara,
             'notifikasi'=>Notification::Notif()
         ]);
+    }
+
+    public function createCoa(tagihan $tagihan)
+    {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+        
+        return view('bendahara.realisasi.tarik_detail_akun',[
+            'data' => $tagihan,
+            'pagu' => pagu::Pagusatker()->paguppk($tagihan->ppk_id)->PaguUnit($tagihan->kodeunit)->searchprogram()
+                ->searchkegiatan()
+                ->searchkro()
+                ->searchro()
+                ->searchkomponen()
+                ->searchsubkomponen()
+                ->searchakun()->paginate(15)->withQueryString(),
+            'notifikasi' => Notification::Notif()
+        ]);
+    }
+
+    public function storeCoa(tagihan $tagihan, pagu $pagu)
+    {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+        
+        realisasi::create([
+            'pagu_id' => $pagu->id,
+            'tagihan_id' => $tagihan->id,
+            'realisasi' => 0
+        ]);
+        return redirect('/bendahara/' . $tagihan->id)->with('berhasil', 'Akun Belanja Berhasil Di Tambahkan');
+    }
+
+    public function editCoa(tagihan $tagihan, realisasi $coa)
+    {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+
+        return view('bendahara.realisasi.update', [
+            'data' => $coa,
+            'tagihan'=>$tagihan,
+            'notifikasi' => Notification::Notif()
+        ]);
+    }
+
+    public function updateCoa(tagihan $tagihan, realisasi $coa, Request $request)
+    {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+
+        $request->validate([
+            'realisasi' => 'required|numeric'
+        ]);
+
+        $coa->update([
+            'realisasi' => $request->realisasi
+        ]);
+
+        return redirect('/bendahara/' . $tagihan->id)->with('berhasil', 'Realisasi Berhasil Di Ubah.');
+    }
+
+    public function destroyCoa(tagihan $tagihan, realisasi $coa)
+    {
+        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+
+        $coa->delete();
+        return redirect('/bendahara/' . $tagihan->id)->with('berhasil', 'Realisasi Berhasil Di Hapus');
     }
 
     public function editsp2d(tagihan $tagihan)

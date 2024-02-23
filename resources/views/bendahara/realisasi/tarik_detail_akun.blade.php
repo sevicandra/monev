@@ -9,7 +9,7 @@
     </div>
     <div class="flex flex-col lg:flex-row px-4 gap-2 justify-between">
         <div class="lg:basis-5/12 flex gap-2">
-            <a href="/verifikasi/{{ $data->id }}/coa" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="/bendahara/{{ $data->id }}" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
         <div class="lg:basis-7/12 overflow-hidden max-w-full shrink">
             <form action="" method="get" autocomplete="off">
@@ -74,7 +74,7 @@
                             Rp{{ number_format($item->anggaran - $item->realisasi->sum('realisasi') + $item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content">
-                                <form action="/verifikasi/{{ $data->id }}/coa/{{ $item->id }}" method="post">
+                                <form action="/bendahara/{{ $data->id }}/coa/{{ $item->id }}" method="post">
                                     @csrf
                                     <button class="btn btn-xs btn-outline btn-neutral">Pilih</button>
                                 </form>

@@ -5,7 +5,8 @@
     </div>
     <div class="flex flex-col lg:flex-row px-4 gap-2 justify-between">
         <div class="lg:basis-5/12 flex gap-2">
-            <a href="/verifikasi" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="/bendahara" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="/bendahara/{{ $tagihan->id }}/coa/create" class="btn btn-sm btn-neutral">Tambah</a>
         </div>
         <div class="lg:basis-7/12 overflow-hidden max-w-full shrink">
             <form action="" method="get" autocomplete="off">
@@ -61,7 +62,8 @@
                         <td class="border border-base-content">{{ optional($item->pagu)->komponen }}</td>
                         <td class="border border-base-content">{{ optional($item->pagu)->subkomponen }}</td>
                         <td class="border border-base-content">{{ optional($item->pagu)->akun }}</td>
-                        <td class="text-right border border-base-content">{{ number_format($item->realisasi, 2, ',', '.') }}</td>
+                        <td class="text-right border border-base-content">
+                            {{ number_format($item->realisasi, 2, ',', '.') }}</td>
                         <td class="text-right border border-base-content">
                             @if (isset($item->sspb))
                                 {{ number_format($item->sspb->nominal_sspb, 2, ',', '.') }}
@@ -74,8 +76,16 @@
                         </td>
                         <td class="border border-base-content">
                             <div class="join">
+                                <a href="/bendahara/{{ $tagihan->id }}/coa/{{ $item->id }}/edit"
+                                    class="btn btn-xs btn-outline btn-neutral join-item">edit</a>
                                 <a href="/bendahara/{{ $tagihan->id }}/realisasi/{{ $item->id }}/sspb"
                                     class="btn btn-xs btn-outline btn-neutral join-item">SSPB</a>
+                                <form action="/bendahara/{{ $tagihan->id }}/coa/{{ $item->id }}" method="post"
+                                    onsubmit="return confirm('Apakah Anda yakin akan menghapus data ini?');">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-xs btn-error join-item">Hapus</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
