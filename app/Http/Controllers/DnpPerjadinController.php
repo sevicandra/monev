@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payroll;
 use App\Models\tagihan;
 use App\Models\DnpPerjadin;
 use App\Helper\Notification;
@@ -846,5 +847,67 @@ class DnpPerjadinController extends Controller
         }
         $dnp->delete();
         return back()->with('berhasil', 'DNP Perjadin Berhasil di Hapus');
+    }
+
+    public function createPayroll(tagihan $tagihan)
+    {
+        if ($tagihan->status == 0) {
+            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } else {
+            abort(403);
+        }
+        $tagihan->payroll()->delete();
+        foreach($tagihan->dnpperjadin()->get() as $item)
+        {
+            $a = collect(json_decode($item->transport))->sum('nilai');
+            $b = collect(json_decode($item->transportLain))->sum('nilai');
+            $c = 0;
+            $d = 0;
+            $e = 0;
+
+            foreach(collect(json_decode($item->uangharian)) as $uangharian)
+            {
+                $c += $uangharian->frekuensi * $uangharian->nilai;
+            }
+            foreach(collect(json_decode($item->penginapan)) as $penginapan)
+            {
+                $d += $penginapan->frekuensi * $penginapan->nilai;
+            }
+            foreach(collect(json_decode($item->representatif)) as $representatif)
+            {
+                $e += $representatif->frekuensi * $representatif->nilai;
+            }
+            if ($item->bank == "BNI") {
+                $admin = 0;
+            }else{
+                $admin = 2900;
+            }
+            Payroll::create([
+                'nama' => $item->nama,
+                'norek' => $item->norek,
+                'bank' => $item->bank,
+                'bruto' => $a + $b + $c + $d + $e,
+                'pajak' => 0,
+                'admin' => $admin,
+                'tagihan_id' => $tagihan->id,
+                'netto' => $a + $b + $c + $d + $e - $admin,
+            ]);
+        }
+
+        return back()->with('berhasil', 'Data Payroll Berhasil Di Buat');
     }
 }

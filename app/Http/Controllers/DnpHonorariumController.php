@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payroll;
 use App\Models\tagihan;
 use App\Helper\Notification;
 use Illuminate\Http\Request;
@@ -671,5 +672,50 @@ class DnpHonorariumController extends Controller
             'data'=>$tagihan->dnpHonor()->get()
         ]));
         $html2pdf->output('DNP Perjadin.pdf', 'I');
+    }
+    
+    public function createPayroll(tagihan $tagihan)
+    {
+        if ($tagihan->status == 0) {
+            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } else {
+            abort(403);
+        }
+        $tagihan->payroll()->delete();
+        foreach($tagihan->dnpHonor()->get() as $item)
+        {
+
+            if ($item->bank == "BNI") {
+                $admin = 0;
+            }else{
+                $admin = 2900;
+            }
+            Payroll::create([
+                'nama' => $item->nama,
+                'norek' => $item->norek,
+                'bank' => $item->bank,
+                'bruto' => $item->bruto,
+                'pajak' => $item->pajak,
+                'admin' => $admin,
+                'tagihan_id' => $tagihan->id,
+                'netto' => $item->netto - $admin,
+            ]);
+        }
+
+        return back()->with('berhasil', 'Data Payroll Berhasil Di Buat');
     }
 }

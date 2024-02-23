@@ -12,6 +12,7 @@
             <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-honorarium/create" class="btn btn-sm btn-neutral">Tambah</a>
             <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-honorarium/import" class="btn btn-sm btn-neutral">Import</a>
             <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-honorarium/cetak" target="_blank" class="btn btn-sm btn-neutral">Cetak</a>
+            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-honorarium/create-payroll" class="btn btn-sm btn-neutral">Generate Payroll</a>
         </div>
         <div class="">
             <form action="" method="get" autocomplete="off">
