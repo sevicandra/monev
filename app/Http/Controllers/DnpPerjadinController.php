@@ -304,13 +304,15 @@ class DnpPerjadinController extends Controller
                 'Tarif_Uang_Harian 2' => $item[10],
                 'Frekuensi_3' => $item[11],
                 'Tarif_Uang_Harian_3' => $item[12],
-                'Uang_Representatif' => $item[13],
-                'Transport' => $item[14],
-                'Transport_Lain' => $item[15],
-                'Hotel' => $item[16],
-                'Nomor_Rekening' => $item[17],
-                'Nama_Rekening' => $item[18],
-                'Bank' => $item[19],
+                'Frekuensi_Representatif' => $item[13],
+                'Uang_Representatif' => $item[14],
+                'Transport' => $item[15],
+                'Transport_Lain' => $item[16],
+                'Frekuensi_Hotel' => $item[17],
+                'Hotel' => $item[18],
+                'Nomor_Rekening' => $item[19],
+                'Nama_Rekening' => $item[20],
+                'Bank' => $item[21],
             ]);
 
             $validator = Validator::make(
@@ -411,8 +413,16 @@ class DnpPerjadinController extends Controller
             }
         }
 
+        
         if ($Errors->min('status') === true) {
             foreach ($data as $item) {
+                $transport=[];
+                $transportLain=[];
+                $uangharian=[];
+                $uangharian=[];
+                $uangharian=[];
+                $penginapan=[];
+                $representatif=[];
                 $transport[]=[
                     "nama" => "Transport PP",
                     "nilai" => floatval(str_replace(',', '', $item[15])),
