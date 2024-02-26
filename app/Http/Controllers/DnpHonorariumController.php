@@ -33,6 +33,14 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -65,6 +73,14 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -89,6 +105,14 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 4) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
             }
@@ -172,6 +196,14 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -201,6 +233,14 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 4) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
             }
@@ -290,6 +330,14 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -322,6 +370,14 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -346,6 +402,14 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 4) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
             }
@@ -657,6 +721,14 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -666,14 +738,14 @@ class DnpHonorariumController extends Controller
         $html2pdf = new Html2Pdf('L', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Honorarium');
-        $html2pdf->writeHTML(view('dnp_honor.cetak',[
-            'uraian'=>$tagihan->uraian,
-            'ppk'=>$tagihan->ppk->nama,
-            'data'=>$tagihan->dnpHonor()->get()
+        $html2pdf->writeHTML(view('dnp_honor.cetak', [
+            'uraian' => $tagihan->uraian,
+            'ppk' => $tagihan->ppk->nama,
+            'data' => $tagihan->dnpHonor()->get()
         ]));
         $html2pdf->output('DNP Perjadin.pdf', 'I');
     }
-    
+
     public function createPayroll(tagihan $tagihan)
     {
         if ($tagihan->status == 0) {
@@ -692,16 +764,23 @@ class DnpHonorariumController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
         $tagihan->payroll()->delete();
-        foreach($tagihan->dnpHonor()->get() as $item)
-        {
+        foreach ($tagihan->dnpHonor()->get() as $item) {
 
             if ($item->bank == "BNI") {
                 $admin = 0;
-            }else{
+            } else {
                 $admin = 2900;
             }
             Payroll::create([

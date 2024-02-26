@@ -64,18 +64,19 @@
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate($item->tanggal_spm) }}
+                            {{ indonesiaDate($item->tanggal_spm) }}
                         </td>
                         <td class="border border-base-content">
-                                {{ $item->nomor_sp2d }}
+                            {{ $item->nomor_sp2d }}
                         </td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate($item->tanggal_sp2d) }}
+                            {{ indonesiaDate($item->tanggal_sp2d) }}
                         </td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
-                        <td class="border border-base-content text-right">Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">
+                            Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
                         <td class="border border-base-content text-center">
                             <div class="join">
                                 <a href="/bendahara/{{ $item->id }}/sp2d"
@@ -87,6 +88,14 @@
                                         @endif --}}
                                 <a href="/bendahara/{{ $item->id }}/payroll"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Payroll</a>
+                                @if ($item->dokumen->dnp_perjadin)
+                                    <a href="/bendahara/{{ $item->id }}/dnp-perjadin"
+                                        class="btn btn-xs btn-neutral btn-outline join-item">DNP Perjadin</a>
+                                @endif
+                                @if ($item->dokumen->dnp_honor)
+                                    <a href="/bendahara/{{ $item->id }}/dnp-honorarium"
+                                        class="btn btn-xs btn-neutral btn-outline join-item">DNP Honor</a>
+                                @endif
                                 <a href="/bendahara/{{ $item->id }}"
                                     class="btn btn-xs btn-outline btn-neutral join-item">COA</a>
                                 @if ($item->dokumen->statusrekanan === '1')

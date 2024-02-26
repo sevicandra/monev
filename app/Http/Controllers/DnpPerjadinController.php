@@ -33,6 +33,14 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -45,7 +53,7 @@ class DnpPerjadinController extends Controller
         return view('dnp_perjadin.detail.index', [
             'dnp' => $dnp,
             'tagihan' => $tagihan,
-            'notifikasi'=>Notification::Notif(),
+            'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
         ]);
     }
@@ -68,6 +76,14 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -80,11 +96,10 @@ class DnpPerjadinController extends Controller
         $base_url = '/' . $parts[0];
         return view('dnp_perjadin.update', [
             'tagihan' => $tagihan,
-            'data'=>$dnp,
+            'data' => $dnp,
             'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
         ]);
-
     }
 
     public function update(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
@@ -105,10 +120,18 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
-        
+
         if ($tagihan->id != $dnp->tagihan_id) {
             abort(403);
         }
@@ -137,7 +160,7 @@ class DnpPerjadinController extends Controller
             'namarek' => $request->namarekening,
             'bank' => $request->bank,
         ]);
-        return redirect($base_url. '/' . $tagihan->id . '/dnp-perjadin')->with('berhasil', 'DNP Perjadin Berhasiltahkan');
+        return redirect($base_url . '/' . $tagihan->id . '/dnp-perjadin')->with('berhasil', 'DNP Perjadin Berhasiltahkan');
     }
 
     public function updateDetail(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
@@ -151,6 +174,14 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 4) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
             }
@@ -248,6 +279,14 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -256,7 +295,7 @@ class DnpPerjadinController extends Controller
         $base_url = '/' . $parts[0];
         return view('dnp_perjadin.import.index', [
             'tagihan' => $tagihan,
-            'notifikasi'=>Notification::Notif(),
+            'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
         ]);
     }
@@ -272,6 +311,14 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 4) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
             }
@@ -413,47 +460,47 @@ class DnpPerjadinController extends Controller
                 $Errors->push($detail);
             }
         }
-        
+
         if ($Errors->min('status') === true) {
             foreach ($data as $item) {
-                $transport=[];
-                $transportLain=[];
-                $uangharian=[];
-                $uangharian=[];
-                $uangharian=[];
-                $penginapan=[];
-                $representatif=[];
-                $transport[]=[
+                $transport = [];
+                $transportLain = [];
+                $uangharian = [];
+                $uangharian = [];
+                $uangharian = [];
+                $penginapan = [];
+                $representatif = [];
+                $transport[] = [
                     "nama" => "Transport PP",
                     "nilai" => floatval(str_replace(',', '', $item[15])),
                     "keterangan" => null
                 ];
-                $transportLain[]=[
+                $transportLain[] = [
                     "nama" => "Transport Lain",
                     "nilai" => floatval(str_replace(',', '', $item[16])),
                     "keterangan" => null
                 ];
-                $uangharian[]=[
+                $uangharian[] = [
                     "frekuensi" => $item[7],
                     "nilai" => floatval(str_replace(',', '', $item[8])),
                     "keterangan" => null
                 ];
-                $uangharian[]=[
+                $uangharian[] = [
                     "frekuensi" => $item[9],
                     "nilai" => floatval(str_replace(',', '', $item[10])),
                     "keterangan" => null
                 ];
-                $uangharian[]=[
+                $uangharian[] = [
                     "frekuensi" => $item[11],
                     "nilai" => floatval(str_replace(',', '', $item[12])),
                     "keterangan" => null
                 ];
-                $penginapan[]=[
+                $penginapan[] = [
                     "frekuensi" => $item[17],
                     "nilai" => floatval(str_replace(',', '', $item[18])),
                     "keterangan" => null
                 ];
-                $representatif[]=[
+                $representatif[] = [
                     "frekuensi" => $item[13],
                     "nilai" => floatval(str_replace(',', '', $item[14])),
                     "keterangan" => null
@@ -473,14 +520,14 @@ class DnpPerjadinController extends Controller
                     'transportLain' => json_encode($transportLain),
                     'uangharian' => json_encode($uangharian),
                     'penginapan' => json_encode($penginapan),
-                    'representatif'=> json_encode($representatif),
+                    'representatif' => json_encode($representatif),
                 ]);
             }
-            return redirect($base_url . '/'.$tagihan->id.'/dnp-perjadin')->with('berhasil', 'Data DNP Perjadin Berhasil Ditambahkan');
-        }else{
+            return redirect($base_url . '/' . $tagihan->id . '/dnp-perjadin')->with('berhasil', 'Data DNP Perjadin Berhasil Ditambahkan');
+        } else {
             return redirect($base_url . '/' . $tagihan->id . '/dnp-perjadin/import')
-            ->with('gagal', 'Data gagal ditambahkan. Silahkan cek kembali.')
-            ->with('Errors', collect($Errors));
+                ->with('gagal', 'Data gagal ditambahkan. Silahkan cek kembali.')
+                ->with('Errors', collect($Errors));
         }
     }
 
@@ -583,7 +630,7 @@ class DnpPerjadinController extends Controller
             ->getStyle('O:Q')
             ->getNumberFormat()
             ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-            $spreadsheet
+        $spreadsheet
             ->setActiveSheetIndex(0)
             ->getStyle('S:S')
             ->getNumberFormat()
@@ -645,6 +692,14 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -654,10 +709,10 @@ class DnpPerjadinController extends Controller
         $html2pdf = new Html2Pdf('L', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Perjadin');
-        $html2pdf->writeHTML(view('dnp_perjadin.cetak.dnp',[
-            'uraian'=>$tagihan->uraian,
-            'ppk'=>$tagihan->ppk->nama,
-            'data'=>$tagihan->dnpperjadin()->get()
+        $html2pdf->writeHTML(view('dnp_perjadin.cetak.dnp', [
+            'uraian' => $tagihan->uraian,
+            'ppk' => $tagihan->ppk->nama,
+            'data' => $tagihan->dnpperjadin()->get()
         ]));
         $html2pdf->output('DNP Perjadin.pdf', 'I');
     }
@@ -680,6 +735,14 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -693,9 +756,9 @@ class DnpPerjadinController extends Controller
         $html2pdf = new Html2Pdf('P', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Perjadin');
-        $html2pdf->writeHTML(view('dnp_perjadin.cetak.kuitansi',[
-            'ppk'=>$tagihan->ppk,
-            'dnp'=>$dnp,
+        $html2pdf->writeHTML(view('dnp_perjadin.cetak.kuitansi', [
+            'ppk' => $tagihan->ppk,
+            'dnp' => $dnp,
             // 'data'=>$tagihan->dnpperjadin()->get()
         ]));
         $html2pdf->output('DNP Perjadin.pdf', 'I');
@@ -712,6 +775,14 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 4) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
             }
@@ -751,6 +822,14 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -775,6 +854,14 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
+        } elseif ($tagihan->status == 4) {
             if (!Gate::allows('Validator', auth()->user()->id)) {
                 abort(403);
             }
@@ -838,6 +925,14 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
@@ -866,33 +961,37 @@ class DnpPerjadinController extends Controller
             if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
                 abort(403);
             }
+        } elseif ($tagihan->status == 4) {
+            if (!Gate::allows('Validator', auth()->user()->id)) {
+                abort(403);
+            }
+
+            if (!Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+                abort(403);
+            }
         } else {
             abort(403);
         }
         $tagihan->payroll()->delete();
-        foreach($tagihan->dnpperjadin()->get() as $item)
-        {
+        foreach ($tagihan->dnpperjadin()->get() as $item) {
             $a = collect(json_decode($item->transport))->sum('nilai');
             $b = collect(json_decode($item->transportLain))->sum('nilai');
             $c = 0;
             $d = 0;
             $e = 0;
 
-            foreach(collect(json_decode($item->uangharian)) as $uangharian)
-            {
+            foreach (collect(json_decode($item->uangharian)) as $uangharian) {
                 $c += $uangharian->frekuensi * $uangharian->nilai;
             }
-            foreach(collect(json_decode($item->penginapan)) as $penginapan)
-            {
+            foreach (collect(json_decode($item->penginapan)) as $penginapan) {
                 $d += $penginapan->frekuensi * $penginapan->nilai;
             }
-            foreach(collect(json_decode($item->representatif)) as $representatif)
-            {
+            foreach (collect(json_decode($item->representatif)) as $representatif) {
                 $e += $representatif->frekuensi * $representatif->nilai;
             }
             if ($item->bank == "BNI") {
                 $admin = 0;
-            }else{
+            } else {
                 $admin = 2900;
             }
             Payroll::create([

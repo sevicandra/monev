@@ -618,6 +618,22 @@ Route::controller(DnpPerjadinController::class)->group(function(){
     Route::get('/verifikasi/{tagihan}/dnp-perjadin/{dnp}/edit', 'edit')->middleware('auth');
     Route::patch('/verifikasi/{tagihan}/dnp-perjadin/{dnp}/edit', 'update')->middleware('auth');
 
+    Route::get('/bendahara/{tagihan}/dnp-perjadin', 'dnpPerjadin')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-perjadin/create', 'dnpPerjadinCreate')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/dnp-perjadin/create', 'dnpPerjadinStore')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-perjadin/import', 'import')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/dnp-perjadin/import', 'importStore')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-perjadin/cetak', 'cetak')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-perjadin/create-payroll', 'createPayroll')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-perjadin/{dnp}', 'index')->middleware('auth');
+    Route::patch('/bendahara/{tagihan}/dnp-perjadin/{dnp}', 'updateDetail')->middleware('auth');
+    Route::delete('/bendahara/{tagihan}/dnp-perjadin/{dnp}', 'destroy')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-perjadin/{dnp}/create', 'create')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/dnp-perjadin/{dnp}/create', 'store')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-perjadin/{dnp}/cetak', 'cetakKuitansi')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-perjadin/{dnp}/edit', 'edit')->middleware('auth');
+    Route::patch('/bendahara/{tagihan}/dnp-perjadin/{dnp}/edit', 'update')->middleware('auth');
+
 
     Route::get('/dnp-perjadin/template', 'template')->middleware('auth');
 });
@@ -655,6 +671,18 @@ Route::controller(DnpHonorariumController::class)->group(function(){
     Route::get('/verifikasi/{tagihan}/dnp-honorarium/{dnp}', 'edit')->middleware('auth');
     Route::patch('/verifikasi/{tagihan}/dnp-honorarium/{dnp}', 'update')->middleware('auth');
     Route::delete('/verifikasi/{tagihan}/dnp-honorarium/{dnp}', 'destroy')->middleware('auth');
+
+    Route::get('/bendahara/{tagihan}/dnp-honorarium', 'index')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-honorarium/import', 'import')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/dnp-honorarium/import', 'importStore')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-honorarium/cetak', 'cetak')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-honorarium/create', 'create')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/dnp-honorarium/create', 'store')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-honorarium/create-payroll', 'createPayroll')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/dnp-honorarium/{dnp}', 'edit')->middleware('auth');
+    Route::patch('/bendahara/{tagihan}/dnp-honorarium/{dnp}', 'update')->middleware('auth');
+    Route::delete('/bendahara/{tagihan}/dnp-honorarium/{dnp}', 'destroy')->middleware('auth');
+
     Route::get('/dnp-honorarium/template', 'template')->middleware('auth');
 });
 
