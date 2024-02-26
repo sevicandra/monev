@@ -49,7 +49,7 @@ class DnpHonorariumController extends Controller
         $base_url = '/' . $parts[0];
         return view('dnp_honor.index', [
             'tagihan' => $tagihan,
-            'data' => $tagihan->dnpHonor()->get(),
+            'data' => $tagihan->dnpHonor()->search()->get(),
             'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
         ]);

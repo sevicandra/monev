@@ -379,7 +379,7 @@ class ArsipController extends Controller
         $base_url = '/' . $parts[0];
         return view('arsip.dnp_perjadin.index', [
             'tagihan' => $tagihan,
-            'data' => $tagihan->dnpperjadin()->paginate(15),
+            'data' => $tagihan->dnpperjadin()->search()->paginate(15),
             'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
         ]);
@@ -474,7 +474,7 @@ class ArsipController extends Controller
         $base_url = '/' . $parts[0];
         return view('arsip.dnp_honor.index', [
             'tagihan' => $tagihan,
-            'data' => $tagihan->dnpHonor()->get(),
+            'data' => $tagihan->dnpHonor()->search()->get(),
             'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
         ]);

@@ -29,4 +29,12 @@ class DnpHonorarium extends Model
         'bank',
         'tagihans_id'
     ];
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data->where('nama', 'like', '%' . request('search') . '%')
+                ->orwhere('nip', 'like', '%' . request('search') . '%');
+        }
+    }
 }

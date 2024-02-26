@@ -42,4 +42,12 @@ class DnpPerjadin extends Model
     {
         return $data->select('id', 'transport', 'transportLain');
     }
+
+    public function scopeSearch($data)
+    {
+        if (request('search')) {
+            return $data->where('nama', 'like', '%' . request('search') . '%')
+                ->orwhere('nip', 'like', '%' . request('search') . '%');
+        }
+    }
 }

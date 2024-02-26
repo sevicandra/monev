@@ -18,7 +18,7 @@
             <form action="" method="get" autocomplete="off">
                 <div class="join">
                     <input type="text" name="search" class="input input-sm input-bordered join-item"
-                        placeholder="Nomor Tagihan">
+                        placeholder="Nama/NIP">
                     <div class="indicator">
                         <button class="btn join-item btn-sm btn-neutral">Cari</button>
                     </div>
