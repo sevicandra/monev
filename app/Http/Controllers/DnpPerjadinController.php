@@ -972,32 +972,39 @@ class DnpPerjadinController extends Controller
         } else {
             abort(403);
         }
+
         $tagihan->payroll()->delete();
-        foreach ($tagihan->dnpperjadin()->get() as $item) {
-            $a = collect(json_decode($item->transport))->sum('nilai');
-            $b = collect(json_decode($item->transportLain))->sum('nilai');
+        foreach ($tagihan->dnpperjadin()->get()->groupBy('norek') as $payroll) {
+            $a = 0;
+            $b = 0;
             $c = 0;
             $d = 0;
             $e = 0;
 
-            foreach (collect(json_decode($item->uangharian)) as $uangharian) {
-                $c += $uangharian->frekuensi * $uangharian->nilai;
+            foreach ($payroll as $item) {
+                $a += collect(json_decode($item->transport))->sum('nilai');
+                $b += collect(json_decode($item->transportLain))->sum('nilai');
+                foreach (collect(json_decode($item->uangharian)) as $uangharian) {
+                    $c += $uangharian->frekuensi * $uangharian->nilai;
+                }
+                foreach (collect(json_decode($item->penginapan)) as $penginapan) {
+                    $d += $penginapan->frekuensi * $penginapan->nilai;
+                }
+                foreach (collect(json_decode($item->representatif)) as $representatif) {
+                    $e += $representatif->frekuensi * $representatif->nilai;
+                }
+
             }
-            foreach (collect(json_decode($item->penginapan)) as $penginapan) {
-                $d += $penginapan->frekuensi * $penginapan->nilai;
-            }
-            foreach (collect(json_decode($item->representatif)) as $representatif) {
-                $e += $representatif->frekuensi * $representatif->nilai;
-            }
-            if ($item->bank == "BNI") {
+
+            if ($payroll->first()->bank == "BNI") {
                 $admin = 0;
             } else {
                 $admin = 2900;
             }
             Payroll::create([
-                'nama' => $item->nama,
-                'norek' => $item->norek,
-                'bank' => $item->bank,
+                'nama' => $payroll->first()->nama,
+                'norek' => $payroll->first()->norek,
+                'bank' => $payroll->first()->bank,
                 'bruto' => $a + $b + $c + $d + $e,
                 'pajak' => 0,
                 'admin' => $admin,
