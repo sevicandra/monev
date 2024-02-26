@@ -238,6 +238,17 @@ Route::controller(MonitoringTagihanController::class)->group(function(){
     Route::get('/monitoring-tagihan/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/rekanan/{rekanan}/pph', 'showpphrekanan')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/rekanan/{rekanan}/ppn', 'showppnrekanan')->middleware('auth');
+
+    Route::get('/monitoring-tagihan/{tagihan}/payroll', 'payroll')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
+
+    Route::get('/monitoring-tagihan/{tagihan}/dnp-honorarium', 'dnpHonorarium')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/dnp-honorarium/cetak', 'cetakDnpHonorarium')->middleware('auth');
+
+    Route::get('/monitoring-tagihan/{tagihan}/dnp-perjadin', 'dnpPerjadin')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/dnp-perjadin/cetak', 'cetakDnpPerjadin')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/dnp-perjadin/{dnp}', 'detailDnpPerjadin')->middleware('auth');
+    Route::get('/monitoring-tagihan/{tagihan}/dnp-perjadin/{dnp}/cetak', 'cetakKuitansiPerjadin')->middleware('auth');
 });
 
 Route::resource('/monitoring-tagihan', MonitoringTagihanController::class)->middleware('auth');
@@ -351,6 +362,17 @@ Route::controller(ArsipController::class)->group(function(){
     Route::get('/arsip/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
     Route::get('/arsip/{tagihan}/rekanan/{rekanan}/ppn', 'showppnrekanan')->middleware('auth');
     Route::get('/arsip/{tagihan}/rekanan/{rekanan}/pph', 'showpphrekanan')->middleware('auth');
+
+    Route::get('/arsip/{tagihan}/payroll', 'payroll')->middleware('auth');
+    Route::get('/arsip/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
+
+    Route::get('/arsip/{tagihan}/dnp-honorarium', 'dnpHonorarium')->middleware('auth');
+    Route::get('/arsip/{tagihan}/dnp-honorarium/cetak', 'cetakDnpHonorarium')->middleware('auth');
+
+    Route::get('/arsip/{tagihan}/dnp-perjadin', 'dnpPerjadin')->middleware('auth');
+    Route::get('/arsip/{tagihan}/dnp-perjadin/cetak', 'cetakDnpPerjadin')->middleware('auth');
+    Route::get('/arsip/{tagihan}/dnp-perjadin/{dnp}', 'detailDnpPerjadin')->middleware('auth');
+    Route::get('/arsip/{tagihan}/dnp-perjadin/{dnp}/cetak', 'cetakKuitansiPerjadin')->middleware('auth');
 });
 
 Route::resource('/arsip', ArsipController::class)->middleware('auth');

@@ -42,7 +42,7 @@ class DnpPerjadinController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_perjadin.detail.index', [
+        return view('dnp_perjadin.detail.index', [
             'dnp' => $dnp,
             'tagihan' => $tagihan,
             'notifikasi'=>Notification::Notif(),
@@ -78,7 +78,7 @@ class DnpPerjadinController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_perjadin.update', [
+        return view('dnp_perjadin.update', [
             'tagihan' => $tagihan,
             'data'=>$dnp,
             'notifikasi' => Notification::Notif(),
@@ -254,7 +254,7 @@ class DnpPerjadinController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_perjadin.import.index', [
+        return view('dnp_perjadin.import.index', [
             'tagihan' => $tagihan,
             'notifikasi'=>Notification::Notif(),
             'base_url' => $base_url
@@ -338,7 +338,7 @@ class DnpPerjadinController extends Controller
                     'Durasi.required' => 'Durasi tidak boleh kosong',
                     'Nomor_Rekening.required' => 'Nomor Rekening tidak boleh kosong',
                     'Bank.required' => 'Bank tidak boleh kosong',
-                    'Nama_Rekening.required' => 'Kode Rekening tidak boleh kosong',
+                    'Nama_Rekening.required' => 'Nama Rekening tidak boleh kosong',
                     'Nomor_Rekening.numeric' => 'Nomor Rekening harus angka',
                     'NIP.numeric' => 'Nomor Rekening harus angka',
                 ],
@@ -413,7 +413,6 @@ class DnpPerjadinController extends Controller
                 $Errors->push($detail);
             }
         }
-
         
         if ($Errors->min('status') === true) {
             foreach ($data as $item) {
@@ -655,7 +654,7 @@ class DnpPerjadinController extends Controller
         $html2pdf = new Html2Pdf('L', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Perjadin');
-        $html2pdf->writeHTML(view('tagihan-blbi.dnp_perjadin.cetak.dnp',[
+        $html2pdf->writeHTML(view('dnp_perjadin.cetak.dnp',[
             'uraian'=>$tagihan->uraian,
             'ppk'=>$tagihan->ppk->nama,
             'data'=>$tagihan->dnpperjadin()->get()
@@ -694,7 +693,7 @@ class DnpPerjadinController extends Controller
         $html2pdf = new Html2Pdf('P', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Perjadin');
-        $html2pdf->writeHTML(view('tagihan-blbi.dnp_perjadin.cetak.kuitansi',[
+        $html2pdf->writeHTML(view('dnp_perjadin.cetak.kuitansi',[
             'ppk'=>$tagihan->ppk,
             'dnp'=>$dnp,
             // 'data'=>$tagihan->dnpperjadin()->get()
@@ -726,7 +725,7 @@ class DnpPerjadinController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_perjadin.index', [
+        return view('dnp_perjadin.index', [
             'tagihan' => $tagihan,
             'data' => $tagihan->dnpperjadin()->paginate(15),
             'notifikasi' => Notification::Notif(),
@@ -758,7 +757,7 @@ class DnpPerjadinController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_perjadin.create', [
+        return view('dnp_perjadin.create', [
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
@@ -908,6 +907,6 @@ class DnpPerjadinController extends Controller
             ]);
         }
 
-        return back()->with('berhasil', 'Data Payroll Berhasil Di Buat');
+        return back()->with('berhasil', 'Data Payroll Berhasil Di Generate');
     }
 }

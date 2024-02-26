@@ -64,47 +64,52 @@
                         <td class="border border-base-content text-center">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate($item->tanggal_spm) }}
+                            {{ indonesiaDate($item->tanggal_spm) }}
                         </td>
                         <td class="border border-base-content">
-                                {{ $item->nomor_sp2d }}
+                            {{ $item->nomor_sp2d }}
                         </td>
                         <td class="border border-base-content">
-                                {{ indonesiaDate($item->tanggal_sp2d) }}
+                            {{ indonesiaDate($item->tanggal_sp2d) }}
                         </td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
-                        <td class="border border-base-content text-right">Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">
+                            Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
                         <td class="border border-base-content text-center">
                             @switch($item->status)
                                 @case(0)
                                     Staf PPK
-                                    @break
+                                @break
+
                                 @case(2)
                                     Verifikator
-                                    @break
+                                @break
+
                                 @case(3)
                                     PPSPM
-                                    @break
+                                @break
+
                                 @case(4)
                                     Bendahara
-                                    @break
+                                @break
+
                                 @case(5)
                                     Arsip
-                                    @break
+                                @break
+
                                 @default
                             @endswitch
                         </td>
                         <td class="border border-base-content">
                             <div class="join">
                                 @if ($item->status > 4)
-                                @can('admin_satker', auth()->user()->id)
-                                    <a href="/arsip/{{ $item->id }}/tolak"
-                                        class="btn btn-xs btn-outline btn-error join-item"
-                                        onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
-                                @endcan
-                                    
+                                    @can('admin_satker', auth()->user()->id)
+                                        <a href="/arsip/{{ $item->id }}/tolak"
+                                            class="btn btn-xs btn-outline btn-error join-item"
+                                            onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
+                                    @endcan
                                 @endif
                                 @if ($item->dokumen->statusdnp === '1')
                                     <a href="/arsip/{{ $item->id }}/dnp"
@@ -112,6 +117,16 @@
                                 @endif
                                 <a href="/arsip/{{ $item->id }}/coa"
                                     class="btn btn-xs btn-outline btn-neutral join-item">COA</a>
+                                <a href="/arsip/{{ $item->id }}/payroll"
+                                    class="btn btn-xs btn-outline btn-neutral join-item">Payroll</a>
+                                @if ($item->dokumen->dnp_perjadin)
+                                    <a href="/arsip/{{ $item->id }}/dnp-perjadin"
+                                        class="btn btn-xs btn-neutral btn-outline join-item">DNP Perjadin</a>
+                                @endif
+                                @if ($item->dokumen->dnp_honor)
+                                    <a href="/arsip/{{ $item->id }}/dnp-honorarium"
+                                        class="btn btn-xs btn-neutral btn-outline join-item">DNP Honor</a>
+                                @endif
                                 @if ($item->dokumen->statusrekanan === '1')
                                     <a href="/arsip/{{ $item->id }}/rekanan"
                                         class="btn btn-xs btn-outline btn-neutral join-item">Rekanan</a>

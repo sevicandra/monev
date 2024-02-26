@@ -39,7 +39,7 @@ class DnpHonorariumController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_honor.index', [
+        return view('dnp_honor.index', [
             'tagihan' => $tagihan,
             'data' => $tagihan->dnpHonor()->get(),
             'notifikasi' => Notification::Notif(),
@@ -71,7 +71,7 @@ class DnpHonorariumController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_honor.create', [
+        return view('dnp_honor.create', [
             'notifikasi' => Notification::Notif(),
             'tagihan' => $tagihan,
             'base_url' => $base_url
@@ -182,7 +182,7 @@ class DnpHonorariumController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_honor.edit', [
+        return view('dnp_honor.edit', [
             'tagihan' => $tagihan,
             'data' => $dnp,
             'notifikasi' => Notification::Notif(),
@@ -328,7 +328,7 @@ class DnpHonorariumController extends Controller
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
-        return view('tagihan-blbi.dnp_honor.import', [
+        return view('dnp_honor.import', [
             'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
@@ -666,7 +666,7 @@ class DnpHonorariumController extends Controller
         $html2pdf = new Html2Pdf('L', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Honorarium');
-        $html2pdf->writeHTML(view('tagihan-blbi.dnp_honor.cetak',[
+        $html2pdf->writeHTML(view('dnp_honor.cetak',[
             'uraian'=>$tagihan->uraian,
             'ppk'=>$tagihan->ppk->nama,
             'data'=>$tagihan->dnpHonor()->get()
@@ -716,6 +716,6 @@ class DnpHonorariumController extends Controller
             ]);
         }
 
-        return back()->with('berhasil', 'Data Payroll Berhasil Di Buat');
+        return back()->with('berhasil', 'Data Payroll Berhasil Di Generate');
     }
 }
