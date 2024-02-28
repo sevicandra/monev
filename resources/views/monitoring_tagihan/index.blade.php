@@ -39,7 +39,7 @@
             </thead>
             <tbody>
                 @php
-                    $i = 1;
+                    $i = 1 + ($data->currentPage() - 1) * $data->perPage();
                 @endphp
                 @foreach ($data as $item)
                     <tr class="whitespace-nowrap">
