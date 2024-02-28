@@ -9,10 +9,16 @@
     </div>
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div>
+            <div class="join">
+                <a href="{{ Request::url() }}?search={{ request('search') }}&jnstagihan=" class="btn join-item btn-sm btn-neutral btn-outline @if(request('jnstagihan') != "0" && request('jnstagihan') != "1") btn-active @endif">All</a>
+                <a href="{{ Request::url() }}?search={{ request('search') }}&jnstagihan=0" class="btn join-item btn-sm btn-neutral btn-outline @if(request('jnstagihan') == "0") btn-active @endif">SPBy</a>
+                <a href="{{ Request::url() }}?search={{ request('search') }}&jnstagihan=1" class="btn join-item btn-sm btn-neutral btn-outline @if(request('jnstagihan') == "1") btn-active @endif">SPM</a>
+            </div>
         </div>
         <div>
             <form action="" method="get" autocomplete="off">
                 <div class="input-group">
+                    <input type="text" value="{{ request('jnstagihan') }}" name="jnstagihan" class="hidden">
                     <input type="text" name="search" class="input input-sm input-bordered join-item"
                         placeholder="nomor SPP/SPBy">
                     <button class="btn join-item btn-sm btn-neutral" type="submit">Cari</button>

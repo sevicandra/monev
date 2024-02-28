@@ -65,4 +65,18 @@ class Payroll extends Model
             return $data->where('nama', 'like', '%' . request('search') . '%');
         }
     }
+
+    public function scopeSearchTagihan($data)
+    {
+        if (request('search')) {
+            return $data->where('notagihan', 'like', '%' . request('search') . '%');
+        }
+    }
+
+    public function scopeFilterJenis($data)
+    {
+        if (request('jnstagihan')) {
+            return $data->where('jnstagihan', request('jnstagihan'));
+        }
+    }
 }
