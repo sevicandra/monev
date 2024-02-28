@@ -9,6 +9,7 @@ use App\Models\ppnrekanan;
 use App\Models\DnpPerjadin;
 use Illuminate\Support\Str;
 use App\Helper\Notification;
+use App\Models\berkasupload;
 use Illuminate\Http\Request;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Models\register_tagihan;
@@ -25,9 +26,9 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('PPK', auth()->user()->id)) {
-            $data = tagihan::tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
+            $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
         } else {
-            $data = tagihan::tagihansatker()->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
+            $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihansatker()->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
         }
         return view('monitoring_tagihan.index', [
             'data' => $data,
@@ -55,7 +56,7 @@ class MonitoringTagihanController extends Controller
         switch ($request->scope) {
             case 'dokumen':
                 return view('monitoring_tagihan.dokumen', [
-                    'data' => $monitoring_tagihan->berkasupload,
+                    'data' => berkasupload::with('berkas')->where('tagihan_id', $monitoring_tagihan->id)->get(),
                     'notifikasi' => Notification::Notif()
                 ]);
                 break;
@@ -88,7 +89,7 @@ class MonitoringTagihanController extends Controller
         }
 
         return view('monitoring_tagihan.coa', [
-            'data' => $tagihan->realisasi()->searchprogram()
+            'data' => $tagihan->realisasi()->with(['pagu'])->searchprogram()
                 ->searchkegiatan()
                 ->searchkro()
                 ->searchro()
@@ -189,7 +190,7 @@ class MonitoringTagihanController extends Controller
             }
         }
         return view('monitoring_tagihan.rekanan.pph.index', [
-            'data' => pphrekanan::mypph($tagihan, $rekanan)->get(),
+            'data' => pphrekanan::mypph($tagihan, $rekanan)->with(['objekpajak'])->get(),
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
             'notifikasi' => Notification::Notif()

@@ -20,7 +20,7 @@ class CleansingKkpController extends Controller
         }
 
         return view("data_cleansing.KKP.index",[
-            'data'=>tagihan::cleansingKKP()->search()->order()->paginate(15)->withQueryString(),
+            'data'=>tagihan::cleansingKKP()->with(['unit', 'ppk', 'dokumen', 'realisasi'])->search()->order()->paginate(15)->withQueryString(),
             'notifikasi'=>Notification::Notif()
         ]);
     }

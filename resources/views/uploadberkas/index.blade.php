@@ -29,7 +29,7 @@
                 @php
                     $i = 1;
                 @endphp
-                @foreach ($data->berkasupload as $item)
+                @foreach ($data as $item)
                     <tr>
                         <td class="text-center border border-base-content">{{ $i }}</td>
                         <td class="border border-base-content">{{ optional($item->berkas)->namaberkas }}</td>

@@ -23,6 +23,11 @@ class RefPPK extends Model
         return $this->belongsToMany(pagu::class, 'mapingpaguppks', 'user_id', 'pagu_id', 'nip', 'id')->where('tahun', session()->get('tahun'));
     }
 
+    public function tagihan()
+    {
+        return $this->hasMany(tagihan::class, 'ppk_id', 'nip')->where('tahun', session()->get('tahun'));
+    }
+
     public function realisasippk()
     {
         $realisasi= realisasi::join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')->sp2d()
@@ -31,7 +36,7 @@ class RefPPK extends Model
             return $realisasi;
         }
         $real = new Collection();
-        
+
         $real->push((object)['realisasi' => '0',
         ]);
 
@@ -40,29 +45,31 @@ class RefPPK extends Model
 
     public function sspbppk()
     {
-        $sspb= sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')
-        ->join('ref_ppks', 'mapingpaguppks.user_id', '=', 'ref_ppks.nip')->where('ref_ppks.nip', $this->nip);
+        $sspb = sspb::join('pagus', 'pagus.id', '=', 'sspbs.pagu_id')->where('tahun', session()->get('tahun'))->join('mapingpaguppks', 'pagus.id', '=', 'mapingpaguppks.pagu_id')
+            ->join('ref_ppks', 'mapingpaguppks.user_id', '=', 'ref_ppks.nip')->where('ref_ppks.nip', $this->nip);
 
         if ($sspb->first()) {
             return $sspb;
         }
         $real = new Collection();
-        
-        $real->push((object)['nominal_sspb' => '0',
+
+        $real->push((object)[
+            'nominal_sspb' => '0',
         ]);
 
         return $real;
     }
 
-    public function scopePPKsatker($data){
+    public function scopePPKsatker($data)
+    {
         return $data->where('satker', auth()->user()->satker);
     }
 
     public function scopeSearch($data)
     {
         if (request('search')) {
-            return $data    ->where('nama', 'like', '%'.request('search').'%')
-                            ->orwhere('nip', 'like', '%'.request('search').'%');
+            return $data->where('nama', 'like', '%' . request('search') . '%')
+                ->orwhere('nip', 'like', '%' . request('search') . '%');
         }
     }
 
@@ -78,7 +85,7 @@ class RefPPK extends Model
 
     public function scopeStafppk($data)
     {
-        return $data->whereHas('stafppks', function($val){
+        return $data->whereHas('stafppks', function ($val) {
             $val->where('nip', auth()->user()->nip)->where('satker', auth()->user()->satker);
         });
     }

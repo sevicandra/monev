@@ -21,7 +21,7 @@ class PaguController extends Controller
         }
 
         return view('pagu.index', [
-            'data' => pagu::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->Order()->searchprogram()
+            'data' => pagu::with(['unit'])->where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->Order()->searchprogram()
                 ->searchkegiatan()
                 ->searchkro()
                 ->searchro()

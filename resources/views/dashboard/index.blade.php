@@ -67,7 +67,8 @@
                         <tr>
                             <td class="border border-base-content text-center">3</td>
                             <td class="border border-base-content">Belanja Modal</td>
-                            <td class="border border-base-content text-end">{{ number_format($belanjamodal->sum('anggaran'), 2, ',', '.') }}
+                            <td class="border border-base-content text-end">
+                                {{ number_format($belanjamodal->sum('anggaran'), 2, ',', '.') }}
                             </td>
                             <td class="border border-base-content text-end">
                                 {{ number_format($realisasibelanjamodal->sum('realisasi') - $realisasibelanjamodal->sum('nominal_sspb'), 2, ',', '.') }}
@@ -89,10 +90,37 @@
             <div class="mb-3 mr-1 ml-1  lg:flex lg:flex-col overflow-y-auto">
                 <div class="text-center text-lg font-bold">Realisasi Per Unit</div>
                 @foreach ($unit as $item)
+                    @php
+                        $realisasi = 0;
+                        if (request('sp2d') === 'ya') {
+                            foreach ($item->pagu as $detailPagu) {
+                                foreach ($detailPagu->realisasi as $detailRealisasi) {
+                                    if ($detailRealisasi->tagihan->nomor_sp2d != null && $detailRealisasi->tagihan->tanggal_sp2d != null) {
+                                        $realisasi += $detailRealisasi->realisasi;
+                                    }
+                                }
+                                foreach ($detailPagu->sspb as $detailSSPB) {
+                                    if ($detailSSPB->tagihan->nomor_sp2d != null && $detailSSPB->tagihan->tanggal_sp2d != null) {
+                                        $realisasi -= $detailSSPB->nominal_sspb;
+                                    }
+                                }
+                            }
+                        } else {
+                            foreach ($item->pagu as $detailPagu) {
+                                foreach ($detailPagu->realisasi as $detailRealisasi) {
+                                    $realisasi += $detailRealisasi->realisasi;
+                                }
+                                foreach ($detailPagu->sspb as $detailSSPB) {
+                                    $realisasi -= $detailSSPB->nominal_sspb;
+                                }
+                            }
+                        }
+                    @endphp
                     <div class="tooltip w-full border-b"
-                        data-tip="{{ (($item->realisasi()->sum('realisasi') - $item->sspb()->sum('nominal_sspb')) * 100) / $item->pagu()->sum('anggaran') }}%">
+                        data-tip="{{ $realisasi * 100 / $item->pagu->sum('anggaran') }}%"
+                    >
                         <progress class="progress progress-info w-full"
-                            value="{{ (($item->realisasi()->sum('realisasi') - $item->sspb()->sum('nominal_sspb')) * 100) / $item->pagu()->sum('anggaran') }}"
+                            value="{{ $realisasi * 100 / $item->pagu->sum('anggaran') }}"
                             max="100"></progress>
                         <div class="text-start">
                             {{ $item->namaunit }}
@@ -112,8 +140,34 @@
                         <td class="text-start">{{ $item->nama }}</td>
                         <td class="text-end">
                             @if ($item->paguppk->sum('anggaran') != 0)
+                                @php
+                                    $realisasi = 0;
+                                    if (request('sp2d') === 'ya') {
+                                        foreach ($item->paguppk as $detailPagu) {
+                                            foreach ($detailPagu->realisasi as $detailRealisasi) {
+                                                if ($detailRealisasi->tagihan->nomor_sp2d != null && $detailRealisasi->tagihan->tanggal_sp2d != null) {
+                                                    $realisasi += $detailRealisasi->realisasi;
+                                                }
+                                            }
+                                            foreach ($detailPagu->sspb as $detailSSPB) {
+                                                if ($detailSSPB->tagihan->nomor_sp2d != null && $detailSSPB->tagihan->tanggal_sp2d != null) {
+                                                    $realisasi -= $detailSSPB->nominal_sspb;
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        foreach ($item->paguppk as $detailPagu) {
+                                            foreach ($detailPagu->realisasi as $detailRealisasi) {
+                                                $realisasi += $detailRealisasi->realisasi;
+                                            }
+                                            foreach ($detailPagu->sspb as $detailSSPB) {
+                                                $realisasi -= $detailSSPB->nominal_sspb;
+                                            }
+                                        }
+                                    }
+                                @endphp
                                 <div class="badge badge-info">
-                                    {{ number_format((($item->realisasippk()->sum('realisasi') - $item->realisasippk()->sum('nominal_sspb')) * 100) / $item->paguppk->sum('anggaran'), 2, ',', '.') }}%
+                                    {{ number_format(($realisasi * 100) / $item->paguppk->sum('anggaran'), 2, ',', '.') }}%
                                 </div>
                             @else
                                 <div class="badge badge-info">
@@ -129,43 +183,4 @@
 @endsection
 
 @section('foot')
-    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- bar chart -->
-    <script>
-        const ctx = document.getElementById("chart").getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: [
-                    @php
-                        foreach ($unit as $item) {
-                            echo '"' . $item->namaunit . '",';
-                        }
-                    @endphp
-                ],
-                datasets: [{
-                    label: 'Realisasi per Unit',
-                    backgroundColor: 'rgba(161, 198, 247, 1)',
-                    borderColor: 'rgb(47, 128, 237)',
-                    data: [
-                        @php
-                            foreach ($unit as $item) {
-                                echo '"' . (($item->realisasi()->sum('realisasi') - $item->sspb()->sum('nominal_sspb')) * 100) / $item->pagu()->sum('anggaran') . '",';
-                            }
-                        @endphp
-                    ],
-
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                        }
-                    }]
-                }
-            },
-        });
-    </script> --}}
 @endsection

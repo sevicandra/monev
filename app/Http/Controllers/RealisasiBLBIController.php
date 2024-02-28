@@ -21,7 +21,7 @@ class RealisasiBLBIController extends Controller
         }
 
         return view('tagihan-blbi.realisasi.index', [
-            'data' => $tagihan->realisasi()->searchprogram()
+            'data' => $tagihan->realisasi()->with(['pagu'])->searchprogram()
                 ->searchkegiatan()
                 ->searchkro()
                 ->searchro()

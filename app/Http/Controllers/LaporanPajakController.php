@@ -30,7 +30,7 @@ class LaporanPajakController extends Controller
             abort(403);
         }
         return view('laporan_pajak.pph', [
-            'data' => pphrekanan::Pphunit()->tahunpajak()->masapajak()->get(),
+            'data' => pphrekanan::with(['tagihan', 'rekanan', 'objekpajak'])->Pphunit()->tahunpajak()->masapajak()->get(),
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -78,7 +78,7 @@ class LaporanPajakController extends Controller
             ->setCellValue('N1', 'Penghasilan Bruto');
         $row = 2;
         $no = 1;
-        foreach (pphrekanan::Pphunit()->tahunpajak()->masapajak()->get() as $key) {
+        foreach (pphrekanan::with(['tagihan', 'rekanan', 'objekpajak'])->Pphunit()->tahunpajak()->masapajak()->get() as $key) {
             if ($key->tagihan->jnstagihan === '1') {
                 $B = $key->tagihan->notagihan;
             } else {
@@ -174,7 +174,7 @@ class LaporanPajakController extends Controller
             abort(403);
         }
         return view('laporan_pajak.ppn', [
-            'data' => ppnrekanan::Ppnunit()->tahunpajak()->masapajak()->get(),
+            'data' => ppnrekanan::with(['tagihan'])->Ppnunit()->tahunpajak()->masapajak()->get(),
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -222,7 +222,7 @@ class LaporanPajakController extends Controller
             ->setCellValue('N1', 'Penghasilan Bruto');
         $row = 2;
         $no = 1;
-        foreach (ppnrekanan::Ppnunit()->tahunpajak()->masapajak()->get() as $key) {
+        foreach (ppnrekanan::with(['tagihan'])->Ppnunit()->tahunpajak()->masapajak()->get() as $key) {
             if ($key->tagihan->jnstagihan === '1') {
                 $B = $key->tagihan->notagihan;
             } else {

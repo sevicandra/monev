@@ -26,7 +26,7 @@ class CleansingTagihanController extends Controller
             abort(403);
         }
         return view('data_cleansing.tagihan.detail', [
-            'data' => tagihan::CleansingDetailTagihan($jns, $nomor)->paginate(15)->withQueryString(),
+            'data' => tagihan::CleansingDetailTagihan($jns, $nomor)->with(['unit', 'ppk', 'dokumen', 'realisasi'])->paginate(15)->withQueryString(),
             'notifikasi'=>Notification::Notif()
         ]);
     }

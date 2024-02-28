@@ -53,7 +53,7 @@ class VerifikasiController extends Controller
             abort(403);
         }
         return view('uploadberkas.index',[
-            'data'=>$verifikasi,
+            'data'=>$verifikasi->berkasupload()->with('berkas')->get(),
             'back'=>'/verifikasi',
             'upload'=>'/verifikasi/'.$verifikasi->id.'/upload',
             'delete'=>'/verifikasi/'.$verifikasi->id.'/upload/',

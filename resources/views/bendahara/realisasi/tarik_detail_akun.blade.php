@@ -66,7 +66,8 @@
                         <td class="border border-base-content text-center">{{ $item->komponen }}</td>
                         <td class="border border-base-content text-center">{{ $item->subkomponen }}</td>
                         <td class="border border-base-content text-center">{{ $item->akun }}</td>
-                        <td class="border border-base-content text-right">Rp{{ number_format($item->anggaran, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">
+                            Rp{{ number_format($item->anggaran, 2, ',', '.') }}</td>
                         <td class="border border-base-content text-right">
                             Rp{{ number_format($item->realisasi->sum('realisasi') - $item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
                         </td>
@@ -74,10 +75,10 @@
                             Rp{{ number_format($item->anggaran - $item->realisasi->sum('realisasi') + $item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content">
-                                <form action="/bendahara/{{ $data->id }}/coa/{{ $item->id }}" method="post">
-                                    @csrf
-                                    <button class="btn btn-xs btn-outline btn-neutral">Pilih</button>
-                                </form>
+                            <form action="/bendahara/{{ $data->id }}/coa/{{ $item->id }}" method="post">
+                                @csrf
+                                <button class="btn btn-xs btn-outline btn-neutral">Pilih</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

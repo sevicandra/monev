@@ -19,7 +19,7 @@ class CleansingSpbyController extends Controller
             abort(403);
         }
         return view("data_cleansing.SPBy.index", [
-            'data' => tagihan::cleansingSPBy()->search()->order()->paginate(15)->withQueryString(),
+            'data' => tagihan::cleansingSPBy()->with(['unit', 'ppk', 'dokumen', 'realisasi'])->search()->order()->paginate(15)->withQueryString(),
             'notifikasi'=>Notification::Notif()
         ]);
     }

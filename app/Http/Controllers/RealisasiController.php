@@ -21,7 +21,7 @@ class RealisasiController extends Controller
         }
 
         return view('tagihan.realisasi.index', [
-            'data' => $tagihan->realisasi()->searchprogram()
+            'data' => $tagihan->realisasi()->with(['pagu'])->searchprogram()
                 ->searchkegiatan()
                 ->searchkro()
                 ->searchro()

@@ -28,4 +28,9 @@ class sspb extends Model
     {
         return $this->belongsTo(realisasi::class);
     }
+
+    public function tagihan()
+    {
+        return $this->belongsTo(tagihan::class);
+    }
 }

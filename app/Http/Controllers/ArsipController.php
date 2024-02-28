@@ -9,6 +9,7 @@ use App\Models\ppnrekanan;
 use App\Models\DnpPerjadin;
 use Illuminate\Support\Str;
 use App\Helper\Notification;
+use App\Models\berkasupload;
 use Illuminate\Http\Request;
 use Spipu\Html2Pdf\Html2Pdf;
 use Illuminate\Support\Facades\Gate;
@@ -24,7 +25,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.index', [
-            'data' => tagihan::tagihansatker()->orderby('notagihan', 'desc')->search()->order()->paginate(15)->withQueryString(),
+            'data' => tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihansatker()->orderby('notagihan', 'desc')->search()->order()->paginate(15)->withQueryString(),
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -40,7 +41,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.dokumen', [
-            'data' => $tagihan,
+            'data' => berkasupload::with('berkas')->where('tagihan_id', $tagihan->id)->get(),
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -56,7 +57,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.coa', [
-            'data' => $tagihan->realisasi()->searchprogram()
+            'data' => $tagihan->realisasi()->with(['pagu'])->searchprogram()
                 ->searchkegiatan()
                 ->searchkro()
                 ->searchro()

@@ -63,6 +63,11 @@ class tagihan extends Model
         return $this->hasMany(realisasi::class);
     }
 
+    public function sspb()
+    {
+        return $this->hasMany(sspb::class);
+    }
+
     public function dnp()
     {
         return $this->hasMany(dnp::class);

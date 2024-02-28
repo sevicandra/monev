@@ -114,7 +114,7 @@
                     </tr>
                     @if ($item->catatan)
                         <tr>
-                            <td colspan="8" class="border border-base-content text-error py-0 border-dashed">
+                            <td colspan="9" class="border border-base-content text-error py-0 border-dashed">
                                 Catatan: {{ $item->catatan }}
                             </td>
                         </tr>

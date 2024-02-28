@@ -44,23 +44,55 @@
                             @endphp
                         </td>
                         <td class="border border-base-content text-end">
-                            {{ number_format($item->realisasippk()->sum('realisasi'), 2, ',', '.') }}
                             @php
-                                $realisasi += $item->realisasippk()->sum('realisasi');
+                                $realisasiPpk = 0;
+                                if (request('sp2d') === 'ya') {
+                                    foreach ($item->paguppk as $detailPagu) {
+                                        foreach ($detailPagu->realisasi as $detailRealisasi) {
+                                            if ($detailRealisasi->tagihan->nomor_sp2d != null && $detailRealisasi->tagihan->tanggal_sp2d != null) {
+                                                $realisasiPpk += $detailRealisasi->realisasi;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    foreach ($item->paguppk as $detailPagu) {
+                                        foreach ($detailPagu->realisasi as $detailRealisasi) {
+                                            $realisasiPpk += $detailRealisasi->realisasi;
+                                        }
+                                    }
+                                }
+                                $realisasi += $realisasiPpk;
                             @endphp
+                            {{ number_format($realisasiPpk, 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content text-end">
-                            {{ number_format($item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}
                             @php
-                                $pengembalian += $item->sspbppk()->sum('nominal_sspb');
+                                $pengembalianPpk = 0;
+                                if (request('sp2d') === 'ya') {
+                                    foreach ($item->paguppk as $detailPagu) {
+                                        foreach ($detailPagu->sspb as $detailSSPB) {
+                                            if ($detailSSPB->tagihan->nomor_sp2d != null && $detailSSPB->tagihan->tanggal_sp2d != null) {
+                                                $pengembalianPpk += $detailSSPB->nominal_sspb;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    foreach ($item->paguppk as $detailPagu) {
+                                        foreach ($detailPagu->sspb as $detailSSPB) {
+                                            $pengembalianPpk += $detailSSPB->nominal_sspb;
+                                        }
+                                    }
+                                }
+                                $pengembalian += $pengembalianPpk;
                             @endphp
+                            {{ number_format($pengembalianPpk, 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content text-end">
                             {{ number_format($item->paguppk->sum('anggaran') - $item->realisasippk()->sum('realisasi') + $item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content text-center">
                             @if ($item->paguppk->sum('anggaran') != 0)
-                                {{ number_format((($item->realisasippk()->sum('realisasi') - $item->sspbppk()->sum('nominal_sspb')) * 100) / $item->paguppk->sum('anggaran'), 2, ',', '.') }}%
+                                {{ number_format((($realisasiPpk - $pengembalianPpk) * 100) / $item->paguppk->sum('anggaran'), 2, ',', '.') }}%
                             @else
                                 0%
                             @endif
@@ -75,7 +107,8 @@
                     <th class="border border-base-content text-end"> {{ number_format($pagu, 2, ',', '.') }} </th>
                     <th class="border border-base-content text-end"> {{ number_format($realisasi, 2, ',', '.') }} </th>
                     <th class="border border-base-content text-end"> {{ number_format($pengembalian, 2, ',', '.') }} </th>
-                    <th class="border border-base-content text-end">{{ number_format($pagu + $realisasi - $pengembalian, 2, ',', '.') }}</th>
+                    <th class="border border-base-content text-end">
+                        {{ number_format($pagu + $realisasi - $pengembalian, 2, ',', '.') }}</th>
                     <th class="border border-base-content text-center">
                         @if ($pagu != 0)
                             {{ number_format((($realisasi - $pengembalian) * 100) / $pagu, 2, ',', '.') }}%

@@ -19,7 +19,7 @@ class CleansingSppController extends Controller
             abort(403);
         }
         return view("data_cleansing.SPP.index", [
-            'data' => tagihan::cleansingSPP()->search()->order()->paginate(15)->withQueryString(),
+            'data' => tagihan::cleansingSPP()->with(['unit', 'ppk', 'dokumen', 'realisasi'])->search()->order()->paginate(15)->withQueryString(),
             'notifikasi'=>Notification::Notif()
         ]);
     }

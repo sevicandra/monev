@@ -35,7 +35,7 @@ class PpspmController extends Controller
 
 
         return view('uploadberkas.index', [
-            'data' => $ppspm,
+            'data' => $ppspm->berkasupload()->with('berkas')->get(),
             'back' => '/ppspm',
             'upload' => '/ppspm/' . $ppspm->id . '/upload',
             'delete' => '/ppspm/' . $ppspm->id . '/upload/',

@@ -33,9 +33,8 @@ class BendaharaController extends Controller
         if (! Gate::allows('Bendahara', auth()->user()->id)) {
             abort(403);
         }
-
         return view('bendahara.index',[
-           'data'=>tagihan::tagihansatker()->bendahara()->search()->order()->paginate(15)->withQueryString(),
+           'data'=>tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihansatker()->bendahara()->search()->order()->paginate(15)->withQueryString(),
            'notifikasi'=>Notification::Notif()
         ]);
     }
@@ -51,7 +50,7 @@ class BendaharaController extends Controller
         }
 
         return view('bendahara.coa',[
-            'data'=>$bendahara->realisasi() ->searchprogram()  
+            'data'=>$bendahara->realisasi()->with(['pagu']) ->searchprogram()  
                                             ->searchkegiatan()
                                             ->searchkro()
                                             ->searchro()
@@ -79,7 +78,7 @@ class BendaharaController extends Controller
         
         return view('bendahara.realisasi.tarik_detail_akun',[
             'data' => $tagihan,
-            'pagu' => pagu::Pagusatker()->paguppk($tagihan->ppk_id)->PaguUnit($tagihan->kodeunit)->searchprogram()
+            'pagu' => pagu::with(['realisasi', 'sspb'])->Pagusatker()->paguppk($tagihan->ppk_id)->PaguUnit($tagihan->kodeunit)->searchprogram()
                 ->searchkegiatan()
                 ->searchkro()
                 ->searchro()
@@ -523,7 +522,7 @@ class BendaharaController extends Controller
         }
 
         return view('uploadberkas.index',[
-            'data'=>$tagihan,
+            'data'=>$tagihan->berkasupload()->with('berkas')->get(),
             'back'=>'/bendahara',
             'upload'=>'/bendahara/'.$tagihan->id.'/upload',
             'delete'=>'/bendahara/'.$tagihan->id.'/upload/',

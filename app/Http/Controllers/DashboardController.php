@@ -21,8 +21,8 @@ class DashboardController extends Controller
             'realisasibelanjapegawai'=>realisasi::sp2d()->realisaijenisbelanja('51')->get(),
             'realisasibelanjabarang'=>realisasi::sp2d()->realisaijenisbelanja('52')->get(),
             'realisasibelanjamodal'=>realisasi::sp2d()->realisaijenisbelanja('53')->get(),
-            'ppk'=>RefPPK::PPKsatker()->whereHas('paguppk')->get(),
-            'unit'=>unit::myunit()->whereHas('pagu')->get(),
+            'ppk'=>RefPPK::with(['paguppk', 'paguppk.realisasi.tagihan', 'paguppk.sspb.tagihan'])->PPKsatker()->whereHas('paguppk')->get(),
+            'unit'=>unit::myunit()->with(['pagu', 'pagu.realisasi.tagihan', 'pagu.sspb.tagihan'])->whereHas('pagu')->get(),
             'notifikasi'=>Notification::Notif()
         ]);
     }
@@ -30,7 +30,7 @@ class DashboardController extends Controller
     public function unit_index()
     {
         return view('dashboard.unit.index',[
-            'unit'=>unit::myunit()->whereHas('pagu')->get(),
+            'unit'=>unit::myunit()->with(['pagu', 'pagu.realisasi.tagihan', 'pagu.sspb.tagihan'])->whereHas('pagu')->get(),
             'notifikasi'=>Notification::Notif()
         ]);
     }
@@ -75,7 +75,7 @@ class DashboardController extends Controller
     public function ppk_index()
     {
         return view('dashboard.ppk.index',[
-            'ppk'=>RefPPK::PPKsatker()->whereHas('paguppk')->get(),
+            'ppk'=>RefPPK::with(['paguppk', 'paguppk.realisasi.tagihan', 'paguppk.sspb.tagihan'])->PPKsatker()->whereHas('paguppk')->get(),
             'notifikasi'=>Notification::Notif()
         ]);
     }
