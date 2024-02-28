@@ -236,7 +236,7 @@
             </li>
             {{--  Akhir Admin  --}}
         @endcanany
-        <li class="">Version : 2.6</li>
+        <li class="">Version : 2.7</li>
     </menu>
 </div>
 {{--  Halaman Utama  --}}
