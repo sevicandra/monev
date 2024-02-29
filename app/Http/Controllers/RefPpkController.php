@@ -11,7 +11,7 @@ class RefPpkController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
         return view('referensi.ref_ppk.index', [

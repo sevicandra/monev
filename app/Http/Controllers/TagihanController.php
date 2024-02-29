@@ -29,7 +29,7 @@ class TagihanController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('tagihan.index', [
@@ -40,7 +40,7 @@ class TagihanController extends Controller
 
     public function create()
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('tagihan.create', [
@@ -53,7 +53,7 @@ class TagihanController extends Controller
 
     public function store(Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         $request->validate([
@@ -102,7 +102,7 @@ class TagihanController extends Controller
 
     public function edit(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -124,7 +124,7 @@ class TagihanController extends Controller
 
     public function update(Request $request, tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -167,7 +167,7 @@ class TagihanController extends Controller
 
     public function destroy(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -198,7 +198,7 @@ class TagihanController extends Controller
 
     public function uploadindex(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -217,7 +217,7 @@ class TagihanController extends Controller
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -272,7 +272,7 @@ class TagihanController extends Controller
 
     public function kirim(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -328,7 +328,7 @@ class TagihanController extends Controller
 
     public function showrekanan(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -347,7 +347,7 @@ class TagihanController extends Controller
 
     public function createrekanan(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -370,7 +370,7 @@ class TagihanController extends Controller
 
     public function storerekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -387,7 +387,7 @@ class TagihanController extends Controller
 
     public function deleterekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -411,7 +411,7 @@ class TagihanController extends Controller
 
     public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -431,7 +431,7 @@ class TagihanController extends Controller
 
     public function createppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -451,7 +451,7 @@ class TagihanController extends Controller
 
     public function storeppnrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -482,7 +482,7 @@ class TagihanController extends Controller
 
     public function editppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -502,7 +502,7 @@ class TagihanController extends Controller
 
     public function updateppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -530,7 +530,7 @@ class TagihanController extends Controller
 
     public function deleteppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -550,7 +550,7 @@ class TagihanController extends Controller
 
     public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -570,7 +570,7 @@ class TagihanController extends Controller
 
     public function createpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -591,7 +591,7 @@ class TagihanController extends Controller
 
     public function storepphrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -626,7 +626,7 @@ class TagihanController extends Controller
 
     public function editpphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -647,7 +647,7 @@ class TagihanController extends Controller
 
     public function updatepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -677,7 +677,7 @@ class TagihanController extends Controller
 
     public function deletepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -697,7 +697,7 @@ class TagihanController extends Controller
 
     public function payroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -716,7 +716,7 @@ class TagihanController extends Controller
 
     public function createPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -734,7 +734,7 @@ class TagihanController extends Controller
 
     public function storePayroll(tagihan $tagihan, request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -788,7 +788,7 @@ class TagihanController extends Controller
 
     public function editPayroll(tagihan $tagihan, Payroll $payroll)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -812,7 +812,7 @@ class TagihanController extends Controller
 
     public function updatePayroll(tagihan $tagihan, Payroll $payroll, Request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -871,7 +871,7 @@ class TagihanController extends Controller
 
     public function importHrisPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -895,7 +895,7 @@ class TagihanController extends Controller
 
     public function importMonevPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -915,7 +915,7 @@ class TagihanController extends Controller
 
     public function importExcelPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -932,7 +932,7 @@ class TagihanController extends Controller
 
     public function templateExcelPayroll()
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -1020,7 +1020,7 @@ class TagihanController extends Controller
 
     public function storeExcelPayroll(Request $request, tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -1222,7 +1222,7 @@ class TagihanController extends Controller
 
     public function storeImportPayroll(tagihan $tagihan, request $request)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -1258,7 +1258,7 @@ class TagihanController extends Controller
 
     public function deletePayroll(tagihan $tagihan, Payroll $payroll)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -1274,7 +1274,7 @@ class TagihanController extends Controller
 
     public function cetakPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {

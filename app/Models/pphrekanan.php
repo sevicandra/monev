@@ -44,7 +44,7 @@ class pphrekanan extends Model
     public function scopePphunit($data)
     {
         return $data->wherehas('tagihan', function($val){
-            $val->where('kodesatker', auth()->user()->satker);
+            $val->where('kodesatker', session()->get('kdsatker'));
         });
     }
 

@@ -34,7 +34,7 @@ class rekanan extends Model
 
     public function scopeRekanansatker($data)
     {
-        return $data->where('kodesatker', auth()->user()->satker);
+        return $data->where('kodesatker', session()->get('kdsatker'));
     }
 
     public function scopeSearch($data)

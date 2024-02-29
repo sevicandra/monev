@@ -16,7 +16,7 @@ class LaporanPajakController extends Controller
 {
     public function index()
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
         return view('laporan_pajak.index', [
@@ -26,7 +26,7 @@ class LaporanPajakController extends Controller
 
     public function showpph()
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
         return view('laporan_pajak.pph', [
@@ -37,7 +37,7 @@ class LaporanPajakController extends Controller
 
     public function cetakpph()
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
         $textcenter = [
@@ -170,7 +170,7 @@ class LaporanPajakController extends Controller
 
     public function showppn()
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
         return view('laporan_pajak.ppn', [
@@ -181,7 +181,7 @@ class LaporanPajakController extends Controller
 
     public function cetakppn()
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
         $textcenter = [

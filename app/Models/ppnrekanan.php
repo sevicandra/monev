@@ -40,7 +40,7 @@ class ppnrekanan extends Model
     public function scopePpnunit($data)
     {
         return $data->wherehas('tagihan', function($val){
-            $val->where('kodesatker', auth()->user()->satker);
+            $val->where('kodesatker', session()->get('kdsatker'));
         });
     }
 

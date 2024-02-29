@@ -24,12 +24,12 @@
         </li>
         {{--  Akhir Halaman Utama  --}}
         {{--  Pejabat Pembuat Komitmen  --}}
-        @canany(['PPK', 'Staf_PPK'], auth()->user()->id)
+        @canany(['PPK', 'Staf_PPK'])
             <li>
                 <details open>
                     <summary>Pejabat Komitmen</summary>
                     <ul>
-                        @can('Staf_PPK', auth()->user()->id)
+                        @can('Staf_PPK')
                             <li>
                                 <a href="/tagihan">
                                     Data Tagihan
@@ -73,7 +73,7 @@
                             </a>
                         </li> --}}
                         {{--  Akhir Pejabat Pembuat Komitmen  --}}
-                        @can('Staf_PPK', auth()->user()->id)
+                        @can('Staf_PPK')
                             <li>
                                 <details close>
                                     <summary>Referensi</summary>
@@ -89,13 +89,13 @@
             </li>
         @endcanany
 
-        @canany(['PPSPM', 'Bendahara', 'Validator'], auth()->user()->id)
+        @canany(['PPSPM', 'Bendahara', 'Validator'])
             {{--  Bagian Keuangan  --}}
             <li>
                 <details open>
                     <summary>Bagian Keuangan</summary>
                     <ul>
-                        @can('Validator', auth()->user()->id)
+                        @can('Validator')
                             <li>
                                 <a href="/verifikasi">
                                     Verifikasi
@@ -109,7 +109,7 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('ValidatorKKP', auth()->user()->id)
+                        @can('ValidatorKKP')
                             <li>
                                 <a href="/verifikasi-kkp">
                                     Verifikasi KKP
@@ -123,7 +123,7 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('PPSPM', auth()->user()->id)
+                        @can('PPSPM')
                             <li>
                                 <a href="/ppspm">
                                     PPSPM
@@ -137,7 +137,7 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('Bendahara', auth()->user()->id)
+                        @can('Bendahara')
                             <li>
                                 <a href="/payroll">
                                     Payroll
@@ -183,26 +183,26 @@
             </li>
             {{--  Akhir Bagian Keuangan  --}}
         @endcanany
-        @canany(['admin_satker', 'sys_admin', 'KPA', 'Staf_KPA'], auth()->user()->id)
+        @canany(['admin_satker', 'sys_admin', 'KPA', 'Staf_KPA'])
             {{--  Admin  --}}
             <li>
                 <details close>
                     <summary>Referensi</summary>
                     <ul>
-                        @canany(['sys_admin', 'admin_satker'], auth()->user()->id)
+                        @canany(['sys_admin', 'admin_satker'])
                             <li><a href="/user">Users</a></li>
                             <li><a href="/nomor">Nomor</a></li>
                         @endcan
-                        @can('admin_satker', auth()->user()->id)
+                        @can('admin_satker')
                             <li><a href="/unit">Unit</a></li>
                             <li><a href="/maping-ppk">Maping PPK</a></li>
                             <li><a href="/maping-staf-ppk">Maping Staf PPK</a></li>
                         @endcan
 
-                        @canany(['Staf_KPA', 'KPA'], auth()->user()->id)
+                        @canany(['Staf_KPA', 'KPA'])
                             <li><a href="/pagu">Pagu</a></li>
                         @endcanany
-                        @can('sys_admin', auth()->user()->id)
+                        @can('sys_admin')
                             <li><a href="/satker">Satuan Kerja</a></li>
                             <li><a href="/dokumen">Jenis Dokumen</a></li>
                             <li><a href="/tahun">Tahun Anggaran</a></li>
@@ -217,13 +217,13 @@
             </li>
             {{--  Akhir Admin  --}}
         @endcanany
-        @canany(['admin_satker', 'sys_admin'], auth()->user()->id)
+        @canany(['admin_satker', 'sys_admin'])
             {{--  Admin  --}}
             <li>
                 <details close>
                     <summary>Data Cleansing</summary>
                     <ul>
-                        @canany(['sys_admin', 'admin_satker'], auth()->user()->id)
+                        @canany(['sys_admin', 'admin_satker'])
                             <li><a href="/cleansing/tagihan">Tagihan</a></li>
                             <li><a href="/cleansing/sp2d">SP2D</a></li>
                             <li><a href="/cleansing/spby">SPBy</a></li>

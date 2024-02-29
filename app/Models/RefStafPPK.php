@@ -34,7 +34,7 @@ class RefStafPPK extends Model
     {
         return $this->where([
             'nip'=>auth()->user()->nip,
-            'satker'=>auth()->user()->satker
+            'satker'=>session()->get('kdsatker')
         ])->first()->ppk()->pluck('nip')->toArray();
     }
 
@@ -48,7 +48,7 @@ class RefStafPPK extends Model
 
     public function scopeSatker($data)
     {
-        return $data->where('satker', auth()->user()->satker);
+        return $data->where('satker', session()->get('kdsatker'));
     }
 
     public function unit()
@@ -65,7 +65,7 @@ class RefStafPPK extends Model
     {
         return $this->where([
             'nip'=>auth()->user()->nip,
-            'satker'=>auth()->user()->satker
+            'satker'=>session()->get('kdsatker')
         ])->first()->unit()->pluck('kodeunit')->toArray();
     }
 

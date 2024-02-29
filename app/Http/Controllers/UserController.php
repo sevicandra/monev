@@ -11,10 +11,10 @@ class UserController extends Controller
 {
 
     public function index(){
-        if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (! Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             return view('referensi.user.index',[
                 'data'=>User::pegawaisatker()->search()->paginate(15)->withQueryString(),
                 'notifikasi'=>Notification::Notif()
@@ -27,7 +27,7 @@ class UserController extends Controller
     }
 
     public function create(){
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.user.create',[
@@ -36,7 +36,7 @@ class UserController extends Controller
     }
     
     public function store(Request $request){
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $messages = [
@@ -64,7 +64,7 @@ class UserController extends Controller
 
     public function edit(user $user)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.user.update',[
@@ -75,7 +75,7 @@ class UserController extends Controller
 
     public function update(Request $request, user $user)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $messages = [
@@ -99,7 +99,7 @@ class UserController extends Controller
 
     public function destroy(user $user)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $user->delete();

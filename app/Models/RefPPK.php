@@ -62,7 +62,7 @@ class RefPPK extends Model
 
     public function scopePPKsatker($data)
     {
-        return $data->where('satker', auth()->user()->satker);
+        return $data->where('satker', session()->get('kdsatker'));
     }
 
     public function scopeSearch($data)
@@ -86,7 +86,7 @@ class RefPPK extends Model
     public function scopeStafppk($data)
     {
         return $data->whereHas('stafppks', function ($val) {
-            $val->where('nip', auth()->user()->nip)->where('satker', auth()->user()->satker);
+            $val->where('nip', auth()->user()->nip)->where('satker', session()->get('kdsatker'));
         });
     }
 

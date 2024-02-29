@@ -16,7 +16,7 @@ class PaguController extends Controller
 {
     public function index()
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
 
@@ -35,7 +35,7 @@ class PaguController extends Controller
 
     public function create()
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
 
@@ -46,7 +46,7 @@ class PaguController extends Controller
 
     public function store(Request $request)
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
 
@@ -86,7 +86,7 @@ class PaguController extends Controller
 
     public function edit(pagu $pagu)
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
 
@@ -99,7 +99,7 @@ class PaguController extends Controller
 
     public function update(Request $request, pagu $pagu)
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
 
@@ -138,7 +138,7 @@ class PaguController extends Controller
 
     public function destroy(pagu $pagu)
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
 
@@ -148,7 +148,7 @@ class PaguController extends Controller
 
     public function import(Request $request)
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
 
@@ -193,7 +193,7 @@ class PaguController extends Controller
 
     public function cetak()
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
         $textcenter = [
@@ -313,7 +313,7 @@ class PaguController extends Controller
 
     public function massUpdate(Request $request)
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
         return view('pagu.mass-update', [
@@ -323,7 +323,7 @@ class PaguController extends Controller
 
     public function storeMassUpdate(Request $request)
     {
-        if (!Gate::any(['KPA', 'Staf_KPA'], auth()->user()->id)) {
+        if (!Gate::any(['KPA', 'Staf_KPA'])) {
             abort(403);
         }
         $file = $request->file('berkas_excel');

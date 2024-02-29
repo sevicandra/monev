@@ -11,7 +11,7 @@ class ObjekpajakController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.objekpajak.index',[
@@ -22,7 +22,7 @@ class ObjekpajakController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.objekpajak.create',[
@@ -32,7 +32,7 @@ class ObjekpajakController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -53,14 +53,14 @@ class ObjekpajakController extends Controller
 
     public function show(objekpajak $objekpajak)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
     }
 
     public function edit(objekpajak $objek_pajak)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.objekpajak.update',[
@@ -71,7 +71,7 @@ class ObjekpajakController extends Controller
 
     public function update(Request $request, objekpajak $objek_pajak)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -92,7 +92,7 @@ class ObjekpajakController extends Controller
 
     public function destroy(objekpajak $objek_pajak)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $objek_pajak->delete();

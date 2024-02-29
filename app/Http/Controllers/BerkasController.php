@@ -11,7 +11,7 @@ class BerkasController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.berkas.index',[
@@ -22,7 +22,7 @@ class BerkasController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.berkas.create',[
@@ -32,7 +32,7 @@ class BerkasController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -51,7 +51,7 @@ class BerkasController extends Controller
 
     public function edit(berkas $berka)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.berkas.update',[
@@ -62,7 +62,7 @@ class BerkasController extends Controller
 
     public function update(Request $request, berkas $berka)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -81,7 +81,7 @@ class BerkasController extends Controller
 
     public function destroy(berkas $berka)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $berka->delete();

@@ -21,11 +21,11 @@ class MonitoringTagihanController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
         } else {
             $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihansatker()->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
@@ -38,17 +38,17 @@ class MonitoringTagihanController extends Controller
 
     public function show(Request $request, tagihan $monitoring_tagihan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($monitoring_tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($monitoring_tagihan->ppk_id, session()->get('ppk')) || !in_array($monitoring_tagihan->kodeunit, session()->get('unit')) || $monitoring_tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -72,17 +72,17 @@ class MonitoringTagihanController extends Controller
 
     public function showcoa(tagihan $tagihan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -102,17 +102,17 @@ class MonitoringTagihanController extends Controller
 
     // public function showdnp(tagihan $tagihan)
     // {
-    //     if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+    //     if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
     //         abort(403);
     //     }
 
-    //     if (Gate::allows('PPK', auth()->user()->id)) {
+    //     if (Gate::allows('PPK')) {
     //         if ($tagihan->ppk_id != auth()->user()->nip) {
     //             abort(403);
     //         }
     //     }
 
-    //     if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+    //     if (Gate::allows('Staf_PPK')) {
     //         if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
     //             abort(403);
     //         }
@@ -125,17 +125,17 @@ class MonitoringTagihanController extends Controller
 
     public function showrekanan(tagihan $tagihan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -149,17 +149,17 @@ class MonitoringTagihanController extends Controller
 
     public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -174,17 +174,17 @@ class MonitoringTagihanController extends Controller
 
     public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -199,7 +199,7 @@ class MonitoringTagihanController extends Controller
 
     public function tolak(tagihan $tagihan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -207,13 +207,13 @@ class MonitoringTagihanController extends Controller
             return abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -226,17 +226,17 @@ class MonitoringTagihanController extends Controller
     
     public function payroll(tagihan $tagihan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -251,17 +251,17 @@ class MonitoringTagihanController extends Controller
 
     public function cetakPayroll(tagihan $tagihan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -435,17 +435,17 @@ class MonitoringTagihanController extends Controller
 
     public function dnpPerjadin(tagihan $tagihan, Request $request)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -464,17 +464,17 @@ class MonitoringTagihanController extends Controller
 
     public function cetakDnpPerjadin(tagihan $tagihan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -495,17 +495,17 @@ class MonitoringTagihanController extends Controller
 
     public function detailDnpPerjadin(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -527,17 +527,17 @@ class MonitoringTagihanController extends Controller
 
     public function cetakKuitansiPerjadin(tagihan $tagihan, DnpPerjadin $dnp)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -562,17 +562,17 @@ class MonitoringTagihanController extends Controller
 
     public function dnpHonorarium(tagihan $tagihan, Request $request)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }
@@ -591,17 +591,17 @@ class MonitoringTagihanController extends Controller
 
     public function cetakDnpHonorarium(tagihan $tagihan)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($tagihan->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
                 abort(403);
             }

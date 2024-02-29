@@ -14,7 +14,7 @@ class DnpController extends Controller
 {
     public function index(tagihan $tagihan)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -31,7 +31,7 @@ class DnpController extends Controller
 
     public function create(tagihan $tagihan)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -68,7 +68,7 @@ class DnpController extends Controller
 
     public function create_non_djkn(tagihan $tagihan)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
@@ -89,7 +89,7 @@ class DnpController extends Controller
 
     public function store(tagihan $tagihan, $nip)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
@@ -127,7 +127,7 @@ class DnpController extends Controller
 
     public function store_non_djkn(tagihan $tagihan,pegawainondjkn $pegawainondjkn)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
@@ -156,7 +156,7 @@ class DnpController extends Controller
 
     public function destroy(tagihan $tagihan, dnp $dnp)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -173,7 +173,7 @@ class DnpController extends Controller
 
     public function cetak(tagihan $tagihan)
     {
-        if (! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($tagihan->ppk_id != auth()->user()->mapingstafppk->ppk_id) {

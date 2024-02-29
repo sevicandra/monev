@@ -30,7 +30,7 @@ class spm extends Model
         $duplicate =  $this->select('tagihan_id')->groupBy('tagihan_id')->havingRaw('count(*) > 1');
         return $this->whereIn('spms.tagihan_id', $duplicate)
         ->join('tagihans', function(JoinClause $join){
-            $join->on('tagihans.id','=','spms.tagihan_id')->where('tagihans.tahun',  session()->get('tahun'))->where('kodesatker', auth()->user()->satker);
+            $join->on('tagihans.id','=','spms.tagihan_id')->where('tagihans.tahun',  session()->get('tahun'))->where('kodesatker', session()->get('kdsatker'));
         })->orderBy('tagihans.notagihan')
         ->orderBy('tagihans.jnstagihan')
         ->select(['spms.id', 'spms.tanggal_sp2d', 'tagihans.notagihan', 'spms.nomor_sp2d', 'tagihans.tgltagihan', 'tagihans.jnstagihan'])

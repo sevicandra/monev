@@ -11,7 +11,7 @@ class RegisterTagihanController extends Controller
 {
     public function store(register $register, tagihan $tagihan)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         register_tagihan::create([
@@ -23,7 +23,7 @@ class RegisterTagihanController extends Controller
 
     public function destroy(register $register, tagihan $tagihan)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         register_tagihan::where('tagihan_id', $tagihan->id)->where('register_id', $register->id)->delete();

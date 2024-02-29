@@ -52,28 +52,28 @@ class Notification
 
         $notif = new stdClass;
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             $notif->tagihan = $notificationInstance->tagihan();
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id) && session()->get('staf_ppk_blbi') == 1) {
+        if (Gate::allows('Staf_PPK') && session()->get('staf_ppk_blbi') == 1) {
             $notif->tagihanBlbi = $notificationInstance->tagihanBlbi();
         }
 
-        if (Gate::allows('Validator', auth()->user()->id)) {
+        if (Gate::allows('Validator')) {
             $notif->verifikasi = $notificationInstance->verifikasi();
         }
 
-        if (Gate::allows('Bendahara', auth()->user()->id)) {
+        if (Gate::allows('Bendahara')) {
             $notif->bendahara = $notificationInstance->bendahara();
             $notif->payroll = $notificationInstance->payroll();
         }
 
-        if (Gate::allows('PPSPM', auth()->user()->id)) {
+        if (Gate::allows('PPSPM')) {
             $notif->ppspm = $notificationInstance->ppspm();
         }
 
-        if (Gate::allows('ValidatorKKP', auth()->user()->id)) {
+        if (Gate::allows('ValidatorKKP')) {
             $notif->verifikasiKKP = $notificationInstance->verifikasiKKP();
         }
 

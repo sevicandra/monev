@@ -11,7 +11,7 @@ class DokumenController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.dokumen.index',[
@@ -22,7 +22,7 @@ class DokumenController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.dokumen.create',[
@@ -32,7 +32,7 @@ class DokumenController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -54,7 +54,7 @@ class DokumenController extends Controller
 
     public function edit(dokumen $dokuman)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.dokumen.update',[
@@ -65,7 +65,7 @@ class DokumenController extends Controller
 
     public function update(Request $request, dokumen $dokuman)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -88,7 +88,7 @@ class DokumenController extends Controller
 
     public function destroy(dokumen $dokuman)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         

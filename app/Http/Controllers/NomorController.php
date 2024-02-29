@@ -12,7 +12,7 @@ class NomorController extends Controller
 
     public function index()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
 
@@ -24,7 +24,7 @@ class NomorController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         
@@ -35,7 +35,7 @@ class NomorController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
 
@@ -62,7 +62,7 @@ class NomorController extends Controller
 
     public function edit(nomor $nomor)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
 
@@ -74,7 +74,7 @@ class NomorController extends Controller
 
     public function update(Request $request, nomor $nomor)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
 
@@ -90,7 +90,7 @@ class NomorController extends Controller
 
     public function destroy(nomor $nomor)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         

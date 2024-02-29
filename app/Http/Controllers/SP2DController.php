@@ -11,7 +11,7 @@ class SP2DController extends Controller
 {
     public function index()
     {
-        if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (! Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
         return view("data_cleansing.SP2D.index",[
@@ -22,7 +22,7 @@ class SP2DController extends Controller
 
     public function delete(spm $spm)
     {
-        if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (! Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
 

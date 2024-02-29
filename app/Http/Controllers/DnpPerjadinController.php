@@ -18,7 +18,7 @@ class DnpPerjadinController extends Controller
     public function index(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -26,7 +26,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -34,7 +34,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -61,7 +61,7 @@ class DnpPerjadinController extends Controller
     public function edit(tagihan $tagihan,  DnpPerjadin $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -69,7 +69,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -77,7 +77,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -105,7 +105,7 @@ class DnpPerjadinController extends Controller
     public function update(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -113,7 +113,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -121,7 +121,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -166,7 +166,7 @@ class DnpPerjadinController extends Controller
     public function updateDetail(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -174,7 +174,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -182,7 +182,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -264,7 +264,7 @@ class DnpPerjadinController extends Controller
     public function import(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -272,7 +272,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -280,7 +280,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -303,7 +303,7 @@ class DnpPerjadinController extends Controller
     public function importStore(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -311,7 +311,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -319,7 +319,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -677,7 +677,7 @@ class DnpPerjadinController extends Controller
     public function cetak(tagihan $tagihan)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -685,7 +685,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -693,7 +693,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -720,7 +720,7 @@ class DnpPerjadinController extends Controller
     public function cetakKuitansi(tagihan $tagihan, DnpPerjadin $dnp)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -728,7 +728,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -736,7 +736,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -767,7 +767,7 @@ class DnpPerjadinController extends Controller
     public function dnpPerjadin(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -775,7 +775,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -783,7 +783,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -807,7 +807,7 @@ class DnpPerjadinController extends Controller
     public function dnpPerjadinCreate(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -815,7 +815,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -823,7 +823,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -846,7 +846,7 @@ class DnpPerjadinController extends Controller
     public function dnpPerjadinStore(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -854,7 +854,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -862,7 +862,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -910,7 +910,7 @@ class DnpPerjadinController extends Controller
     public function Destroy(tagihan $tagihan, DnpPerjadin $dnp)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -918,7 +918,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -926,7 +926,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -946,7 +946,7 @@ class DnpPerjadinController extends Controller
     public function createPayroll(tagihan $tagihan)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -954,7 +954,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -962,7 +962,7 @@ class DnpPerjadinController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 

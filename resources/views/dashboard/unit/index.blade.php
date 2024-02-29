@@ -53,19 +53,11 @@
                                                 $realisasiUnit += $detailRealisasi->realisasi;
                                             }
                                         }
-                                        foreach ($detailPagu->sspb as $detailSSPB) {
-                                            if ($detailSSPB->tagihan->nomor_sp2d != null && $detailSSPB->tagihan->tanggal_sp2d != null) {
-                                                $realisasi -= $detailSSPB->nominal_sspb;
-                                            }
-                                        }
                                     }
                                 } else {
                                     foreach ($item->pagu as $detailPagu) {
                                         foreach ($detailPagu->realisasi as $detailRealisasi) {
                                             $realisasiUnit += $detailRealisasi->realisasi;
-                                        }
-                                        foreach ($detailPagu->sspb as $detailSSPB) {
-                                            $realisasi -= $detailSSPB->nominal_sspb;
                                         }
                                     }
                                 }
@@ -80,23 +72,20 @@
                                     foreach ($item->pagu as $detailPagu) {
                                         foreach ($detailPagu->sspb as $detailSSPB) {
                                             if ($detailSSPB->tagihan->nomor_sp2d != null && $detailSSPB->tagihan->tanggal_sp2d != null) {
-                                                $pengembalian += $detailSSPB->nominal_sspb;
+                                                $pengembalianUnit += $detailSSPB->nominal_sspb;
                                             }
                                         }
                                     }
                                 } else {
                                     foreach ($item->pagu as $detailPagu) {
                                         foreach ($detailPagu->sspb as $detailSSPB) {
-                                            $pengembalian += $detailSSPB->nominal_sspb;
+                                            $pengembalianUnit += $detailSSPB->nominal_sspb;
                                         }
                                     }
                                 }
-                                $pengembalian += $realisasiUnit;
+                                $pengembalian += $pengembalianUnit;
                             @endphp
-                            {{ number_format($pengembalian, 2, ',', '.') }}
-                            @php
-                                $pengembalian += $item->sspb()->sum('nominal_sspb');
-                            @endphp
+                            {{ number_format($pengembalianUnit, 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content text-end">
                             {{ number_format($item->pagu->sum('anggaran') - $realisasiUnit + $pengembalianUnit, 2, ',', '.') }}

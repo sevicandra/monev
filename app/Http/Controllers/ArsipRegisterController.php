@@ -10,7 +10,7 @@ class ArsipRegisterController extends Controller
 {
     public function index()
     {
-        if (Gate::any(['PPSPM', 'Bendahara', 'Validator'], auth()->user()->id)) {
+        if (Gate::any(['PPSPM', 'Bendahara', 'Validator'])) {
             return view('arsip-register.index',[
                 'data'=>register::arsip()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString(),
                 'notifikasi'=>Notification::Notif()

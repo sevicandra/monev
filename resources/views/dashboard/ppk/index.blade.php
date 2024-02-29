@@ -88,7 +88,7 @@
                             {{ number_format($pengembalianPpk, 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content text-end">
-                            {{ number_format($item->paguppk->sum('anggaran') - $item->realisasippk()->sum('realisasi') + $item->sspbppk()->sum('nominal_sspb'), 2, ',', '.') }}
+                            {{ number_format($item->paguppk->sum('anggaran') - $realisasiPpk + $pengembalianPpk, 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content text-center">
                             @if ($item->paguppk->sum('anggaran') != 0)

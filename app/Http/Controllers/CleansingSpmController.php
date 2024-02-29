@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Gate;
 class CleansingSpmController extends Controller
 {
     public function update(){
-        if (!Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (!Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
         $data = tagihan::where('tahun', session()->get('tahun'))->wherehas('spm')->get();

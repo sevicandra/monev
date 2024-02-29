@@ -13,7 +13,7 @@ class RealisasiController extends Controller
 {
     public function index(tagihan $tagihan)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
@@ -35,7 +35,7 @@ class RealisasiController extends Controller
 
     public function store(tagihan $tagihan, pagu $pagu)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -60,7 +60,7 @@ class RealisasiController extends Controller
 
     public function show(tagihan $realisasi)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -83,7 +83,7 @@ class RealisasiController extends Controller
 
     public function edit(realisasi $realisasi)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -102,7 +102,7 @@ class RealisasiController extends Controller
 
     public function update(Request $request, realisasi $realisasi)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
@@ -127,7 +127,7 @@ class RealisasiController extends Controller
 
     public function destroy(realisasi $realisasi)
     {
-        if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('Staf_PPK')) {
             abort(403);
         }
 

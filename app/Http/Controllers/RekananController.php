@@ -11,7 +11,7 @@ class RekananController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('referensi.rekanan.index',[
@@ -22,7 +22,7 @@ class RekananController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('referensi.rekanan.create',[
@@ -32,7 +32,7 @@ class RekananController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         $request->validate([
@@ -61,7 +61,7 @@ class RekananController extends Controller
 
     public function show(rekanan $rekanan)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         //
@@ -69,7 +69,7 @@ class RekananController extends Controller
 
     public function edit(rekanan $rekanan)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($rekanan->kodesatker != auth()->user()->satker) {
@@ -83,7 +83,7 @@ class RekananController extends Controller
 
     public function update(Request $request, rekanan $rekanan)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($rekanan->kodesatker != auth()->user()->satker) {
@@ -115,7 +115,7 @@ class RekananController extends Controller
     public function destroy(rekanan $rekanan)
     {
         
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($rekanan->kodesatker != auth()->user()->satker) {

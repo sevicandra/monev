@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->belongsToMany(role::class, 'role_user', 'user_id', 'role_id', 'nip', 'koderole');
     }
 
+    public function scopeGetRole()
+    {
+        return $this->where('nip', auth()->user()->nip)->first()->role()->pluck('koderole')->toArray();
+    }
+
     public function ppk()
     {
         return $this->hasMany(RefPPK::class, 'nip', 'nip');

@@ -166,12 +166,12 @@ class tagihan extends Model
 
     public function scopeTagihansatker($data)
     {
-        return $data->where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'));
+        return $data->where('kodesatker', session()->get('kdsatker'))->where('tahun', session()->get('tahun'));
     }
 
     public function scopeTagihanBLBI($data)
     {
-        return $data    ->where('kodesatker', auth()->user()->satker)
+        return $data    ->where('kodesatker', session()->get('kdsatker'))
                         ->wherehas('dokumen', function ($val) {
                             $val->where('blbi', true);
                         })
@@ -180,7 +180,7 @@ class tagihan extends Model
 
     public function scopeTagihanNonBLBI($data)
     {
-        return $data    ->where('kodesatker', auth()->user()->satker)
+        return $data    ->where('kodesatker', session()->get('kdsatker'))
                         ->wherehas('dokumen', function ($val) {
                             $val->where('blbi', false);
                         })

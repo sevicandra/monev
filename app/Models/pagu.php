@@ -28,7 +28,7 @@ class pagu extends Model
 
     public function scopePagusatker()
     {
-        return $this->where('tahun', session()->get('tahun'))->where('kodesatker', auth()->user()->satker);
+        return $this->where('tahun', session()->get('tahun'))->where('kodesatker', session()->get('kdsatker'));
     }
 
     public function realisasi()
@@ -48,7 +48,7 @@ class pagu extends Model
 
     public function scopePagustafppk($data)
     {
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             return $data->whereHas('unit', function ($val) {
                 $val->stafppk();
             });
@@ -190,7 +190,7 @@ class pagu extends Model
     public function scopeRealisasiBulanan($data, $bulan)
     {
         return $data
-            ->where('pagus.kodesatker', auth()->user()->satker)
+            ->where('pagus.kodesatker', session()->get('kdsatker'))
             ->where('pagus.tahun', session()->get('tahun'))
             ->leftJoin('view_realisasipagubulanan', function (JoinClause $join) use ($bulan) {
                 $join->on('pagus.id', '=', 'view_realisasipagubulanan.pagu_id')->where('view_realisasipagubulanan.bulan_sp2d', '=', $bulan);
@@ -203,7 +203,7 @@ class pagu extends Model
     public function scopeRealisasiBulananWithSum($data, $bulan)
     {
         return $data
-            ->where('pagus.kodesatker', auth()->user()->satker)
+            ->where('pagus.kodesatker', session()->get('kdsatker'))
             ->where('pagus.tahun', session()->get('tahun'))
             ->leftJoin('view_realisasipagubulanan', function (JoinClause $join) use ($bulan) {
                 $join->on('pagus.id', '=', 'view_realisasipagubulanan.pagu_id')->where('view_realisasipagubulanan.bulan_sp2d', '<=', $bulan);

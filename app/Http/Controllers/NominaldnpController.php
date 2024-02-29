@@ -13,7 +13,7 @@ class NominaldnpController extends Controller
 {
     public function create(tagihan $tagihan, $dnp)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($tagihan->status > 0) {
@@ -28,7 +28,7 @@ class NominaldnpController extends Controller
 
     public function store(Request $request,tagihan $tagihan,dnp $dnp)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($tagihan->status != 0) {
@@ -59,7 +59,7 @@ class NominaldnpController extends Controller
 
     public function edit(tagihan $tagihan,  $dnp ,nominaldnp $nominaldnp)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($tagihan->status != 0) {
@@ -75,7 +75,7 @@ class NominaldnpController extends Controller
 
     public function update(Request $request,tagihan $tagihan,dnp  $dnp ,nominaldnp $nominaldnp)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($tagihan->status != 0) {

@@ -53,10 +53,14 @@ class SsoController extends Controller
                  
                     Auth::login($user);
                     $request->session()->regenerate();
+                    $request->session()->put('kdsatker', auth()->user()->satker);
                     $request->session()->put('tahun', date('Y'));
                     $request->session()->put('nik', $userinfo['g2c_Nik']);
                     $request->session()->put('id_token', $token['id_token']);
                     $request->session()->put('gravatar', $userinfo['gravatar']);
+                    // $request->session()->put('nip', auth()->user()->nip);
+                    $role = User::GetRole();
+                    $request->session()->put('role', $role);
                     if (Gate::allows('Staf_PPK', auth()->user()->id)) {
                         $ppk = RefStafPPK::getPPK();
                         $request->session()->put('ppk', $ppk);

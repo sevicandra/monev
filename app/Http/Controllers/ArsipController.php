@@ -20,7 +20,7 @@ class ArsipController extends Controller
 {
     public function index()
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -32,7 +32,7 @@ class ArsipController extends Controller
 
     public function dokumen(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -48,7 +48,7 @@ class ArsipController extends Controller
 
     public function coa(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -70,7 +70,7 @@ class ArsipController extends Controller
 
     public function dnp(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -86,7 +86,7 @@ class ArsipController extends Controller
 
     public function tolak(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -105,7 +105,7 @@ class ArsipController extends Controller
 
     public function showrekanan(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -122,7 +122,7 @@ class ArsipController extends Controller
 
     public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -140,7 +140,7 @@ class ArsipController extends Controller
 
     public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -158,7 +158,7 @@ class ArsipController extends Controller
 
     public function showriwayat(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -174,7 +174,7 @@ class ArsipController extends Controller
 
     public function payroll(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -191,7 +191,7 @@ class ArsipController extends Controller
 
     public function cetakPayroll(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -367,7 +367,7 @@ class ArsipController extends Controller
 
     public function dnpPerjadin(tagihan $tagihan, Request $request)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -388,7 +388,7 @@ class ArsipController extends Controller
 
     public function cetakDnpPerjadin(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -411,7 +411,7 @@ class ArsipController extends Controller
 
     public function detailDnpPerjadin(tagihan $tagihan, DnpPerjadin $dnp, Request $request)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -435,7 +435,7 @@ class ArsipController extends Controller
 
     public function cetakKuitansiPerjadin(tagihan $tagihan, DnpPerjadin $dnp)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -462,7 +462,7 @@ class ArsipController extends Controller
 
     public function dnpHonorarium(tagihan $tagihan, Request $request)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 
@@ -483,7 +483,7 @@ class ArsipController extends Controller
 
     public function cetakDnpHonorarium(tagihan $tagihan)
     {
-        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'], auth()->user()->id)) {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
 

@@ -11,7 +11,7 @@ class PegawainondjknController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('PPK', auth()->user()->id) && ! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK') && ! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('pegawai_nondjkn.index',[
@@ -22,7 +22,7 @@ class PegawainondjknController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('pegawai_nondjkn.create',[
@@ -32,7 +32,7 @@ class PegawainondjknController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         $request->validate([
@@ -56,7 +56,7 @@ class PegawainondjknController extends Controller
 
     public function edit(pegawainondjkn $pegawai_nondjkn)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('pegawai_nondjkn.update',[
@@ -67,7 +67,7 @@ class PegawainondjknController extends Controller
 
     public function update(Request $request, pegawainondjkn $pegawai_nondjkn)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         $request->validate([
@@ -91,7 +91,7 @@ class PegawainondjknController extends Controller
 
     public function destroy(pegawainondjkn $pegawai_nondjkn)
     {
-        if (! Gate::allows('PPK', auth()->user()->id)&&! Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (! Gate::allows('PPK')&&! Gate::allows('Staf_PPK')) {
             abort(403);
         }
         $pegawai_nondjkn->delete();

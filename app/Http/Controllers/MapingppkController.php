@@ -15,7 +15,7 @@ class MapingppkController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
         return view('referensi.maping_ppk.index', [
@@ -26,7 +26,7 @@ class MapingppkController extends Controller
 
     public function showpagu(RefPPK $ppk)
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -48,7 +48,7 @@ class MapingppkController extends Controller
 
     public function showstaf(RefPPK $ppk)
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -65,7 +65,7 @@ class MapingppkController extends Controller
 
     public function editpagu(RefPPK $ppk)
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -88,7 +88,7 @@ class MapingppkController extends Controller
 
     public function editstaf(RefPPK $ppk)
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -105,7 +105,7 @@ class MapingppkController extends Controller
 
     public function updatepagu(RefPPK $ppk, pagu $pagu)
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -127,7 +127,7 @@ class MapingppkController extends Controller
 
     public function updatestaf(RefPPK $ppk, RefStafPPK $staf)
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -148,7 +148,7 @@ class MapingppkController extends Controller
 
     public function destroypagu(RefPPK $ppk, mapingpaguppk $mapingppk)
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -162,7 +162,7 @@ class MapingppkController extends Controller
 
     public function destroystaf(RefPPK $ppk, mapingstafppk $mapingstafppk)
     {
-        if (!Gate::allows('admin_satker', auth()->user()->id)) {
+        if (!Gate::allows('admin_satker')) {
             abort(403);
         }
 

@@ -38,7 +38,7 @@ class RegisterController extends Controller
 
     public function index()
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('register_tagihan.index', [
@@ -50,7 +50,7 @@ class RegisterController extends Controller
 
     public function create()
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('register_tagihan.create', [
@@ -60,15 +60,15 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             $ppk_id = auth()->user()->nip;
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             $ppk_id = auth()->user()->mapingstafppk->ppk_id;
         }
 
@@ -90,17 +90,17 @@ class RegisterController extends Controller
 
     public function show(register $register)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
                 abort(403);
             }
@@ -115,17 +115,17 @@ class RegisterController extends Controller
 
     public function destroy(register $register)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
 
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
                 abort(403);
             }
@@ -139,16 +139,16 @@ class RegisterController extends Controller
 
     public function detailcreate(register $register)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
                 abort(403);
             }
@@ -162,17 +162,17 @@ class RegisterController extends Controller
 
     public function preview(register $register)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }
             $ppk = auth()->user()->nama;
         }
 
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (Gate::allows('Staf_PPK')) {
             if ($register->ppk_id != auth()->user()->mapingstafppk->ppk_id) {
                 abort(403);
             }
@@ -192,10 +192,10 @@ class RegisterController extends Controller
 
     public function esign(Request $request, register $register)
     {
-        if (!Gate::allows('PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK')) {
             abort(403);
         }
-        if (Gate::allows('PPK', auth()->user()->id)) {
+        if (Gate::allows('PPK')) {
             if ($register->ppk_id != auth()->user()->nip) {
                 abort(403);
             }

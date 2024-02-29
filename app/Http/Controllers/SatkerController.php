@@ -12,7 +12,7 @@ class SatkerController extends Controller
 
     public function index()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.satker.index',[
@@ -23,7 +23,7 @@ class SatkerController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.satker.create',[
@@ -33,7 +33,7 @@ class SatkerController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         if ($request['kodesatkerkoordinator'] != null) {
@@ -65,7 +65,7 @@ class SatkerController extends Controller
 
     public function show(satker $satker)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         //
@@ -73,7 +73,7 @@ class SatkerController extends Controller
 
     public function edit(satker $satker)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.satker.update',[
@@ -84,7 +84,7 @@ class SatkerController extends Controller
 
     public function update(Request $request, satker $satker)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         if ($request['kodesatkerkoordinator'] != null) {
@@ -116,7 +116,7 @@ class SatkerController extends Controller
 
     public function destroy(satker $satker)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $satker->delete();

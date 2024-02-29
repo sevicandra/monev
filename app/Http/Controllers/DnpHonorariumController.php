@@ -18,7 +18,7 @@ class DnpHonorariumController extends Controller
     public function index(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -26,7 +26,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -34,7 +34,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -58,7 +58,7 @@ class DnpHonorariumController extends Controller
     public function create(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -66,7 +66,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -74,7 +74,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -97,7 +97,7 @@ class DnpHonorariumController extends Controller
     public function store(Request $request, tagihan $tagihan)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -105,7 +105,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -113,7 +113,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -181,7 +181,7 @@ class DnpHonorariumController extends Controller
     public function edit(tagihan $tagihan, DnpHonorarium $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -189,7 +189,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -197,7 +197,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -225,7 +225,7 @@ class DnpHonorariumController extends Controller
     public function update(Request $request, tagihan $tagihan, DnpHonorarium $dnp)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -233,7 +233,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -241,7 +241,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -315,7 +315,7 @@ class DnpHonorariumController extends Controller
     public function destroy(tagihan $tagihan, DnpHonorarium $dnp, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -323,7 +323,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -331,7 +331,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -355,7 +355,7 @@ class DnpHonorariumController extends Controller
     public function import(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -363,7 +363,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -371,7 +371,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -394,7 +394,7 @@ class DnpHonorariumController extends Controller
     public function importStore(tagihan $tagihan, Request $request)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -402,7 +402,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -410,7 +410,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -706,7 +706,7 @@ class DnpHonorariumController extends Controller
     public function cetak(tagihan $tagihan)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -714,7 +714,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -722,7 +722,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -749,7 +749,7 @@ class DnpHonorariumController extends Controller
     public function createPayroll(tagihan $tagihan)
     {
         if ($tagihan->status == 0) {
-            if (!Gate::allows('Staf_PPK', auth()->user()->id)) {
+            if (!Gate::allows('Staf_PPK')) {
                 abort(403);
             }
 
@@ -757,7 +757,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 2) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 
@@ -765,7 +765,7 @@ class DnpHonorariumController extends Controller
                 abort(403);
             }
         } elseif ($tagihan->status == 4) {
-            if (!Gate::allows('Validator', auth()->user()->id)) {
+            if (!Gate::allows('Validator')) {
                 abort(403);
             }
 

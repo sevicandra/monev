@@ -29,7 +29,7 @@ class VerifikasiController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
         
@@ -41,7 +41,7 @@ class VerifikasiController extends Controller
 
     public function show(tagihan $verifikasi)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -63,7 +63,7 @@ class VerifikasiController extends Controller
 
     public function edit(tagihan $verifikasi)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -85,7 +85,7 @@ class VerifikasiController extends Controller
 
     public function update(Request $request, tagihan $verifikasi)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -109,7 +109,7 @@ class VerifikasiController extends Controller
     }
 
     public function tolak(Request $request, tagihan $tagihan){
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -149,7 +149,7 @@ class VerifikasiController extends Controller
     }
 
     public function approve(tagihan $tagihan){
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -204,7 +204,7 @@ class VerifikasiController extends Controller
     }
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas){
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -258,7 +258,7 @@ class VerifikasiController extends Controller
 
     public function showrekanan(tagihan $tagihan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -278,7 +278,7 @@ class VerifikasiController extends Controller
 
     public function createrekanan(tagihan $tagihan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -298,7 +298,7 @@ class VerifikasiController extends Controller
 
     public function storerekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -316,7 +316,7 @@ class VerifikasiController extends Controller
 
     public function deleterekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -335,7 +335,7 @@ class VerifikasiController extends Controller
 
     public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -356,7 +356,7 @@ class VerifikasiController extends Controller
 
     public function createppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -377,7 +377,7 @@ class VerifikasiController extends Controller
 
     public function storeppnrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -409,7 +409,7 @@ class VerifikasiController extends Controller
 
     public function editppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -430,7 +430,7 @@ class VerifikasiController extends Controller
 
     public function updateppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn, Request $request)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -459,7 +459,7 @@ class VerifikasiController extends Controller
 
     public function deleteppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -480,7 +480,7 @@ class VerifikasiController extends Controller
 
     public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -501,7 +501,7 @@ class VerifikasiController extends Controller
 
     public function createpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -523,7 +523,7 @@ class VerifikasiController extends Controller
 
     public function storepphrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -558,7 +558,7 @@ class VerifikasiController extends Controller
 
     public function editpphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -580,7 +580,7 @@ class VerifikasiController extends Controller
 
     public function updatepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph, Request $request)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -612,7 +612,7 @@ class VerifikasiController extends Controller
 
     public function deletepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -633,7 +633,7 @@ class VerifikasiController extends Controller
 
     public function coa(tagihan $tagihan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -660,7 +660,7 @@ class VerifikasiController extends Controller
 
     public function createCoa(tagihan $tagihan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -687,7 +687,7 @@ class VerifikasiController extends Controller
 
     public function storeCoa(tagihan $tagihan, pagu $pagu)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -709,7 +709,7 @@ class VerifikasiController extends Controller
 
     public function editCoa(tagihan $tagihan, realisasi $coa)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -730,7 +730,7 @@ class VerifikasiController extends Controller
 
     public function updateCoa(tagihan $tagihan, realisasi $coa, Request $request)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -755,7 +755,7 @@ class VerifikasiController extends Controller
 
     public function destroyCoa(tagihan $tagihan, realisasi $coa)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
 
@@ -773,7 +773,7 @@ class VerifikasiController extends Controller
 
     public function payroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -793,7 +793,7 @@ class VerifikasiController extends Controller
 
     public function createPayroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -812,7 +812,7 @@ class VerifikasiController extends Controller
 
     public function storePayroll(tagihan $tagihan, Request $request)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -867,7 +867,7 @@ class VerifikasiController extends Controller
 
     public function editPayroll(tagihan $tagihan, Payroll $payroll)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -891,7 +891,7 @@ class VerifikasiController extends Controller
 
     public function updatePayroll(tagihan $tagihan, Payroll $payroll, Request $request)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -951,7 +951,7 @@ class VerifikasiController extends Controller
 
     public function importHrisPayroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -976,7 +976,7 @@ class VerifikasiController extends Controller
 
     public function importMonevPayroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -997,7 +997,7 @@ class VerifikasiController extends Controller
 
     public function storeImportPayroll(tagihan $tagihan, request $request)
     {
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -1033,7 +1033,7 @@ class VerifikasiController extends Controller
     }
 
     public function deletePayroll(tagihan $tagihan, Payroll $payroll){
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        
@@ -1049,7 +1049,7 @@ class VerifikasiController extends Controller
     }
 
     public function cetakPayroll(tagihan $tagihan){
-        if (! Gate::allows('Validator', auth()->user()->id)) {
+        if (! Gate::allows('Validator')) {
             abort(403);
         }
        

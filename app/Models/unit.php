@@ -26,7 +26,7 @@ class unit extends Model
 
     public function scopeMyunit()
     {
-        return $this->where('kodesatker', auth()->user()->satker)->orderby('kodeunit');
+        return $this->where('kodesatker', session()->get('kdsatker'))->orderby('kodeunit');
     }
 
     public function scopeNostafppk($data, $stafppk)
@@ -99,7 +99,7 @@ class unit extends Model
     public function scopeStafppk($data)
     {
         return $data->whereHas('stafppks', function($val){
-            $val->where('nip', auth()->user()->nip)->where('satker', auth()->user()->satker);
+            $val->where('nip', auth()->user()->nip)->where('satker', session()->get('kdsatker'));
         });
     }
 

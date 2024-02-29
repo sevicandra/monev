@@ -16,7 +16,7 @@ class VerifikasiKKPController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('ValidatorKKP', auth()->user()->id)) {
+        if (! Gate::allows('ValidatorKKP')) {
             abort(403);
         }
         
@@ -28,7 +28,7 @@ class VerifikasiKKPController extends Controller
 
     public function show(tagihan $verifikasi_kkp)
     {
-        if (! Gate::allows('ValidatorKKP', auth()->user()->id)) {
+        if (! Gate::allows('ValidatorKKP')) {
             abort(403);
         }
 
@@ -46,7 +46,7 @@ class VerifikasiKKPController extends Controller
     }
 
     public function tolak(tagihan $tagihan){
-        if (! Gate::allows('ValidatorKKP', auth()->user()->id)) {
+        if (! Gate::allows('ValidatorKKP')) {
             abort(403);
         }
 
@@ -66,7 +66,7 @@ class VerifikasiKKPController extends Controller
     }
 
     public function approve(tagihan $tagihan){
-        if (! Gate::allows('ValidatorKKP', auth()->user()->id)) {
+        if (! Gate::allows('ValidatorKKP')) {
             abort(403);
         }
 
@@ -117,7 +117,7 @@ class VerifikasiKKPController extends Controller
     }
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas){
-        if (! Gate::allows('ValidatorKKP', auth()->user()->id)) {
+        if (! Gate::allows('ValidatorKKP')) {
             abort(403);
         }
 
@@ -167,7 +167,7 @@ class VerifikasiKKPController extends Controller
 
     public function coa(tagihan $tagihan)
     {
-        if (! Gate::allows('ValidatorKKP', auth()->user()->id)) {
+        if (! Gate::allows('ValidatorKKP')) {
             abort(403);
         }
         

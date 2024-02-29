@@ -13,7 +13,7 @@ class UnitController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -25,7 +25,7 @@ class UnitController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -36,7 +36,7 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -57,7 +57,7 @@ class UnitController extends Controller
 
     public function showverifikator(unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -73,7 +73,7 @@ class UnitController extends Controller
 
     public function edit(unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -89,7 +89,7 @@ class UnitController extends Controller
 
     public function editverifikator(unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -106,7 +106,7 @@ class UnitController extends Controller
 
     public function update(Request $request, unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -129,7 +129,7 @@ class UnitController extends Controller
 
     public function updateverifikator(unit $unit, User $verifikator)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -147,7 +147,7 @@ class UnitController extends Controller
 
     public function destroy(unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
         if ($unit->kodesatker != auth()->user()->satker) {
@@ -160,7 +160,7 @@ class UnitController extends Controller
 
     public function destroyverifikator(unit $unit, User $verifikator)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
         
@@ -174,7 +174,7 @@ class UnitController extends Controller
 
     public function showpagu(unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -196,7 +196,7 @@ class UnitController extends Controller
 
     public function editpagu(unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -218,7 +218,7 @@ class UnitController extends Controller
 
     public function updatepagu(unit $unit, pagu $pagu)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -233,7 +233,7 @@ class UnitController extends Controller
 
     public function destroypagu(unit $unit, pagu $pagu)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 

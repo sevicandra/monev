@@ -16,7 +16,7 @@ class PpspmController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('PPSPM', auth()->user()->id)) {
+        if (!Gate::allows('PPSPM')) {
             abort(403);
         }
 
@@ -28,7 +28,7 @@ class PpspmController extends Controller
 
     public function show(tagihan $ppspm)
     {
-        if (!Gate::allows('PPSPM', auth()->user()->id)) {
+        if (!Gate::allows('PPSPM')) {
             abort(403);
         }
 
@@ -45,7 +45,7 @@ class PpspmController extends Controller
 
     public function edit(tagihan $ppspm)
     {
-        if (!Gate::allows('PPSPM', auth()->user()->id)) {
+        if (!Gate::allows('PPSPM')) {
             abort(403);
         }
 
@@ -67,7 +67,7 @@ class PpspmController extends Controller
 
     public function update(Request $request, tagihan $ppspm)
     {
-        if (!Gate::allows('PPSPM', auth()->user()->id)) {
+        if (!Gate::allows('PPSPM')) {
             abort(403);
         }
 
@@ -92,7 +92,7 @@ class PpspmController extends Controller
 
     public function tolak(tagihan $tagihan)
     {
-        if (!Gate::allows('PPSPM', auth()->user()->id)) {
+        if (!Gate::allows('PPSPM')) {
             abort(403);
         }
 
@@ -117,7 +117,7 @@ class PpspmController extends Controller
 
     public function approve(tagihan $tagihan)
     {
-        if (!Gate::allows('PPSPM', auth()->user()->id)) {
+        if (!Gate::allows('PPSPM')) {
             abort(403);
         }
 
@@ -145,7 +145,7 @@ class PpspmController extends Controller
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas)
     {
-        if (!Gate::allows('PPSPM', auth()->user()->id)) {
+        if (!Gate::allows('PPSPM')) {
             abort(403);
         }
 

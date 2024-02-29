@@ -11,7 +11,7 @@ class CleansingTagihanController extends Controller
 {
     public function index()
     {
-        if (!Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (!Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
         return view('data_cleansing.tagihan.index', [
@@ -22,7 +22,7 @@ class CleansingTagihanController extends Controller
 
     public function detail($jns, $nomor)
     {
-        if (!Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (!Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
         return view('data_cleansing.tagihan.detail', [

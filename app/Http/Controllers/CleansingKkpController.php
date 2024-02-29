@@ -15,7 +15,7 @@ class CleansingKkpController extends Controller
 {
     public function index()
     {
-        if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (! Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
 
@@ -27,7 +27,7 @@ class CleansingKkpController extends Controller
 
     public function download()
     {
-        if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (! Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
         $spreadsheet = new Spreadsheet();
@@ -124,7 +124,7 @@ class CleansingKkpController extends Controller
 
     public function import()
     {
-        if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (! Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
         return view('data_cleansing.KKP.import',[
@@ -134,7 +134,7 @@ class CleansingKkpController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::any(['sys_admin', 'admin_satker'], auth()->user()->id)) {
+        if (! Gate::any(['sys_admin', 'admin_satker'])) {
             abort(403);
         }
         $file = $request->file('file');

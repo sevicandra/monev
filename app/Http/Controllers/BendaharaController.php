@@ -30,7 +30,7 @@ class BendaharaController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
         return view('bendahara.index',[
@@ -41,7 +41,7 @@ class BendaharaController extends Controller
 
     public function show(tagihan $bendahara)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -64,7 +64,7 @@ class BendaharaController extends Controller
 
     public function createCoa(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -91,7 +91,7 @@ class BendaharaController extends Controller
 
     public function storeCoa(tagihan $tagihan, pagu $pagu)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -113,7 +113,7 @@ class BendaharaController extends Controller
 
     public function editCoa(tagihan $tagihan, realisasi $coa)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -134,7 +134,7 @@ class BendaharaController extends Controller
 
     public function updateCoa(tagihan $tagihan, realisasi $coa, Request $request)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -159,7 +159,7 @@ class BendaharaController extends Controller
 
     public function destroyCoa(tagihan $tagihan, realisasi $coa)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -177,7 +177,7 @@ class BendaharaController extends Controller
 
     public function editsp2d(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -196,7 +196,7 @@ class BendaharaController extends Controller
 
     public function editsspb(tagihan $tagihan, realisasi $realisasi)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -212,7 +212,7 @@ class BendaharaController extends Controller
 
     public function updatesp2d(Request $request, tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -246,7 +246,7 @@ class BendaharaController extends Controller
 
     public function updatesspb(Request $request, tagihan $tagihan, realisasi $realisasi)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -286,7 +286,7 @@ class BendaharaController extends Controller
     }
 
     public function tolak(tagihan $tagihan){
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -316,7 +316,7 @@ class BendaharaController extends Controller
     }
 
     public function approve(tagihan $tagihan){
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -389,7 +389,7 @@ class BendaharaController extends Controller
 
     // public function payroll(tagihan $tagihan)
     // {
-    //     if (! Gate::allows('Bendahara', auth()->user()->id)) {
+    //     if (! Gate::allows('Bendahara')) {
     //         abort(403);
     //     }
 
@@ -405,7 +405,7 @@ class BendaharaController extends Controller
 
     // public function cetakpayroll(tagihan $tagihan)
     // {
-    //     if (! Gate::allows('Bendahara', auth()->user()->id)) {
+    //     if (! Gate::allows('Bendahara')) {
     //         abort(403);
     //     }
 
@@ -454,7 +454,7 @@ class BendaharaController extends Controller
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -509,7 +509,7 @@ class BendaharaController extends Controller
 
     public function dokumen(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -533,7 +533,7 @@ class BendaharaController extends Controller
 
     public function showrekanan(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -553,7 +553,7 @@ class BendaharaController extends Controller
 
     public function createrekanan(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -573,7 +573,7 @@ class BendaharaController extends Controller
 
     public function storerekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -591,7 +591,7 @@ class BendaharaController extends Controller
 
     public function deleterekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -610,7 +610,7 @@ class BendaharaController extends Controller
 
     public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -631,7 +631,7 @@ class BendaharaController extends Controller
 
     public function createppnrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -652,7 +652,7 @@ class BendaharaController extends Controller
 
     public function storeppnrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -693,7 +693,7 @@ class BendaharaController extends Controller
 
     public function editppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -714,7 +714,7 @@ class BendaharaController extends Controller
 
     public function updateppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn, Request $request)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -752,7 +752,7 @@ class BendaharaController extends Controller
 
     public function deleteppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -773,7 +773,7 @@ class BendaharaController extends Controller
 
     public function showpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -794,7 +794,7 @@ class BendaharaController extends Controller
 
     public function createpphrekanan(tagihan $tagihan, rekanan $rekanan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -816,7 +816,7 @@ class BendaharaController extends Controller
 
     public function storepphrekanan(tagihan $tagihan, rekanan $rekanan, Request $request)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -861,7 +861,7 @@ class BendaharaController extends Controller
 
     public function editpphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -883,7 +883,7 @@ class BendaharaController extends Controller
 
     public function updatepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph, Request $request)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -922,7 +922,7 @@ class BendaharaController extends Controller
 
     public function deletepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -943,7 +943,7 @@ class BendaharaController extends Controller
 
     public function payroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -963,7 +963,7 @@ class BendaharaController extends Controller
 
     public function createPayroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -982,7 +982,7 @@ class BendaharaController extends Controller
 
     public function storePayroll(tagihan $tagihan, request $request)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -1037,7 +1037,7 @@ class BendaharaController extends Controller
 
     public function importHrisPayroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -1062,7 +1062,7 @@ class BendaharaController extends Controller
 
     public function importMonevPayroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -1083,7 +1083,7 @@ class BendaharaController extends Controller
 
     public function storeImportPayroll(tagihan $tagihan, request $request)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -1121,7 +1121,7 @@ class BendaharaController extends Controller
 
     public function deletePayroll(tagihan $tagihan, Payroll $payroll)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -1138,7 +1138,7 @@ class BendaharaController extends Controller
 
     public function cetakPayroll(tagihan $tagihan)
     {
-        if (! Gate::allows('Bendahara', auth()->user()->id)) {
+        if (! Gate::allows('Bendahara')) {
             abort(403);
         }
 

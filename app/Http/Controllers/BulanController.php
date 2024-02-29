@@ -12,7 +12,7 @@ class BulanController extends Controller
 
     public function index()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.bulan.index',[
@@ -23,7 +23,7 @@ class BulanController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.bulan.create',[
@@ -33,7 +33,7 @@ class BulanController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -52,7 +52,7 @@ class BulanController extends Controller
 
     public function edit(bulan $bulan)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.bulan.update',[
@@ -63,7 +63,7 @@ class BulanController extends Controller
 
     public function update(Request $request, bulan $bulan)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -82,7 +82,7 @@ class BulanController extends Controller
 
     public function destroy(bulan $bulan)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $bulan->delete();

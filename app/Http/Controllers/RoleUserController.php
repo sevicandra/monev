@@ -12,10 +12,10 @@ class RoleUserController extends Controller
 
     public function create(role $role, User $user)
     {
-        if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
+        if (! Gate::any(['admin_satker', 'sys_admin'])) {
             abort(403);
         }
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             if ($user->satker != auth()->user()->satker) {
                 abort(403);
             }
@@ -27,11 +27,11 @@ class RoleUserController extends Controller
 
     public function show(User $role_user)
     {
-        if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
+        if (! Gate::any(['admin_satker', 'sys_admin'])) {
             abort(403);
         }
 
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             if ($role_user->satker != auth()->user()->satker) {
                 abort(403);
             }
@@ -45,11 +45,11 @@ class RoleUserController extends Controller
 
     public function edit(User $role_user)
     {
-        if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
+        if (! Gate::any(['admin_satker', 'sys_admin'])) {
             abort(403);
         }
 
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             if ($role_user->satker != auth()->user()->satker) {
                 abort(403);
             }
@@ -64,11 +64,11 @@ class RoleUserController extends Controller
 
     public function destroy(role $role, User $user)
     {
-        if (! Gate::any(['admin_satker', 'sys_admin'], auth()->user()->id)) {
+        if (! Gate::any(['admin_satker', 'sys_admin'])) {
             abort(403);
         }
 
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             if ($user->satker != auth()->user()->satker) {
                 abort(403);
             }

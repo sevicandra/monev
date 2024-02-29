@@ -18,7 +18,7 @@ class PayrollController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('Bendahara', auth()->user()->id)) {
+        if (!Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -30,7 +30,7 @@ class PayrollController extends Controller
 
     public function upload(Request $request, tagihan $tagihan, berkasupload $berkas)
     {
-        if (!Gate::allows('Bendahara', auth()->user()->id)) {
+        if (!Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -85,7 +85,7 @@ class PayrollController extends Controller
 
     public function dokumen(tagihan $tagihan)
     {
-        if (!Gate::allows('Bendahara', auth()->user()->id)) {
+        if (!Gate::allows('Bendahara')) {
             abort(403);
         }
 
@@ -108,7 +108,7 @@ class PayrollController extends Controller
 
     public function approve(tagihan $tagihan)
     {
-        if (!Gate::allows('Bendahara', auth()->user()->id)) {
+        if (!Gate::allows('Bendahara')) {
             abort(403);
         }
         if ($tagihan->kodesatker != auth()->user()->satker) {
@@ -128,7 +128,7 @@ class PayrollController extends Controller
 
     public function show(tagihan $tagihan)
     {
-        if (!Gate::allows('Bendahara', auth()->user()->id)) {
+        if (!Gate::allows('Bendahara')) {
             abort(403);
         }
         if ($tagihan->kodesatker != auth()->user()->satker) {
@@ -146,7 +146,7 @@ class PayrollController extends Controller
 
     public function cetak(tagihan $tagihan)
     {
-        if (!Gate::allows('Bendahara', auth()->user()->id)) {
+        if (!Gate::allows('Bendahara')) {
             abort(403);
         }
         if ($tagihan->kodesatker != auth()->user()->satker) {

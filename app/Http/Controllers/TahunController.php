@@ -11,7 +11,7 @@ class TahunController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.tahun.index',[
@@ -22,7 +22,7 @@ class TahunController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.tahun.create',[
@@ -32,7 +32,7 @@ class TahunController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -48,7 +48,7 @@ class TahunController extends Controller
 
     public function show(tahun $tahun)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         //
@@ -56,7 +56,7 @@ class TahunController extends Controller
 
     public function edit(tahun $tahun)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.tahun.update',[
@@ -67,7 +67,7 @@ class TahunController extends Controller
 
     public function update(Request $request, tahun $tahun)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -83,7 +83,7 @@ class TahunController extends Controller
 
     public function destroy(tahun $tahun)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $tahun->delete();

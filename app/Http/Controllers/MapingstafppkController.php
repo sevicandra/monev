@@ -15,7 +15,7 @@ class MapingstafppkController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -27,7 +27,7 @@ class MapingstafppkController extends Controller
 
     public function showunit(RefStafPPK $stafppk)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -44,7 +44,7 @@ class MapingstafppkController extends Controller
 
     public function editunit(RefStafPPK $stafppk)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -61,7 +61,7 @@ class MapingstafppkController extends Controller
 
     public function updateunit(RefStafPPK $stafppk, unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -78,7 +78,7 @@ class MapingstafppkController extends Controller
 
     public function destroyunit(RefStafPPK $stafppk, unit $unit)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -88,7 +88,7 @@ class MapingstafppkController extends Controller
 
     public function showppk(RefStafPPK $stafppk)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -105,7 +105,7 @@ class MapingstafppkController extends Controller
 
     public function editppk(RefStafPPK $stafppk)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -122,7 +122,7 @@ class MapingstafppkController extends Controller
 
     public function updateppk(RefStafPPK $stafppk, RefPPK $ppk)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 
@@ -139,7 +139,7 @@ class MapingstafppkController extends Controller
 
     public function destroyppk(RefStafPPK $stafppk, RefPPK $ppk)
     {
-        if (! Gate::allows('admin_satker', auth()->user()->id)) {
+        if (! Gate::allows('admin_satker')) {
             abort(403);
         }
 

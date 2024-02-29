@@ -30,7 +30,7 @@ class Payroll extends Model
     {
         return  $data->where('payrolls.status', 0)
             ->where('tagihans.status', 4)
-            ->where('tagihans.kodesatker', auth()->user()->satker)
+            ->where('tagihans.kodesatker', session()->get('kdsatker'))
             ->leftJoin('tagihans', 'payrolls.tagihan_id', '=', 'tagihans.id')
             ->leftJoin('units', 'tagihans.kodeunit', '=', 'units.kodeunit')
             ->leftJoin('ref_ppks', 'tagihans.ppk_id', '=', 'ref_ppks.nip')
@@ -46,7 +46,7 @@ class Payroll extends Model
         return $this->where('payrolls.status', 0)
             ->whereHas('tagihan', function ($q) {
                 $q->where('tagihans.status', 4)
-                    ->where('tagihans.kodesatker', auth()->user()->satker)
+                    ->where('tagihans.kodesatker', session()->get('kdsatker'))
                     ->where('tagihans.tahun', session()->get('tahun'));
             })
             ->groupBy('payrolls.tagihan_id')

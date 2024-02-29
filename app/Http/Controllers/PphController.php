@@ -11,7 +11,7 @@ class PphController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.pph.index',[
@@ -22,7 +22,7 @@ class PphController extends Controller
 
     public function create()
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.pph.create',[
@@ -32,7 +32,7 @@ class PphController extends Controller
 
     public function store(Request $request)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -53,7 +53,7 @@ class PphController extends Controller
 
     public function edit(pph $pph)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.pph.update',[
@@ -64,7 +64,7 @@ class PphController extends Controller
 
     public function update(Request $request, pph $pph)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -85,7 +85,7 @@ class PphController extends Controller
 
     public function destroy(pph $pph)
     {
-        if (! Gate::allows('sys_admin', auth()->user()->id)) {
+        if (! Gate::allows('sys_admin')) {
             abort(403);
         }
         $pph->delete();

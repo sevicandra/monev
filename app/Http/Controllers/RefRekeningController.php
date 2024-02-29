@@ -11,7 +11,7 @@ class RefRekeningController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('referensi.rekening.index', [
@@ -22,7 +22,7 @@ class RefRekeningController extends Controller
 
     public function create()
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
         return view('referensi.rekening.create', [
@@ -32,7 +32,7 @@ class RefRekeningController extends Controller
 
     public function store(Request $request)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($request->bank === "Other") {
@@ -73,7 +73,7 @@ class RefRekeningController extends Controller
 
     public function edit(RefRekening $rekening)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($rekening->kdsatker != auth()->user()->satker) {
@@ -87,7 +87,7 @@ class RefRekeningController extends Controller
 
     public function update(Request $request, RefRekening $rekening)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($rekening->kdsatker != auth()->user()->satker) {
@@ -130,7 +130,7 @@ class RefRekeningController extends Controller
 
     public function destroy(RefRekening $rekening)
     {
-        if (!Gate::allows('PPK', auth()->user()->id) && !Gate::allows('Staf_PPK', auth()->user()->id)) {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
             abort(403);
         }
         if ($rekening->kdsatker != auth()->user()->satker) {

@@ -11,7 +11,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.role.index', [
@@ -22,7 +22,7 @@ class RoleController extends Controller
 
     public function create()
     {
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.role.create', [
@@ -32,7 +32,7 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             abort(403);
         }
         $request->validate([
@@ -54,14 +54,14 @@ class RoleController extends Controller
 
     public function show(role $role)
     {
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             abort(403);
         }
     }
 
     public function edit(role $role)
     {
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             abort(403);
         }
         return view('referensi.role.update', [
@@ -72,7 +72,7 @@ class RoleController extends Controller
 
     public function update(Request $request, role $role)
     {
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             abort(403);
         }
 
@@ -95,7 +95,7 @@ class RoleController extends Controller
 
     public function destroy(role $role)
     {
-        if (!Gate::allows('sys_admin', auth()->user()->id)) {
+        if (!Gate::allows('sys_admin')) {
             abort(403);
         }
 
