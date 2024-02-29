@@ -98,7 +98,7 @@ class PayrollController extends Controller
         }
 
         return view('uploadberkas.index', [
-            'data' => $tagihan,
+            'data' => $tagihan->berkasupload()->with('berkas')->get(),
             'back' => '/payroll',
             'upload' => '/payroll/' . $tagihan->id . '/upload',
             'delete' => '/payroll/' . $tagihan->id . '/upload/',
