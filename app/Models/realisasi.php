@@ -29,7 +29,7 @@ class realisasi extends Model
 
     public function sspb()
     {
-        return $this->hasOne(sspb::class);
+        return $this->hasMany(sspb::class);
     }
 
     public function scopeRealisaijenisbelanja($data, $jenis)

@@ -8,6 +8,7 @@ use App\Http\Controllers\SsoController;
 use App\Http\Controllers\PaguController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SP2DController;
+use App\Http\Controllers\SspbController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArsipController;
@@ -316,8 +317,12 @@ Route::controller(BendaharaController::class)->group(function(){
     Route::get('/bendahara/{tagihan}/upload', 'upload')->middleware('auth');
     Route::patch('/bendahara/{tagihan}/upload', 'upload')->middleware('auth');
     Route::delete('/bendahara/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth');
-    Route::get('/bendahara/{tagihan}/realisasi/{realisasi}/sspb', 'editsspb')->middleware('auth');
-    Route::patch('/bendahara/{tagihan}/realisasi/{realisasi}/sspb', 'updatesspb')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/realisasi/{realisasi}/sspb', 'sspb')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/realisasi/{realisasi}/sspb/create', 'createsspb')->middleware('auth');
+    Route::post('/bendahara/{tagihan}/realisasi/{realisasi}/sspb/create', 'storesspb')->middleware('auth');
+    Route::get('/bendahara/{tagihan}/realisasi/{realisasi}/sspb/{sspb}', 'editsspb')->middleware('auth');
+    Route::patch('/bendahara/{tagihan}/realisasi/{realisasi}/sspb/{sspb}', 'updatesspb')->middleware('auth');
+    Route::delete('/bendahara/{tagihan}/realisasi/{realisasi}/sspb/{sspb}', 'deletesspb')->middleware('auth');
     Route::get('/bendahara/{tagihan}/tolak', 'tolak')->middleware('auth');
     Route::get('/bendahara/{tagihan}/approve', 'approve')->middleware('auth');
     Route::get('/bendahara/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
@@ -686,3 +691,8 @@ Route::controller(DnpHonorariumController::class)->group(function(){
     Route::get('/dnp-honorarium/template', 'template')->middleware('auth');
 });
 
+
+Route::controller(SspbController::class)->group(function(){
+    Route::get('/sspb', 'index')->middleware('auth');
+    Route::get('/sspb/create', 'create')->middleware('auth');
+});

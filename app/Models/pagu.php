@@ -6,8 +6,9 @@ use App\Traits\Uuids;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class pagu extends Model
 {
@@ -190,26 +191,30 @@ class pagu extends Model
     public function scopeRealisasiBulanan($data, $bulan)
     {
         return $data
-            ->where('pagus.kodesatker', session()->get('kdsatker'))
-            ->where('pagus.tahun', session()->get('tahun'))
-            ->leftJoin('view_realisasipagubulanan', function (JoinClause $join) use ($bulan) {
-                $join->on('pagus.id', '=', 'view_realisasipagubulanan.pagu_id')->where('view_realisasipagubulanan.bulan_sp2d', '=', $bulan);
-            })
-            ->leftJoin('units', 'pagus.kodeunit', '=', 'units.kodeunit')
-            ->selectRaw('CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, program, kegiatan, kro, ro, komponen, subkomponen, akun, anggaran, sum(realisasi) as realisasi, sum(pengembalian) as total_sspb, units.namaunit')
-            ->groupBy('pagus.id');
+            ->with(['realisasi' => function (Builder $query) use ($bulan) {
+                $query->whereHas('tagihan', function ($q) use ($bulan) {
+                    $q->whereRaw('LPAD(MONTH(tanggal_sp2d), 2, 0) = ' . $bulan);
+                })->select(['pagu_id', 'tagihan_id', 'realisasi']);
+            }, 'sspb' => function (Builder $query) use ($bulan) {
+                $query->whereRaw('LPAD(MONTH(tanggal_sspb), 2, 0) = ' . $bulan)->select(['pagu_id', 'nominal_sspb']);
+            }, 'unit'])
+            ->selectRaw('*, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok')
+            ->orderBy('pok')
+            ->get();
     }
 
     public function scopeRealisasiBulananWithSum($data, $bulan)
     {
         return $data
-            ->where('pagus.kodesatker', session()->get('kdsatker'))
-            ->where('pagus.tahun', session()->get('tahun'))
-            ->leftJoin('view_realisasipagubulanan', function (JoinClause $join) use ($bulan) {
-                $join->on('pagus.id', '=', 'view_realisasipagubulanan.pagu_id')->where('view_realisasipagubulanan.bulan_sp2d', '<=', $bulan);
-            })
-            ->leftJoin('units', 'pagus.kodeunit', '=', 'units.kodeunit')
-            ->selectRaw('CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok, program, kegiatan, kro, ro, komponen, subkomponen, akun, anggaran, sum(realisasi) as realisasi, sum(pengembalian) as total_sspb, units.namaunit')
-            ->groupBy('pagus.id');
+            ->with(['realisasi' => function (Builder $query) use ($bulan) {
+                $query->whereHas('tagihan', function ($q) use ($bulan) {
+                    $q->whereRaw('LPAD(MONTH(tanggal_sp2d), 2, 0) <= ' . $bulan);
+                })->select(['pagu_id', 'tagihan_id', 'realisasi']);
+            }, 'sspb' => function (Builder $query) use ($bulan) {
+                $query->whereRaw('LPAD(MONTH(tanggal_sspb), 2, 0) <= ' . $bulan)->select(['pagu_id', 'nominal_sspb']);
+            }, 'unit'])
+            ->selectRaw('*, CONCAT(program, "." ,kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok')
+            ->orderBy('pok')
+            ->get();
     }
 }

@@ -44,7 +44,6 @@
                     <th class="border border-base-content">Akun</th>
                     <th class="border border-base-content">Realisasi</th>
                     <th class="border border-base-content">Pengembalian</th>
-                    <th class="border border-base-content">Tanggal Pengembalian</th>
                     <th class="border border-base-content">Aksi</th>
                 </tr>
             </thead>
@@ -66,12 +65,7 @@
                             {{ number_format($item->realisasi, 2, ',', '.') }}</td>
                         <td class="text-right border border-base-content">
                             @if (isset($item->sspb))
-                                {{ number_format($item->sspb->nominal_sspb, 2, ',', '.') }}
-                            @endif
-                        </td>
-                        <td class="border border-base-content">
-                            @if (isset($item->sspb))
-                                {{ indonesiaDate($item->sspb->tanggal_sspb) }}
+                                {{ number_format($item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
                             @endif
                         </td>
                         <td class="border border-base-content">

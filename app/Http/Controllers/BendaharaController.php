@@ -50,7 +50,7 @@ class BendaharaController extends Controller
         }
 
         return view('bendahara.coa',[
-            'data'=>$bendahara->realisasi()->with(['pagu']) ->searchprogram()  
+            'data'=>$bendahara->realisasi()->with(['pagu', 'sspb']) ->searchprogram()  
                                             ->searchkegiatan()
                                             ->searchkro()
                                             ->searchro()
@@ -194,7 +194,7 @@ class BendaharaController extends Controller
         ]);
     }
 
-    public function editsspb(tagihan $tagihan, realisasi $realisasi)
+    public function sspb(tagihan $tagihan, realisasi $realisasi)
     {
         if (! Gate::allows('Bendahara')) {
             abort(403);
@@ -203,8 +203,76 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.sspb',[
+
+        return view('bendahara.sspb.index',[
             'tagihan'=>$tagihan,
+            'realisasi'=>$realisasi,
+            'data'=>$realisasi->sspb()->paginate(15)->withQueryString(),
+            'notifikasi'=>Notification::Notif()
+        ]);
+    }
+
+    public function createsspb(tagihan $tagihan, realisasi $realisasi)
+    {
+        if (! Gate::allows('Bendahara')) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+        return view('bendahara.sspb.create',[
+            'tagihan'=>$tagihan,
+            'realisasi'=>$realisasi,
+            'notifikasi'=>Notification::Notif()
+        ]);
+    }
+
+    public function storesspb(tagihan $tagihan, realisasi $realisasi, Request $request)
+    {
+        if (! Gate::allows('Bendahara')) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+
+        $request->validate([
+            'tanggal_sspb'=>'required',
+            'nominal_sspb'=>'required|numeric'
+        ]);
+
+        if (($realisasi->realisasi - $realisasi->sspb->sum('nominal_sspb')) < $request->nominal_sspb) {
+            return back()->with('gagal','Nilai SSPB Lebih besar dari realisasi'); 
+        }
+        
+        sspb::create([
+            'realisasi_id'=>$realisasi->id,
+            'tagihan_id'=>$tagihan->id,
+            'pagu_id'=>$realisasi->pagu_id,
+            'nominal_sspb'=>$request->nominal_sspb,
+            'tanggal_sspb'=>$request->tanggal_sspb,
+        ]);
+        return redirect('/bendahara/'.$tagihan->id."/realisasi/".$realisasi->id."/sspb")->with('berhasil', 'Data SSPB Berhasi Ditambahkan');
+    }
+
+    public function editsspb(tagihan $tagihan, realisasi $realisasi, sspb $sspb)
+    {
+        if (! Gate::allows('Bendahara')) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+        return view('bendahara.sspb.update',[
+            'tagihan'=>$tagihan,
+            'data'=>$sspb,
             'realisasi'=>$realisasi,
             'notifikasi'=>Notification::Notif()
         ]);
@@ -244,7 +312,7 @@ class BendaharaController extends Controller
         return redirect('/bendahara')->with('berhasil', 'Data SP2D Berhasi Ditambahkan');
     }
 
-    public function updatesspb(Request $request, tagihan $tagihan, realisasi $realisasi)
+    public function updatesspb(Request $request, tagihan $tagihan, realisasi $realisasi, sspb $sspb)
     {
         if (! Gate::allows('Bendahara')) {
             abort(403);
@@ -263,26 +331,33 @@ class BendaharaController extends Controller
             'nominal_sspb'=>'required|numeric'
         ]);
 
-        if ($realisasi->realisasi < $request->nominal_sspb) {
+        if (($realisasi->realisasi + $sspb->nominal_sspb - $realisasi->sspb->sum('nominal_sspb')) < $request->nominal_sspb) {
             return back()->with('gagal','Nilai SSPB Lebih besar dari realisasi'); 
         }
         
-        if (isset($realisasi->sspb)) {
-            $realisasi->sspb->update([
-                'tanggal_sspb'=>$request->tanggal_sspb,
-                'nominal_sspb'=>$request->nominal_sspb,
-            ]);
-            return redirect('/bendahara/'.$tagihan->id)->with('berhasil', 'Data SSPB Berhasi Ditambahkan');
-        }else{
-            sspb::create([
-                'realisasi_id'=>$realisasi->id,
-                'tagihan_id'=>$tagihan->id,
-                'pagu_id'=>$realisasi->pagu->id,
-                'nominal_sspb'=>$request->nominal_sspb,
-                'tanggal_sspb'=>$request->tanggal_sspb,
-            ]);
-            return redirect('/bendahara/'.$tagihan->id)->with('berhasil', 'Data SSPB Berhasi Ditambahkan');
+        $sspb->update([
+            'tanggal_sspb'=>$request->tanggal_sspb,
+            'nominal_sspb'=>$request->nominal_sspb,
+        ]);
+        return redirect('/bendahara/'.$tagihan->id."/realisasi/".$realisasi->id."/sspb")->with('berhasil', 'Data SSPB Berhasi Diubah');
+    }
+
+    public function deletesspb(Request $request, tagihan $tagihan, realisasi $realisasi, sspb $sspb)
+    {
+        if (! Gate::allows('Bendahara')) {
+            abort(403);
         }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+        
+        $sspb->delete();
+        return redirect('/bendahara/'.$tagihan->id."/realisasi/".$realisasi->id."/sspb")->with('berhasil', 'Data SSPB Berhasi Dihapus');
     }
 
     public function tolak(tagihan $tagihan){

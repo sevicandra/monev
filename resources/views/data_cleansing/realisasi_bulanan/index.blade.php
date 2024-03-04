@@ -66,6 +66,8 @@
             <tbody>
                 @php
                     $i = 1;
+                    $a=0;
+                    $b=0;
                 @endphp
                 @foreach ($data as $item)
                     <tr>
@@ -77,10 +79,16 @@
                             {{ number_format($item->anggaran, 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content text-end">
-                            {{ number_format($item->realisasi, 2, ',', '.') }}
+                            {{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}
+                            @php
+                                $a += $item->realisasi->sum('realisasi');
+                            @endphp
                         </td>
                         <td class="border border-base-content text-end">
-                            {{ number_format($item->total_sspb, 2, ',', '.') }}
+                            {{ number_format($item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
+                            @php
+                                $b += $item->sspb->sum('nominal_sspb');
+                            @endphp
                         </td>
                     </tr>
                     @php
@@ -93,9 +101,9 @@
                     <th class="border border-base-content text-end">{{ number_format($data->sum('anggaran'), 2, ',', '.') }}
                     </th>
                     <th class="border border-base-content text-end">
-                        {{ number_format($data->sum('realisasi'), 2, ',', '.') }}</th>
+                        {{ number_format($a, 2, ',', '.') }}</th>
                     <th class="border border-base-content text-end">
-                        {{ number_format($data->sum('total_sspb'), 2, ',', '.') }}</th>
+                        {{ number_format($b, 2, ',', '.') }}</th>
                 </tr>
             </tbody>
         </table>
