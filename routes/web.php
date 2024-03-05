@@ -294,6 +294,9 @@ Route::controller(VerifikasiController::class)->group(function(){
     Route::post('/verifikasi/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/verifikasi/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
     Route::get('/verifikasi/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
+    Route::get('/verifikasi/{tagihan}/payroll/import-excel', 'importExcelPayroll')->middleware('auth');
+    Route::post('/verifikasi/{tagihan}/payroll/import-excel', 'storeExcelPayroll')->middleware('auth');
+    Route::get('/verifikasi/payroll/excel/template', 'templateExcelPayroll')->middleware('auth');
 });
 
 Route::resource('/verifikasi', VerifikasiController::class)->middleware('auth')->except('create');

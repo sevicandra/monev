@@ -1218,4 +1218,317 @@ class VerifikasiController extends Controller
         $writer->save('php://output');
         exit;
     }
+
+    public function importExcelPayroll(tagihan $tagihan)
+    {
+        if (! Gate::allows('Validator')) {
+            abort(403);
+        }
+       
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            return abort(403);
+        }
+
+        return view('verifikasi.payroll.excel.import', [
+            'tagihan' => $tagihan,
+            'notifikasi' => Notification::Notif(),
+        ]);
+    }
+
+    public function templateExcelPayroll()
+    {
+        if (! Gate::allows('Validator')) {
+            abort(403);
+        }
+
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)->setTitle('BNI')->setCellValue('A1', 'No')->setCellValue('B1', 'NOREK')->setCellValue('C1', 'NAMA')->setCellValue('D1', 'BRUTO')->setCellValue('E1', 'PAJAK');
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A2', '1')->setCellValue('B2', '123456789')->setCellValue('C2', 'xxxxxxxxxx')->setCellValue('D2', '1000000')->setCellValue('E2', '100000')->setCellValue('F2', 'data contoh jangan di hapus');
+        $spreadsheet
+            ->setActiveSheetIndex(0)
+            ->getStyle('A:F')
+            ->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $spreadsheet
+            ->setActiveSheetIndex(0)
+            ->getStyle('D:E')
+            ->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+        $spreadsheet
+            ->setActiveSheetIndex(0)
+            ->getStyle('D1:E1')
+            ->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        foreach ($spreadsheet->setActiveSheetIndex(0)->getColumnIterator() as $column) {
+            $spreadsheet->setActiveSheetIndex(0)->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        }
+        $spreadsheet
+            ->getActiveSheet()
+            ->getStyle('A2:H2')
+            ->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+        $spreadsheet
+            ->getActiveSheet()
+            ->getStyle('A2:H2')
+            ->getFill()
+            ->getStartColor()
+            ->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_YELLOW);
+        $NonBNISheet = $spreadsheet->createSheet();
+        $NonBNISheet->setTitle('Non BNI');
+        $spreadsheet->setActiveSheetIndex(1)->setCellValue('A1', 'No')->setCellValue('B1', 'NOREK')->setCellValue('C1', 'NAMA')->setCellValue('D1', 'BRUTO')->setCellValue('E1', 'PAJAK')->setCellValue('F1', 'ADMIN')->setCellValue('G1', 'BANK');
+        $spreadsheet->setActiveSheetIndex(1)->setCellValue('A2', '1')->setCellValue('B2', '123456789')->setCellValue('C2', 'xxxxxxxxxx')->setCellValue('D2', '1000000')->setCellValue('E2', '100000')->setCellValue('F2', '2900')->setCellValue('G2', 'BRI/Mandiri/BSI dll')->setCellValue('H2', 'data contoh jangan di hapus');
+        $spreadsheet
+            ->setActiveSheetIndex(1)
+            ->getStyle('A:H')
+            ->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $spreadsheet
+            ->setActiveSheetIndex(1)
+            ->getStyle('D:F')
+            ->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+        $spreadsheet
+            ->setActiveSheetIndex(1)
+            ->getStyle('D1:F1')
+            ->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        foreach ($spreadsheet->setActiveSheetIndex(1)->getColumnIterator() as $column) {
+            $spreadsheet->setActiveSheetIndex(1)->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        }
+        $spreadsheet
+            ->getActiveSheet()
+            ->getStyle('A2:H2')
+            ->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+        $spreadsheet
+            ->getActiveSheet()
+            ->getStyle('A2:H2')
+            ->getFill()
+            ->getStartColor()
+            ->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_YELLOW);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Payroll -' . date('D, d M Y H:i:s') . '.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit();
+    }
+
+    public function storeExcelPayroll(Request $request, tagihan $tagihan)
+    {
+        if (! Gate::allows('Validator')) {
+            abort(403);
+        }
+       
+        if (! Gate::forUser(auth()->user())->allows('verifikaor_unit', $tagihan->unit)) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 2) {
+            return abort(403);
+        }
+
+        $file = $request->file('file');
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $spreadsheet = $reader->load($file);
+        $bni = collect($spreadsheet->getSheetByName('BNI')->toArray())->skip(1);
+        // return $bni;
+
+        $bniErrors = collect();
+        foreach ($bni as $item) {
+            $row = collect([
+                'NOREK' => $item[1],
+                'NAMA' => $item[2],
+                'BRUTO' => $item[3],
+                'PAJAK' => $item[4],
+            ]);
+            $validator = Validator::make(
+                $row->all(),
+                [
+                    'NOREK' => 'required|numeric',
+                    'NAMA' => 'required',
+                    'BRUTO' => ['required', 'regex:/^((\d*)|(\d{1,3}(,\d{3})+))(\.\d+)?$/'],
+                    'PAJAK' => ['required', 'regex:/^((\d*)|(\d{1,3}(,\d{3})+))(\.\d+)?$/'],
+                ],
+                [
+                    'NOREK.required' => 'Nomor Rekening tidak boleh kosong',
+                    'NOREK.numeric' => 'Nomor Rekening harus berupa angka',
+                    'NAMA.required' => 'Nama tidak boleh kosong',
+                    'BRUTO.required' => 'Bruto tidak boleh kosong',
+                    'BRUTO.regex' => 'Bruto tidak sesuai format nominal mohon jangan mengubah format cell ' . $item[3],
+                    'PAJAK.required' => 'Pajak tidak boleh kosong',
+                    'PAJAK.regex' => 'Pajak tidak sesuai format nominal mohon jangan mengubah format cell ' . $item[4],
+                ],
+            );
+            if ($validator->fails()) {
+                $detail = (object) [];
+                $detail->errors = (object) [];
+                $errorMessage = json_decode($validator->errors()->toJson());
+                if (isset($errorMessage->NOREK)) {
+                    $detail->errors->NOREK = $errorMessage->NOREK[0];
+                } else {
+                    $detail->errors->NOREK = 'ok';
+                }
+                if (isset($errorMessage->NAMA)) {
+                    $detail->errors->NAMA = $errorMessage->NAMA[0];
+                } else {
+                    $detail->errors->NAMA = 'ok';
+                }
+                if (isset($errorMessage->BRUTO)) {
+                    $detail->errors->BRUTO = $errorMessage->BRUTO[0];
+                } else {
+                    $detail->errors->BRUTO = 'ok';
+                }
+                if (isset($errorMessage->PAJAK)) {
+                    $detail->errors->PAJAK = $errorMessage->PAJAK[0];
+                } else {
+                    $detail->errors->PAJAK = 'ok';
+                }
+                $detail->row = $item[0];
+                $detail->status = false;
+                $bniErrors->push($detail);
+            } else {
+                $detail = (object) [];
+                $detail->errors = (object) [];
+                $detail->errors->NOREK = 'ok';
+                $detail->errors->NAMA = 'ok';
+                $detail->errors->BRUTO = 'ok';
+                $detail->errors->PAJAK = 'ok';
+                $detail->row = $item[0];
+                $detail->status = true;
+                $bniErrors->push($detail);
+            }
+        }
+        $nonBNI = collect($spreadsheet->getSheetByName('Non BNI')->toArray())->skip(1);
+        $nonBniErrors = collect();
+        foreach ($nonBNI as $item) {
+            $row = collect([
+                'NOREK' => $item[1],
+                'NAMA' => $item[2],
+                'BRUTO' => $item[3],
+                'PAJAK' => $item[4],
+                'ADMIN' => $item[5],
+                'BANK' => $item[6],
+            ]);
+            $validator = Validator::make(
+                $row->all(),
+                [
+                    'NOREK' => 'required|numeric',
+                    'NAMA' => 'required',
+                    'BRUTO' => ['required', 'regex:/^((\d*)|(\d{1,3}(,\d{3})+))(\.\d+)?$/'],
+                    'PAJAK' => ['required', 'regex:/^((\d*)|(\d{1,3}(,\d{3})+))(\.\d+)?$/'],
+                    'ADMIN' => ['required', 'regex:/^((\d*)|(\d{1,3}(,\d{3})+))(\.\d+)?$/'],
+                    'BANK' => 'required',
+                ],
+                [
+                    'NOREK.required' => 'Nomor Rekening tidak boleh kosong',
+                    'NOREK.numeric' => 'Nomor Rekening harus berupa angka',
+                    'NAMA.required' => 'Nama tidak boleh kosong',
+                    'BRUTO.required' => 'Bruto tidak boleh kosong',
+                    'BRUTO.regex' => 'Bruto tidak sesuai format nominal mohon jangan mengubah format cell ' . $item[3],
+                    'PAJAK.required' => 'Pajak tidak boleh kosong',
+                    'PAJAK.regex' => 'Pajak tidak sesuai format nominal mohon jangan mengubah format cell ' . $item[4],
+                    'ADMIN.required' => 'Biaya Admin tidak boleh kosong',
+                    'ADMIN.regex' => 'Biaya Admin tidak sesuai format nominal mohon jangan mengubah format cell ' . $item[4],
+                    'BANK.required' => 'Nomor Rekening tidak boleh kosong',
+                ],
+            );
+            if ($validator->fails()) {
+                $detail = (object) [];
+                $detail->errors = (object) [];
+                $errorMessage = json_decode($validator->errors()->toJson());
+                if (isset($errorMessage->NOREK)) {
+                    $detail->errors->NOREK = $errorMessage->NOREK[0];
+                } else {
+                    $detail->errors->NOREK = 'ok';
+                }
+                if (isset($errorMessage->NAMA)) {
+                    $detail->errors->NAMA = $errorMessage->NAMA[0];
+                } else {
+                    $detail->errors->NAMA = 'ok';
+                }
+                if (isset($errorMessage->BRUTO)) {
+                    $detail->errors->BRUTO = $errorMessage->BRUTO[0];
+                } else {
+                    $detail->errors->BRUTO = 'ok';
+                }
+                if (isset($errorMessage->PAJAK)) {
+                    $detail->errors->PAJAK = $errorMessage->PAJAK[0];
+                } else {
+                    $detail->errors->PAJAK = 'ok';
+                }
+                if (isset($errorMessage->ADMIN)) {
+                    $detail->errors->ADMIN = $errorMessage->ADMIN[0];
+                } else {
+                    $detail->errors->ADMIN = 'ok';
+                }
+                if (isset($errorMessage->BANK)) {
+                    $detail->errors->BANK = $errorMessage->BANK[0];
+                } else {
+                    $detail->errors->BANK = 'ok';
+                }
+                $detail->row = $item[0];
+                $detail->status = false;
+                $nonBniErrors->push($detail);
+            } else {
+                $detail = (object) [];
+                $detail->errors = (object) [];
+                $detail->errors->NOREK = 'ok';
+                $detail->errors->NAMA = 'ok';
+                $detail->errors->BRUTO = 'ok';
+                $detail->errors->PAJAK = 'ok';
+                $detail->errors->ADMIN = 'ok';
+                $detail->errors->BANK = 'ok';
+                $detail->row = $item[0];
+                $detail->status = true;
+                $nonBniErrors->push($detail);
+            }
+        }
+
+        if ($bniErrors->min('status') === true && $nonBniErrors->min('status') === true) {
+            foreach ($bni->skip(1) as $item) {
+                Payroll::create([
+                    'nama' => $item[2],
+                    'norek' => $item[1],
+                    'bank' => 'BNI',
+                    'bruto' => floatval(str_replace(',', '', $item[3])),
+                    'pajak' => floatval(str_replace(',', '', $item[4])),
+                    'admin' => 0,
+                    'tagihan_id' => $tagihan->id,
+                    'netto' => floatval(str_replace(',', '', $item[3])) - floatval(str_replace(',', '', $item[4])),
+                ]);
+            }
+            foreach ($nonBNI->skip(1) as $item) {
+                Payroll::create([
+                    'nama' => $item[2],
+                    'norek' => $item[1],
+                    'bank' => $item[6],
+                    'bruto' => floatval(str_replace(',', '', $item[3])),
+                    'pajak' => floatval(str_replace(',', '', $item[4])),
+                    'admin' => floatval(str_replace(',', '', $item[5])),
+                    'tagihan_id' => $tagihan->id,
+                    'netto' => floatval(str_replace(',', '', $item[3])) - floatval(str_replace(',', '', $item[4])) - floatval(str_replace(',', '', $item[5])),
+                ]);
+            }
+            return redirect('/verifikasi/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
+        } else {
+            return redirect('/verifikasi/' . $tagihan->id . '/payroll/import-excel')
+                ->with('gagal', 'Data gagal ditambahkan. Silahkan cek kembali.')
+                ->with('bniErrors', collect($bniErrors->skip(1)))
+                ->with('nonBniErrors', collect($nonBniErrors->skip(1)));
+        }
+    }
 }
