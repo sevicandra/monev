@@ -75,7 +75,7 @@ class Payroll extends Model
 
     public function scopeFilterJenis($data)
     {
-        if (request('jnstagihan')) {
+        if (request('jnstagihan') != null) {
             return $data->where('jnstagihan', request('jnstagihan'));
         }
     }
