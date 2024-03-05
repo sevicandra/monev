@@ -28,7 +28,7 @@ class MonitoringTagihanController extends Controller
         if (Gate::allows('PPK')) {
             $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
         } else {
-            $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihansatker()->tagihanppk()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
+            $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihanStafPPK()->where('tahun', session()->get('tahun'))->search()->order()->paginate(15)->withQueryString();
         }
         return view('monitoring_tagihan.index', [
             'data' => $data,

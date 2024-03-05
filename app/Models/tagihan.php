@@ -140,14 +140,13 @@ class tagihan extends Model
 
     public function scopeTagihanppk($data)
     {
-        if (Gate::allows('Staf_PPK', auth()->user()->id)) {
-            return $data->whereIn('ppk_id', session()->get('ppk'))->whereIn('kodeunit', session()->get('unit'));
-        }
-        if (Gate::allows('PPK', auth()->user()->id)) {
             return $data->where('ppk_id', auth()->user()->nip);
-        }
     }
 
+    public function scopeTagihanStafPPK($data)
+    {
+        return $data->whereIn('ppk_id', session()->get('ppk'))->whereIn('kodeunit', session()->get('unit'));
+    }
     public function scopeTagihanverifikator($data)
     {
         return $data->where('jnstagihan', '!=', '2')->wherehas('unit', function ($val) {

@@ -14,12 +14,12 @@ class Notification
 {
     public function tagihan()
     {
-        return tagihan::where('status', 0)->TagihanNonBLBI()->tagihanppk()->count();
+        return tagihan::where('status', 0)->TagihanNonBLBI()->tagihanStafPPK()->count();
     }
 
     public function tagihanBlbi()
     {
-        return tagihan::where('status', 0)->tagihanBLBI()->tagihanppk()->count();
+        return tagihan::where('status', 0)->tagihanBLBI()->tagihanStafPPK()->count();
     }
 
     public function verifikasi()
@@ -54,10 +54,9 @@ class Notification
 
         if (Gate::allows('Staf_PPK')) {
             $notif->tagihan = $notificationInstance->tagihan();
-        }
-
-        if (Gate::allows('Staf_PPK') && session()->get('staf_ppk_blbi') == 1) {
-            $notif->tagihanBlbi = $notificationInstance->tagihanBlbi();
+            if (session()->get('staf_ppk_blbi') == 1) {
+                $notif->tagihanBlbi = $notificationInstance->tagihanBlbi();
+            }
         }
 
         if (Gate::allows('Validator')) {

@@ -33,7 +33,7 @@ class TagihanController extends Controller
             abort(403);
         }
         return view('tagihan.index', [
-            'data' => tagihan::with(['stafPpk', 'ppk', 'unit', 'dokumen', 'realisasi'])->where('status', 0)->TagihanNonBLBI()->tagihanppk()->search()->order()->paginate(15)->withQueryString(),
+            'data' => tagihan::with(['stafPpk', 'ppk', 'unit', 'dokumen', 'realisasi'])->where('status', 0)->TagihanNonBLBI()->tagihanStafPPK()->search()->order()->paginate(15)->withQueryString(),
             'notifikasi' => Notification::Notif(),
         ]);
     }
