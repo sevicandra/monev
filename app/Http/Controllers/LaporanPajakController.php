@@ -90,12 +90,12 @@ class LaporanPajakController extends Controller
                 $C = null;
             }
             if ($key->tagihan->jnstagihan === '1') {
-                if ($key->tagihan->spm) {
-                    $D = $key->tagihan->spm->nomor_sp2d;
-                    $E = $key->tagihan->spm->tanggal_sp2d;
+                if ($key->tagihan->nomor_sp2d !== null) {
+                    $D = $key->tagihan->nomor_sp2d;
+                    $E = $key->tagihan->tanggal_sp2d;
                 } else {
                     $D = null;
-                    $E = null;
+                    $E = date("Y-m-d H:i:s", 0);
                 }
             } else {
                 $D = $key->ntpn;
@@ -234,12 +234,12 @@ class LaporanPajakController extends Controller
                 $C = null;
             }
             if ($key->tagihan->jnstagihan === '1') {
-                if ($key->tagihan->spm) {
-                    $D = $key->tagihan->spm->nomor_sp2d;
-                    $E = $key->tagihan->spm->tanggal_sp2d;
+                if ($key->tagihan->nomor_sp2d != null) {
+                    $D = $key->tagihan->nomor_sp2d;
+                    $E = $key->tagihan->tanggal_sp2d;
                 } else {
                     $D = null;
-                    $E = null;
+                    $E = date("Y-m-d H:i:s", 0);
                 }
             } else {
                 $D = $key->ntpn;
