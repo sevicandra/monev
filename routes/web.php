@@ -42,6 +42,7 @@ use App\Http\Controllers\CleansingKkpController;
 use App\Http\Controllers\CleansingSpmController;
 use App\Http\Controllers\CleansingSppController;
 use App\Http\Controllers\LaporanPajakController;
+use App\Http\Controllers\RekapPayrollController;
 use App\Http\Controllers\ArsipRegisterController;
 use App\Http\Controllers\CleansingSpbyController;
 use App\Http\Controllers\DnpHonorariumController;
@@ -698,4 +699,9 @@ Route::controller(DnpHonorariumController::class)->group(function(){
 Route::controller(SspbController::class)->group(function(){
     Route::get('/sspb', 'index')->middleware('auth');
     Route::get('/sspb/create', 'create')->middleware('auth');
+});
+
+Route::controller(RekapPayrollController::class)->group(function(){
+    Route::get('/rekap-payroll', 'index')->middleware('auth');
+    Route::get('/rekap-payroll/{norek}', 'show')->middleware('auth');
 });

@@ -37,7 +37,7 @@ class VerifikasiKKPController extends Controller
         }
         
         return view('uploadberkas.index',[
-            'data'=>$verifikasi_kkp,
+            'data'=>$verifikasi_kkp->berkasupload()->with('berkas')->get(),
             'back'=>'/verifikasi-kkp',
             'upload'=>'/verifikasi-kkp/'.$verifikasi_kkp->id.'/upload',
             'delete'=>'/verifikasi-kkp/'.$verifikasi_kkp->id.'/upload/',

@@ -178,6 +178,11 @@
                                 Laporan Pajak
                             </a>
                         </li>
+                        <li>
+                            <a href="/rekap-payroll">
+                                Rekap Payroll
+                            </a>
+                        </li>
                     </ul>
                 </details>
             </li>
