@@ -45,10 +45,10 @@
                         <td class="border border-base-content">{{ $item->nama }}</td>
                         <td class="border border-base-content">{{ $item->norek }}</td>
                         <td class="border border-base-content">{{ $item->bank }}</td>
-                        <td class="border border-base-content">{{ $item->bruto }}</td>
-                        <td class="border border-base-content">{{ $item->pajak }}</td>
-                        <td class="border border-base-content">{{ $item->admin }}</td>
-                        <td class="border border-base-content">{{ $item->netto }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
                         <td class="border border-base-content">
                             <a href="/rekap-payroll/{{ $item->norek }}"
                                 class="btn btn-xs btn-outline btn-neutral join-item">detail</a>
