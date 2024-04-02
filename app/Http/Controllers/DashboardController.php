@@ -39,6 +39,7 @@ class DashboardController extends Controller
 
     public function unit_detail(unit $unit)
     {
+        return tagihan::realisasiBulananUnit($unit)->orderBy('bulan')->get();
         return view('dashboard.unit.detail', [
             'data' => tagihan::realisasiBulananUnit($unit)->orderBy('bulan')->get(),
             'unit' => $unit,
