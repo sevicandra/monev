@@ -41,7 +41,7 @@
     </div>
     <table class="table-bordered" style="width: 100%; max-width: 100%; margin-bottom: 20px">
         <tr>
-            <th class="bordered" style="width:3%">No</th>
+            <th class="bordered" style="width: 3%">No</th>
             <th class="bordered" style="width: 12%">Nama</th>
             <th class="bordered" style="width: 10%">NIP/NIK/NRP/DLL</th>
             <th class="bordered" style="width: 12%">Dasar Penugasan</th>
@@ -63,19 +63,19 @@
         @endphp
         @foreach ($data as $item)
             <tr>
-                <td class="bordered" style="text-align: center">{{ $no++ }}</td>
-                <td class="bordered">{{ $item->nama }}</td>
-                <td class="bordered" style="text-align: center">{{ $item->nip }}</td>
-                <td class="bordered">{{ $item->dasar }}</td>
-                <td class="bordered">{{ $item->jabatan }}</td>
-                <td class="bordered" style="text-align: center">{{ $item->gol }}</td>
-                <td class="bordered" style="text-align: center">{{ $item->npwp }}</td>
-                <td class="bordered" style="text-align: center">{{ $item->frekuensi }}</td>
-                <td class="bordered" style="text-align: right">{{ number_format($item->nilai, 0, ',', '.') }}</td>
-                <td class="bordered" style="text-align: right">{{ number_format($item->bruto, 0, ',', '.') }}</td>
-                <td class="bordered" style="text-align: right">{{ number_format($item->pajak, 0, ',', '.') }}</td>
-                <td class="bordered" style="text-align: right">{{ number_format($item->netto, 0, ',', '.') }}</td>
-                <td class="bordered" style="width:7%; text-align: left;">{{ $item->bank }} {{ $item->norek }} a.n. {{ $item->namarek }}</td>
+                <td class="bordered" style="width: 3% ;text-align: center">{{ $no++ }}</td>
+                <td class="bordered" style="width: 12% ;">{{ $item->nama }}</td>
+                <td class="bordered" style="width: 10% ;text-align: center">{{ $item->nip }}</td>
+                <td class="bordered whitespace-normal" style="width: 12% ">{{ $item->dasar }}</td>
+                <td class="bordered" style="width: 10%">{{ $item->jabatan }}</td>
+                <td class="bordered" style="width: 5% ;text-align: center">{{ $item->gol }}</td>
+                <td class="bordered" style="width: 10% ;text-align: center">{{ $item->npwp }}</td>
+                <td class="bordered" style="width: 5% ;text-align: center">{{ $item->frekuensi }}</td>
+                <td class="bordered" style="width: 5% ;text-align: right">{{ number_format($item->nilai, 0, ',', '.') }}</td>
+                <td class="bordered" style="width: 6% ;text-align: right">{{ number_format($item->bruto, 0, ',', '.') }}</td>
+                <td class="bordered" style="width: 6% ;text-align: right">{{ number_format($item->pajak, 0, ',', '.') }}</td>
+                <td class="bordered" style="width: 6% ;text-align: right">{{ number_format($item->netto, 0, ',', '.') }}</td>
+                <td class="bordered" style="width: 10%; text-align: left;">{{ $item->bank }} {{ $item->norek }} a.n. {{ $item->namarek }}</td>
             </tr>
             @php
                 $a += $item->bruto;

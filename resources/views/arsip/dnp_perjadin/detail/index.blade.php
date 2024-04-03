@@ -50,7 +50,7 @@
                                     {{ $item->nama }}
                                 </td>
                                 <td class="border-x border-base-content text-end">
-                                    {{ $item->nilai }}
+                                    {{ number_format($item->nilai, 2, ',', '.') }}
                                 </td>
                                 <td class="border-x border-base-content">
                                     {{ $item->keterangan }}
@@ -72,7 +72,7 @@
                             <tr>
                                 <td class="border-x border-base-content"></td>
                                 <td class="border-x border-base-content">{{ $item->nama }}</td>
-                                <td class="border-x border-base-content text-end">{{ $item->nilai }}</td>
+                                <td class="border-x border-base-content text-end">{{ number_format($item->nilai, 2, ',', '.') }}</td>
                                 <td class="border-x border-base-content">{{ $item->keterangan }}</td>
                             </tr>
                         @endforeach
