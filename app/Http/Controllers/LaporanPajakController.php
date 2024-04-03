@@ -95,11 +95,11 @@ class LaporanPajakController extends Controller
                     $E = $key->tagihan->tanggal_sp2d;
                 } else {
                     $D = null;
-                    $E = date("Y-m-d H:i:s", 0);
+                    $E = null;
                 }
             } else {
                 $D = $key->ntpn;
-                $E = $key->tanggalntpn;
+                $E = $key->tanggalntpn ?? null;
             }
             if ($key->rekanan->npwp === 1) {
                 $F = 'NPWP';
@@ -133,7 +133,9 @@ class LaporanPajakController extends Controller
                 $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($D, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('G' . $row)->setValueExplicit($G, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('H' . $row)->setValueExplicit($H, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
-                $spreadsheet->getActiveSheet()->getCell('E' . $row)->setValueExplicit($E, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_ISO_DATE);
+                if ($E) {
+                    $spreadsheet->getActiveSheet()->getCell('E' . $row)->setValueExplicit($E, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_ISO_DATE);
+                }
 
             $row++;
         }
@@ -239,11 +241,11 @@ class LaporanPajakController extends Controller
                     $E = $key->tagihan->tanggal_sp2d;
                 } else {
                     $D = null;
-                    $E = date("Y-m-d H:i:s", 0);
+                    $E = null;
                 }
             } else {
                 $D = $key->ntpn;
-                $E = $key->tanggalntpn;
+                $E = $key->tanggalntpn ?? null;
             }
 
             $F = $key->rekanan->idpajak;
@@ -272,7 +274,9 @@ class LaporanPajakController extends Controller
                 $spreadsheet->getActiveSheet()->getCell('D' . $row)->setValueExplicit($D, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('F' . $row)->setValueExplicit($F, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('H' . $row)->setValueExplicit($H, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
-                $spreadsheet->getActiveSheet()->getCell('E' . $row)->setValueExplicit($E, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_ISO_DATE);
+                if ($E) {
+                    $spreadsheet->getActiveSheet()->getCell('E' . $row)->setValueExplicit($E, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_ISO_DATE);
+                }
                 $spreadsheet->getActiveSheet()->getCell('I' . $row)->setValueExplicit($I, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_ISO_DATE);
             $row++;
         }
