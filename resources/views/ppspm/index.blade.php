@@ -17,7 +17,7 @@
                 <form action="" method="get" autocomplete="off">
                     <div class="input-group">
                         <input type="text" name="search" class="input input-sm input-bordered join-item"
-                            placeholder="Nomor Tagihan">
+                            placeholder="Nomor Tagihan/Uraian">
                         <button class="btn join-item btn-sm btn-neutral" type="submit">Cari</button>
                     </div>
                 </form>

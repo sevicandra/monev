@@ -199,7 +199,7 @@ class tagihan extends Model
     public function scopeSearch($data)
     {
         if (request('search')) {
-            return $data->where('notagihan', 'like', '%' . request('search') . '%');
+            return $data->where('notagihan', 'like', '%' . request('search') . '%')->orwhere('uraian', 'like', '%' . request('search') . '%');
         }
     }
 
