@@ -218,10 +218,14 @@ class VerifikasiController extends Controller
         
         if ($request->_method === 'PATCH') {
             $request->validate([
-                'berkas'=>'required',
-                'uraian'=>'required',
-                'fileupload'=>'required|mimes:pdf'
+                'berkas' => 'required',
+                'uraian' => 'required',
+                'fileupload' => 'required|mimes:pdf,xlsx,xls,zip,rar',
+            ], [
+                'fileupload.required' => 'File Tidak Boleh Kosong',
+                'fileupload.mimes' => 'File Harus Berupa PDF, Excel, ZIP, RAR',
             ]);
+
 
             $file = $request->file('fileupload')->store('berkas');
             

@@ -19,6 +19,7 @@
                 <tr class="align-middle">
                     <th class="border border-base-content">No</th>
                     <th class="border border-base-content">Berkas</th>
+                    <th class="border border-base-content">extensi file</th>
                     <th class="border border-base-content">Keterangan</th>
                     <th class="border border-base-content">Tanggal</th>
                     <th class="border border-base-content">File</th>
@@ -33,6 +34,7 @@
                     <tr>
                         <td class="text-center border border-base-content">{{ $i }}</td>
                         <td class="border border-base-content">{{ optional($item->berkas)->namaberkas }}</td>
+                        <td class="border border-base-content">{{ explode('.', $item->file)[1] }}</td>
                         <td class="border border-base-content">{{ $item->uraian }}</td>
                         <td class="border border-base-content">{{ $item->created_at }}</td>
                         <td class="text-center border border-base-content">
