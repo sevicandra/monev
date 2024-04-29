@@ -54,6 +54,10 @@
                         <span class="label-text-alt text-red-500">
                             {{ $message }}
                         </span>
+                    @else
+                        <span class="label-text-alt text-primary">
+                            File pdf, xls, xlsx, zip, rar
+                        </span> 
                     @enderror
                 </label>
             </div>

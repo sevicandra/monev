@@ -242,13 +242,9 @@ class VerifikasiController extends Controller
             if ($tagihan->id != $berkas->tagihan_id) {
                 abort(403);
             }
-            if ($berkas->berkas->kodeberkas === '03' || $berkas->berkas->kodeberkas === '04') {
-                Storage::delete($berkas->file);
-                $berkas->delete();
-                return redirect('/verifikasi/'.$tagihan->id)->with('berhasil','Dokumen Berhasil Di Hapus');
-            }else{
-                abort(403);
-            }
+            Storage::delete($berkas->file);
+            $berkas->delete();
+            return redirect('/verifikasi/'.$tagihan->id)->with('berhasil','Dokumen Berhasil Di Hapus');
         }
 
         return view('uploadberkas.upload',[
