@@ -241,7 +241,7 @@
             </li>
             {{--  Akhir Admin  --}}
         @endcanany
-        <li class="">Version : 2.7.1</li>
+        <li class="">Version : 2.7.2</li>
     </menu>
 </div>
 {{--  Halaman Utama  --}}
