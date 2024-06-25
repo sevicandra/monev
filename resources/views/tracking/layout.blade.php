@@ -5,7 +5,7 @@
     @vite('resources/css/app.css')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="Monitoring Tagihan DJKN">
     <title>Monev</title>
     <script>
         try {
@@ -13,31 +13,41 @@
         } catch (e) {}
     </script>
     <link rel="shortcut icon" href="/img/monev.png" type=" image/x-icon">
+    @section('head')
+
+    @show
 </head>
 
-<body class="bg-base-100 h-screen flex flex-col relative overflow-hidden relative">
-    <main class="absolute inset-0 flex justify-center items-center">
-        <div class="w-full max-w-xl text-center flex flex-col gap-4 items-center">
-            <h1 class="text-3xl font-bold text-base-content">Hai!, Selamat Datang di Monev Tagihan.</h1>
-            <p class="text-md text-base-content">Dengan alat bantu monev perbendaharaan, kami hadirkan kemudahan dalam
-                mengakses informasi pelaksanaan anggaran di layar Anda.</p>
-            @include('layout.flashmessage')
-            <a class="btn btn-outline btn-base-content max-w-xs" href="/sso">Login Menggunakan Kemenkeu ID</a>
+<body class="bg-base-100 h-screen flex flex-col relative">
+    <header class="navbar bg-neutral px-4 flex-none flex justify-between z-20">
+        <div class="flex-1 order-2 lg:order-1 flex justify-center lg:justify-start gap-1">
+            <a href="/"><img src="/img/monev.png" width="25" height="25" alt="logo"></a>
+            <a class="normal-case text-xl text-neutral-content" href="/session/tahun-anggaran">&nbsp;MonevTagihan</a>
         </div>
-    </main>
-    <div class="absolute z-10 top-4 right-4">
-        <button id="toggleThemeBar">
-            <!-- hamburger icon -->
-            <svg class="swap-off fill-base-content" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                viewBox="0 0 512 512">
-                <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
-            </svg>
-        </button>
-        </label>
+        <div class="flex-none order-1 lg:order-2">
+
+        </div>
+        <div class="order-3 lg:hidden">
+            
+        </div>
+    </header>
+    <div class="flex bg-base-100 flex-1 relative overflow-hidden">
+        <main class="flex flex-col grow pb-6 overflow-x-hidden gap-2 justify-between">
+            <div class="flex flex-col grow overflow-x-hidden gap-2">
+                @yield('content')
+            </div>
+            <div>
+                @section('pagination')
+
+                @show
+            </div>
+        </main>
+        <div id="sidebar"
+            class="overflow-y-auto w-64 z-10 shadow shadow-base-content lg:hidden bg-base-100 h-full max-h-full justify-between absolute left-0 -translate-x-full duration-200">
+            @include('layout.sidebar')
+        </div>
     </div>
-    <div class="absolute z-10 top-4 left-4">
-        <a class="btn btn-ghost btn-sm" href="/tracking">Tracking Payroll</a>
-    </div>
+
     <div class="absolute inset-0 z-50 hidden" id="themebar">
         <div class="absolute inset-0" id="themebarDialog">
 
@@ -51,6 +61,15 @@
 <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
     crossorigin="anonymous"></script>
 <script>
+    $(document).ready(function() {
+        $("#toggleSidebar").click(function() {
+            if ($("#toggleSidebar").is(":checked")) {
+                $("#sidebar").removeClass("-translate-x-full")
+            } else {
+                $("#sidebar").addClass("-translate-x-full")
+            }
+        });
+    });
     $(document).ready(function() {
         $("#toggleThemeBar").click(function() {
             $("#themebar").toggleClass("hidden").delay(200);
@@ -67,6 +86,8 @@
             }, 200)
         })
     })
+</script>
+<script>
     $(document).ready(function() {
         $("#themeMenu").children("div").click(function() {
             localStorage.setItem('dataTheme', $(this).data("setTheme"));
@@ -74,5 +95,7 @@
         })
     })
 </script>
+@section('foot')
 
+@show
 </html>

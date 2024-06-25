@@ -54,6 +54,7 @@ use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\RealisasiBulananController;
 use App\Http\Controllers\MonitoringTagihanController;
+use App\Http\Controllers\TrackingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -704,4 +705,9 @@ Route::controller(SspbController::class)->group(function(){
 Route::controller(RekapPayrollController::class)->group(function(){
     Route::get('/rekap-payroll', 'index')->middleware('auth');
     Route::get('/rekap-payroll/{norek}', 'show')->middleware('auth');
+});
+
+Route::controller(TrackingController::class)->group(function(){
+    Route::get('/tracking', 'index');
+    Route::post('/tracking', 'tracking');
 });
