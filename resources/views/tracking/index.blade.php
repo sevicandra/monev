@@ -32,7 +32,6 @@
                     <th class="border border-base-content">Nama</th>
                     <th class="border border-base-content">Nomor Rekening</th>
                     <th class="border border-base-content">Bank</th>
-                    <th class="border border-base-content">Bruto</th>
                     <th class="border border-base-content">Aksi</th>
                 </tr>
             </thead>
@@ -64,7 +63,6 @@
                         <td class="border border-base-content">{{ $item->nama }}</td>
                         <td class="border border-base-content">{{ $item->norek }}</td>
                         <td class="border border-base-content">{{ $item->bank }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}
                         </td>
                         <td class="border border-base-content">
                             <form action="/tracking" method="post">
