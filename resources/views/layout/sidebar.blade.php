@@ -19,6 +19,11 @@
                             Realisasi PPK
                         </a>
                     </li>
+                    <li>
+                        <a href="/tracking">
+                            Tracking Payroll
+                        </a>
+                    </li>
                 </ul>
             </details>
         </li>

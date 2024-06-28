@@ -708,6 +708,6 @@ Route::controller(RekapPayrollController::class)->group(function(){
 });
 
 Route::controller(TrackingController::class)->group(function(){
-    Route::get('/tracking', 'index');
-    Route::post('/tracking', 'tracking');
+    Route::get('/tracking', 'index')->middleware('auth');
+    Route::post('/tracking', 'tracking')->middleware('auth');
 });
