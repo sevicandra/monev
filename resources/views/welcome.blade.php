@@ -35,9 +35,6 @@
         </button>
         </label>
     </div>
-    <div class="absolute z-10 top-4 left-4">
-        <a class="btn btn-ghost btn-sm" href="/tracking">Tracking Payroll</a>
-    </div>
     <div class="absolute inset-0 z-50 hidden" id="themebar">
         <div class="absolute inset-0" id="themebarDialog">
 
