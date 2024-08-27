@@ -131,9 +131,6 @@
                                             {!! $item->catatan !!}
                                         </div>
                                     </div>
-                                    <form method="dialog" class="modal-backdrop">
-                                        <button>close</button>
-                                    </form>
                                 </dialog>
                             </td>
                         </tr>
