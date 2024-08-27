@@ -120,7 +120,6 @@ class VerifikasiController extends Controller
         if ($tagihan->status != 2) {
             abort(403);
         }
-
         $validator = Validator::make(
             $request->all(),
             [
@@ -134,7 +133,6 @@ class VerifikasiController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->with('tagihan_id' ,$tagihan->id)->withInput();
         }
-
         $tagihan->update([
             'status'=>0,
             'catatan'=>$request->catatan
@@ -143,7 +141,7 @@ class VerifikasiController extends Controller
             'tagihan_id'=>$tagihan->id,
             'action'=>'Tolak',
             'user'=>auth()->user()->nama . " / Verifikator",
-            'catatan'=>$request->catatan
+            'catatan'=>$request->catatan,
         ]);
         return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Dikembalikan');
     }

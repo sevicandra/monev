@@ -1,4 +1,4 @@
-@extends('tracking.layout')
+@extends('layout.main')
 
 @section('content')
     <div class="bg-primary p-4">

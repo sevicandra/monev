@@ -1,4 +1,4 @@
-@extends('tracking.layout')
+@extends('layout.main')
 
 @section('content')
     <div class="bg-primary p-4 flex-none">
@@ -8,13 +8,10 @@
         <div class="">
             <a href="{{ url()->previous() }}" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
+        <hr>
     </div>
     <div class="px-4 overflow-y-auto">
-
-        <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
-            @php
-                $i = 1;
-            @endphp
+        <ul class="timeline timeline-snap-icon timeline-compact timeline-vertical">
             @foreach ($data as $item)
                 <li>
                     <div class="timeline-middle">
@@ -24,26 +21,38 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    @if ($i % 2 == 0)
-                    <div class="timeline-start mb-10 md:text-end">
-                        <time class="font-mono italic">{{ indonesiaDate($item->created_at) }} {{ $item->created_at->format('H:i:s') }}</time>
-                        <div class="text-lg font-black">{{ $item->User }} - {{ $item->action }}</div>
-                        {{ $item->catatan }}
-                    </div>
-                    @else
                     <div class="timeline-end mb-10">
-                        <time class="font-mono italic">{{ indonesiaDate($item->created_at) }} {{ $item->created_at->format('H:i:s') }}</time>
+                        <time class="font-mono italic">{{ indonesiaDate($item->created_at) }}
+                            {{ $item->created_at->format('H:i:s') }}</time>
                         <div class="text-lg font-black">{{ $item->User }} - {{ $item->action }}</div>
-                        {{ $item->catatan }}
+                        @if ($item->catatan)
+                            <button class="btn btn-xs" onclick="catatan_{{ $loop->iteration }}.showModal()">catatan</button>
+                            <dialog id="catatan_{{ $loop->iteration }}" class="modal">
+                                <div
+                                    class="modal-box w-11/12 max-w-5xl max-h-11/12 grid grid-rows-[auto_auto_1fr] overflow-hidden gap-2 p-0">
+                                    <div class="flex justify-end glass p-2">
+                                        <button class="btn btn-sm btn-ghost"
+                                            onclick="catatan_{{ $loop->iteration }}.close()">✕</button>
+                                    </div>
+                                    <div class="p-2 flex flex-col gap-2">
+                                        <h1>
+                                            {{ indonesiaDate($item->created_at) }} {{ $item->created_at->format('H:i:s') }}
+                                        </h1>
+                                        <hr>
+                                    </div>
+                                    <div class="rich-text overflow-y-auto px-4 py-2">
+                                        {!! $item->catatan !!}
+                                    </div>
+                                </div>
+                                <form method="dialog" class="modal-backdrop">
+                                    <button>close</button>
+                                </form>
+                            </dialog>
+                        @endif
                     </div>
-                    @endif
                     <hr />
                 </li>
-                @php
-                    $i++;
-                @endphp
             @endforeach
         </ul>
-
     </div>
 @endsection

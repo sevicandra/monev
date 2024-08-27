@@ -83,7 +83,7 @@ class Payroll extends Model
     public function scopeTracking()
     {
         if (request('search')) {
-            return $this->where('norek', request('search'))->with(['tagihan'])->orderBy('created_at', 'desc');
+            return $this->where('norek', request('search'))->whereHas('tagihan')->with(['tagihan'])->orderBy('created_at', 'desc');
                 ;
         }else{
             return $this->where('norek', request('search'))

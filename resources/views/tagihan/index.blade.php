@@ -114,8 +114,27 @@
                     </tr>
                     @if ($item->catatan)
                         <tr>
-                            <td colspan="9" class="border border-base-content text-error py-0 border-dashed">
-                                Catatan: {{ $item->catatan }}
+                            <td colspan="9" class="border border-base-content py-2 border-dashed">
+                                <button class="btn btn-xs btn-error"
+                                    onclick="catatan_{{ $loop->iteration }}.showModal()">catatan</button>
+                                <dialog id="catatan_{{ $loop->iteration }}" class="modal">
+                                    <div
+                                        class="modal-box w-11/12 max-w-5xl max-h-11/12 grid grid-rows-[auto_auto_1fr] overflow-hidden gap-2 p-0">
+                                        <div class="flex justify-end glass p-2">
+                                            <button class="btn btn-sm btn-ghost"
+                                                onclick="catatan_{{ $loop->iteration }}.close()">✕</button>
+                                        </div>
+                                        <div class="p-2 flex flex-col gap-2">
+                                            <hr>
+                                        </div>
+                                        <div class="rich-text overflow-y-auto px-4 py-2">
+                                            {!! $item->catatan !!}
+                                        </div>
+                                    </div>
+                                    <form method="dialog" class="modal-backdrop">
+                                        <button>close</button>
+                                    </form>
+                                </dialog>
                             </td>
                         </tr>
                     @endif

@@ -110,13 +110,13 @@
         </table>
     </div>
     <dialog id="reject_modal" class="modal">
-        <div class="modal-box w-full max-w-md p-0">
+        <div class="modal-box w-full max-w-5xl p-0">
             <div class="relative bg-primary py-2 px-4 flex justify-between align-middle text-primary-content">
                 <p>Apakah anda yakin ingin menolak tagihan ini?</p>
                 <button class="btn btn-sm btn-ghost reject-close-btn">✕</button>
             </div>
             <div class="p-4">
-                <form action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
+                <form enctype="multipart/form-data" action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
                     id="form-tolak" method="post">
                     @method('PATCH')
                     @csrf
@@ -124,9 +124,7 @@
                         <label class="label">
                             <span class="label-text">Catatan:</span>
                         </label>
-                        <input type="text" name="catatan"
-                            class="input input-sm input-bordered  w-full @error('catatan') input-error @enderror"
-                            value="{{ old('catatan') }}" />
+                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true" toolbar="minimal" />
                         <label class="label">
                             @error('catatan')
                                 <span class="label-text-alt text-red-500">

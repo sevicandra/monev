@@ -3,6 +3,7 @@
 
 <head>
     @vite('resources/css/app.css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Monitoring Tagihan DJKN">
@@ -12,7 +13,9 @@
             document.documentElement.setAttribute("data-theme", localStorage.getItem("dataTheme"))
         } catch (e) {}
     </script>
-    <link rel="shortcut icon" href="/img/monev.png" type=" image/x-icon">
+    <link rel="shortcut icon" href="/img/monev.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="/js/trix.umd.min.js"></script>
     @section('head')
 
     @show
@@ -29,7 +32,7 @@
             <div class="dropdown lg:dropdown-end">
                 <label tabindex="0" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
-                        <img src="{{ session()->get('gravatar') }}" alt="profile"/>
+                        <img src="{{ session()->get('gravatar') }}" alt="profile" />
                     </div>
                 </label>
                 <ul tabindex="0"
@@ -135,4 +138,5 @@
 @section('foot')
 
 @show
+
 </html>
