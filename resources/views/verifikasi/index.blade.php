@@ -43,7 +43,8 @@
                 @endphp
                 @foreach ($data as $item)
                     <tr class="whitespace-nowrap">
-                        <td class="text-center border border-base-content">{{ $i }}</td>
+                        <td class="text-center border border-base-content"
+                            @if ($item->catatan) rowspan="2" @endif>{{ $i }}</td>
                         <td class="border border-base-content text-center">
                             @switch($item->jnstagihan)
                                 @case('0')
@@ -102,6 +103,29 @@
                             </div>
                         </td>
                     </tr>
+                    @if ($item->catatan)
+                        <tr>
+                            <td colspan="9" class="border border-base-content py-2 border-dashed">
+                                <button class="btn btn-xs btn-primary"
+                                    onclick="catatan_{{ $loop->iteration }}.showModal()">catatan</button>
+                                <dialog id="catatan_{{ $loop->iteration }}" class="modal">
+                                    <div
+                                        class="modal-box w-11/12 max-w-5xl max-h-11/12 grid grid-rows-[auto_auto_1fr] overflow-hidden gap-2 p-0">
+                                        <div class="flex justify-end glass p-2">
+                                            <button class="btn btn-sm btn-ghost"
+                                                onclick="catatan_{{ $loop->iteration }}.close()">✕</button>
+                                        </div>
+                                        <div class="p-2 flex flex-col gap-2">
+                                            <hr>
+                                        </div>
+                                        <div class="rich-text overflow-y-auto px-4 py-2">
+                                            {!! $item->catatan !!}
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </td>
+                        </tr>
+                    @endif
                     @php
                         $i++;
                     @endphp
@@ -116,7 +140,8 @@
                 <button class="btn btn-sm btn-ghost reject-close-btn">✕</button>
             </div>
             <div class="p-4">
-                <form enctype="multipart/form-data" action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
+                <form enctype="multipart/form-data"
+                    action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
                     id="form-tolak" method="post">
                     @method('PATCH')
                     @csrf
@@ -124,7 +149,8 @@
                         <label class="label">
                             <span class="label-text">Catatan:</span>
                         </label>
-                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true" toolbar="minimal" />
+                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true"
+                            toolbar="minimal" />
                         <label class="label">
                             @error('catatan')
                                 <span class="label-text-alt text-red-500">

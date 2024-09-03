@@ -28,6 +28,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\FileViewController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RekapSPMController;
 use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\BendaharaController;
@@ -191,7 +192,7 @@ Route::controller(TagihanController::class)->group(function(){
     Route::post('/tagihan/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/tagihan/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
     Route::get('/tagihan/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
-    Route::post('/tagihan/{tagihan}/kirim', 'kirim')->middleware('auth');
+    Route::patch('/tagihan/{tagihan}/kirim', 'kirim')->middleware('auth');
 });
 
 Route::resource('/tagihan', TagihanController::class)->middleware('auth');
@@ -504,7 +505,7 @@ Route::controller(VerifikasiKKPController::class)->group(function(){
     Route::get('/verifikasi-kkp/{tagihan}/upload', 'upload')->middleware('auth');
     Route::patch('/verifikasi-kkp/{tagihan}/upload', 'upload')->middleware('auth');
     Route::delete('/verifikasi-kkp/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth');
-    Route::get('/verifikasi-kkp/{tagihan}/tolak', 'tolak')->middleware('auth');
+    Route::patch('/verifikasi-kkp/{tagihan}/tolak', 'tolak')->middleware('auth');
     Route::get('/verifikasi-kkp/{tagihan}/approve', 'approve')->middleware('auth');
     Route::get('/verifikasi-kkp/{tagihan}/coa', 'coa')->middleware('auth');
 });
@@ -567,7 +568,7 @@ Route::controller(TagihanBLBIController::class)->group(function(){
     Route::post('/tagihan-blbi/{tagihan}/payroll/import', 'storeImportPayroll')->middleware('auth');
     Route::delete('/tagihan-blbi/{tagihan}/payroll/{payroll}', 'deletePayroll')->middleware('auth');
     Route::get('/tagihan-blbi/{tagihan}/payroll/cetak', 'cetakPayroll')->middleware('auth');
-    Route::post('/tagihan-blbi/{tagihan}/kirim', 'kirim')->middleware('auth');
+    Route::patch('/tagihan-blbi/{tagihan}/kirim', 'kirim')->middleware('auth');
 });
 
 Route::resource('/tagihan-blbi', TagihanBLBIController::class)->middleware('auth');
@@ -711,4 +712,10 @@ Route::controller(RekapPayrollController::class)->group(function(){
 Route::controller(TrackingController::class)->group(function(){
     Route::get('/tracking', 'index')->middleware('auth');
     Route::post('/tracking', 'tracking')->middleware('auth');
+});
+
+Route::controller(RekapSPMController::class)->group(function(){
+    Route::get('/cleansing/rekap-spm', 'index')->middleware('auth');
+    Route::get('/cleansing/rekap-spm/{program}/{kegiatan}/{kro}', 'show')->middleware('auth');
+    Route::get('/cleansing/rekap-spm/{program}/{kegiatan}/{kro}/{akun}', 'detail')->middleware('auth');
 });

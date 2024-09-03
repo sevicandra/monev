@@ -14,7 +14,8 @@
         <div class="">
             <form action="" method="get" autocomplete="off">
                 <div class="join">
-                    <input type="text" name="search" class="input input-sm input-bordered join-item" placeholder="Nomor Tagihan/Uraian">
+                    <input type="text" name="search" class="input input-sm input-bordered join-item"
+                        placeholder="Nomor Tagihan/Uraian">
                     <div class="indicator">
                         <button class="btn join-item btn-sm btn-neutral">Cari</button>
                     </div>
@@ -45,7 +46,8 @@
                 @endphp
                 @foreach ($data as $item)
                     <tr class="whitespace-nowrap @if ($item->catatan) text-error @endif">
-                        <td class="border border-base-content text-center" @if ($item->catatan) rowspan="2" @endif>{{ $i }}</td>
+                        <td class="border border-base-content text-center"
+                            @if ($item->catatan) rowspan="2" @endif>{{ $i }}</td>
                         <td class="border border-base-content">
                             @switch($item->jnstagihan)
                                 @case('0')
@@ -63,12 +65,14 @@
                         </td>
                         <td class="border border-base-content">{{ $item->notagihan }}</td>
                         <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
-                        <td class="border border-base-content" style="white-space:normal; min-width:300px">{{ $item->uraian }}</td>
+                        <td class="border border-base-content" style="white-space:normal; min-width:300px">
+                            {{ $item->uraian }}</td>
                         <td class="border border-base-content">{{ optional($item->stafPpk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
                         <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
                         <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
-                        <td class="border border-base-content text-right">Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
+                        <td class="border border-base-content text-right">
+                            Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
                         <td class="border border-base-content" @if ($item->catatan) rowspan="2" @endif>
                             <div class="join">
                                 <a href="/tagihan-blbi/{{ $item->id }}/edit"
@@ -93,36 +97,33 @@
                                     <button class="btn btn-xs btn-error btn-outline join-item"
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
-                                <form action="/tagihan-blbi/{{ $item->id }}/kirim" method="post">
-                                    @csrf
-                                    <button class="btn btn-xs btn-success btn-outline join-item"
-                                        onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Kirim</button>
-                                </form>
+                                <button value="{{ $item->id }}"
+                                    class="btn btn-xs btn-outline btn-success join-item kirim-btn">Kirim</button>
                             </div>
                         </td>
                     </tr>
                     @if ($item->catatan)
-                    <tr>
-                        <td colspan="9" class="border border-base-content py-2 border-dashed">
-                            <button class="btn btn-xs btn-error"
-                                onclick="catatan_{{ $loop->iteration }}.showModal()">catatan</button>
-                            <dialog id="catatan_{{ $loop->iteration }}" class="modal">
-                                <div
-                                    class="modal-box w-11/12 max-w-5xl max-h-11/12 grid grid-rows-[auto_auto_1fr] overflow-hidden gap-2 p-0">
-                                    <div class="flex justify-end glass p-2">
-                                        <button class="btn btn-sm btn-ghost"
-                                            onclick="catatan_{{ $loop->iteration }}.close()">✕</button>
+                        <tr>
+                            <td colspan="9" class="border border-base-content py-2 border-dashed">
+                                <button class="btn btn-xs btn-error"
+                                    onclick="catatan_{{ $loop->iteration }}.showModal()">catatan</button>
+                                <dialog id="catatan_{{ $loop->iteration }}" class="modal">
+                                    <div
+                                        class="modal-box w-11/12 max-w-5xl max-h-11/12 grid grid-rows-[auto_auto_1fr] overflow-hidden gap-2 p-0">
+                                        <div class="flex justify-end glass p-2">
+                                            <button class="btn btn-sm btn-ghost"
+                                                onclick="catatan_{{ $loop->iteration }}.close()">✕</button>
+                                        </div>
+                                        <div class="p-2 flex flex-col gap-2">
+                                            <hr>
+                                        </div>
+                                        <div class="rich-text overflow-y-auto px-4 py-2">
+                                            {!! $item->catatan !!}
+                                        </div>
                                     </div>
-                                    <div class="p-2 flex flex-col gap-2">
-                                        <hr>
-                                    </div>
-                                    <div class="rich-text overflow-y-auto px-4 py-2">
-                                        {!! $item->catatan !!}
-                                    </div>
-                                </div>
-                            </dialog>
-                        </td>
-                    </tr>
+                                </dialog>
+                            </td>
+                        </tr>
                     @endif
                     @php
                         $i++;
@@ -131,7 +132,59 @@
             </tbody>
         </table>
     </div>
+    <dialog id="kirim_modal" class="modal">
+        <div class="modal-box w-full max-w-5xl p-0">
+            <div class="relative bg-primary py-2 px-4 flex justify-between align-middle text-primary-content">
+                <p>Apakah anda yakin ingin menolak tagihan ini?</p>
+                <button class="btn btn-sm btn-ghost kirim-close-btn">✕</button>
+            </div>
+            <div class="p-4">
+                <form enctype="multipart/form-data"
+                    action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
+                    id="form-tolak" method="post">
+                    @method('PATCH')
+                    @csrf
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">Catatan:</span>
+                        </label>
+                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true"
+                            toolbar="minimal" />
+                        <label class="label">
+                            @error('catatan')
+                                <span class="label-text-alt text-red-500">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </label>
+                    </div>
+                    <button class="btn btn-sm btn-accent">Submit</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    @error('catatan')
+        <script>
+            kirim_modal.showModal();
+        </script>
+    @enderror
 @endsection
 @section('pagination')
     {{ $data->links() }}
+@endsection
+@section('foot')
+    <script>
+        $(document).ready(function() {
+            $(".kirim-btn").click(function() {
+                kirim_modal.showModal()
+                const action = "/tagihan/" + $(this).val() + "/kirim"
+                $("#form-tolak").attr("action", action);
+            });
+            $(".kirim-close-btn").click(function() {
+                kirim_modal.close()
+                const action = ""
+                $("#form-tolak").attr("action", action);
+            })
+        });
+    </script>
 @endsection

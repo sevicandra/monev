@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class VerifikasiKKPController extends Controller
 {
@@ -45,7 +46,7 @@ class VerifikasiKKPController extends Controller
         ]);
     }
 
-    public function tolak(tagihan $tagihan){
+    public function tolak(tagihan $tagihan, Request $request){
         if (! Gate::allows('ValidatorKKP')) {
             abort(403);
         }
@@ -53,8 +54,22 @@ class VerifikasiKKPController extends Controller
         if ($tagihan->status != 2) {
             abort(403);
         }
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'catatan'=>'required'
+            ],
+            [
+                'catatan.required' => 'Catatan harus diisi',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->with('tagihan_id' ,$tagihan->id)->withInput();
+        }
         $tagihan->update([
-            'status'=>0
+            'status'=>0,
+            'catatan'=>$request->catatan
         ]);
         logtagihan::create([
             'tagihan_id'=>$tagihan->id,

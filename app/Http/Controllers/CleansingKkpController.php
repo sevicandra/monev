@@ -48,7 +48,7 @@ class CleansingKkpController extends Controller
             ],
         ];
         $tagihan = tagihan::cleansingKKP();
-
+        
         $spreadsheet->setActiveSheetIndex(0)
             ->setTitle('row')
             ->setCellValue('A1', 'num_row')
@@ -217,6 +217,7 @@ class CleansingKkpController extends Controller
                     'tanggal_spm' => $item[5],
                     'nomor_sp2d' => $item[6],
                     'tanggal_sp2d' => $item[7],
+                    'no_spm' => $item[4]
                 ]);
             }
         }

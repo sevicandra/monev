@@ -217,4 +217,25 @@ class pagu extends Model
             ->orderBy('pok')
             ->get();
     }
+
+    public function scopeRekapSPM($data, $program=null, $kegiatan=null, $kro = null, $akun = null)
+    {
+        $data->with(['realisasi' => function (Builder $query) {
+            return $query->whereHas('tagihan', function ($q) {
+                $q->whereNotNull('no_spm');
+            })->with(['tagihan' => function ($q) {
+                return $q->select('id', 'jnstagihan', 'notagihan', 'no_spm', 'tanggal_spm', 'nomor_sp2d', 'tanggal_sp2d');
+            }])->select(['pagu_id', 'tagihan_id', 'realisasi']);
+        }])->selectRaw('id, program, kegiatan, kro, ro, komponen, subkomponen, akun, CONCAT(program, ".", kegiatan, ".", kro, ".", ro, ".", komponen, ".", subkomponen, ".", akun) AS pok')
+            ->orderBy('pok')
+        ;
+        if ($program && $kegiatan && $kro) {
+            $data->where('program', $program)->where('kegiatan', $kegiatan)->where('kro', $kro);
+        }
+        if ($akun) {
+            $data->where('akun', $akun);
+        }
+
+        return $data;
+    }
 }

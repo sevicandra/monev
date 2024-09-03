@@ -34,27 +34,37 @@ class realisasi extends Model
 
     public function scopeRealisaijenisbelanja($data, $jenis)
     {
-        $a=$jenis;
-        return $data->wherehas('pagu', function($val)use($a){
-            $val->where('tahun', session()->get('tahun'))->where('kodesatker', session()->get('kdsatker'))->whereRaw('left(akun, 2) ='. $a);
+        $a = $jenis;
+        return $data->wherehas('pagu', function ($val) use ($a) {
+            $val->where('tahun', session()->get('tahun'))->where('kodesatker', session()->get('kdsatker'))->whereRaw('left(akun, 2) =' . $a);
         })->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')->select('realisasis.*', 'sspbs.nominal_sspb');
     }
 
     public function scopeSp2d($data)
     {
         if (request('sp2d') === 'ya') {
-            return $data->wherehas('tagihan', function($val){
+            return $data->wherehas('tagihan', function ($val) {
                 $val->where('nomor_sp2d', '!=', null);
             });
         }
         return $data;
     }
 
+    public function scopeSpm($data)
+    {
+        return $data->wherehas('tagihan', function ($val) {
+            $val->where('no_spm', '!=', null);
+        })->join('pagus', 'pagus.id', '=', 'realisasis.pagu_id')->join('tagihans', 'tagihans.id', '=', 'realisasis.tagihan_id')
+            ->selectRaw('pagus.program, pagus.kegiatan, pagus.kro, pagus.akun, realisasis.realisasi')
+        ;
+        return $data;
+    }
+
     public function scopeSearchprogram($data)
     {
         if (request('program')) {
-            return $data->wherehas('pagu', function($val){
-                $val->where('program', 'like', '%'.request('program').'%');
+            return $data->wherehas('pagu', function ($val) {
+                $val->where('program', 'like', '%' . request('program') . '%');
             });
         }
     }
@@ -62,8 +72,8 @@ class realisasi extends Model
     public function scopeSearchkegiatan($data)
     {
         if (request('kegiatan')) {
-            return $data->wherehas('pagu', function($val){
-                $val->where('kegiatan', 'like', '%'.request('kegiatan').'%');
+            return $data->wherehas('pagu', function ($val) {
+                $val->where('kegiatan', 'like', '%' . request('kegiatan') . '%');
             });
         }
     }
@@ -71,8 +81,8 @@ class realisasi extends Model
     public function scopeSearchkro($data)
     {
         if (request('kro')) {
-            return $data->wherehas('pagu', function($val){
-                $val->where('kro', 'like', '%'.request('kro').'%');
+            return $data->wherehas('pagu', function ($val) {
+                $val->where('kro', 'like', '%' . request('kro') . '%');
             });
         }
     }
@@ -80,8 +90,8 @@ class realisasi extends Model
     public function scopeSearchro($data)
     {
         if (request('ro')) {
-            return $data->wherehas('pagu', function($val){
-                $val->where('ro', 'like', '%'.request('ro').'%');
+            return $data->wherehas('pagu', function ($val) {
+                $val->where('ro', 'like', '%' . request('ro') . '%');
             });
         }
     }
@@ -89,8 +99,8 @@ class realisasi extends Model
     public function scopeSearchkomponen($data)
     {
         if (request('komponen')) {
-            return $data->wherehas('pagu', function($val){
-                $val->where('komponen', 'like', '%'.request('komponen').'%');
+            return $data->wherehas('pagu', function ($val) {
+                $val->where('komponen', 'like', '%' . request('komponen') . '%');
             });
         }
     }
@@ -98,8 +108,8 @@ class realisasi extends Model
     public function scopeSearchsubkomponen($data)
     {
         if (request('subkomponen')) {
-            return $data->wherehas('pagu', function($val){
-                $val->where('subkomponen', 'like', '%'.request('subkomponen').'%');
+            return $data->wherehas('pagu', function ($val) {
+                $val->where('subkomponen', 'like', '%' . request('subkomponen') . '%');
             });
         }
     }
@@ -107,8 +117,8 @@ class realisasi extends Model
     public function scopeSearchakun($data)
     {
         if (request('akun')) {
-            return $data->wherehas('pagu', function($val){
-                $val->where('akun', 'like', '%'.request('akun').'%');
+            return $data->wherehas('pagu', function ($val) {
+                $val->where('akun', 'like', '%' . request('akun') . '%');
             });
         }
     }

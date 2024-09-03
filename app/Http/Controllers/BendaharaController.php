@@ -296,7 +296,8 @@ class BendaharaController extends Controller
             $request->validate([
                 'tanggal_spm'=>'required',
                 'tanggal_sp2d'=>'required',
-                'nomor_sp2d'=>'required|min_digits:15|max_digits:15'
+                'nomor_sp2d'=>'required|min_digits:15|max_digits:15',
+                'no_spm'=>'required|min_digits:5|max_digits:5',
             ]);
         }else{
             $request->validate([
@@ -307,7 +308,8 @@ class BendaharaController extends Controller
         $tagihan->update([
             'tanggal_spm'=>$request->tanggal_spm,
             'tanggal_sp2d'=>$request->tanggal_sp2d,
-            'nomor_sp2d'=>$request->nomor_sp2d
+            'nomor_sp2d'=>$request->nomor_sp2d,
+            'no_spm'=>$request->no_spm
         ]);
         return redirect('/bendahara')->with('berhasil', 'Data SP2D Berhasi Ditambahkan');
     }

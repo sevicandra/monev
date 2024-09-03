@@ -104,7 +104,10 @@ class PpspmController extends Controller
             abort(403);
         }
         $tagihan->update([
-            'status' => 2
+            'status'=>2,
+            'tanggal_spm'=>null,
+            'tanggal_sp2d'=>null,
+            'nomor_sp2d'=>null
         ]);
         logtagihan::create([
             'tagihan_id' => $tagihan->id,

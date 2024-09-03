@@ -216,6 +216,7 @@ class CleansingSppController extends Controller
                     'tanggal_spm' => $item[5],
                     'nomor_sp2d' => $item[6],
                     'tanggal_sp2d' => $item[7],
+                    'no_spm' => $item[4]
                 ]);
             }
         }

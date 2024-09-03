@@ -104,11 +104,8 @@
                                     <button class="btn btn-xs btn-error btn-outline join-item"
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
-                                <form action="/tagihan/{{ $item->id }}/kirim" method="post">
-                                    @csrf
-                                    <button class="btn btn-xs btn-success btn-outline join-item"
-                                        onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Kirim</button>
-                                </form>
+                                <button value="{{ $item->id }}"
+                                    class="btn btn-xs btn-outline btn-success join-item kirim-btn">Kirim</button>
                             </div>
                         </td>
                     </tr>
@@ -142,7 +139,57 @@
             </tbody>
         </table>
     </div>
+    <dialog id="kirim_modal" class="modal">
+        <div class="modal-box w-full max-w-5xl p-0">
+            <div class="relative bg-primary py-2 px-4 flex justify-between align-middle text-primary-content">
+                <p>Apakah anda yakin ingin menolak tagihan ini?</p>
+                <button class="btn btn-sm btn-ghost kirim-close-btn">✕</button>
+            </div>
+            <div class="p-4">
+                <form enctype="multipart/form-data" action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
+                    id="form-tolak" method="post">
+                    @method('PATCH')
+                    @csrf
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">Catatan:</span>
+                        </label>
+                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true" toolbar="minimal" />
+                        <label class="label">
+                            @error('catatan')
+                                <span class="label-text-alt text-red-500">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </label>
+                    </div>
+                    <button class="btn btn-sm btn-accent">Submit</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    @error('catatan')
+        <script>
+            kirim_modal.showModal();
+        </script>
+    @enderror
 @endsection
 @section('pagination')
     {{ $data->links() }}
+@endsection
+@section('foot')
+    <script>
+        $(document).ready(function() {
+            $(".kirim-btn").click(function() {
+                kirim_modal.showModal()
+                const action = "/tagihan/" + $(this).val() + "/kirim"
+                $("#form-tolak").attr("action", action);
+            });
+            $(".kirim-close-btn").click(function() {
+                kirim_modal.close()
+                const action = ""
+                $("#form-tolak").attr("action", action);
+            })
+        });
+    </script>
 @endsection

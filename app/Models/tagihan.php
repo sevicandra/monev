@@ -31,6 +31,7 @@ class tagihan extends Model
         'tanggal_sp2d',
         'nomor_sp2d',
         'catatan',
+        'no_spm',
     ];
 
     public function ppk()
@@ -140,7 +141,7 @@ class tagihan extends Model
 
     public function scopeTagihanppk($data)
     {
-            return $data->where('ppk_id', auth()->user()->nip);
+        return $data->where('ppk_id', auth()->user()->nip);
     }
 
     public function scopeTagihanStafPPK($data)
@@ -159,8 +160,7 @@ class tagihan extends Model
     public function scopeTagihanverifikatorKKP($data)
     {
         return $data
-        ->where('jnstagihan', 2)
-        ;
+            ->where('jnstagihan', 2);
     }
 
     public function scopeTagihansatker($data)
@@ -170,20 +170,20 @@ class tagihan extends Model
 
     public function scopeTagihanBLBI($data)
     {
-        return $data    ->where('kodesatker', session()->get('kdsatker'))
-                        ->wherehas('dokumen', function ($val) {
-                            $val->where('blbi', true);
-                        })
-                        ->where('tahun', session()->get('tahun'));
+        return $data->where('kodesatker', session()->get('kdsatker'))
+            ->wherehas('dokumen', function ($val) {
+                $val->where('blbi', true);
+            })
+            ->where('tahun', session()->get('tahun'));
     }
 
     public function scopeTagihanNonBLBI($data)
     {
-        return $data    ->where('kodesatker', session()->get('kdsatker'))
-                        ->wherehas('dokumen', function ($val) {
-                            $val->where('blbi', false);
-                        })
-                        ->where('tahun', session()->get('tahun'));
+        return $data->where('kodesatker', session()->get('kdsatker'))
+            ->wherehas('dokumen', function ($val) {
+                $val->where('blbi', false);
+            })
+            ->where('tahun', session()->get('tahun'));
     }
 
     public function log()
@@ -208,7 +208,7 @@ class tagihan extends Model
         return $data->orderby('tgltagihan', 'DESC')
             ->orderby('notagihan', 'DESC')
             ->orderby('created_at', 'DESC')
-            ;
+        ;
     }
 
     public function scopeRealisasiBulananPpk($data, $nip)
@@ -362,30 +362,54 @@ class tagihan extends Model
     public function scopeCleansingSPBy($data)
     {
         return $this->tagihanSatker()->where('tahun', session()->get('tahun'))
-            ->where('status', '>=', 4)
+            ->where('status', '>=', 3)
             ->where('jnstagihan', 0)
             ->where(function (Builder $query) {
-                $query->where('nomor_sp2d', null)->orWhere('nomor_sp2d', '')->orWhere('tanggal_sp2d', null)->orWhere('tanggal_sp2d', '0000-00-00');
+                $query->where(function (Builder $query) {
+                    $query->whereNull('nomor_sp2d')
+                        ->orWhere('nomor_sp2d', '')
+                        ->orWhereNull('tanggal_sp2d')
+                        ->orWhere('tanggal_sp2d', '0000-00-00');
+                })->orWhere(function (Builder $query) {
+                    $query->whereNotNull('nomor_sp2d')
+                        ->whereNull('no_spm');
+                });
             });
     }
 
     public function scopeCleansingSPP()
     {
         return $this->tagihanSatker()->where('tahun', session()->get('tahun'))
-            ->where('status', '>=', 4)
+            ->where('status', '>=', 3)
             ->where('jnstagihan', 1)
             ->where(function (Builder $query) {
-                $query->where('nomor_sp2d', null)->orWhere('nomor_sp2d', '')->orWhere('tanggal_sp2d', null)->orWhere('tanggal_sp2d', '0000-00-00');
+                $query->where(function (Builder $query) {
+                    $query->whereNull('nomor_sp2d')
+                        ->orWhere('nomor_sp2d', '')
+                        ->orWhereNull('tanggal_sp2d')
+                        ->orWhere('tanggal_sp2d', '0000-00-00');
+                })->orWhere(function (Builder $query) {
+                    $query->whereNotNull('nomor_sp2d')
+                        ->whereNull('no_spm');
+                });
             });
     }
 
     public function scopeCleansingKKP()
     {
         return $this->tagihanSatker()->where('tahun', session()->get('tahun'))
-            ->where('status', '>=', 4)
+            ->where('status', '>=', 3)
             ->where('jnstagihan', 2)
             ->where(function (Builder $query) {
-                $query->where('nomor_sp2d', null)->orWhere('nomor_sp2d', '')->orWhere('tanggal_sp2d', null)->orWhere('tanggal_sp2d', '0000-00-00');
+                $query->where(function (Builder $query) {
+                    $query->whereNull('nomor_sp2d')
+                        ->orWhere('nomor_sp2d', '')
+                        ->orWhereNull('tanggal_sp2d')
+                        ->orWhere('tanggal_sp2d', '0000-00-00');
+                })->orWhere(function (Builder $query) {
+                    $query->whereNotNull('nomor_sp2d')
+                        ->whereNull('no_spm');
+                });
             });
     }
 
@@ -402,5 +426,15 @@ class tagihan extends Model
         return $data->tagihanSatker()->where('tahun', session()->get('tahun'))
             ->where('jnstagihan', $jns)
             ->where('notagihan', $nomor);
+    }
+
+    public function scopeCleansingRekapSPM($data)
+    {
+        $data->tagihanSatker()
+            ->whereNotNull('no_spm')
+            ->rightJoin('realisasis', 'realisasis.tagihan_id', '=', 'tagihans.id')
+            // ->selectRaw('realisasis.realisasi, no_spm as nomor_spm, nomor_sp2d, tanggal_sp2d, tanggal_spm')
+
+        ;
     }
 }
