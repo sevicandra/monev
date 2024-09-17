@@ -129,7 +129,6 @@ class VerifikasiController extends Controller
                 'catatan.required' => 'Catatan harus diisi',
             ]
         );
-
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->with('tagihan_id' ,$tagihan->id)->withInput();
         }

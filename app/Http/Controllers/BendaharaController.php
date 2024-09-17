@@ -381,7 +381,8 @@ class BendaharaController extends Controller
             'status'=>2,
             'tanggal_spm'=>null,
             'tanggal_sp2d'=>null,
-            'nomor_sp2d'=>null
+            'nomor_sp2d'=>null,
+            'no_spm'=>null
         ]);
         logtagihan::create([
             'tagihan_id'=>$tagihan->id,

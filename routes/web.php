@@ -53,6 +53,7 @@ use App\Http\Controllers\MapingstafppkController;
 use App\Http\Controllers\RealisasiBLBIController;
 use App\Http\Controllers\VerifikasiKKPController;
 use App\Http\Controllers\PegawainondjknController;
+use Workbench\App\Models\Opengraph\OpengraphEmbed;
 use App\Http\Controllers\RegisterTagihanController;
 use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\RealisasiBulananController;
@@ -719,3 +720,30 @@ Route::controller(RekapSPMController::class)->group(function(){
     Route::get('/cleansing/rekap-spm/{program}/{kegiatan}/{kro}', 'show')->middleware('auth');
     Route::get('/cleansing/rekap-spm/{program}/{kegiatan}/{kro}/{akun}', 'detail')->middleware('auth');
 });
+
+Route::post('note-attachments', function () {
+    request()->validate([
+        'attachment' => ['required', 'file'],
+    ]);
+
+    $path = request()->file('attachment')->store('trix-attachments', 'public');
+
+    return [
+        'image_url' => route('attachments.show', $path),
+    ];
+})->name('attachments.store');
+
+Route::get('/note-attachments/{path}', function (string $path) {
+    $disk = Storage::disk('public');
+
+    abort_unless($disk->exists($path), 404);
+
+    $stream = $disk->readStream($path);
+
+    $headers = [
+        'Content-Type' => $disk->mimeType($path),
+        'Content-Length' => $disk->size($path),
+    ];
+
+    return response()->stream(fn () => fpassthru($stream), 200, $headers);
+})->name('attachments.show')->where('path', '.*');

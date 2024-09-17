@@ -33,7 +33,25 @@ class TagihanController extends Controller
             abort(403);
         }
         return view('tagihan.index', [
-            'data' => tagihan::with(['stafPpk', 'ppk', 'unit', 'dokumen', 'realisasi'])->where('status', 0)->TagihanNonBLBI()->tagihanStafPPK()->search()->order()->paginate(15)->withQueryString(),
+            'data' => tagihan::with([
+                'stafPpk',
+                'ppk',
+                'unit',
+                'dokumen',
+                'realisasi',
+                'berkasupload' => function ($q) {
+                    return $q->whereHas('berkas', function ($val) {
+                        $val->where('kodeberkas', '02')->orWhere('kodeberkas', '02');
+                    });
+                },
+            ])
+                ->where('status', 0)
+                ->TagihanNonBLBI()
+                ->tagihanStafPPK()
+                ->search()
+                ->order()
+                ->paginate(15)
+                ->withQueryString(),
             'notifikasi' => Notification::Notif(),
         ]);
     }
@@ -230,14 +248,17 @@ class TagihanController extends Controller
         }
 
         if ($request->_method === 'PATCH') {
-            $request->validate([
-                'berkas' => 'required',
-                'uraian' => 'required',
-                'fileupload' => 'required|mimes:pdf,xlsx,xls,zip,rar',
-            ], [
-                'fileupload.required' => 'File Tidak Boleh Kosong',
-                'fileupload.mimes' => 'File Harus Berupa PDF, Excel, ZIP, RAR',
-            ]);
+            $request->validate(
+                [
+                    'berkas' => 'required',
+                    'uraian' => 'required',
+                    'fileupload' => 'required|mimes:pdf,xlsx,xls,zip,rar',
+                ],
+                [
+                    'fileupload.required' => 'File Tidak Boleh Kosong',
+                    'fileupload.mimes' => 'File Harus Berupa PDF, Excel, ZIP, RAR',
+                ],
+            );
 
             $file = $request->file('fileupload')->store('berkas');
 
@@ -294,24 +315,13 @@ class TagihanController extends Controller
             return back()->with('gagal', 'Data tidak dapat dikirim karena belum dilakukan input realisasi.');
         }
 
-        // if ($tagihan->dokumen->statusdnp === '1') {
-        //     if ($tagihan->dnp->first() === null) {
-        //         return back()->with('gagal','Data tidak dapat dikirim karena belum dilakukan input DNP.');
-        //     }
-
-        //     if ($tagihan->nominaldnp->sum('bruto') != $tagihan->realisasi->sum('realisasi')) {
-        //         return back()->with('gagal','Data tidak dapat dikirim karena total dnp tidak sama dengan total tagihan.');
-        //     }
-
-        // }
-
         if (
             berkasupload::where('tagihan_id', $tagihan->id)
-            ->cekberkas1()
-            ->first() === null &&
+                ->cekberkas1()
+                ->first() === null &&
             berkasupload::where('tagihan_id', $tagihan->id)
-            ->cekberkas2()
-            ->first() === null
+                ->cekberkas2()
+                ->first() === null
         ) {
             return back()->with('gagal', 'Data tidak dapat dikirim karena berkas belum lengkap.');
         }
@@ -323,7 +333,7 @@ class TagihanController extends Controller
         logtagihan::create([
             'tagihan_id' => $tagihan->id,
             'action' => 'Kirim',
-            'user' => auth()->user()->nama . " / Staf PPK",
+            'user' => auth()->user()->nama . ' / Staf PPK',
             'catatan' => $request->catatan ?? '',
         ]);
         return back()->with('berhasil', 'Data berhasil dikirim.');
@@ -809,7 +819,7 @@ class TagihanController extends Controller
         return view('tagihan.payroll.edit', [
             'tagihan' => $tagihan,
             'data' => $payroll,
-            'notifikasi' => Notification::Notif()
+            'notifikasi' => Notification::Notif(),
         ]);
     }
 
@@ -830,7 +840,7 @@ class TagihanController extends Controller
             return abort(403);
         }
 
-        if ($request->bank === "Other") {
+        if ($request->bank === 'Other') {
             $request->validate([
                 'nama' => 'required',
                 'norek' => 'required|numeric',

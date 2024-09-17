@@ -30,16 +30,16 @@
                             <td class="border border-base-content text-center">1</td>
                             <td class="border border-base-content">Belanja Pegawai</td>
                             <td class="border border-base-content text-end">
-                                {{ number_format($belanjapegawai->sum('anggaran'), 2, ',', '.') }}</td>
+                                {{ number_format($belanjapegawai->sum('total_anggaran'), 2, ',', '.') }}</td>
                             <td class="border border-base-content text-end">
                                 {{ number_format($realisasibelanjapegawai->sum('realisasi') - $realisasibelanjapegawai->sum('nominal_sspb'), 2, ',', '.') }}
                             </td>
                             <td class="border border-base-content text-end">
-                                {{ number_format($belanjapegawai->sum('anggaran') - $realisasibelanjapegawai->sum('realisasi') + $realisasibelanjapegawai->sum('nominal_sspb'), 2, ',', '.') }}
+                                {{ number_format($belanjapegawai->sum('total_anggaran') - $realisasibelanjapegawai->sum('realisasi') + $realisasibelanjapegawai->sum('nominal_sspb'), 2, ',', '.') }}
                             </td>
                             <td class="border border-base-content text-end">
                                 @if ($realisasibelanjapegawai->sum('realisasi'))
-                                    {{ number_format((($realisasibelanjapegawai->sum('realisasi') - $realisasibelanjapegawai->sum('nominal_sspb')) * 100) / $belanjapegawai->sum('anggaran'), 2, ',', '.') }}%
+                                    {{ number_format((($realisasibelanjapegawai->sum('realisasi') - $realisasibelanjapegawai->sum('nominal_sspb')) * 100) / $belanjapegawai->sum('total_anggaran'), 2, ',', '.') }}%
                                 @else
                                     0,00%
                                 @endif
@@ -49,16 +49,16 @@
                             <td class="border border-base-content text-center">2</td>
                             <td class="border border-base-content">Belanja Barang</td>
                             <td class="border border-base-content text-end">
-                                {{ number_format($belanjabarang->sum('anggaran'), 2, ',', '.') }}</td>
+                                {{ number_format($belanjabarang->sum('total_anggaran'), 2, ',', '.') }}</td>
                             <td class="border border-base-content text-end">
                                 {{ number_format($realisasibelanjabarang->sum('realisasi') - $realisasibelanjabarang->sum('nominal_sspb'), 2, ',', '.') }}
                             </td>
                             <td class="border border-base-content text-end">
-                                {{ number_format($belanjabarang->sum('anggaran') - $realisasibelanjabarang->sum('realisasi') + $realisasibelanjabarang->sum('nominal_sspb'), 2, ',', '.') }}
+                                {{ number_format($belanjabarang->sum('total_anggaran') - $realisasibelanjabarang->sum('realisasi') + $realisasibelanjabarang->sum('nominal_sspb'), 2, ',', '.') }}
                             </td>
                             <td class="border border-base-content text-end">
                                 @if ($realisasibelanjabarang->sum('realisasi'))
-                                    {{ number_format((($realisasibelanjabarang->sum('realisasi') - $realisasibelanjabarang->sum('nominal_sspb')) * 100) / $belanjabarang->sum('anggaran'), 2, ',', '.') }}%
+                                    {{ number_format((($realisasibelanjabarang->sum('realisasi') - $realisasibelanjabarang->sum('nominal_sspb')) * 100) / $belanjabarang->sum('total_anggaran'), 2, ',', '.') }}%
                                 @else
                                     0,00%
                                 @endif
@@ -68,17 +68,17 @@
                             <td class="border border-base-content text-center">3</td>
                             <td class="border border-base-content">Belanja Modal</td>
                             <td class="border border-base-content text-end">
-                                {{ number_format($belanjamodal->sum('anggaran'), 2, ',', '.') }}
+                                {{ number_format($belanjamodal->sum('total_anggaran'), 2, ',', '.') }}
                             </td>
                             <td class="border border-base-content text-end">
                                 {{ number_format($realisasibelanjamodal->sum('realisasi') - $realisasibelanjamodal->sum('nominal_sspb'), 2, ',', '.') }}
                             </td>
                             <td class="border border-base-content text-end">
-                                {{ number_format($belanjamodal->sum('anggaran') - $realisasibelanjamodal->sum('realisasi') + $realisasibelanjamodal->sum('nominal_sspb'), 2, ',', '.') }}
+                                {{ number_format($belanjamodal->sum('total_anggaran') - $realisasibelanjamodal->sum('realisasi') + $realisasibelanjamodal->sum('nominal_sspb'), 2, ',', '.') }}
                             </td>
                             <td class="border border-base-content text-end">
                                 @if ($realisasibelanjamodal->sum('realisasi'))
-                                    {{ number_format((($realisasibelanjamodal->sum('realisasi') - $realisasibelanjamodal->sum('nominal_sspb')) * 100) / $belanjamodal->sum('anggaran'), 2, ',', '.') }}%
+                                    {{ number_format((($realisasibelanjamodal->sum('realisasi') - $realisasibelanjamodal->sum('nominal_sspb')) * 100) / $belanjamodal->sum('total_anggaran'), 2, ',', '.') }}%
                                 @else
                                     0,00%
                                 @endif

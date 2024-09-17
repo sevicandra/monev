@@ -104,8 +104,10 @@
                                     <button class="btn btn-xs btn-error btn-outline join-item"
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
-                                <button value="{{ $item->id }}"
-                                    class="btn btn-xs btn-outline btn-success join-item kirim-btn">Kirim</button>
+                                @if ($item->realisasi->sum('realisasi') > 0 && $item->berkasupload->first())
+                                    <button value="{{ $item->id }}"
+                                        class="btn btn-xs btn-outline btn-success join-item kirim-btn">Kirim</button>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -142,11 +144,12 @@
     <dialog id="kirim_modal" class="modal">
         <div class="modal-box w-full max-w-5xl p-0">
             <div class="relative bg-primary py-2 px-4 flex justify-between align-middle text-primary-content">
-                <p>Apakah anda yakin ingin menolak tagihan ini?</p>
-                <button class="btn btn-sm btn-ghost kirim-close-btn">✕</button>
+                <p>Notes</p>
+                <button id="trix-close-btn" class="btn btn-sm btn-ghost kirim-close-btn">✕</button>
             </div>
             <div class="p-4">
-                <form enctype="multipart/form-data" action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
+                <form enctype="multipart/form-data"
+                    action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
                     id="form-tolak" method="post">
                     @method('PATCH')
                     @csrf
@@ -154,7 +157,7 @@
                         <label class="label">
                             <span class="label-text">Catatan:</span>
                         </label>
-                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true" toolbar="minimal" />
+                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true" />
                         <label class="label">
                             @error('catatan')
                                 <span class="label-text-alt text-red-500">
@@ -163,7 +166,7 @@
                             @enderror
                         </label>
                     </div>
-                    <button class="btn btn-sm btn-accent">Submit</button>
+                    <button type="button" id="trix-submit-btn" class="btn btn-sm btn-accent">Submit</button>
                 </form>
             </div>
         </div>
@@ -178,6 +181,8 @@
     {{ $data->links() }}
 @endsection
 @section('foot')
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
     <script>
         $(document).ready(function() {
             $(".kirim-btn").click(function() {

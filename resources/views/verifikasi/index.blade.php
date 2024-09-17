@@ -149,8 +149,7 @@
                         <label class="label">
                             <span class="label-text">Catatan:</span>
                         </label>
-                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true"
-                            toolbar="minimal" />
+                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true" />
                         <label class="label">
                             @error('catatan')
                                 <span class="label-text-alt text-red-500">
@@ -159,7 +158,7 @@
                             @enderror
                         </label>
                     </div>
-                    <button class="btn btn-sm btn-accent">Submit</button>
+                    <button type="button" id="trix-submit-btn" class="btn btn-sm btn-accent">Submit</button>
                 </form>
             </div>
         </div>
@@ -187,7 +186,7 @@
                 reject_modal.close()
                 const action = ""
                 $("#form-tolak").attr("action", action);
-            })
+            });
         });
     </script>
 @endsection

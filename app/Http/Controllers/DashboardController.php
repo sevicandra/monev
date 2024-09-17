@@ -14,11 +14,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $pagusatker = pagu::Pagusatker()->selectRaw('pagus.*, left(akun, 2) as jenisbelanja')->get()->groupBy('jenisbelanja');
+        $pagusatker = pagu::Pagusatker()->selectRaw('left(akun, 2) as jenisbelanja, sum(anggaran) as total_anggaran')->groupBy('jenisbelanja')->get();
         return view('dashboard.index', [
-            'belanjapegawai' => $pagusatker['51'],
-            'belanjabarang' => $pagusatker['52'],
-            'belanjamodal' => $pagusatker['53'],
+            'belanjapegawai' => $pagusatker->where('jenisbelanja', '51'),
+            'belanjabarang' => $pagusatker->where('jenisbelanja', '52'),
+            'belanjamodal' => $pagusatker->where('jenisbelanja', '53'),
             'realisasibelanjapegawai' => realisasi::sp2d()->realisaijenisbelanja('51')->get(),
             'realisasibelanjabarang' => realisasi::sp2d()->realisaijenisbelanja('52')->get(),
             'realisasibelanjamodal' => realisasi::sp2d()->realisaijenisbelanja('53')->get(),

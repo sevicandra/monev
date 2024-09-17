@@ -135,7 +135,7 @@
     <dialog id="kirim_modal" class="modal">
         <div class="modal-box w-full max-w-5xl p-0">
             <div class="relative bg-primary py-2 px-4 flex justify-between align-middle text-primary-content">
-                <p>Apakah anda yakin ingin menolak tagihan ini?</p>
+                <p>Notes</p>
                 <button class="btn btn-sm btn-ghost kirim-close-btn">✕</button>
             </div>
             <div class="p-4">
@@ -148,7 +148,7 @@
                         <label class="label">
                             <span class="label-text">Catatan:</span>
                         </label>
-                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true"
+                        <x-trix-input id="catatan" name="catatan" value="{{ old('catatan') }}" acceptFiles="true" />
                             toolbar="minimal" />
                         <label class="label">
                             @error('catatan')
@@ -158,7 +158,7 @@
                             @enderror
                         </label>
                     </div>
-                    <button class="btn btn-sm btn-accent">Submit</button>
+                    <button type="button" id="trix-submit-btn" class="btn btn-sm btn-accent">Submit</button>
                 </form>
             </div>
         </div>
