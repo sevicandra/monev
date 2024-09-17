@@ -104,7 +104,7 @@
                                     <button class="btn btn-xs btn-error btn-outline join-item"
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
-                                @if ($item->realisasi->sum('realisasi') > 0 && $item->berkasupload->first())
+                                @if ($item->realisasi->sum('realisasi') > 0 || $item->berkasupload->first())
                                     <button value="{{ $item->id }}"
                                         class="btn btn-xs btn-outline btn-success join-item kirim-btn">Kirim</button>
                                 @endif

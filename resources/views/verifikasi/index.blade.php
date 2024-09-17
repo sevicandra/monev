@@ -105,7 +105,7 @@
                     </tr>
                     @if ($item->catatan)
                         <tr>
-                            <td colspan="9" class="border border-base-content py-2 border-dashed">
+                            <td colspan="10" class="border border-base-content py-2 border-dashed">
                                 <button class="btn btn-xs btn-primary"
                                     onclick="catatan_{{ $loop->iteration }}.showModal()">catatan</button>
                                 <dialog id="catatan_{{ $loop->iteration }}" class="modal">
