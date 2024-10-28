@@ -25,73 +25,31 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Jenis Tagihan</th>
-                    <th class="border border-base-content">Nomor</th>
-                    <th class="border border-base-content">Tanggal</th>
-                    <th class="border border-base-content">Tgl SPM</th>
-                    <th class="border border-base-content">Unit</th>
-                    <th class="border border-base-content">PPK</th>
-                    <th class="border border-base-content">Jenis Dokumen</th>
-                    <th class="border border-base-content">Bruto</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-tagihan :jenis="false" :status="false" :update="false" :uraian="false" :nomor_spm="false" :tanggal_spm="false" :nomor_sp2d="false" :tanggal_sp2d="false" :pic="false">
+            @foreach ($data as $item)
+                <tr class="whitespace-nowrap">
+                    <x-table.body.column class="text-center border">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ $item->notagihan }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ indonesiaDate($item->tgltagihan) }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->unit)->namaunit }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->ppk)->nama }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->dokumen)->namadokumen }}</x-table.body.column>
+                    <x-table.body.column class="border text-right">
+                        Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</x-table.body.column>
+                    <x-table.body.column class="border">
+                        <div class="join">
+                            <a href="/ppspm/{{ $item->id }}"
+                                class="btn btn-xs btn-outline btn-neutral join-item">Detail</a>
+                            <a href="/ppspm/{{ $item->id }}/tolak" class="btn btn-xs btn-outline btn-error join-item"
+                                onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
+                            <a href="/ppspm/{{ $item->id }}/approve"
+                                class="btn btn-xs btn-outline btn-success join-item"
+                                onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
+                        </div>
+                    </x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1 + ($data->currentPage() - 1) * $data->perPage();
-                @endphp
-                @foreach ($data as $item)
-                    <tr class="whitespace-nowrap">
-                        <td class="text-center border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content text-center">
-                            @switch($item->jnstagihan)
-                                @case('0')
-                                    SPBy
-                                @break
-
-                                @case('1')
-                                    SPP
-                                @break
-
-                                @case('2')
-                                    KKP
-                                @break
-                            @endswitch
-                        </td>
-                        <td class="border border-base-content text-center">{{ $item->notagihan }}</td>
-                        <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
-                        <td class="border border-base-content">
-                                {{ indonesiaDate($item->tanggal_spm) }}
-                        </td>
-                        <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
-                        <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
-                        <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
-                        <td class="border border-base-content text-right">
-                            Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
-                        <td class="border border-base-content">
-                            <div class="join">
-                                <a href="/ppspm/{{ $item->id }}"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">detail</a>
-                                @if ($item->jnstagihan === '1')
-                                    <a href="/ppspm/{{ $item->id }}/edit"
-                                        class="btn btn-xs btn-outline btn-neutral join-item">SPM</a>
-                                @endif
-                                <a href="/ppspm/{{ $item->id }}/tolak"
-                                    class="btn btn-xs btn-outline btn-error join-item"
-                                    onclick="return confirm('Apakah Anda yakin akan menolak data ini?');">Tolak</a>
-                                <a href="/ppspm/{{ $item->id }}/approve"
-                                    class="btn btn-xs btn-outline btn-success join-item"
-                                    onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-tagihan>
     </div>
 @endsection
 @section('pagination')

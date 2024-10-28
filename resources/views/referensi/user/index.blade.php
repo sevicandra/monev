@@ -22,27 +22,24 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">NIP</th>
-                    <th class="border border-base-content">Satker</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama</x-table.header.column>
+                    <x-table.header.column class="border-x">NIP</x-table.header.column>
+                    <x-table.header.column class="border-x">Satker</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->nip }}</td>
-                        <td class="border border-base-content">{{ $item->satker }}</td>
-                        <td class="border border-base-content text-center">
+                        <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nip }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->satker }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             <div class="join">
                                 <a href="role-user/{{ $item->id }}"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Role</a>
@@ -57,14 +54,11 @@
                                     </form>
                                 @endcan
                             </div>
-                        </td>
+                        </x-table.body.column>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection
 @section('pagination')

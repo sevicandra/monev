@@ -38,28 +38,32 @@ class pphrekanan extends Model
 
     public function scopeMypph($data, $tagihan, $rekanan)
     {
-       return $data->where('tagihan_id', $tagihan->id)->where('rekanan_id', $rekanan->id);
+        return $data->where('tagihan_id', $tagihan->id)->where('rekanan_id', $rekanan->id);
     }
 
     public function scopePphunit($data)
     {
-        return $data->wherehas('tagihan', function($val){
+        return $data->wherehas('tagihan', function ($val) {
             $val->where('kodesatker', session()->get('kdsatker'));
         });
     }
 
     public function scopeTahunpajak($data)
     {
-        return $data->whereYear('tanggalntpn',session()->get('tahun'))->orwherehas('tagihan', function($val){
-            $val->where('jnstagihan', '1')->whereYear('tanggal_sp2d', session()->get('tahun'));;
+        return $data->whereYear('tanggalntpn', session()->get('tahun'))->orwherehas('tagihan', function ($val) {
+            $val->where('jnstagihan', '1')->whereHas('spm', function ($val) {
+                $val->whereYear('tanggal_sp2d', session()->get('tahun'));
+            });
         });
     }
 
     public function scopeMasapajak($data)
     {
         if (request('bulan')) {
-            return $data->whereMonth('tanggalntpn',request('bulan'))->orwherehas('tagihan', function($val){
-                $val->where('jnstagihan', '1')->whereMonth('tanggal_sp2d', request('bulan'));
+            return $data->whereMonth('tanggalntpn', request('bulan'))->orwherehas('tagihan', function ($val) {
+                $val->where('jnstagihan', '1')->whereHas('spm', function ($val) {
+                    $val->whereMonth('tanggal_sp2d', request('bulan'));
+                });
             });
         }
     }

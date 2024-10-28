@@ -235,10 +235,12 @@
                     <ul>
                         @canany(['sys_admin', 'admin_satker'])
                             <li><a href="/cleansing/tagihan">Tagihan</a></li>
-                            <li><a href="/cleansing/sp2d">SP2D</a></li>
+                            <li><a href="/cleansing/duplikat">Duplikat</a></li>
+                            {{-- <li><a href="/cleansing/sp2d">SP2D</a></li> --}}
                             <li><a href="/cleansing/spby">SPBy</a></li>
                             <li><a href="/cleansing/kkp">KKP</a></li>
                             <li><a href="/cleansing/spp">SPP</a></li>
+                            <li><a href="/cleansing/spm">SPM</a></li>
                             <li><a href="/cleansing/realisasi-bulanan">Realisasi</a></li>
                             <li><a href="/cleansing/rekap-spm">Rekap SPM</a></li>
                         @endcan

@@ -27,7 +27,23 @@
             </div>
             <div class="form-control w-full max-w-xs">
                 <label class="label">
-                    <span class="label-text">Nominal Pengembalian:</span>
+                    <span class="label-text">NTPN:</span>
+                </label>
+                <input type="text" name="ntpn"
+                    class="input input-sm input-bordered  w-full max-w-xs @error('ntpn') input-error @enderror"
+                    value="{{ $data->ntpn }}" />
+                <label class="label">
+                    @error('ntpn')
+                        <span class="label-text-alt text-red-500">
+                            {{ $message }}
+                        </span>
+                    @enderror
+                </label>
+            </div>
+            
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Tanggal Pengembalian:</span>
                 </label>
                 <input type="date" name="tanggal_sspb"
                     class="input input-sm input-bordered  w-full max-w-xs @error('tanggal_sspb') input-error @enderror"

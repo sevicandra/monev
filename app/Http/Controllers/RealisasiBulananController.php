@@ -19,7 +19,7 @@ class RealisasiBulananController extends Controller
             $bulanModel = bulan::where('kodebulan', $bulan)->first();
         }
         return view('data_cleansing.realisasi_bulanan.index', [
-            'data' => pagu::paguSatker()->RealisasiBulanan($bulanModel->kodebulan),
+            'data' => pagu::paguSatker()->RealisasiBulananWithSum($bulanModel->kodebulan),
             'bulan' => $bulanModel,
             'notifikasi' => Notification::Notif(),
         ]);
@@ -86,8 +86,8 @@ class RealisasiBulananController extends Controller
             $realisasiProgram = 0;
             $pengembalianProgram = 0 ;
             foreach($program as $p){
-                $realisasiProgram += $p->realisasi->sum('realisasi');
-                $pengembalianProgram += $p->sspb->sum('nominal_sspb');
+                $realisasiProgram += $p->total_realisasi;
+                $pengembalianProgram += $p->total_sspb;
             }
             $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -100,8 +100,8 @@ class RealisasiBulananController extends Controller
                 $realisasiKegiatan = 0;
                 $pengembalianKegiatan = 0 ;
                 foreach($kegiatan as $k){
-                    $realisasiKegiatan += $k->realisasi->sum('realisasi');
-                    $pengembalianKegiatan += $k->sspb->sum('nominal_sspb');
+                    $realisasiKegiatan += $k->total_realisasi;
+                    $pengembalianKegiatan += $k->total_sspb;
                 }
                 $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kegiatan->first()->program . "." . $kegiatan->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kegiatan->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -115,8 +115,8 @@ class RealisasiBulananController extends Controller
                     $realisasiKro = 0;
                     $pengembalianKro = 0 ;
                     foreach($kro as $kr){
-                        $realisasiKro += $kr->realisasi->sum('realisasi');
-                        $pengembalianKro += $kr->sspb->sum('nominal_sspb');
+                        $realisasiKro += $kr->total_realisasi;
+                        $pengembalianKro += $kr->total_sspb;
                     }
                     $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kro->first()->program . "." . $kro->first()->kegiatan . "." . $kro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -131,8 +131,8 @@ class RealisasiBulananController extends Controller
                         $realisasiRo = 0;
                         $pengembalianRo = 0 ;
                         foreach($ro as $r){
-                            $realisasiRo += $r->realisasi->sum('realisasi');
-                            $pengembalianRo += $r->sspb->sum('nominal_sspb');
+                            $realisasiRo += $r->total_realisasi;
+                            $pengembalianRo += $r->total_sspb;
                         }
                         $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($ro->first()->program . "." . $ro->first()->kegiatan . "." . $ro->first()->kro . "." . $ro->first()->ro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($ro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -148,8 +148,8 @@ class RealisasiBulananController extends Controller
                             $realisasiKomponen = 0;
                             $pengembalianKomponen = 0 ;
                             foreach($komponen as $kom){
-                                $realisasiKomponen += $kom->realisasi->sum('realisasi');
-                                $pengembalianKomponen += $kom->sspb->sum('nominal_sspb');
+                                $realisasiKomponen += $kom->total_realisasi;
+                                $pengembalianKomponen += $kom->total_sspb;
                             }
                             $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($komponen->first()->program . "." . $komponen->first()->kegiatan . "." . $komponen->first()->kro . "." . $komponen->first()->ro . "." . $komponen->first()->komponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($komponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -166,8 +166,8 @@ class RealisasiBulananController extends Controller
                                 $realisasiSubKomponen = 0;
                                 $pengembalianSubKomponen = 0;
                                 foreach($subKomponen as $sk){
-                                    $realisasiSubKomponen += $sk->realisasi->sum('realisasi');
-                                    $pengembalianSubKomponen += $sk->sspb->sum('nominal_sspb');
+                                    $realisasiSubKomponen += $sk->total_realisasi;
+                                    $pengembalianSubKomponen += $sk->total_sspb;
                                 }
                                 $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($subKomponen->first()->program . "." . $subKomponen->first()->kegiatan . "." . $subKomponen->first()->kro . "." . $subKomponen->first()->ro . "." . $subKomponen->first()->komponen . "." . $subKomponen->first()->subkomponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($subKomponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -185,8 +185,8 @@ class RealisasiBulananController extends Controller
                                     $realisasiAkun = 0;
                                     $pengembalianAkun = 0;
                                     foreach($akun as $ak){
-                                        $realisasiAkun += $ak->realisasi->sum('realisasi');
-                                        $pengembalianAkun += $ak->sspb->sum('nominal_sspb');
+                                        $realisasiAkun += $ak->total_realisasi;
+                                        $pengembalianAkun += $ak->total_sspb;
                                     }
                                     $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($akun->first()->program . "." . $akun->first()->kegiatan . "." . $akun->first()->kro . "." . $akun->first()->ro . "." . $akun->first()->komponen . "." . $akun->first()->subkomponen . "." . $akun->first()->akun, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($akun->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -263,8 +263,8 @@ class RealisasiBulananController extends Controller
                 $realisasiProgram = 0;
                 $pengembalianProgram = 0 ;
                 foreach($program as $p){
-                    $realisasiProgram += $p->realisasi->sum('realisasi');
-                    $pengembalianProgram += $p->sspb->sum('nominal_sspb');
+                    $realisasiProgram += $p->total_realisasi;
+                    $pengembalianProgram += $p->total_sspb;
                 }
                 $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -277,8 +277,8 @@ class RealisasiBulananController extends Controller
                     $realisasiKegiatan = 0;
                     $pengembalianKegiatan = 0 ;
                     foreach($kegiatan as $k){
-                        $realisasiKegiatan += $k->realisasi->sum('realisasi');
-                        $pengembalianKegiatan += $k->sspb->sum('nominal_sspb');
+                        $realisasiKegiatan += $k->total_realisasi;
+                        $pengembalianKegiatan += $k->total_sspb;
                     }
                     $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kegiatan->first()->program . "." . $kegiatan->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kegiatan->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -292,8 +292,8 @@ class RealisasiBulananController extends Controller
                         $realisasiKro = 0;
                         $pengembalianKro = 0 ;
                         foreach($kro as $kr){
-                            $realisasiKro += $kr->realisasi->sum('realisasi');
-                            $pengembalianKro += $kr->sspb->sum('nominal_sspb');
+                            $realisasiKro += $kr->total_realisasi;
+                            $pengembalianKro += $kr->total_sspb;
                         }
                         $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kro->first()->program . "." . $kro->first()->kegiatan . "." . $kro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -308,8 +308,8 @@ class RealisasiBulananController extends Controller
                             $realisasiRo = 0;
                             $pengembalianRo = 0 ;
                             foreach($ro as $r){
-                                $realisasiRo += $r->realisasi->sum('realisasi');
-                                $pengembalianRo += $r->sspb->sum('nominal_sspb');
+                                $realisasiRo += $r->total_realisasi;
+                                $pengembalianRo += $r->total_sspb;
                             }
                             $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($ro->first()->program . "." . $ro->first()->kegiatan . "." . $ro->first()->kro . "." . $ro->first()->ro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($ro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -325,8 +325,8 @@ class RealisasiBulananController extends Controller
                                 $realisasiKomponen = 0;
                                 $pengembalianKomponen = 0 ;
                                 foreach($komponen as $kom){
-                                    $realisasiKomponen += $kom->realisasi->sum('realisasi');
-                                    $pengembalianKomponen += $kom->sspb->sum('nominal_sspb');
+                                    $realisasiKomponen += $kom->total_realisasi;
+                                    $pengembalianKomponen += $kom->total_sspb;
                                 }
                                 $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($komponen->first()->program . "." . $komponen->first()->kegiatan . "." . $komponen->first()->kro . "." . $komponen->first()->ro . "." . $komponen->first()->komponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($komponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -343,8 +343,8 @@ class RealisasiBulananController extends Controller
                                     $realisasiSubKomponen = 0;
                                     $pengembalianSubKomponen = 0;
                                     foreach($subKomponen as $sk){
-                                        $realisasiSubKomponen += $sk->realisasi->sum('realisasi');
-                                        $pengembalianSubKomponen += $sk->sspb->sum('nominal_sspb');
+                                        $realisasiSubKomponen += $sk->total_realisasi;
+                                        $pengembalianSubKomponen += $sk->total_sspb;
                                     }
                                     $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($subKomponen->first()->program . "." . $subKomponen->first()->kegiatan . "." . $subKomponen->first()->kro . "." . $subKomponen->first()->ro . "." . $subKomponen->first()->komponen . "." . $subKomponen->first()->subkomponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($subKomponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -362,8 +362,8 @@ class RealisasiBulananController extends Controller
                                         $realisasiAkun = 0;
                                         $pengembalianAkun = 0;
                                         foreach($akun as $ak){
-                                            $realisasiAkun += $ak->realisasi->sum('realisasi');
-                                            $pengembalianAkun += $ak->sspb->sum('nominal_sspb');
+                                            $realisasiAkun += $ak->total_realisasi;
+                                            $pengembalianAkun += $ak->total_sspb;
                                         }
                                         $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($akun->first()->program . "." . $akun->first()->kegiatan . "." . $akun->first()->kro . "." . $akun->first()->ro . "." . $akun->first()->komponen . "." . $akun->first()->subkomponen . "." . $akun->first()->akun, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                         $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($akun->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -471,8 +471,8 @@ class RealisasiBulananController extends Controller
             $realisasiProgram = 0;
             $pengembalianProgram = 0 ;
             foreach($program as $p){
-                $realisasiProgram += $p->realisasi->sum('realisasi');
-                $pengembalianProgram += $p->sspb->sum('nominal_sspb');
+                $realisasiProgram += $p->total_realisasi;
+                $pengembalianProgram += $p->total_sspb;
             }
             $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -484,8 +484,8 @@ class RealisasiBulananController extends Controller
                 $realisasiKegiatan = 0;
                 $pengembalianKegiatan = 0 ;
                 foreach($kegiatan as $k){
-                    $realisasiKegiatan += $k->realisasi->sum('realisasi');
-                    $pengembalianKegiatan += $k->sspb->sum('nominal_sspb');
+                    $realisasiKegiatan += $k->total_realisasi;
+                    $pengembalianKegiatan += $k->total_sspb;
                 }
                 $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kegiatan->first()->program . '.' . $kegiatan->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kegiatan->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -501,8 +501,8 @@ class RealisasiBulananController extends Controller
                     $realisasiKro = 0;
                     $pengembalianKro = 0 ;
                     foreach($kro as $kr){
-                        $realisasiKro += $kr->realisasi->sum('realisasi');
-                        $pengembalianKro += $kr->sspb->sum('nominal_sspb');
+                        $realisasiKro += $kr->total_realisasi;
+                        $pengembalianKro += $kr->total_sspb;
                     }
                     $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kro->first()->program . '.' . $kro->first()->kegiatan . '.' . $kro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -519,8 +519,8 @@ class RealisasiBulananController extends Controller
                         $realisasiRo = 0;
                         $pengembalianRo = 0 ;
                         foreach($ro as $r){
-                            $realisasiRo += $r->realisasi->sum('realisasi');
-                            $pengembalianRo += $r->sspb->sum('nominal_sspb');
+                            $realisasiRo += $r->total_realisasi;
+                            $pengembalianRo += $r->total_sspb;
                         }
                         $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($ro->first()->program . '.' . $ro->first()->kegiatan . '.' . $ro->first()->kro . '.' . $ro->first()->ro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($ro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -538,8 +538,8 @@ class RealisasiBulananController extends Controller
                             $realisasiKomponen = 0;
                             $pengembalianKomponen = 0 ;
                             foreach($komponen as $kom){
-                                $realisasiKomponen += $kom->realisasi->sum('realisasi');
-                                $pengembalianKomponen += $kom->sspb->sum('nominal_sspb');
+                                $realisasiKomponen += $kom->total_realisasi;
+                                $pengembalianKomponen += $kom->total_sspb;
                             }
                             $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($komponen->first()->program . '.' . $komponen->first()->kegiatan . '.' . $komponen->first()->kro . '.' . $komponen->first()->ro . '.' . $komponen->first()->komponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($komponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -558,8 +558,8 @@ class RealisasiBulananController extends Controller
                                 $realisasiSubKomponen = 0;
                                 $pengembalianSubKomponen = 0;
                                 foreach($subKomponen as $sk){
-                                    $realisasiSubKomponen += $sk->realisasi->sum('realisasi');
-                                    $pengembalianSubKomponen += $sk->sspb->sum('nominal_sspb');
+                                    $realisasiSubKomponen += $sk->total_realisasi;
+                                    $pengembalianSubKomponen += $sk->total_sspb;
                                 }
                                 $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($subKomponen->first()->program . '.' . $subKomponen->first()->kegiatan . '.' . $subKomponen->first()->kro . '.' . $subKomponen->first()->ro . '.' . $subKomponen->first()->komponen . '.' . $subKomponen->first()->subkomponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($subKomponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -579,8 +579,8 @@ class RealisasiBulananController extends Controller
                                     $realisasiAkun = 0;
                                     $pengembalianAkun = 0;
                                     foreach($akun as $ak){
-                                        $realisasiAkun += $ak->realisasi->sum('realisasi');
-                                        $pengembalianAkun += $ak->sspb->sum('nominal_sspb');
+                                        $realisasiAkun += $ak->total_realisasi;
+                                        $pengembalianAkun += $ak->total_sspb;
                                     }
                                     $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($akun->first()->program . '.' . $akun->first()->kegiatan . '.' . $akun->first()->kro . '.' . $akun->first()->ro . '.' . $akun->first()->komponen . '.' . $akun->first()->subkomponen . '.' . $akun->first()->akun, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($akun->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -660,8 +660,8 @@ class RealisasiBulananController extends Controller
                 $realisasiProgram = 0;
                 $pengembalianProgram = 0 ;
                 foreach($program as $p){
-                    $realisasiProgram += $p->realisasi->sum('realisasi');
-                    $pengembalianProgram += $p->sspb->sum('nominal_sspb');
+                    $realisasiProgram += $p->total_realisasi;
+                    $pengembalianProgram += $p->total_sspb;
                 }
                 $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($program->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -673,8 +673,8 @@ class RealisasiBulananController extends Controller
                     $realisasiKegiatan = 0;
                     $pengembalianKegiatan = 0 ;
                     foreach($kegiatan as $k){
-                        $realisasiKegiatan += $k->realisasi->sum('realisasi');
-                        $pengembalianKegiatan += $k->sspb->sum('nominal_sspb');
+                        $realisasiKegiatan += $k->total_realisasi;
+                        $pengembalianKegiatan += $k->total_sspb;
                     }
                     $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kegiatan->first()->program . '.' . $kegiatan->first()->kegiatan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kegiatan->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -690,8 +690,8 @@ class RealisasiBulananController extends Controller
                         $realisasiKro = 0;
                         $pengembalianKro = 0 ;
                         foreach($kro as $kr){
-                            $realisasiKro += $kr->realisasi->sum('realisasi');
-                            $pengembalianKro += $kr->sspb->sum('nominal_sspb');
+                            $realisasiKro += $kr->total_realisasi;
+                            $pengembalianKro += $kr->total_sspb;
                         }
                         $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($kro->first()->program . '.' . $kro->first()->kegiatan . '.' . $kro->first()->kro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                         $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($kro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -708,8 +708,8 @@ class RealisasiBulananController extends Controller
                             $realisasiRo = 0;
                             $pengembalianRo = 0 ;
                             foreach($ro as $r){
-                                $realisasiRo += $r->realisasi->sum('realisasi');
-                                $pengembalianRo += $r->sspb->sum('nominal_sspb');
+                                $realisasiRo += $r->total_realisasi;
+                                $pengembalianRo += $r->total_sspb;
                             }
                             $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($ro->first()->program . '.' . $ro->first()->kegiatan . '.' . $ro->first()->kro . '.' . $ro->first()->ro, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                             $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($ro->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -727,8 +727,8 @@ class RealisasiBulananController extends Controller
                                 $realisasiKomponen = 0;
                                 $pengembalianKomponen = 0 ;
                                 foreach($komponen as $kom){
-                                    $realisasiKomponen += $kom->realisasi->sum('realisasi');
-                                    $pengembalianKomponen += $kom->sspb->sum('nominal_sspb');
+                                    $realisasiKomponen += $kom->total_realisasi;
+                                    $pengembalianKomponen += $kom->total_sspb;
                                 }
                                 $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($komponen->first()->program . '.' . $komponen->first()->kegiatan . '.' . $komponen->first()->kro . '.' . $komponen->first()->ro . '.' . $komponen->first()->komponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                 $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($komponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -747,8 +747,8 @@ class RealisasiBulananController extends Controller
                                     $realisasiSubKomponen = 0;
                                     $pengembalianSubKomponen = 0;
                                     foreach($subKomponen as $sk){
-                                        $realisasiSubKomponen += $sk->realisasi->sum('realisasi');
-                                        $pengembalianSubKomponen += $sk->sspb->sum('nominal_sspb');
+                                        $realisasiSubKomponen += $sk->total_realisasi;
+                                        $pengembalianSubKomponen += $sk->total_sspb;
                                     }
                                     $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($subKomponen->first()->program . '.' . $subKomponen->first()->kegiatan . '.' . $subKomponen->first()->kro . '.' . $subKomponen->first()->ro . '.' . $subKomponen->first()->komponen . '.' . $subKomponen->first()->subkomponen, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                     $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($subKomponen->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
@@ -768,8 +768,8 @@ class RealisasiBulananController extends Controller
                                         $realisasiAkun = 0;
                                         $pengembalianAkun = 0;
                                         foreach($akun as $ak){
-                                            $realisasiAkun += $ak->realisasi->sum('realisasi');
-                                            $pengembalianAkun += $ak->sspb->sum('nominal_sspb');
+                                            $realisasiAkun += $ak->total_realisasi;
+                                            $pengembalianAkun += $ak->total_sspb;
                                         }
                                         $spreadsheet->getActiveSheet()->getCell('A' . $row)->setValueExplicit($akun->first()->program . '.' . $akun->first()->kegiatan . '.' . $akun->first()->kro . '.' . $akun->first()->ro . '.' . $akun->first()->komponen . '.' . $akun->first()->subkomponen . '.' . $akun->first()->akun, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
                                         $spreadsheet->getActiveSheet()->getCell('B' . $row)->setValueExplicit($akun->first()->program, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);

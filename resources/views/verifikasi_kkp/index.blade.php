@@ -12,85 +12,73 @@
         </div>
         <div class="">
             <form action="" method="get" autocomplete="off">
-                <div class="input-group">
+                <input type="hidden" name="jns" value="{{ request('jns', 'ALL') }}">
+                <input type="hidden" name="sb" value="{{ request('sb', 'nomor_tagihan') }}">
+                <input type="hidden" name="sd" value="{{ request('sd', 'desc') }}">
+                <div class="join">
                     <input type="text" name="search" class="input input-sm input-bordered join-item"
-                        placeholder="Nomor Tagihan/Uraian" value="{{ request('search') }}">
-                    <button class="btn join-item btn-sm btn-neutral" type="submit">Cari</button>
+                        placeholder="Nomor Tagihan/Uraian">
+                    <div class="indicator">
+                        <button class="btn join-item btn-sm btn-neutral">Cari</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-primary-content border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nomor</th>
-                    <th class="border border-base-content">Tanggal</th>
-                    <th class="border border-base-content">Unit</th>
-                    <th class="border border-base-content">PPK</th>
-                    <th class="border border-base-content">Jenis Dokumen</th>
-                    <th class="border border-base-content">Bruto</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-tagihan :jenis="false" :uraian="false" :nomor_spm="false" :tanggal_spm="false" :nomor_sp2d="false"
+            :tanggal_sp2d="false" :status="false" :pic="false">
+            @foreach ($data as $item)
+                <tr class="whitespace-nowrap">
+                    <td class="text-center border" rowspan="{{ $item->catatan ? 2 : 1 }}">
+                        {{ $loop->iteration + ($data->currentPage() - 1) * $data->perPage() }}</td>
+                    <td class="border">{{ $item->notagihan }}</td>
+                    <td class="border">{{ indonesiaDate($item->tgltagihan) }}</td>
+                    <td class="border">{{ optional($item->unit)->namaunit }}</td>
+                    <td class="border">{{ optional($item->ppk)->nama }}</td>
+                    <td class="border">{{ optional($item->dokumen)->namadokumen }}</td>
+                    <td class="text-right border">
+                        Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
+                    <x-table.body.column class="border">{{ indonesiaDate($item->updated_at) }}</x-table.body.column>
+                    <td class="border" rowspan="{{ $item->catatan ? 2 : 1 }}">
+                        <div class="join">
+                            <a href="/verifikasi-kkp/{{ $item->id }}"
+                                class="btn btn-xs btn-outline btn-neutral join-item">Dokumen</a>
+                            <a href="/verifikasi-kkp/{{ $item->id }}/coa"
+                                class="btn btn-xs btn-outline btn-neutral join-item">COA</a>
+                            <button value="{{ $item->id }}"
+                                class="btn btn-xs btn-outline btn-error join-item reject-btn">Tolak</button>
+                            <a href="/verifikasi-kkp/{{ $item->id }}/approve"
+                                class="btn btn-xs btn-outline btn-success join-item"
+                                onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
+                        </div>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1 + ($data->currentPage() - 1) * $data->perPage();
-                @endphp
-                @foreach ($data as $item)
-                    <tr class="whitespace-nowrap">
-                        <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->notagihan }}</td>
-                        <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
-                        <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
-                        <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
-                        <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
-                        <td class="text-right border border-base-content">
-                            Rp{{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}</td>
-                        <td class="border border-base-content">
-                            <div class="join">
-                                <a href="/verifikasi-kkp/{{ $item->id }}"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">Dokumen</a>
-                                <a href="/verifikasi-kkp/{{ $item->id }}/coa"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">COA</a>
-                                <button value="{{ $item->id }}"
-                                    class="btn btn-xs btn-outline btn-error join-item reject-btn">Tolak</button>
-                                <a href="/verifikasi-kkp/{{ $item->id }}/approve"
-                                    class="btn btn-xs btn-outline btn-success join-item"
-                                    onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
-                            </div>
+                @if ($item->catatan)
+                    <tr>
+                        <td colspan="9" class="border py-2 border-dashed">
+                            <button class="btn btn-xs btn-error"
+                                onclick="catatan_{{ $loop->iteration }}.showModal()">catatan</button>
+                            <dialog id="catatan_{{ $loop->iteration }}" class="modal">
+                                <div
+                                    class="modal-box w-11/12 max-w-5xl max-h-11/12 grid grid-rows-[auto_auto_1fr] overflow-hidden gap-2 p-0">
+                                    <div class="flex justify-end glass p-2">
+                                        <button class="btn btn-sm btn-ghost"
+                                            onclick="catatan_{{ $loop->iteration }}.close()">✕</button>
+                                    </div>
+                                    <div class="p-2 flex flex-col gap-2">
+                                        <hr>
+                                    </div>
+                                    <div class="rich-text overflow-y-auto px-4 py-2">
+                                        {!! $item->catatan !!}
+                                    </div>
+                                </div>
+                            </dialog>
                         </td>
                     </tr>
-                    @if ($item->catatan)
-                        <tr>
-                            <td colspan="9" class="border border-base-content py-2 border-dashed">
-                                <button class="btn btn-xs btn-error"
-                                    onclick="catatan_{{ $loop->iteration }}.showModal()">catatan</button>
-                                <dialog id="catatan_{{ $loop->iteration }}" class="modal">
-                                    <div
-                                        class="modal-box w-11/12 max-w-5xl max-h-11/12 grid grid-rows-[auto_auto_1fr] overflow-hidden gap-2 p-0">
-                                        <div class="flex justify-end glass p-2">
-                                            <button class="btn btn-sm btn-ghost"
-                                                onclick="catatan_{{ $loop->iteration }}.close()">✕</button>
-                                        </div>
-                                        <div class="p-2 flex flex-col gap-2">
-                                            <hr>
-                                        </div>
-                                        <div class="rich-text overflow-y-auto px-4 py-2">
-                                            {!! $item->catatan !!}
-                                        </div>
-                                    </div>
-                                </dialog>
-                            </td>
-                        </tr>
-                    @endif
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+                @endif
+            @endforeach
+        </x-tagihan>
     </div>
     <dialog id="reject_modal" class="modal">
         <div class="modal-box w-full max-w-5xl p-0">
@@ -100,7 +88,7 @@
             </div>
             <div class="p-4">
                 <form enctype="multipart/form-data"
-                    action="@if (Session::has('tagihan_id')) /verifikasi/{{ Session::get('tagihan_id') }}/tolak @endif"
+                    action="@if (Session::has('tagihan_id')) /verifikasi-kkp/{{ Session::get('tagihan_id') }}/tolak @endif"
                     id="form-tolak" method="post">
                     @method('PATCH')
                     @csrf

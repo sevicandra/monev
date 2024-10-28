@@ -32,19 +32,24 @@ class realisasi extends Model
         return $this->hasMany(sspb::class);
     }
 
+    public function spm()
+    {
+        return $this->hasOneThrough(spm::class, tagihan::class, 'id', 'id', 'tagihan_id', 'spm_id');
+    }
+
     public function scopeRealisaijenisbelanja($data, $jenis)
     {
         $a = $jenis;
         return $data->wherehas('pagu', function ($val) use ($a) {
             $val->where('tahun', session()->get('tahun'))->where('kodesatker', session()->get('kdsatker'))->whereRaw('left(akun, 2) =' . $a);
-        })->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')->select('realisasis.*', 'sspbs.nominal_sspb');
+        })->leftJoin('sspbs', 'sspbs.realisasi_id', '=', 'realisasis.id')->groupBy('realisasis.id')->selectRaw('realisasis.*, sum(sspbs.nominal_sspb) as nominal_sspb');
     }
 
     public function scopeSp2d($data)
     {
         if (request('sp2d') === 'ya') {
             return $data->wherehas('tagihan', function ($val) {
-                $val->where('nomor_sp2d', '!=', null);
+                $val->wherehas('spm');
             });
         }
         return $data;

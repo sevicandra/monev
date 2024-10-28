@@ -16,55 +16,53 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Jenis Tagihan</th>
-                    <th class="border border-base-content">Nomor</th>
-                    <th class="border border-base-content">Tanggal</th>
-                    <th class="border border-base-content">Nomor SP2D</th>
-                    <th class="border border-base-content">Tanggal SP2D</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Jenis Tagihan</x-table.header.column>
+                    <x-table.header.column class="border-x">Nomor</x-table.header.column>
+                    <x-table.header.column class="border-x">Tanggal</x-table.header.column>
+                    <x-table.header.column class="border-x">Nomor SP2D</x-table.header.column>
+                    <x-table.header.column class="border-x">Tanggal SP2D</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i=1;
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr class="text-center">
-                        <td class="border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content">
+                        <x-table.body.column class="border">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">
                             @switch($item->jnstagihan)
-                            @case('0')
-                                SPBy
-                            @break
+                                @case('0')
+                                    SPBy
+                                @break
 
-                            @case('1')
-                                SPP
-                            @break
+                                @case('1')
+                                    SPP
+                                @break
 
-                            @case('2')
-                                KKP
-                            @break
-                        @endswitch
-                        </td>
-                        <td class="border border-base-content">{{ $item->notagihan }}</td>
-                        <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
-                        <td class="border border-base-content">{{ $item->nomor_sp2d }}</td>
-                        <td class="border border-base-content">{{ indonesiaDate($item->tanggal_sp2d) }}</td>
-                        <td class="border border-base-content">
-                            <form action="/cleansing/sp2d/{{ $item->id }}" method="post" onsubmit="return confirm('Apakah anda yakin?')">
+                                @case('2')
+                                    KKP
+                                @break
+                            @endswitch
+                        </x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->notagihan }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ indonesiaDate($item->tgltagihan) }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nomor_sp2d }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ indonesiaDate($item->tanggal_sp2d) }}</x-table.body.column>
+                        <x-table.body.column class="border">
+                            <form action="/cleansing/sp2d/{{ $item->id }}" method="post"
+                                onsubmit="return confirm('Apakah anda yakin?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-xs btn-error btn-outline">Hapus</button>
                             </form>
-                        </td>
+                        </x-table.body.column>
                     </tr>
                 @endforeach
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection
 @section('pagination')

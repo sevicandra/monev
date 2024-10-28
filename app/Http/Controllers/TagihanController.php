@@ -41,13 +41,14 @@ class TagihanController extends Controller
                 'realisasi',
                 'berkasupload' => function ($q) {
                     return $q->whereHas('berkas', function ($val) {
-                        $val->where('kodeberkas', '02')->orWhere('kodeberkas', '02');
+                        $val->where('kodeberkas', '01')->orWhere('kodeberkas', '02');
                     });
                 },
             ])
                 ->where('status', 0)
                 ->TagihanNonBLBI()
                 ->tagihanStafPPK()
+                ->filter()
                 ->search()
                 ->order()
                 ->paginate(15)
@@ -133,7 +134,7 @@ class TagihanController extends Controller
         }
         return view('tagihan.update', [
             'data' => $tagihan,
-            'dokumen' => dokumen::orderby('kodedokumen')->get(),
+            'dokumen' => dokumen::NotBLBI()->orderby('kodedokumen')->get(),
             'unit' => unit::Myunit()->stafppk()->get(),
             'ppk' => RefPPK::PPKsatker()->stafppk()->get(),
             'notifikasi' => Notification::Notif(),
@@ -307,21 +308,22 @@ class TagihanController extends Controller
         if ($tagihan->status > 0) {
             return abort(403);
         }
-        if ($tagihan->realisasi->first() === null) {
-            return back()->with('gagal', 'Data tidak dapat dikirim karena belum dilakukan input realisasi.');
-        }
-
-        if ($tagihan->realisasi->sum('realisasi') <= 0) {
-            return back()->with('gagal', 'Data tidak dapat dikirim karena belum dilakukan input realisasi.');
+        if ($tagihan->dokumen->realisasi != 0) {
+            if ($tagihan->realisasi->first() === null) {
+                return back()->with('gagal', 'Data tidak dapat dikirim karena belum dilakukan input realisasi.');
+            }
+            if ($tagihan->realisasi->sum('realisasi') <= 0) {
+                return back()->with('gagal', 'Data tidak dapat dikirim, realisasi tidak boleh nol atau kurang.');
+            }
         }
 
         if (
             berkasupload::where('tagihan_id', $tagihan->id)
-                ->cekberkas1()
-                ->first() === null &&
+            ->cekberkas1()
+            ->first() === null &&
             berkasupload::where('tagihan_id', $tagihan->id)
-                ->cekberkas2()
-                ->first() === null
+            ->cekberkas2()
+            ->first() === null
         ) {
             return back()->with('gagal', 'Data tidak dapat dikirim karena berkas belum lengkap.');
         }

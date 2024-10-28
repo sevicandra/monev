@@ -11,7 +11,8 @@
             <a href="/verifikasi" class="btn btn-sm btn-neutral">Sebelumnya</a>
             <a href="/verifikasi/{{ $tagihan->id }}/payroll/create" class="btn btn-sm btn-neutral">Tambah</a>
             <a href="/verifikasi/{{ $tagihan->id }}/payroll/import-hris" class="btn btn-sm btn-neutral">Import DB HRIS</a>
-            <a href="/verifikasi/{{ $tagihan->id }}/payroll/import-monev" class="btn btn-sm btn-neutral">Import DB Monev</a>
+            <a href="/verifikasi/{{ $tagihan->id }}/payroll/import-monev" class="btn btn-sm btn-neutral">Import DB
+                Monev</a>
             <a href="/verifikasi/{{ $tagihan->id }}/payroll/import-excel" class="btn btn-sm btn-neutral">Import Excel</a>
             <a href="/verifikasi/{{ $tagihan->id }}/payroll/cetak" class="btn btn-sm btn-neutral" target="_blank">Cetak</a>
         </div>
@@ -28,50 +29,32 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">Nomor Rekening</th>
-                    <th class="border border-base-content">Nama Bank</th>
-                    <th class="border border-base-content">Bruto</th>
-                    <th class="border border-base-content">Pajak</th>
-                    <th class="border border-base-content">Adm.</th>
-                    <th class="border border-base-content">Netto</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-payroll>
+            @foreach ($data as $item)
+                <tr>
+                    <td class="border text-center">{{ $loop->iteration }}</td>
+                    <td class="border">{{ $item->nama }}</td>
+                    <td class="border">{{ $item->norek }}</td>
+                    <td class="border">{{ $item->bank }}</td>
+                    <td class="border text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
+                    <td class="border text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
+                    <td class="border text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
+                    <td class="border text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
+                    <td class="border">
+                        <div class="join">
+                            <a class="btn btn-xs btn-primary btn-outline join-item"
+                                href="/verifikasi/{{ $item->tagihan_id }}/payroll/{{ $item->id }}/edit">Edit</a>
+                            <form action="/verifikasi/{{ $item->tagihan_id }}/payroll/{{ $item->id }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-xs btn-error btn-outline join-item"
+                                    onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="border border-base-content text-center">{{ $i++ }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->norek }}</td>
-                        <td class="border border-base-content">{{ $item->bank }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content">
-                            <div class="join">
-                                <a class="btn btn-xs btn-primary btn-outline join-item" href="/verifikasi/{{ $item->tagihan_id }}/payroll/{{ $item->id }}/edit">Edit</a>
-                                <form action="/verifikasi/{{ $item->tagihan_id }}/payroll/{{ $item->id }}"
-                                    method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-xs btn-error btn-outline join-item"
-                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-payroll>
     </div>
 @endsection
 

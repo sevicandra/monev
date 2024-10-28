@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\spm;
 use App\Models\berkas;
 use App\Models\tagihan;
 use App\Models\logtagihan;
@@ -33,6 +32,16 @@ class PpspmController extends Controller
         }
 
 
+        if ($ppspm->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($ppspm->status != 3) {
+            abort(403);
+        }
+        if ($ppspm->jnstagihan != '1') {
+            abort(403);
+        }
 
         return view('uploadberkas.index', [
             'data' => $ppspm->berkasupload()->with('berkas')->get(),
@@ -105,10 +114,7 @@ class PpspmController extends Controller
         }
         $tagihan->update([
             'status'=>2,
-            'tanggal_spm'=>null,
-            'tanggal_sp2d'=>null,
-            'nomor_sp2d'=>null,
-            'no_spm'=>null
+            'spm_id'=>null
         ]);
         logtagihan::create([
             'tagihan_id' => $tagihan->id,

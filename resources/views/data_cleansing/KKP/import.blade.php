@@ -30,30 +30,30 @@
         @if ((Session::has('rowsErrors')))
         <div class="divider"></div>
         <div class="overflow-y-auto">
-            <table class="table border-collapse w-full border-base-content">
-                <thead class="text-center">
-                    <tr class="align-middle">
-                        <th class="border border-base-content">No</th>
-                        <th class="border border-base-content">tagihan_id</th>
-                        <th class="border border-base-content">no_spm</th>
-                        <th class="border border-base-content">tanggal_spm</th>
-                        <th class="border border-base-content">nomor_sp2d</th>
-                        <th class="border border-base-content">tanggal_sp2d</th>
+            <x-table class="collapse w-full">
+                <x-table.header>
+                    <tr class="text-center">
+                        <x-table.header.column class="border-x">No</x-table.header.column>
+                        <x-table.header.column class="border-x">tagihan_id</x-table.header.column>
+                        <x-table.header.column class="border-x">no_spm</x-table.header.column>
+                        <x-table.header.column class="border-x">tanggal_spm</x-table.header.column>
+                        <x-table.header.column class="border-x">nomor_sp2d</x-table.header.column>
+                        <x-table.header.column class="border-x">tanggal_sp2d</x-table.header.column>
                     </tr>
-                </thead>
+                </x-table.header>
                 <tbody>
                     @foreach ((Session::get('rowsErrors')) as $item)
                         <tr class="@if($item->status) text-success @else text-error @endif">
-                            <td class="border border-base-content text-center">{{ $item->row }}</td>
-                            <td class="border border-base-content text-center">{{ $item->errors->tagihan_id }}</td>
-                            <td class="border border-base-content text-center">{{ $item->errors->no_spm }}</td>
-                            <td class="border border-base-content text-center">{{ $item->errors->tanggal_spm }}</td>
-                            <td class="border border-base-content text-center">{{ $item->errors->nomor_sp2d }}</td>
-                            <td class="border border-base-content text-center">{{ $item->errors->tanggal_sp2d }}</td>
+                            <x-table.body.column class="border text-center">{{ $item->row }}</x-table.body.column>
+                            <x-table.body.column class="border text-center">{{ $item->errors->tagihan_id }}</x-table.body.column>
+                            <x-table.body.column class="border text-center">{{ $item->errors->no_spm }}</x-table.body.column>
+                            <x-table.body.column class="border text-center">{{ $item->errors->tanggal_spm }}</x-table.body.column>
+                            <x-table.body.column class="border text-center">{{ $item->errors->nomor_sp2d }}</x-table.body.column>
+                            <x-table.body.column class="border text-center">{{ $item->errors->tanggal_sp2d }}</x-table.body.column>
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </x-table>
         </div>
         @endif
     </div>

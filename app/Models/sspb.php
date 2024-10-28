@@ -16,7 +16,8 @@ class sspb extends Model
         'tanggal_sspb',
         'nominal_sspb',
         'tagihan_id',
-        'pagu_id'
+        'pagu_id',
+        'ntpn',
     ];
 
     public function pagu()
@@ -32,5 +33,10 @@ class sspb extends Model
     public function tagihan()
     {
         return $this->belongsTo(tagihan::class);
+    }
+
+    public function spm()
+    {
+        return $this->hasOneThrough(spm::class, tagihan::class, 'id', 'id', 'tagihan_id', 'spm_id');
     }
 }

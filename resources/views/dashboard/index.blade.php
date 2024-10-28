@@ -95,12 +95,12 @@
                         if (request('sp2d') === 'ya') {
                             foreach ($item->pagu as $detailPagu) {
                                 foreach ($detailPagu->realisasi as $detailRealisasi) {
-                                    if ($detailRealisasi->tagihan->nomor_sp2d != null && $detailRealisasi->tagihan->tanggal_sp2d != null) {
+                                    if ($detailRealisasi->tagihan?->spm != null) {
                                         $realisasi += $detailRealisasi->realisasi;
                                     }
                                 }
                                 foreach ($detailPagu->sspb as $detailSSPB) {
-                                    if ($detailSSPB->tagihan->nomor_sp2d != null && $detailSSPB->tagihan->tanggal_sp2d != null) {
+                                    if ($detailSSPB->tagihan?->spm != null) {
                                         $realisasi -= $detailSSPB->nominal_sspb;
                                     }
                                 }
@@ -145,12 +145,12 @@
                                     if (request('sp2d') === 'ya') {
                                         foreach ($item->paguppk as $detailPagu) {
                                             foreach ($detailPagu->realisasi as $detailRealisasi) {
-                                                if ($detailRealisasi->tagihan->nomor_sp2d != null && $detailRealisasi->tagihan->tanggal_sp2d != null) {
+                                                if ($detailRealisasi->tagihan?->spm != null) {
                                                     $realisasi += $detailRealisasi->realisasi;
                                                 }
                                             }
                                             foreach ($detailPagu->sspb as $detailSSPB) {
-                                                if ($detailSSPB->tagihan->nomor_sp2d != null && $detailSSPB->tagihan->tanggal_sp2d != null) {
+                                                if ($detailSSPB->tagihan?->spm != null) {
                                                     $realisasi -= $detailSSPB->nominal_sspb;
                                                 }
                                             }

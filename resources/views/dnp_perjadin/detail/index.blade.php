@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('content')
     <div class="bg-primary p-4">
-        <h1 class="h2">Detail DNP Perjadin</h1>
+        <h1 class="text-xl text-primary-content">Detail DNP Perjadin</h1>
     </div>
     <div class="">
         @include('layout.flashmessage')

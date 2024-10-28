@@ -74,6 +74,13 @@
 
             <div class="form-control w-full max-w-xs">
                 <label class="label cursor-pointer">
+                    <span class="label-text">Realisasi:</span>
+                    <input type="checkbox" name="realisasi" class="checkbox checkbox-primary" value=1 @if (old('realisasi')) checked @endif/>
+                </label>
+            </div>
+
+            <div class="form-control w-full max-w-xs">
+                <label class="label cursor-pointer">
                     <span class="label-text">BLBI:</span>
                     <input type="checkbox" name="blbi" class="checkbox checkbox-primary" value=1 @if (old('blbi')) checked @endif/>
                 </label>

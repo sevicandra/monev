@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('content')
     <div class="bg-primary p-4">
-        <h1 class="h2">DNP Perjadin</h1>
+        <h1 class="text-xl text-primary-content">DNP Perjadin</h1>
     </div>
     <div class="">
         @include('layout.flashmessage')
@@ -9,7 +9,8 @@
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div class="">
             <a href="{{ $base_url }}" class="btn btn-sm btn-neutral">Sebelumnya</a>
-            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/cetak" target="_blank" class="btn btn-sm btn-neutral">Cetak</a>
+            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/cetak" target="_blank"
+                class="btn btn-sm btn-neutral">Cetak</a>
         </div>
         <div class="">
             <form action="" method="get" autocomplete="off">
@@ -24,75 +25,56 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full whitespace-nowrap">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">NIP/NIK/NRP/DLL</th>
-                    <th class="border border-base-content">Unit Kerja</th>
-                    <th class="border border-base-content">ST</th>
-                    <th class="border border-base-content">Lokasi</th>
-                    <th class="border border-base-content">Durasi</th>
-                    <th class="border border-base-content">Netto</th>
-                    <th class="border border-base-content">Rekening</th>
-                    <th class="border border-base-content">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
+        <x-dnp.perjadin>
+            @foreach ($data as $item)
                 @php
-                    $no = 1;
+                    $a = collect(json_decode($item->transport))->sum('nilai');
+                    $b = collect(json_decode($item->transportLain))->sum('nilai');
+                    $c = 0;
+                    $d = 0;
+                    $e = 0;
                 @endphp
-                @foreach ($data as $item)
+
+                @foreach (collect(json_decode($item->uangharian)) as $uangharian)
                     @php
-                        $a = collect(json_decode($item->transport))->sum('nilai');
-                        $b = collect(json_decode($item->transportLain))->sum('nilai');
-                        $c = 0;
-                        $d = 0;
-                        $e = 0;
+                        $c += $uangharian->frekuensi * $uangharian->nilai;
                     @endphp
-
-                    @foreach (collect(json_decode($item->uangharian)) as $uangharian)
-                        @php
-                            $c += $uangharian->frekuensi * $uangharian->nilai;
-                        @endphp
-                    @endforeach
-
-                    @foreach (collect(json_decode($item->penginapan)) as $penginapan)
-                        @php
-                            $d += $penginapan->frekuensi * $penginapan->nilai;
-                        @endphp
-                    @endforeach
-
-                    @foreach (collect(json_decode($item->representatif)) as $representatif)
-                        @php
-                            $e += $representatif->frekuensi * $representatif->nilai;
-                        @endphp
-                    @endforeach
-                    <tr>
-                        <td class="border border-base-content">{{ $no++ }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->nip }}</td>
-                        <td class="border border-base-content">{{ $item->nip }}</td>
-                        <td class="border border-base-content">{{ $item->st }}</td>
-                        <td class="border border-base-content">{{ $item->lokasi }}</td>
-                        <td class="border border-base-content">{{ $item->durasi }}</td>
-                        <td class="border border-base-content">Rp{{ number_format($a + $b + $c + $d + $e, 0, ',', '.') }}
-                        </td>
-                        <td class="border border-base-content">{{ $item->bank }} {{ $item->norek }} <br> a.n.
-                            {{ $item->namarek }}</td>
-                        <td class="border border-base-content">
-                            <div class="join">
-                                <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">Detail</a>
-                                <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}/cetak"
-                                    class="btn btn-xs btn-outline btn-neutral join-item" target="_blank">Cetak</a>
-                            </div>
-                        </td>
-                    </tr>
                 @endforeach
-            </tbody>
-        </table>
+
+                @foreach (collect(json_decode($item->penginapan)) as $penginapan)
+                    @php
+                        $d += $penginapan->frekuensi * $penginapan->nilai;
+                    @endphp
+                @endforeach
+
+                @foreach (collect(json_decode($item->representatif)) as $representatif)
+                    @php
+                        $e += $representatif->frekuensi * $representatif->nilai;
+                    @endphp
+                @endforeach
+                <tr class="whitespace-nowrap">
+                    <x-table.body.column class="border">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->nip }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->nip }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->st }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->lokasi }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->durasi }}</x-table.body.column>
+                    <x-table.body.column class="border">Rp{{ number_format($a + $b + $c + $d + $e, 0, ',', '.') }}
+                    </x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->bank }} {{ $item->norek }} <br> a.n.
+                        {{ $item->namarek }}</x-table.body.column>
+                    <x-table.body.column class="border">
+                        <div class="join">
+                            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}"
+                                class="btn btn-xs btn-outline btn-neutral join-item">Detail</a>
+                            <a href="{{ $base_url }}/{{ $tagihan->id }}/dnp-perjadin/{{ $item->id }}/cetak"
+                                class="btn btn-xs btn-outline btn-neutral join-item" target="_blank">Cetak</a>
+                        </div>
+                    </x-table.body.column>
+                </tr>
+            @endforeach
+        </x-dnp.perjadin>
     </div>
 @endsection
 

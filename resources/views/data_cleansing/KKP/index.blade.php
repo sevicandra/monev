@@ -15,7 +15,8 @@
         <div class="">
             <form action="" method="get" autocomplete="off">
                 <div class="join">
-                    <input type="text" name="search" class="input input-sm input-bordered join-item" placeholder="Nomor Tagihan">
+                    <input type="text" name="search" class="input input-sm input-bordered join-item"
+                        placeholder="Nomor Tagihan">
                     <div class="indicator">
                         <button class="btn join-item btn-sm btn-neutral">Cari</button>
                     </div>
@@ -24,41 +25,23 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nomor</th>
-                    <th class="border border-base-content">Tanggal</th>
-                    <th class="border border-base-content">Uraian</th>
-                    <th class="border border-base-content">Unit</th>
-                    <th class="border border-base-content">PPK</th>
-                    <th class="border border-base-content">Jenis Dokumen</th>
-                    <th class="border border-base-content">Bruto</th>
+        <x-tagihan :nomor_spm="false" :tanggal_spm="false" :nomor_sp2d="false" :tanggal_sp2d="false" :pic="false"
+            :jenis="false" :status="false" :update="false" :aksi="false">
+            @foreach ($data as $item)
+                <tr class="whitespace-nowrap">
+                    <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->notagihan }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ indonesiaDate($item->tgltagihan) }}</x-table.body.column>
+                    <x-table.body.column class="border"
+                        style="white-space:normal; min-width:300px">{{ $item->uraian }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->unit)->namaunit }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->ppk)->nama }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->dokumen)->namadokumen }}</x-table.body.column>
+                    <x-table.body.column class="border text-right">
+                        Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr class="whitespace-nowrap">
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->notagihan }}</td>
-                        <td class="border border-base-content">{{ indonesiaDate($item->tgltagihan) }}</td>
-                        <td class="border border-base-content" style="white-space:normal; min-width:300px">{{ $item->uraian }}</td>
-                        <td class="border border-base-content">{{ optional($item->unit)->namaunit }}</td>
-                        <td class="border border-base-content">{{ optional($item->ppk)->nama }}</td>
-                        <td class="border border-base-content">{{ optional($item->dokumen)->namadokumen }}</td>
-                        <td class="border border-base-content text-right">
-                            Rp{{ number_format(optional($item->realisasi)->sum('realisasi'), 2, ',', '.') }}</td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-tagihan>
     </div>
 @endsection
 @section('pagination')

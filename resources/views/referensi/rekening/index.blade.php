@@ -22,35 +22,32 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">NIP/NIK/NPWP</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">Nomor Rekening</th>
-                    <th class="border border-base-content">Nama Bank</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">NIP/NIK/NPWP</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama</x-table.header.column>
+                    <x-table.header.column class="border-x">Nomor Rekening</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama Bank</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->kode }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->norek }}</td>
-                        <td class="border border-base-content">
+                        <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->kode }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->norek }}</x-table.body.column>
+                        <x-table.body.column class="border">
                             @if ($item->bank === 'Other')
                                 {{ $item->otherbank }}
                             @else
                                 {{ $item->bank }}
                             @endif
-                        </td>
-                        <td class="border border-base-content text-center">
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             <div class="join">
                                 <a href="/referensi-rekening/{{ $item->id }}/edit"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Ubah</a>
@@ -61,14 +58,11 @@
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
                             </div>
-                        </td>
+                        </x-table.body.column>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection
 @section('pagination')

@@ -24,42 +24,32 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama Pemilik Rekening</th>
-                    <th class="border border-base-content">Nomor Rekening</th>
-                    <th class="border border-base-content">Nama Bank</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-payroll.import>
+            @foreach ($data as $item)
+                <tr>
+                    <x-table.body.column class="text-center border">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border">
+                        <input id="nama_{{ $item->IdpegawaiRekening }}" type="text"
+                            value="{{ $item->NamaPemilikRekening }}" class="input input-sm w-min-content input-ghost"
+                            readonly="readonly" disabled>
+                    </x-table.body.column>
+                    <x-table.body.column class="border">
+                        <input id="norek_{{ $item->IdpegawaiRekening }}" type="text" value="{{ $item->NomorRekening }}"
+                            class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
+                    </x-table.body.column>
+                    <x-table.body.column class="border">
+                        <input id="bank_{{ $item->IdpegawaiRekening }}" type="text" value="{{ $item->NamaBank }}"
+                            class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
+                    </x-table.body.column>
+                    <x-table.body.column class="border">
+                        <div class="join">
+                            <button id="{{ $item->IdpegawaiRekening }}" type="button"
+                                class="import-btn btn btn-xs btn-outline btn-neutral join-item">Pilih</button>
+                        </div>
+                    </x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="text-center border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content">
-                            <input id="nama_{{ $item->IdpegawaiRekening }}" type="text" value="{{ $item->NamaPemilikRekening }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
-                        </td>
-                        <td class="border border-base-content">
-                            <input id="norek_{{ $item->IdpegawaiRekening }}" type="text" value="{{ $item->NomorRekening }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
-                        </td>
-                        <td class="border border-base-content">
-                            <input id="bank_{{ $item->IdpegawaiRekening }}" type="text" value="{{ $item->NamaBank }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
-                        </td>
-                        <td class="border border-base-content">
-                            <div class="join">
-                                <button id="{{ $item->IdpegawaiRekening }}" type="button"
-                                    class="import-btn btn btn-xs btn-outline btn-neutral join-item">Pilih</button>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-payroll.import>
     </div>
 @endsection
 
@@ -188,66 +178,66 @@
             });
         });
     </script>
-        <script>
-            $(document).ready(function() {
-                let valueBruto = $('#bruto').val()
-                valueBruto = valueBruto.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                $('#bruto').val(valueBruto);
-    
-                let valuePajak = $('#pajak').val()
-                valuePajak = valuePajak.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                $('#pajak').val(valuePajak);
-    
-                let valueAdmin = $('#admin').val()
-                valueAdmin = valueAdmin.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                $('#admin').val(valueAdmin);
-    
-    
-    
-    
-                $('#bruto').on('input', function() {
-                    let value = $(this).val();
-                    value = value.replace(/[^0-9,.]/g, '');
-                    value = value.replace(/,+/g, ',');
-                    value = value.replace(/\./g, '');
-                    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                    $(this).val(value);
-                });
-    
-                $('#pajak').on('input', function() {
-                    let value = $(this).val();
-                    value = value.replace(/[^0-9,.]/g, '');
-                    value = value.replace(/,+/g, ',');
-                    value = value.replace(/\./g, '');
-                    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                    $(this).val(value);
-                });
-    
-                $('#admin').on('input', function() {
-                    let value = $(this).val();
-                    value = value.replace(/[^0-9,.]/g, '');
-                    value = value.replace(/,+/g, ',');
-                    value = value.replace(/\./g, '');
-                    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                    $(this).val(value);
-                });
-    
-                $("#inputPayroll").submit(function(event) {
-                    event.preventDefault();
-                    var inputValueBruto = $("#bruto").val();
-                    var sanitizedValueBruto = inputValueBruto.replace(/\./g, "");
-                    $("#bruto").val(sanitizedValueBruto);
-    
-                    var inputValuePajak = $("#pajak").val();
-                    var sanitizedValuePajak = inputValuePajak.replace(/\./g, "");
-                    $("#pajak").val(sanitizedValuePajak);
-    
-                    var inputValueAdmin = $("#admin").val();
-                    var sanitizedValueAdmin = inputValueAdmin.replace(/\./g, "");
-                    $("#admin").val(sanitizedValueAdmin);
-    
-                    this.submit();
-                });
+    <script>
+        $(document).ready(function() {
+            let valueBruto = $('#bruto').val()
+            valueBruto = valueBruto.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            $('#bruto').val(valueBruto);
+
+            let valuePajak = $('#pajak').val()
+            valuePajak = valuePajak.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            $('#pajak').val(valuePajak);
+
+            let valueAdmin = $('#admin').val()
+            valueAdmin = valueAdmin.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            $('#admin').val(valueAdmin);
+
+
+
+
+            $('#bruto').on('input', function() {
+                let value = $(this).val();
+                value = value.replace(/[^0-9,.]/g, '');
+                value = value.replace(/,+/g, ',');
+                value = value.replace(/\./g, '');
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $(this).val(value);
             });
-        </script>
+
+            $('#pajak').on('input', function() {
+                let value = $(this).val();
+                value = value.replace(/[^0-9,.]/g, '');
+                value = value.replace(/,+/g, ',');
+                value = value.replace(/\./g, '');
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $(this).val(value);
+            });
+
+            $('#admin').on('input', function() {
+                let value = $(this).val();
+                value = value.replace(/[^0-9,.]/g, '');
+                value = value.replace(/,+/g, ',');
+                value = value.replace(/\./g, '');
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $(this).val(value);
+            });
+
+            $("#inputPayroll").submit(function(event) {
+                event.prevenx-table.body.columnefault();
+                var inputValueBruto = $("#bruto").val();
+                var sanitizedValueBruto = inputValueBruto.replace(/\./g, "");
+                $("#bruto").val(sanitizedValueBruto);
+
+                var inputValuePajak = $("#pajak").val();
+                var sanitizedValuePajak = inputValuePajak.replace(/\./g, "");
+                $("#pajak").val(sanitizedValuePajak);
+
+                var inputValueAdmin = $("#admin").val();
+                var sanitizedValueAdmin = inputValueAdmin.replace(/\./g, "");
+                $("#admin").val(sanitizedValueAdmin);
+
+                this.submit();
+            });
+        });
+    </script>
 @endsection

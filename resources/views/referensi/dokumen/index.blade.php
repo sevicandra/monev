@@ -16,37 +16,36 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Kode Dokumen</th>
-                    <th class="border border-base-content">Nama Dokumen</th>
-                    {{-- <th class="border border-base-content">Status DNP</th>
-                    <th class="border border-base-content">Status PPh</th> --}}
-                    <th class="border border-base-content">Status Rekanan</th>
-                    <th class="border border-base-content">Status DNP Perjadin</th>
-                    <th class="border border-base-content">Status DNP HONOR</th>
-                    <th class="border border-base-content">BLBI</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Kode Dokumen</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama Dokumen</x-table.header.column>
+                    {{-- <x-table.header.column class="border-x">Status DNP</x-table.header.column>
+                    <x-table.header.column class="border-x">Status PPh</x-table.header.column> --}}
+                    <x-table.header.column class="border-x">Status Rekanan</x-table.header.column>
+                    <x-table.header.column class="border-x">Status DNP Perjadin</x-table.header.column>
+                    <x-table.header.column class="border-x">Status DNP HONOR</x-table.header.column>
+                    <x-table.header.column class="border-x">Status Realisasi</x-table.header.column>
+                    <x-table.header.column class="border-x">BLBI</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->kodedokumen }}</td>
-                        <td class="border border-base-content">{{ $item->namadokumen }}</td>
-                        {{-- <td class="border border-base-content text-center">{{ $item->statusdnp }}</td>
-                        <td class="border border-base-content text-center">{{ $item->statuspph }}</td> --}}
-                        <td class="border border-base-content text-center">{{ $item->statusrekanan }}</td>
-                        <td class="border border-base-content text-center">{{ $item->dnp_perjadin }}</td>
-                        <td class="border border-base-content text-center">{{ $item->dnp_honor }}</td>
-                        <td class="border border-base-content text-center">{{ $item->blbi }}</td>
-                        <td class="border border-base-content text-center">
+                        <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->kodedokumen }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->namadokumen }}</x-table.body.column>
+                        {{-- <x-table.body.column class="border text-center">{{ $item->statusdnp }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">{{ $item->statuspph }}</x-table.body.column> --}}
+                        <x-table.body.column class="border text-center">{{ $item->statusrekanan }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">{{ $item->dnp_perjadin }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">{{ $item->dnp_honor }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">{{ $item->realisasi }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">{{ $item->blbi }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             <div class="join">
                                 <a href="/dokumen/{{ $item->id }}/edit"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Ubah</a>
@@ -57,14 +56,10 @@
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
                             </div>
-                        </td>
+                        </x-table.body.column>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
-            </tbody>
-        </table>
-
+            </x-table.body>
+        </x-table>
     </div>
 @endsection

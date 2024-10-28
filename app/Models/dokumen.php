@@ -20,16 +20,17 @@ class dokumen extends Model
         'dnp_perjadin',
         'dnp_honor',
         'blbi',
+        'realisasi'
     ];
 
 
     public function scopeNotBLBI($data)
     {
-        return $data    ->where('blbi', false);
+        return $data    ->where('blbi', 0);
     }
 
     public function scopeBLBI($data)
     {
-        return $data    ->where('blbi', true);
+        return $data    ->where('blbi', 1);
     }
 }

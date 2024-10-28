@@ -15,10 +15,14 @@ return new class extends Migration
     {
         Schema::create('spms', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('tagihan_id');
+            $table->string('nomor_spm', 5);
             $table->date('tanggal_spm');
-            $table->string('nomor_sp2d')->nullable();
-            $table->date('tanggal_sp2d')->nullable();
+            $table->string('nomor_sp2d', 15)->unique();
+            $table->date('tanggal_sp2d');
+            $table->year('tahun');
+            $table->string('kd_satker', 6);
+            $table->string('deskripsi');
+            $table->string('jenis_spm', 50);
             $table->timestamps();
         });
     }

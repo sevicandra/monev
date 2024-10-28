@@ -16,35 +16,37 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full max-w-3xl">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">SPM</th>
-                    <th class="border border-base-content">Tanggal SPM</th>
-                    <th class="border border-base-content">SP2D</th>
-                    <th class="border border-base-content">Tanggal SP2D</th>
-                    <th class="border border-base-content">Realisasi</th>
+        <x-table class="collapse w-full max-w-3xl">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">SPM</x-table.header.column>
+                    <x-table.header.column class="border-x">Tanggal SPM</x-table.header.column>
+                    <x-table.header.column class="border-x">SP2D</x-table.header.column>
+                    <x-table.header.column class="border-x">Tanggal SP2D</x-table.header.column>
+                    <x-table.header.column class="border-x">Realisasi</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr>
-                        <td class="border border-base-content text-center align-top">{{ $loop->iteration }}</td>
-                        <td class="border border-base-content">{{ $item['no_spm'] }}</td>
-                        <td class="border border-base-content">{{ $item['tanggal_spm'] }}</td>
-                        <td class="border border-base-content">{{ $item['nomor_sp2d'] }}</td>
-                        <td class="border border-base-content">{{ $item['tanggal_sp2d'] }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item['nominal'], 0, ',', '.') }}
-                        </td>
+                        <x-table.body.column
+                            class="border text-center align-top">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item['no_spm'] }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item['tanggal_spm'] }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item['nomor_sp2d'] }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item['tanggal_sp2d'] }}</x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item['nominal'], 0, ',', '.') }}
+                        </x-table.body.column>
                     </tr>
                 @endforeach
                 <tr>
-                    <td class="border border-base-content text-center align-top" colspan="5">Total</td>
-                    <td class="border border-base-content text-right">{{ number_format($data->sum('nominal'), 0, ',', '.') }}</td>
+                    <x-table.body.column class="border text-center align-top" colspan="5">Total</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-right">{{ number_format($data->sum('nominal'), 0, ',', '.') }}</x-table.body.column>
                 </tr>
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection
 @section('pagination')

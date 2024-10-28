@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payroll;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class RekapPayrollController extends Controller

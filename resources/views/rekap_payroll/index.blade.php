@@ -21,42 +21,44 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-primary-content border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">Nomor Rekening</th>
-                    <th class="border border-base-content">Bank</th>
-                    <th class="border border-base-content">Bruto</th>
-                    <th class="border border-base-content">Pajak</th>
-                    <th class="border border-base-content">Admin</th>
-                    <th class="border border-base-content">Netto</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full">
+            <x-table.header class="text-center">
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama</x-table.header.column>
+                    <x-table.header.column class="border-x">Nomor Rekening</x-table.header.column>
+                    <x-table.header.column class="border-x">Bank</x-table.header.column>
+                    <x-table.header.column class="border-x">Bruto</x-table.header.column>
+                    <x-table.header.column class="border-x">Pajak</x-table.header.column>
+                    <x-table.header.column class="border-x">Admin</x-table.header.column>
+                    <x-table.header.column class="border-x">Netto</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
+            </x-table.header>
             <tbody>
-                @php
-                    $i = 1 + ($data->currentPage() - 1) * $data->perPage();
-                @endphp
                 @foreach ($data as $item)
                     <tr class="whitespace-nowrap">
-                        <td class="text-center border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->norek }}</td>
-                        <td class="border border-base-content">{{ $item->bank }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content">
+                        <x-table.body.column
+                            class="text-center border">{{ $loop->iteration + ($data->currentPage() - 1) * $data->perPage() }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->norek }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->bank }}</x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item->bruto, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item->pajak, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item->admin, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item->netto, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border">
                             <a href="/rekap-payroll/{{ $item->norek }}"
                                 class="btn btn-xs btn-outline btn-neutral join-item">detail</a>
-                        </td>
+                        </x-table.body.column>
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
     <dialog id="reject_modal" class="modal">
         <div class="modal-box w-full max-w-md p-0">
@@ -94,4 +96,3 @@
 @section('pagination')
     {{ $data->links() }}
 @endsection
-

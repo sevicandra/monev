@@ -22,58 +22,40 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">NPWP</th>
-                    <th class="border border-base-content">No. NIK/NPWP</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-rekanan>
+            @foreach ($data as $item)
+                <tr>
+                    <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">
+                        @switch($item->npwp)
+                            @case(1)
+                                YA
+                            @break
+
+                            @case(0)
+                                TIDAK
+                            @break
+                        @endswitch
+                    </x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ $item->idpajak }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">
+                        <div class="join">
+                            <a href="/tagihan/{{ $tagihan->id }}/rekanan/{{ $item->id }}/ppn"
+                                class="btn btn-xs btn-outline btn-neutral join-item">PPN</a>
+                            <a href="/tagihan/{{ $tagihan->id }}/rekanan/{{ $item->id }}/pph"
+                                class="btn btn-xs btn-outline btn-neutral join-item">PPh</a>
+                            <form action="/tagihan/{{ $tagihan->id }}/rekanan/{{ $item->id }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-xs btn-outline btn-error join-item"
+                                    onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                            </form>
+                        </div>
+                    </x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content text-center">
-                            @switch($item->npwp)
-                                @case(1)
-                                    YA
-                                @break
-
-                                @case(0)
-                                    TIDAK
-                                @break
-                            @endswitch
-                        </td>
-                        <td class="border border-base-content text-center">{{ $item->idpajak }}</td>
-                        <td class="border border-base-content text-center">
-                            <div class="join">
-                                <a href="/tagihan/{{ $tagihan->id }}/rekanan/{{ $item->id }}/ppn"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">PPN</a>
-                                <a href="/tagihan/{{ $tagihan->id }}/rekanan/{{ $item->id }}/pph"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">PPh</a>
-                                <form action="/tagihan/{{ $tagihan->id }}/rekanan/{{ $item->id }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-xs btn-outline btn-error join-item"
-                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
-
+            @endforeach
+        </x-rekanan>
     </div>
 @endsection
 

@@ -21,28 +21,25 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-primary-content border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Jenis Tagihan</th>
-                    <th class="border border-base-content">No Tagihan</th>
-                    <th class="border border-base-content">Tahun</th>
-                    <th class="border border-base-content">Uraian</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">Nomor Rekening</th>
-                    <th class="border border-base-content">Bank</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Jenis Tagihan</x-table.header.column>
+                    <x-table.header.column class="border-x">No Tagihan</x-table.header.column>
+                    <x-table.header.column class="border-x">Tahun</x-table.header.column>
+                    <x-table.header.column class="border-x">Uraian</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama</x-table.header.column>
+                    <x-table.header.column class="border-x">Nomor Rekening</x-table.header.column>
+                    <x-table.header.column class="border-x">Bank</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
+            </x-table.header>
             <tbody>
-                @php
-                    $i = 1 + ($data->currentPage() - 1) * $data->perPage();
-                @endphp
                 @foreach ($data as $item)
                     <tr class="whitespace-nowrap">
-                        <td class="text-center border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content">
+                        <x-table.body.column class="text-center border">{{ $loop->iteration+ ($data->currentPage() - 1) * $data->perPage() }}</x-table.body.column>
+                        <x-table.body.column class="border">
                             @switch($item->tagihan->jnstagihan)
                                 @case('0')
                                     SPBy
@@ -56,15 +53,14 @@
                                     KKP
                                 @break
                             @endswitch
-                        </td>
-                        <td class="border border-base-content">{{ $item->tagihan->notagihan }}</td>
-                        <td class="border border-base-content">{{ $item->tagihan->tahun }}</td>
-                        <td class="border border-base-content">{{ $item->tagihan->uraian }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->norek }}</td>
-                        <td class="border border-base-content">{{ $item->bank }}</td>
-                        </td>
-                        <td class="border border-base-content">
+                        </x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->tagihan->notagihan }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->tagihan->tahun }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->tagihan->uraian }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->norek }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->bank }}</x-table.body.column>
+                        <x-table.body.column class="border">
                             <form action="/tracking" method="post">
                                 @csrf
                                 <input type="text" name="tagihan_id" value="{{ $item->tagihan->id }}" hidden>
@@ -72,11 +68,11 @@
                             </form>
                             {{-- <a href="/tracking/{{ $item->tagihan->id }}"
                                 class="btn btn-xs btn-outline btn-neutral join-item">riwayat</a> --}}
-                        </td>
+                        </x-table.body.column>
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
 @endsection
 

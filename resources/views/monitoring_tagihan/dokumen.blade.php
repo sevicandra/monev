@@ -10,38 +10,22 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Berkas</th>
-                    <th class="border border-base-content">Keterangan</th>
-                    <th class="border border-base-content">Tanggal</th>
-                    <th class="border border-base-content">File</th>
+        <x-dokumen :aksi="FALSE">
+            @foreach ($data as $item)
+                <tr>
+                    <x-table.body.column class="text-center border">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->berkas)->namaberkas }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ explode('.', $item->file)[1] }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->uraian }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->created_at }}</x-table.body.column>
+                    <x-table.body.column class="text-center border">
+                        <div class="join">
+                            <a href="/file-view/{{ $item->file }}" class="btn btn-xs btn-outline btn-neutral"
+                                target="_blank">Preview File</a>
+                        </div>
+                    </x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content">{{ optional($item->berkas)->namaberkas }}</td>
-                        <td class="border border-base-content">{{ $item->uraian }}</td>
-                        <td class="border border-base-content">{{ $item->created_at }}</td>
-                        <td class="text-center border border-base-content">
-                            <div class="join">
-                                <a href="/file-view/{{ $item->file }}" class="btn btn-xs btn-outline btn-neutral"
-                                    target="_blank">Preview File</a>
-                            </div>
-                        </td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-dokumen>
     </div>
 @endsection

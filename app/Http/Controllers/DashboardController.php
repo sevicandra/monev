@@ -22,17 +22,16 @@ class DashboardController extends Controller
             'realisasibelanjapegawai' => realisasi::sp2d()->realisaijenisbelanja('51')->get(),
             'realisasibelanjabarang' => realisasi::sp2d()->realisaijenisbelanja('52')->get(),
             'realisasibelanjamodal' => realisasi::sp2d()->realisaijenisbelanja('53')->get(),
-            'ppk' => RefPPK::with(['paguppk'=>['realisasi.tagihan', 'sspb.tagihan']])->PPKsatker()->whereHas('paguppk')->get(),
-            'unit' => unit::myunit()->with(['pagu'=>['realisasi.tagihan', 'sspb.tagihan']])->whereHas('pagu')->get(),
+            'ppk' => RefPPK::with(['paguppk' => ['realisasi.tagihan.spm', 'sspb.tagihan.spm']])->PPKsatker()->whereHas('paguppk')->get(),
+            'unit' => unit::myunit()->with(['pagu' => ['realisasi.tagihan.spm', 'sspb.tagihan.spm']])->whereHas('pagu')->get(),
             'notifikasi' => Notification::Notif()
         ]);
     }
 
     public function unit_index()
     {
-        // return unit::myunit()->with(['pagu'=> ['realisasi.tagihan', 'sspb.tagihan']])->whereHas('pagu')->first()->pagu;
         return view('dashboard.unit.index', [
-            'unit' => unit::myunit()->with(['pagu'=> ['realisasi.tagihan', 'sspb.tagihan']])->whereHas('pagu')->get(),
+            'unit' => unit::myunit()->with(['pagu' => ['realisasi.tagihan.spm', 'sspb.tagihan.spm']])->whereHas('pagu')->get(),
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -40,7 +39,23 @@ class DashboardController extends Controller
     public function unit_detail(unit $unit)
     {
         return view('dashboard.unit.detail', [
-            'data' => tagihan::realisasiBulananUnit($unit)->orderBy('bulan')->get(),
+            'data' => tagihan::realisasiBulananUnit($unit)->orderBy('bulan')->get()->mapToGroups(function ($item) {
+                return (object) [
+                    $item->bulan  => (object) [
+                        'bulan' => $item->bulan,
+                        'namabulan' => $item->namabulan,
+                        'realisasi' => $item->realisasi->sum('realisasi'),
+                        'sspb' => $item->sspb->sum('nominal_sspb'),
+                    ]
+                ];
+            })->map(function ($item) {
+                return (object)[
+                    'bulan' => $item->first()->bulan,
+                    'namabulan' => $item->first()->namabulan,
+                    'total_realisasi' => $item->sum('realisasi'),
+                    'total_sspb' => $item->sum('sspb')
+                ];
+            }),
             'unit' => $unit,
             'notifikasi' => Notification::Notif()
         ]);
@@ -67,7 +82,7 @@ class DashboardController extends Controller
             $bulanModel = bulan::where('kodebulan', $bulan)->first();
         }
         return view('dashboard.unit.detail-tagihan', [
-            'data' => tagihan::realisasiTagihanPerBulanUnit($unit, $bulan)->get(),
+            'data' => tagihan::realisasiTagihanPerBulanUnit($unit, $bulan)->filter()->order()->get(),
             'unit' => $unit,
             'bulan' => $bulanModel,
             'notifikasi' => Notification::Notif()
@@ -77,7 +92,7 @@ class DashboardController extends Controller
     public function ppk_index()
     {
         return view('dashboard.ppk.index', [
-            'ppk' => RefPPK::with(['paguppk', 'paguppk.realisasi.tagihan', 'paguppk.sspb.tagihan'])->PPKsatker()->whereHas('paguppk')->get(),
+            'ppk' => RefPPK::with(['paguppk', 'paguppk.realisasi.tagihan.spm', 'paguppk.sspb.tagihan.spm'])->PPKsatker()->whereHas('paguppk')->get(),
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -85,7 +100,23 @@ class DashboardController extends Controller
     public function ppk_detail(RefPPK $ppk)
     {
         return view('dashboard.ppk.detail', [
-            'data' => tagihan::realisasiBulananPpk($ppk->nip)->orderBy('bulan')->get(),
+            'data' => tagihan::realisasiBulananPpk($ppk->nip)->orderBy('bulan')->get()->mapToGroups(function ($item) {
+                return (object) [
+                    $item->bulan  => (object) [
+                        'bulan' => $item->bulan,
+                        'namabulan' => $item->namabulan,
+                        'realisasi' => $item->realisasi->sum('realisasi'),
+                        'sspb' => $item->sspb->sum('nominal_sspb'),
+                    ]
+                ];
+            })->map(function ($item) {
+                return (object)[
+                    'bulan' => $item->first()->bulan,
+                    'namabulan' => $item->first()->namabulan,
+                    'total_realisasi' => $item->sum('realisasi'),
+                    'total_sspb' => $item->sum('sspb')
+                ];
+            }),
             'ppk' => $ppk,
             'notifikasi' => Notification::Notif()
         ]);
@@ -113,7 +144,7 @@ class DashboardController extends Controller
         }
 
         return view('dashboard.ppk.detail-tagihan', [
-            'data' => tagihan::realisasiTagihanPerBulanPpk($ppk->nip, $bulan)->get(),
+            'data' => tagihan::realisasiTagihanPerBulanPpk($ppk->nip, $bulan)->filter()->order()->get(),
             'ppk' => $ppk,
             'bulan' => $bulanModel,
             'notifikasi' => Notification::Notif()

@@ -16,33 +16,33 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full max-w-3xl">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">COA</th>
-                    <th class="border border-base-content">Realisasi</th>
+        <x-table class="collapse w-full max-w-3xl">
+            <x-table.header>
+                <tr class="text-center">
+                    <th class="border-x">No</th>
+                    <th class="border-x">COA</th>
+                    <th class="border-x">Realisasi</th>
                 </tr>
-            </thead>
-            <tbody>
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr>
-                        <td class="border border-base-content text-center align-top">{{ $loop->iteration }}</td>
-                        <td class="border border-base-content text-center">
+                        <x-table.body.column class="border text-center align-top">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             <a class="link link-primary" href="/cleansing/rekap-spm/{{ $item['program'] }}/{{ $item['kegiatan'] }}/{{ $item['kro'] }}"
                                 target="_blank" rel="noopener noreferrer">
                                 {{ $item['program'] }}.{{ $item['kegiatan'] }}.{{ $item['kro'] }}
                             </a>
-                        </td>
-                        <td class="border border-base-content text-right">{{ number_format($item['total'], 0, ',', '.') }}</td>
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item['total'], 0, ',', '.') }}</x-table.body.column>
                     </tr>
                 @endforeach
                 <tr>
-                    <td class="border border-base-content text-center align-top" colspan="2">Total</td>
-                    <td class="border border-base-content text-right">{{ number_format($data->sum('total'), 0, ',', '.') }}</td>
+                    <x-table.body.column class="border text-center align-top" colspan="2">Total</x-table.body.column>
+                    <x-table.body.column class="border text-right">{{ number_format($data->sum('total'), 0, ',', '.') }}</x-table.body.column>
                 </tr>
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection
 @section('pagination')

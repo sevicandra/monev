@@ -31,42 +31,31 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Program</th>
-                    <th class="border border-base-content">Kegiatan</th>
-                    <th class="border border-base-content">KRO</th>
-                    <th class="border border-base-content">RO</th>
-                    <th class="border border-base-content">Komponen</th>
-                    <th class="border border-base-content">Subkomponen</th>
-                    <th class="border border-base-content">Akun</th>
-                    <th class="border border-base-content">Realisasi</th>
+        <x-coa :anggaran="false" :aksi="false" :sisa="FALSE">
+            @foreach ($data as $item)
+                <tr>
+                    <x-table.body.column class="text-center border">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-center">{{ optional($item->pagu)->program }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-center">{{ optional($item->pagu)->kegiatan }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->kro }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->ro }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-center">{{ optional($item->pagu)->komponen }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-center">{{ optional($item->pagu)->subkomponen }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->akun }}</x-table.body.column>
+                    <x-table.body.column
+                        class="text-right border">{{ number_format($item->realisasi, 2, ',', '.') }}</x-table.body.column>
+                    <x-table.body.column class="text-right border">
+                        @if (isset($item->sspb))
+                            {{ number_format($item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
+                        @endif
+                    </x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->program }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->kegiatan }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->kro }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->ro }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->komponen }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->subkomponen }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->akun }}</td>
-                        <td class="text-right border border-base-content">{{ number_format($item->realisasi, 2, ',', '.') }}</td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-coa>
     </div>
 @endsection
 

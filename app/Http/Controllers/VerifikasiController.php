@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\spm;
 use App\Helper\Hris;
 use App\Models\pagu;
 use App\Models\berkas;
@@ -34,7 +33,7 @@ class VerifikasiController extends Controller
         }
         
         return view('verifikasi.index',[
-            'data'=>tagihan::tagihansatker()->tagihanverifikator()->unverified()->search()->order()->paginate(15)->withQueryString(),
+            'data'=>tagihan::tagihansatker()->tagihanverifikator()->unverified()->filter()->search()->order()->paginate(15)->withQueryString(),
             'notifikasi'=>Notification::Notif()
         ]);
     }
@@ -171,9 +170,6 @@ class VerifikasiController extends Controller
                 return redirect('/verifikasi')->with('berhasil','Data Tagihan Berhasil Diverifikasi');
                 break;
             case 1:
-                if ($tagihan->tanggal_spm == null) {
-                    return back()->with('gagal','Data tidak dapat dikirim karena tanggal SPM belum di input');
-                }
                 $tagihan->update([
                     'status'=>3
                 ]);

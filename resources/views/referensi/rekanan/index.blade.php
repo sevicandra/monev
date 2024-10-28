@@ -22,25 +22,22 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama Rekanan</th>
-                    <th class="border border-base-content">NPWP</th>
-                    <th class="border border-base-content">Id Pajak</th>
-                    <th class="border border-base-content">Action</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama Rekanan</x-table.header.column>
+                    <x-table.header.column class="border-x">NPWP</x-table.header.column>
+                    <x-table.header.column class="border-x">Id Pajak</x-table.header.column>
+                    <x-table.header.column class="border-x">Action</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content text-center">
+                        <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             @switch($item->npwp)
                                 @case(1)
                                     YA
@@ -50,21 +47,18 @@
                                     TIDAK
                                 @break
                             @endswitch
-                        </td>
-                        <td class="border border-base-content text-center">{{ $item->idpajak }}</td>
-                        <td class="border border-base-content text-center">
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-center">{{ $item->idpajak }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             <div class="join">
                                 <a href="/rekanan/{{ $item->id }}/edit"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Ubah</a>
                             </div>
-                        </td>
+                        </x-table.body.column>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
 
     </div>
 @endsection

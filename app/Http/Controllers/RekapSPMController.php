@@ -54,14 +54,15 @@ class RekapSPMController extends Controller
     public function detail($program, $kegiatan, $kro, $akun)
     {
         $data = pagu::paguSatker()->RekapSPM($program, $kegiatan, $kro, $akun)->get();
+        // return $data;
         $array = [];
         foreach ($data as $item) {
             foreach ($item->realisasi as $realisasi) {
                 $array[] = [
-                    "no_spm" => $realisasi->tagihan->no_spm,
-                    "tanggal_spm" => $realisasi->tagihan->tanggal_spm,
-                    "nomor_sp2d" => $realisasi->tagihan->nomor_sp2d,
-                    "tanggal_sp2d" => $realisasi->tagihan->tanggal_sp2d,
+                    "no_spm" => $realisasi->tagihan->spm->nomor_spm,
+                    "tanggal_spm" => $realisasi->tagihan->spm->tanggal_spm,
+                    "nomor_sp2d" => $realisasi->tagihan->spm->nomor_sp2d,
+                    "tanggal_sp2d" => $realisasi->tagihan->spm->tanggal_sp2d,
                     "nominal" => $realisasi->realisasi
                 ];
             }

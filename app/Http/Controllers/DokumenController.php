@@ -48,6 +48,7 @@ class DokumenController extends Controller
             'dnp_perjadin'=>$request->dnpperjadin ?? false,
             'dnp_honor'=>$request->dnphonor ?? false,
             'blbi'=>$request->blbi ?? false,
+            'realisasi'=>$request->realisasi ?? false
         ]);
         return redirect('/dokumen');
     }
@@ -82,6 +83,7 @@ class DokumenController extends Controller
             'dnp_perjadin'=>$request->dnpperjadin ?? false,
             'dnp_honor'=>$request->dnphonor ?? false,
             'blbi'=>$request->blbi ?? false,
+            'realisasi'=>$request->realisasi ?? false
         ]);
         return redirect('/dokumen');
     }

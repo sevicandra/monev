@@ -18,25 +18,22 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">NIP</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama</x-table.header.column>
+                    <x-table.header.column class="border-x">NIP</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
+            </x-table.header>
             <tbody>
-                @php
-                    $i = 1;
-                @endphp
                 @foreach ($data->verifikator()->get() as $item)
                     <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->nip }}</td>
-                        <td class="border border-base-content text-center">
+                        <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nip }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             <div class="join">
                                 <form action="/unit/{{ $data->id }}/{{ $item->id }}" method="post">
                                     @csrf
@@ -45,13 +42,10 @@
                                         onclick="return confirm('Apakah Anda yakin akan menghapus role ini?');">Hapus</button>
                                 </form>
                             </div>
-                        </td>
+                        </x-table.body.column>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
             </tbody>
-        </table>
+        </x-table>
     </div>
 @endsection

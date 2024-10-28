@@ -22,48 +22,31 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border">No</th>
-                    <th class="border">Nama</th>
-                    <th class="border">NPWP</th>
-                    <th class="border">NIK/NPWP</th>
-                    <th class="border">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="border text-center">{{ $i }}</td>
-                        <td class="border text-center">{{ $item->nama }}</td>
-                        <td class="border text-center">
-                            @switch($item->npwp)
-                                @case(1)
-                                    YA
-                                @break
+        <x-rekanan>
+            @foreach ($data as $item)
+                <tr>
+                    <td class="border text-center">{{ $loop->iteration }}</td>
+                    <td class="border text-center">{{ $item->nama }}</td>
+                    <td class="border text-center">
+                        @switch($item->npwp)
+                            @case(1)
+                                YA
+                            @break
 
-                                @default
-                                    TIDAK
-                            @endswitch
-                        </td>
-                        <td class="border text-center">{{ $item->idpajak }}</td>
-                        <td class="border text-center">
-                                <form action="/verifikasi/{{ $tagihan->id }}/rekanan/{{ $item->id }}" method="post">
-                                    @csrf
-                                    <button class="btn btn-xs btn-outline btn-neutral">Pilih</button>
-                                </form>
-                        </td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+                            @default
+                                TIDAK
+                        @endswitch
+                    </td>
+                    <td class="border text-center">{{ $item->idpajak }}</td>
+                    <td class="border text-center">
+                        <form action="/verifikasi/{{ $tagihan->id }}/rekanan/{{ $item->id }}" method="post">
+                            @csrf
+                            <button class="btn btn-xs btn-outline btn-neutral">Pilih</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </x-rekanan>
     </div>
 @endsection
 @section('pagination')

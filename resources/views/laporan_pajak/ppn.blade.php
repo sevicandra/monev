@@ -25,64 +25,67 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">SPM</th>
-                    <th class="border border-base-content">SPBy</th>
-                    <th class="border border-base-content">NTPN/SP2D</th>
-                    <th class="border border-base-content">Tanggal NTPN/SP2D</th>
-                    <th class="border border-base-content">No. NPWP</th>
-                    <th class="border border-base-content">Rekanan</th>
-                    <th class="border border-base-content">Nomor Faktur Pajak</th>
-                    <th class="border border-base-content">Tanggal Faktur Pajak</th>
-                    <th class="border border-base-content">Tarif</th>
-                    <th class="border border-base-content">PPh</th>
-                    <th class="border border-base-content">NOP</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">SPM</x-table.header.column>
+                    <x-table.header.column class="border-x">SPBy</x-table.header.column>
+                    <x-table.header.column class="border-x">NTPN/SP2D</x-table.header.column>
+                    <x-table.header.column class="border-x">Tanggal NTPN/SP2D</x-table.header.column>
+                    <x-table.header.column class="border-x">No. NPWP</x-table.header.column>
+                    <x-table.header.column class="border-x">Rekanan</x-table.header.column>
+                    <x-table.header.column class="border-x">Nomor Faktur Pajak</x-table.header.column>
+                    <x-table.header.column class="border-x">Tanggal Faktur Pajak</x-table.header.column>
+                    <x-table.header.column class="border-x">Tarif</x-table.header.column>
+                    <x-table.header.column class="border-x">PPh</x-table.header.column>
+                    <x-table.header.column class="border-x">NOP</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr class="whitespace-nowrap">
-                        <td class="border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content">
+                        <x-table.body.column class="border">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">
                             @if ($item->tagihan->jnstagihan === '1')
                                 {{ $item->tagihan->notagihan }}
                             @endif
-                        </td>
-                        <td class="border border-base-content">
+                        </x-table.body.column>
+                        <x-table.body.column class="border">
                             @if ($item->tagihan->jnstagihan === '0')
                                 {{ $item->tagihan->notagihan }}
                             @endif
-                        </td>
+                        </x-table.body.column>
                         @if ($item->tagihan->jnstagihan === '1')
-                            <td class="border border-base-content">
+                            <x-table.body.column class="border">
                                 {{ $item->tagihan->nomor_sp2d }}
-                            </td>
-                            <td class="border border-base-content">
+                            </x-table.body.column>
+                            <x-table.body.column class="border">
                                 {{ indonesiaDate($item->tagihan->tanggal_sp2d) }}
-                            </td>
+                            </x-table.body.column>
                         @else
-                            <td class="border border-base-content"> {{ $item->ntpn }} </td>
-                            <td class="border border-base-content">{{ $item->tanggalntpn }}</td>
+                            <x-table.body.column class="border"> {{ $item->ntpn }}
+                            </x-table.body.column>
+                            <x-table.body.column
+                                class="border">{{ $item->tanggalntpn }}</x-table.body.column>
                         @endif
-                        <td class="border border-base-content">{{ $item->rekanan->idpajak }}</td>
-                        <td class="border border-base-content">{{ $item->rekanan->nama }}</td>
-                        <td class="border border-base-content">{{ $item->nomorfaktur }}</td>
-                        <td class="border border-base-content">{{ indonesiaDate($item->tanggalfaktur) }}</td>
-                        <td class="border border-base-content">{{ $item->tarif * 100 }}%</td>
-                        <td class="border border-base-content">{{ number_format(floor($item->ppn * $item->tarif), 2, ',', '.') }}</td>
-                        <td class="border border-base-content">{{ number_format($item->ppn, 2, ',', '.') }}</td>
+                        <x-table.body.column
+                            class="border">{{ $item->rekanan->idpajak }}</x-table.body.column>
+                        <x-table.body.column
+                            class="border">{{ $item->rekanan->nama }}</x-table.body.column>
+                        <x-table.body.column
+                            class="border">{{ $item->nomorfaktur }}</x-table.body.column>
+                        <x-table.body.column
+                            class="border">{{ indonesiaDate($item->tanggalfaktur) }}</x-table.body.column>
+                        <x-table.body.column
+                            class="border">{{ $item->tarif * 100 }}%</x-table.body.column>
+                        <x-table.body.column
+                            class="border">{{ number_format(floor($item->ppn * $item->tarif), 2, ',', '.') }}</x-table.body.column>
+                        <x-table.body.column
+                            class="border">{{ number_format($item->ppn, 2, ',', '.') }}</x-table.body.column>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection

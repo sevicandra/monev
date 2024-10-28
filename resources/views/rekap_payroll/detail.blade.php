@@ -9,63 +9,71 @@
     </div>
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div class="flex gap-2">
-            <a href="/rekap-payroll" class="btn btn-sm btn-neutral">Sebelumnya</a>
+            <a href="{{ url()->current() === Str::startsWith(url()->previous(), url()->current()) ? '/rekap-payroll' : url()->previous() }}" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-primary-content border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">jnstagihan</th>
-                    <th class="border border-base-content">notagihan</th>
-                    <th class="border border-base-content">uraian</th>
-                    <th class="border border-base-content">Bruto</th>
-                    <th class="border border-base-content">Pajak</th>
-                    <th class="border border-base-content">Admin</th>
-                    <th class="border border-base-content">Netto</th>
-                    <th class="border border-base-content">Sudah Transfer</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <th class="border-x">No</th>
+                    <th class="border-x">jnstagihan</th>
+                    <th class="border-x">notagihan</th>
+                    <th class="border-x">uraian</th>
+                    <th class="border-x">Bruto</th>
+                    <th class="border-x">Pajak</th>
+                    <th class="border-x">Admin</th>
+                    <th class="border-x">Netto</th>
+                    <th class="border-x">Sudah Transfer</th>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1 + ($data->currentPage() - 1) * $data->perPage();
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr class="whitespace-nowrap">
-                        <td class="text-center border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content">
+                        <x-table.body.column
+                            class="text-center border">{{ $loop->iteration + ($data->currentPage() - 1) * $data->perPage() }}</x-table.body.column>
+                        <x-table.body.column class="border">
                             @switch($item->tagihan->jnstagihan)
-                            @case('0')
-                                SPBy
-                            @break
+                                @case('0')
+                                    SPBy
+                                @break
 
-                            @case('1')
-                                SPP
-                            @break
+                                @case('1')
+                                    SPP
+                                @break
 
-                            @case('2')
-                                KKP
-                            @break
-                        @endswitch
-                        </td>
-                        <td class="border border-base-content">{{ $item->tagihan->notagihan }}</td>
-                        <td class="border border-base-content">{{ $item->tagihan->uraian }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-center">
+                                @case('2')
+                                    KKP
+                                @break
+                            @endswitch
+                        </x-table.body.column>
+                        <x-table.body.column
+                            class="border">{{ $item->tagihan->notagihan }}</x-table.body.column>
+                        <x-table.body.column
+                            class="border">{{ $item->tagihan->uraian }}</x-table.body.column>
+                        <x-table.body.column
+                            class="border text-right">{{ number_format($item->bruto, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column
+                            class="border text-right">{{ number_format($item->pajak, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column
+                            class="border text-right">{{ number_format($item->admin, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column
+                            class="border text-right">{{ number_format($item->netto, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             @if ($item->status)
                                 YA
-                                @else
+                            @else
                                 BELUM
                             @endif
-                        </td>
+                        </x-table.body.column>
                     </tr>
                 @endforeach
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
     <dialog id="reject_modal" class="modal">
         <div class="modal-box w-full max-w-md p-0">

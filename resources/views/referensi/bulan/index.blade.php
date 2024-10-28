@@ -16,25 +16,22 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full max-w-2xl">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama Bulan</th>
-                    <th class="border border-base-content">Kode Bulan</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full max-w-xl">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama Bulan</x-table.header.column>
+                    <x-table.header.column class="border-x">Kode Bulan</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ $item->namabulan }}</td>
-                        <td class="border border-base-content text-center">{{ $item->kodebulan }}</td>
-                        <td class="border border-base-content text-center">
+                        <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->namabulan }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">{{ $item->kodebulan }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             <div class="join">
                                 <a href="/bulan/{{ $item->id }}/edit"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Ubah</a>
@@ -45,13 +42,10 @@
                                         onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
                                 </form>
                             </div>
-                        </td>
+                        </x-table.body.column>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection

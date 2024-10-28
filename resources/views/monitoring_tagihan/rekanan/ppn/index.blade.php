@@ -9,35 +9,23 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nomor Faktur</th>
-                    <th class="border border-base-content">Tanggal Faktur</th>
-                    <th class="border border-base-content">Tarif</th>
-                    <th class="border border-base-content">PPN</th>
-                    <th class="border border-base-content">NOP</th>
+        <x-rekanan.ppn :aksi="FALSE">
+            @foreach ($data as $item)
+                <tr>
+                    <x-table.body.column
+                        class="text-center border">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-center">{{ $item->nomorfaktur }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-center">{{ indonesiaDate($item->tanggalfaktur) }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-center">{{ $item->tarif * 100 }}%</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-right">{{ number_format(floor($item->ppn * $item->tarif), 2, ',', '.') }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-right">{{ number_format($item->ppn, 2, ',', '.') }}</x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content text-center">{{ $item->nomorfaktur }}</td>
-                        <td class="border border-base-content text-center">{{ indonesiaDate($item->tanggalfaktur) }}</td>
-                        <td class="border border-base-content text-center">{{ $item->tarif * 100 }}%</td>
-                        <td class="border border-base-content text-right">{{ number_format(floor($item->ppn * $item->tarif), 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->ppn, 2, ',', '.') }}</td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-rekanan.ppn>
     </div>
 @endsection

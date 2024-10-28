@@ -86,12 +86,12 @@ class CleansingKkpController extends Controller
                 ->setCellValue('E' . ($i + 7), $item->tgltagihan);
             $spreadsheet->setActiveSheetIndex(1)->getCell('C' . ($i + 7))->setValueExplicit($item->id, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
             $spreadsheet->setActiveSheetIndex(1)->getCell('D' . ($i + 7))->setValueExplicit($item->notagihan, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
-            if ($item->spm) {
-                $spreadsheet->setActiveSheetIndex(1)->getCell('F' . ($i + 7))->setValueExplicit($item->spm->no_spm, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
-                $spreadsheet->setActiveSheetIndex(1)->getCell('G' . ($i + 7))->setValueExplicit($item->spm->tanggal_spm, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
-                $spreadsheet->setActiveSheetIndex(1)->getCell('H' . ($i + 7))->setValueExplicit($item->spm->nomor_sp2d, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
-                $spreadsheet->setActiveSheetIndex(1)->getCell('I' . ($i + 7))->setValueExplicit($item->spm->tanggal_sp2d, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
-            }
+
+                $spreadsheet->setActiveSheetIndex(1)->getCell('F' . ($i + 7))->setValueExplicit($item->no_spm, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
+                $spreadsheet->setActiveSheetIndex(1)->getCell('G' . ($i + 7))->setValueExplicit($item->tanggal_spm, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
+                $spreadsheet->setActiveSheetIndex(1)->getCell('H' . ($i + 7))->setValueExplicit($item->nomor_sp2d, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
+                $spreadsheet->setActiveSheetIndex(1)->getCell('I' . ($i + 7))->setValueExplicit($item->tanggal_sp2d, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
+
             $spreadsheet->setActiveSheetIndex(1)->getStyle('C' . ($i + 7))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
             $spreadsheet->setActiveSheetIndex(1)->getStyle('D' . ($i + 7))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
             $spreadsheet->setActiveSheetIndex(1)->getStyle('E' . ($i + 7))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
@@ -203,22 +203,43 @@ class CleansingKkpController extends Controller
                 $detail->status=FALSE;
                 $errors->push($detail);
             }else{
-                $detail = (object) [];
-                $detail->errors=(object) [];
-                $detail->errors->tagihan_id = "ok";
-                $detail->errors->no_spm = "ok";
-                $detail->errors->tanggal_spm = "ok";
-                $detail->errors->nomor_sp2d = "ok";
-                $detail->errors->tanggal_sp2d = "ok";
-                $detail->row=$item[0];
-                $detail->status=TRUE;
-                $errors->push($detail);
-                tagihan::find($item[1])->update([
-                    'tanggal_spm' => $item[5],
-                    'nomor_sp2d' => $item[6],
-                    'tanggal_sp2d' => $item[7],
-                    'no_spm' => $item[4]
-                ]);
+                try {
+                    $spm = spm::updateOrCreate([
+                        'nomor_spm'=>$item[4],
+                        'tahun'=>session()->get('tahun')
+                    ],[
+                        'tanggal_spm'=>$item[5],
+                        'nomor_sp2d'=>$item[6],
+                        'tanggal_sp2d'=>$item[7],
+                        'kd_satker'=>session()->get('kdsatker'),
+                    ]);
+    
+                    tagihan::find($item[1])->update([
+                        'spm_id' => $spm->id
+                    ]);
+
+                    $detail = (object) [];
+                    $detail->errors=(object) [];
+                    $detail->errors->tagihan_id = "ok";
+                    $detail->errors->no_spm = "ok";
+                    $detail->errors->tanggal_spm = "ok";
+                    $detail->errors->nomor_sp2d = "ok";
+                    $detail->errors->tanggal_sp2d = "ok";
+                    $detail->row=$item[0];
+                    $detail->status=TRUE;
+                    $errors->push($detail);
+                } catch (\Throwable $th) {
+                    $detail = (object) [];
+                    $detail->errors=(object) [];
+                    $detail->errors->tagihan_id = "ok";
+                    $detail->errors->no_spm = "duplicate";
+                    $detail->errors->tanggal_spm = "ok";
+                    $detail->errors->nomor_sp2d = "duplicate";
+                    $detail->errors->tanggal_sp2d = "ok";
+                    $detail->row=$item[0];
+                    $detail->status=FALSE;
+                    $errors->push($detail);
+                }
             }
         }
         

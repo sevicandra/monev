@@ -27,49 +27,31 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">Nomor Rekening</th>
-                    <th class="border border-base-content">Nama Bank</th>
-                    <th class="border border-base-content">Bruto</th>
-                    <th class="border border-base-content">Pajak</th>
-                    <th class="border border-base-content">Adm.</th>
-                    <th class="border border-base-content">Netto</th>
-                    <th class="border border-base-content">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="border border-base-content text-center">{{ $i++ }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->norek }}</td>
-                        <td class="border border-base-content">{{ $item->bank }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content">
-                            <div>
-                                <form action="/bendahara/{{ $item->tagihan_id }}/payroll/{{ $item->id }}"
-                                    method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-xs btn-error btn-outline round"
-                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <x-payroll>
+            @foreach ($data as $item)
+            <tr>
+                <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                <x-table.body.column class="border">{{ $item->norek }}</x-table.body.column>
+                <x-table.body.column class="border">{{ $item->bank }}</x-table.body.column>
+                <x-table.body.column class="border text-right">{{ number_format($item->bruto, 2, ',', '.') }}</x-table.body.column>
+                <x-table.body.column class="border text-right">{{ number_format($item->pajak, 2, ',', '.') }}</x-table.body.column>
+                <x-table.body.column class="border text-right">{{ number_format($item->admin, 2, ',', '.') }}</x-table.body.column>
+                <x-table.body.column class="border text-right">{{ number_format($item->netto, 2, ',', '.') }}</x-table.body.column>
+                <x-table.body.column class="border">
+                    <div>
+                        <form action="/bendahara/{{ $item->tagihan_id }}/payroll/{{ $item->id }}"
+                            method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-xs btn-error btn-outline round"
+                                onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                        </form>
+                    </div>
+                </x-table.body.column>
+            </tr>
+        @endforeach
+        </x-payroll>
     </div>
 @endsection
 

@@ -9,46 +9,48 @@
     </div>
     <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
         <div>
-            <div class="join">
-                <a href="{{ Request::url() }}?search={{ request('search') }}&jnstagihan=" class="btn join-item btn-sm btn-neutral btn-outline @if(request('jnstagihan') != "0" && request('jnstagihan') != "1") btn-active @endif">All</a>
-                <a href="{{ Request::url() }}?search={{ request('search') }}&jnstagihan=0" class="btn join-item btn-sm btn-neutral btn-outline @if(request('jnstagihan') == "0") btn-active @endif">SPBy</a>
-                <a href="{{ Request::url() }}?search={{ request('search') }}&jnstagihan=1" class="btn join-item btn-sm btn-neutral btn-outline @if(request('jnstagihan') == "1") btn-active @endif">SPM</a>
+            <div class="flex gap-1">
+                <a href="{{ request()->fullUrlWithQuery(['jns' => '']) }}"
+                    class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'ALL' ? 'btn-active' : '' }}">ALL</a>
+                <a href="{{ request()->fullUrlWithQuery(['jns' => 'SPBY']) }}"
+                    class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'SPBY' ? 'btn-active' : '' }}">SPBY</a>
+                <a href="{{ request()->fullUrlWithQuery(['jns' => 'SPP']) }}"
+                    class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'SPP' ? 'btn-active' : '' }}">SPP</a>
             </div>
         </div>
         <div>
             <form action="" method="get" autocomplete="off">
-                <div class="input-group">
-                    <input type="text" value="{{ request('jnstagihan') }}" name="jnstagihan" class="hidden">
+                <input type="hidden" name="jns" value="{{ request('jns', 'ALL') }}">
+                <input type="hidden" name="sb" value="{{ request('sb', 'nomor_tagihan') }}">
+                <input type="hidden" name="sd" value="{{ request('sd', 'desc') }}">
+                <div class="join">
                     <input type="text" name="search" class="input input-sm input-bordered join-item"
-                        placeholder="nomor SPP/SPBy">
+                        placeholder="Nomor Tagihan">
                     <button class="btn join-item btn-sm btn-neutral" type="submit">Cari</button>
                 </div>
             </form>
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Jenis Tagihan</th>
-                    <th class="border border-base-content">Nomor</th>
-                    <th class="border border-base-content">Tanggal</th>
-                    <th class="border border-base-content">Unit</th>
-                    <th class="border border-base-content">PPK</th>
-                    <th class="border border-base-content">Nilai Tagihan</th>
-                    <th class="border border-base-content">Nilai Payroll</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Jenis Tagihan</x-table.header.column>
+                    <x-table.header.column class="border-x">Nomor</x-table.header.column>
+                    <x-table.header.column class="border-x">Tanggal</x-table.header.column>
+                    <x-table.header.column class="border-x">Unit</x-table.header.column>
+                    <x-table.header.column class="border-x">PPK</x-table.header.column>
+                    <x-table.header.column class="border-x">Nilai Tagihan</x-table.header.column>
+                    <x-table.header.column class="border-x">Nilai Payroll</x-table.header.column>
+                    <x-table.header.column class="border-x">Aksi</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1 + ($data->currentPage() - 1) * $data->perPage();
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr class="">
-                        <td class="border border-base-content text-center">{{ $i++ }}</td>
-                        <td class="border border-base-content text-center">
+                        <x-table.body.column class="border text-center">{{ $loop->iteration + ($data->currentPage() - 1) * $data->perPage() }}</x-table.body.column>
+                        <x-table.body.column class="border text-center">
                             @switch($item->jnstagihan)
                                 @case('0')
                                     SPBy
@@ -62,14 +64,14 @@
                                     KKP
                                 @break
                             @endswitch
-                        </td>
-                        <td class="border border-base-content">{{ $item->notagihan }}</td>
-                        <td class="border border-base-content whitespace-nowrap">{{ indonesiaDate($item->tgltagihan) }}</td>
-                        <td class="border border-base-content whitespace-normal">{{ $item->namaunit }}</td>
-                        <td class="border border-base-content">{{ $item->ppk }}</td>
-                        <td class="border border-base-content text-right">Rp{{ number_format($item->realisasi, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">Rp{{ number_format($item->payroll, 2, ',', '.') }}</td>
-                        <td class="border border-base-content">
+                        </x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->notagihan }}</x-table.body.column>
+                        <x-table.body.column class="border whitespace-nowrap">{{ indonesiaDate($item->tgltagihan) }}</x-table.body.column>
+                        <x-table.body.column class="border whitespace-normal">{{ $item->namaunit }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->ppk }}</x-table.body.column>
+                        <x-table.body.column class="border text-right">Rp{{ number_format($item->realisasi, 2, ',', '.') }}</x-table.body.column>
+                        <x-table.body.column class="border text-right">Rp{{ number_format($item->payroll, 2, ',', '.') }}</x-table.body.column>
+                        <x-table.body.column class="border">
                             <div class="join">
                                 <a href="/payroll/{{ $item->id }}"
                                     class="btn btn-xs btn-outline btn-neutral join-item">Detail</a>
@@ -79,11 +81,11 @@
                                     class="btn btn-xs btn-outline btn-success join-item"
                                     onclick="return confirm('Apakah Anda yakin akan mengirim data ini?');">Approve</a>
                             </div>
-                        </td>
+                        </x-table.body.column>
                     </tr>
                 @endforeach
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection
 @section('pagination')

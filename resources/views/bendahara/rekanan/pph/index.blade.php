@@ -14,48 +14,31 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Objek Pajak</th>
-                    <th class="border border-base-content">Tarif</th>
-                    <th class="border border-base-content">PPh</th>
-                    <th class="border border-base-content">DPP</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-rekanan.pph>
+            @foreach ($data as $item)
+                <tr>
+                    <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->objekpajak)->nama }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->tarif }}%</x-table.body.column>
+                    <x-table.body.column class="border">
+                        {{ number_format(floor($item->pph * ($item->tarif / 100)), 2, ',', '.') }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ number_format($item->pph, 2, ',', '.') }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">
+                        <div class="join" role="group">
+                            <a href="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/{{ $item->id }}/edit"
+                                class="btn btn-xs btn-outline btn-neutral join-item">edit</a>
+                            <form
+                                action="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/{{ $item->id }}"
+                                method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-xs btn-outline btn-error join-item"
+                                    onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
+                            </form>
+                        </div>
+                    </x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content">{{ optional($item->objekpajak)->nama }}</td>
-                            <td class="border border-base-content">{{ $item->tarif }}%</td>
-                            <td class="border border-base-content">{{ number_format(floor($item->pph * ($item->tarif / 100)), 2, ',', '.') }}</td>
-                            <td class="border border-base-content">{{ number_format($item->pph, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-center">
-                            <div class="join" role="group">
-                                <a href="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/{{ $item->id }}/edit"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">edit</a>
-                                <form
-                                    action="/bendahara/{{ $tagihan->id }}/rekanan/{{ $rekanan->id }}/pph/{{ $item->id }}"
-                                    method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-xs btn-outline btn-error join-item"
-                                        onclick="return confirm('Apakah Anda yakin akan menghapus data ini?');">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-rekanan.pph>
     </div>
 @endsection

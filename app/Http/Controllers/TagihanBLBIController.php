@@ -14,7 +14,6 @@ use App\Models\logtagihan;
 use App\Models\objekpajak;
 use App\Models\pphrekanan;
 use App\Models\ppnrekanan;
-use App\Models\DnpPerjadin;
 use App\Models\RefRekening;
 use Illuminate\Support\Str;
 use App\Helper\Notification;
@@ -35,7 +34,18 @@ class TagihanBLBIController extends Controller
         }
 
         return view('tagihan-blbi.index', [
-            'data' => tagihan::with(['stafPpk', 'ppk', 'unit', 'dokumen', 'realisasi'])->where('status', 0)->TagihanBLBI()->tagihanStafPPK()->search()->order()->paginate(15)->withQueryString(),
+            'data' => tagihan::with([
+                'stafPpk',
+                'ppk',
+                'unit',
+                'dokumen',
+                'realisasi',
+                'berkasupload' => function ($q) {
+                    return $q->whereHas('berkas', function ($val) {
+                        $val->where('kodeberkas', '01')->orWhere('kodeberkas', '02');
+                    });
+                },
+            ])->where('status', 0)->TagihanBLBI()->tagihanStafPPK()->filter()->search()->order()->paginate(15)->withQueryString(),
             'notifikasi' => Notification::Notif(),
         ]);
     }
@@ -108,7 +118,7 @@ class TagihanBLBIController extends Controller
 
         return view('tagihan-blbi.update', [
             'data' => $tagihan,
-            'dokumen' => dokumen::orderby('kodedokumen')->get(),
+            'dokumen' => dokumen::BLBI()->orderby('kodedokumen')->get(),
             'unit' => unit::Myunit()->stafppk()->get(),
             'ppk' => RefPPK::PPKsatker()->stafppk()->get(),
             'notifikasi' => Notification::Notif(),

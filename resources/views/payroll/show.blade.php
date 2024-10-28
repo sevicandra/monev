@@ -22,38 +22,34 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama</th>
-                    <th class="border border-base-content">Nomor Rekening</th>
-                    <th class="border border-base-content">Nama Bank</th>
-                    <th class="border border-base-content">Bruto</th>
-                    <th class="border border-base-content">Pajak</th>
-                    <th class="border border-base-content">Adm.</th>
-                    <th class="border border-base-content">Netto</th>
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">No</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama</x-table.header.column>
+                    <x-table.header.column class="border-x">Nomor Rekening</x-table.header.column>
+                    <x-table.header.column class="border-x">Nama Bank</x-table.header.column>
+                    <x-table.header.column class="border-x">Bruto</x-table.header.column>
+                    <x-table.header.column class="border-x">Pajak</x-table.header.column>
+                    <x-table.header.column class="border-x">Adm.</x-table.header.column>
+                    <x-table.header.column class="border-x">Netto</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
+            </x-table.header>
+            <x-table.body>
                 @foreach ($data as $item)
                     <tr>
-                        <td class="text-center border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content">{{ $item->nama }}</td>
-                        <td class="border border-base-content">{{ $item->norek }}</td>
-                        <td class="border border-base-content">{{ $item->bank }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->bruto, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->pajak, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->admin, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-right">{{ number_format($item->netto, 2, ',', '.') }}</td>
+                        <x-table.body.column class="text-center border">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->nama }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->norek }}</x-table.body.column>
+                        <x-table.body.column class="border">{{ $item->bank }}</x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item->bruto, 2, ',', '.') }}</x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item->pajak, 2, ',', '.') }}</x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item->admin, 2, ',', '.') }}</x-table.body.column>
+                        <x-table.body.column class="border text-right">{{ number_format($item->netto, 2, ',', '.') }}</x-table.body.column>
                     </tr>
                 @endforeach
-            </tbody>
-        </table>
-
+            </x-table.body>
+        </x-table>
     </div>
 @endsection
 @section('pagination')

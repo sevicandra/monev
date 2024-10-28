@@ -25,7 +25,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.index', [
-            'data' => tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihansatker()->orderby('notagihan', 'desc')->search()->order()->paginate(15)->withQueryString(),
+            'data' => tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi', 'spm'])->tagihansatker()->filter()->search()->order()->paginate(15)->withQueryString(),
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -41,7 +41,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.dokumen', [
-            'data' => berkasupload::with('berkas')->where('tagihan_id', $tagihan->id)->get(),
+            'data' => berkasupload::with('berkas')->orderBy('berkas_id', 'asc')->where('tagihan_id', $tagihan->id)->get(),
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -57,7 +57,7 @@ class ArsipController extends Controller
         }
 
         return view('arsip.coa', [
-            'data' => $tagihan->realisasi()->with(['pagu'])->searchprogram()
+            'data' => $tagihan->realisasi()->with(['pagu', 'sspb'])->searchprogram()
                 ->searchkegiatan()
                 ->searchkro()
                 ->searchro()

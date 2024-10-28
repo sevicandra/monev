@@ -52,10 +52,15 @@ class Payroll extends Model
         }
     }
 
-    public function scopeFilterJenis($data)
+    public function scopeFilter($data)
     {
-        if (request('jnstagihan') != null) {
-            return $data->where('jnstagihan', request('jnstagihan'));
+        switch (request('jns')) {
+            case 'SPBY':
+                return $data->where('jnstagihan', 0);
+            case 'SPP':
+                return $data->where('jnstagihan', 1);
+            default:
+                return $data;
         }
     }
 

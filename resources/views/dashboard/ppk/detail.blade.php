@@ -12,53 +12,45 @@
             SP2D</a>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse min-w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">Bulan</th>
-                    <th class="border border-base-content">Realisasi</th>
-                    <th class="border border-base-content">SSPB</th>
-                    <th class="border border-base-content">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="border border-base-content text-center">
-                            <a class="link link-base-content" target="_blank"
-                                href="/dashboard/ppk/{{ $ppk->id }}/{{ $item->bulan }}?sp2d={{ request('sp2d') }}">
-                                {{ $item->namabulan }}
-                            </a>
-                        </td>
-                        <td class="border border-base-content text-end">
-                            @if ($item->bulan)
-                                <a class="link link-base-content"
-                                    href="/dashboard/ppk/{{ $ppk->id }}/{{ $item->bulan }}/tagihan/?sp2d={{ request('sp2d') }}"
-                                    target="_blank">
-                                    Rp {{ number_format($item->total_realisasi, 2, ',', '.') }}
-                                </a>
-                            @else
-                                <a class="link link-base-content"
-                                    href="/dashboard/ppk/{{ $ppk->id }}/null/tagihan/?sp2d={{ request('sp2d') }}"
-                                    target="_blank">
-                                    Rp {{ number_format($item->total_realisasi, 2, ',', '.') }}
-                                </a>
-                            @endif
-                        </td>
-                        <td class="border border-base-content text-end">Rp {{ number_format($item->total_sspb, 2, ',', '.') }}</td>
-                        <td class="border border-base-content text-end">Rp
-                            {{ number_format($item->total_realisasi - $item->total_sspb, 2, ',', '.') }}</td>
-                    </tr>
-                @endforeach
+        <x-realisasi.detail>
+            @foreach ($data as $item)
                 <tr>
-                    <td class="border border-base-content text-center">Total</td>
-                    <td class="border border-base-content text-end">Rp {{ number_format($data->sum('total_realisasi'), 2, ',', '.') }}</td>
-                    <td class="border border-base-content text-end">Rp {{ number_format($data->sum('total_sspb'), 2, ',', '.') }}</td>
-                    <td class="border border-base-content text-end">Rp
-                        {{ number_format($data->sum('total_realisasi') - $data->sum('total_sspb'), 2, ',', '.') }}</td>
+                    <x-table.body.column class="border text-center">
+                        <a class="link link-base-content" target="_blank"
+                            href="/dashboard/ppk/{{ $ppk->id }}/{{ $item->bulan }}?sp2d={{ request('sp2d') }}">
+                            {{ $item->namabulan }}
+                        </a>
+                    </x-table.body.column>
+                    <x-table.body.column class="border text-end">
+                        @if ($item->bulan)
+                            <a class="link link-base-content"
+                                href="/dashboard/ppk/{{ $ppk->id }}/{{ $item->bulan }}/tagihan/?sp2d={{ request('sp2d') }}"
+                                target="_blank">
+                                Rp {{ number_format($item->total_realisasi, 2, ',', '.') }}
+                            </a>
+                        @else
+                            <a class="link link-base-content"
+                                href="/dashboard/ppk/{{ $ppk->id }}/null/tagihan/?sp2d={{ request('sp2d') }}"
+                                target="_blank">
+                                Rp {{ number_format($item->total_realisasi, 2, ',', '.') }}
+                            </a>
+                        @endif
+                    </x-table.body.column>
+                    <x-table.body.column class="border text-end">Rp {{ number_format($item->total_sspb, 2, ',', '.') }}
+                    </x-table.body.column>
+                    <x-table.body.column class="border text-end">Rp
+                        {{ number_format($item->total_realisasi - $item->total_sspb, 2, ',', '.') }}</x-table.body.column>
                 </tr>
-            </tbody>
-        </table>
-
+            @endforeach
+            <tr>
+                <x-table.body.column class="border text-center">Total</x-table.body.column>
+                <x-table.body.column class="border text-end">Rp
+                    {{ number_format($data->sum('total_realisasi'), 2, ',', '.') }}</x-table.body.column>
+                <x-table.body.column class="border text-end">Rp
+                    {{ number_format($data->sum('total_sspb'), 2, ',', '.') }}</x-table.body.column>
+                <x-table.body.column class="border text-end">Rp
+                    {{ number_format($data->sum('total_realisasi') - $data->sum('total_sspb'), 2, ',', '.') }}</x-table.body.column>
+            </tr>
+        </x-realisasi.detail>
     </div>
 @endsection

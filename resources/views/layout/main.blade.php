@@ -16,184 +16,7 @@
     <link rel="shortcut icon" href="/img/monev.png" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
     <script type="text/javascript" src="/js/trix.umd.min.js"></script>
-    <script type="module">
-        import {
-            Application,
-            Controller
-        } from 'https://cdn.skypack.dev/@hotwired/stimulus'
-        import Tribute from 'https://ga.jspm.io/npm:tributejs@5.1.3/dist/tribute.min.js'
-        import Trix from 'https://ga.jspm.io/npm:trix@2.1.0/dist/trix.esm.min.js'
-        [...document.querySelectorAll('[js-cloak]')].forEach(el => el.removeAttribute('js-cloak'))
-        window.Stimulus = Application.start()
-        class UploadManager {
-            #attachments = []
-
-            addAttachment(attachment) {
-                this.#attachments.push(attachment)
-            }
-
-            removeAttachment(attachment) {
-                this.#attachments = this.#attachments.filter(a => a !== attachment)
-            }
-
-            removeAttachments() {
-                this.#attachments = []
-            }
-
-            uploadAttachments() {
-                const promises = this.#attachments.map(attachment => this.#uploadAttachment(attachment))
-                return Promise.all(promises)
-            }
-
-            #uploadAttachment(attachment) {
-                const form = new FormData()
-                form.append('attachment', attachment.file)
-
-                const options = {
-                    method: 'POST',
-                    body: form,
-                    headers: {
-                        'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content,
-                    }
-                }
-
-                return fetch('/note-attachments', options)
-                    .then(resp => {
-                        if (!resp.ok) {
-                            throw new Error(`Upload failed: ${resp.statusText}`)
-                        }
-                        return resp.json()
-                    })
-                    .then((data) => {
-                        attachment.setAttributes({
-                            url: data.image_url,
-                            href: data.image_url,
-                        })
-                    })
-                    .catch(error => {
-                        console.error("Error during upload:", error) // Error logging
-                    })
-            }
-        }
-        Stimulus.register("rich-text-uploader", class extends Controller {
-            static values = {
-                acceptFiles: Boolean
-            }
-
-            #uploader
-
-            connect() {
-                this.#uploader = new UploadManager()
-                const submitButton = document.getElementById('trix-submit-btn');
-                const closeButton = document.getElementById('trix-close-btn');
-                submitButton.addEventListener('click', () => this.handleSubmit(event));
-                closeButton.addEventListener('click', () => this.removeAttachments());
-            }
-
-            addAttachment(event) {
-                if (!this.acceptFilesValue || !event.attachment.file) return
-                this.#uploader.addAttachment(event.attachment)
-            }
-
-            removeAttachment(event) {
-                this.#uploader.removeAttachment(event.attachment)
-            }
-
-            removeAttachments() {
-                this.#uploader.removeAttachments()
-            }
-
-            handleKeyboardSubmit(event) {
-
-                if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
-                    event.preventDefault()
-                    this.#uploader.uploadAttachments().then(() => {
-                        if (this.element.textContent.trim().length > 0) {
-                            this.element.closest("form")
-                                .requestSubmit()
-                        }else{
-                            alert("Teks tidak boleh kosong")
-                        }
-                    }).catch(error => {
-                        console.error('Error during file upload:', error)
-                    })
-                }
-            }
-            handleSubmit() {                                
-                this.#uploader.uploadAttachments().then(() => {
-                    if (this.element.textContent.trim().length > 0) {
-                        this.element.closest("form")
-                            .requestSubmit()
-                    }else{
-                        alert("Teks tidak boleh kosong")
-                    }
-                }).catch(error => {
-                    console.error('Error during file upload:', error)
-                })
-            }
-
-
-        })
-        // Stimulus.register("composer", class extends Controller {
-        //     #submitByKeyboardEnabled = true
-
-        //     static values = {
-        //         showToolbar: {
-        //             type: Boolean,
-        //             default: false
-        //         },
-        //     }
-
-        //     static targets = ["text"]
-
-        //     rejectFiles(event) {
-        //         event.preventDefault()
-        //     }
-
-        //     disableSubmitByKeyboard() {
-        //         this.#submitByKeyboardEnabled = false
-        //     }
-
-        //     enableSubmitByKeyboard() {
-        //         this.#submitByKeyboardEnabled = true
-        //     }
-
-        //     toggleToolbar() {
-        //         this.showToolbarValue = !this.showToolbarValue
-
-        //         this.textTarget.focus()
-        //     }
-
-        //     submitByKeyboard(event) {
-        //         if (!this.#submitByKeyboardEnabled) return;
-
-        //         const metaEnter = event.key === "Enter" && (event.metaKey || event.ctrlKey)
-        //         const plainEnter = event.keyCode == 13 && !event.shiftKey && !event.isComposing
-
-        //         if (!this.#usingTouchDevice && (metaEnter || (plainEnter && !this.#isToolbarVisible))) {
-        //             this.#submit(event)
-        //         }
-        //     }
-
-        //     #submit(event) {
-        //         event.preventDefault()
-
-        //         if (this.textTarget.textContent.trim().length > 0) {
-        //             this.element.closest("form").requestSubmit();
-        //         }
-        //     }
-
-        //     get #isToolbarVisible() {
-        //         return this.showToolbarValue
-        //     }
-
-        //     get #usingTouchDevice() {
-        //         return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints >
-        //             0;
-        //     }
-        // })
-    </script>
-
+    <script type="module" src="/js/trix-module.js"></script>
     @section('head')
 
     @show
@@ -203,7 +26,7 @@
     <header class="navbar bg-neutral px-4 flex-none flex justify-between z-20">
         <div class="flex-1 order-2 lg:order-1 flex justify-center lg:justify-start gap-1">
             <a href="/"><img src="/img/monev.png" width="25" height="25" alt="logo"></a>
-            <a class="normal-case text-xl text-neutral-content" href="/session/tahun-anggaran">&nbsp;MonevTagihan
+            <a class="normal-case text-xl text-neutral-content" href="/session/tahun-anggaran">&nbsp;Monev Tagihan
                 {{ session()->get('tahun') }}</a>
         </div>
         <div class="flex-none order-1 lg:order-2">
@@ -218,6 +41,11 @@
                     <li>
                         <button id="toggleThemeBar">Themes</button>
                     </li>
+                    @can('auditor')
+                        <li>
+                            <a href="/audit">Audit</a>
+                        </li>
+                    @endcan
                     <li>
                         <form action="/logout" method="post">
                             @csrf

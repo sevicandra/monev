@@ -12,6 +12,7 @@ class SessionController extends Controller
     {
         if ($request->tahun) {
             $request->session()->put('tahun', $request->tahun);
+            return redirect('/');
         }
         
         return view('session.tahun_anggaran',[

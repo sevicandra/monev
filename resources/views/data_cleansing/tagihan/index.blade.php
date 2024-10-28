@@ -2,39 +2,52 @@
 
 @section('content')
     <div class="bg-primary p-4">
-        <h1 class="text-xl text-primary-content">Tagihan Duplikat</h1>
+        <h1 class="text-xl text-primary-content">Cleansing Tagihan</h1>
     </div>
     <div class="">
         @include('layout.flashmessage')
     </div>
-    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+    <div class="flex flex-col px-4 gap-2 justify-between">
         <div class="">
-
+            <a href="/tagihan/create" class="btn btn-sm btn-neutral"> Tambah Data</a>
         </div>
-        <div class="">
-
+        <div class="flex gap-2 justify-between items-center flex-wrap">
+            <div>
+                <div class="flex gap-1">
+                    <a href="{{ request()->fullUrlWithQuery(['jns' => '']) }}"
+                        class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'ALL' ? 'btn-active' : '' }}">ALL</a>
+                    <a href="{{ request()->fullUrlWithQuery(['jns' => 'SPBY']) }}"
+                        class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'SPBY' ? 'btn-active' : '' }}">SPBY</a>
+                    <a href="{{ request()->fullUrlWithQuery(['jns' => 'SPP']) }}"
+                        class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'SPP' ? 'btn-active' : '' }}">SPP</a>
+                    <a href="{{ request()->fullUrlWithQuery(['jns' => 'KKP']) }}"
+                        class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'KKP' ? 'btn-active' : '' }}">KKP</a>
+                </div>
+            </div>
+            <div>
+                <form action="" method="get" autocomplete="off">
+                    <input type="hidden" name="jns" value="{{ request('jns', 'ALL') }}">
+                    <input type="hidden" name="sb" value="{{ request('sb', 'nomor_tagihan') }}">
+                    <input type="hidden" name="sd" value="{{ request('sd', 'desc') }}">
+                    <div class="join">
+                        <input type="text" name="search" class="input input-sm input-bordered join-item"
+                            placeholder="Nomor Tagihan/Uraian">
+                        <div class="indicator">
+                            <button class="btn join-item btn-sm btn-neutral">Cari</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full max-w-md">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Jenis Tagihan</th>
-                    <th class="border border-base-content">Nomor Tagihan</th>
-                    <th class="border border-base-content">Jumlah Duplikat</th>
-                    <th class="border border-base-content">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr class="whitespace-nowrap">
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content text-center">
-                            @switch($item->jnstagihan)
+        <x-tagihan :nomor_spm="false" :tanggal_spm="false" :nomor_sp2d="false" :tanggal_sp2d="false" :pic="false"
+            :status="false" :update="false" :bruto="false">
+            @foreach ($data as $item)
+                <tr class="whitespace-nowrap">
+                    <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">
+                        @switch($item->jnstagihan)
                             @case('0')
                                 SPBy
                             @break
@@ -47,19 +60,21 @@
                                 KKP
                             @break
                         @endswitch
-                        </td>
-                        <td class="border border-base-content text-center">{{ $item->notagihan }}</td>
-                        <td class="border border-base-content text-center">{{ $item->jml }}</td>
-                        <td class="border border-base-content text-center">
-                            <a href="/cleansing/tagihan/{{ $item->jnstagihan }}/{{ $item->notagihan }}" class="btn btn-xs btn-neutral">Detail</a>
-                        </td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+                    </x-table.body.column>
+                    <x-table.body.column class="border">{{ $item->notagihan }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ indonesiaDate($item->tgltagihan) }}</x-table.body.column>
+                    <x-table.body.column class="border"
+                        style="white-space:normal; min-width:300px">{{ $item->uraian }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->unit)->namaunit }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->ppk)->nama }}</x-table.body.column>
+                    <x-table.body.column class="border">{{ optional($item->dokumen)->namadokumen }}</x-table.body.column>
+                    <x-table.body.column class="border text-right">
+                        <a href="/cleansing/tagihan/{{ $item->id }}/edit"
+                            class="btn btn-xs btn-neutral btn-outline join-item">Ubah</a>
+                    </x-table.body.column>
+                </tr>
+            @endforeach
+        </x-tagihan>
     </div>
 @endsection
 @section('pagination')

@@ -55,6 +55,7 @@ use App\Http\Controllers\VerifikasiKKPController;
 use App\Http\Controllers\PegawainondjknController;
 use Workbench\App\Models\Opengraph\OpengraphEmbed;
 use App\Http\Controllers\RegisterTagihanController;
+use App\Http\Controllers\CleansingDuplikatController;
 use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\RealisasiBulananController;
 use App\Http\Controllers\MonitoringTagihanController;
@@ -259,7 +260,7 @@ Route::controller(MonitoringTagihanController::class)->group(function(){
 
 Route::resource('/monitoring-tagihan', MonitoringTagihanController::class)->middleware('auth');
 
-Route::resource('/pegawai-nondjkn', PegawainondjknController::class)->middleware('auth');
+// Route::resource('/pegawai-nondjkn', PegawainondjknController::class)->middleware('auth');
 
 Route::controller(VerifikasiController::class)->group(function(){
     Route::get('/verifikasi/{tagihan}/upload', 'upload')->middleware('auth');
@@ -319,6 +320,7 @@ Route::resource('/ppspm', PpspmController::class)->middleware('auth');
 Route::controller(BendaharaController::class)->group(function(){
     Route::get('/bendahara/{tagihan}/sp2d', 'editsp2d')->middleware('auth');
     Route::patch('/bendahara/{tagihan}/sp2d', 'updatesp2d')->middleware('auth');
+    Route::delete('/bendahara/{tagihan}/sp2d', 'deletesp2d')->middleware('auth');
     Route::get('/bendahara/{tagihan}/payroll', 'payroll')->middleware('auth');
     Route::get('/bendahara/{tagihan}/payroll/cetak', 'cetakpayroll')->middleware('auth');
     Route::get('/bendahara/{tagihan}/dokumen', 'dokumen')->middleware('auth');
@@ -457,10 +459,10 @@ Route::controller(PayrollController::class)->group(function(){
     Route::delete('/payroll/{tagihan}/upload/{berkas}/delete', 'upload')->middleware('auth')->middleware('auth');
 });
 
-Route::controller(SP2DController::class)->group(function(){
-    Route::get('/cleansing/sp2d', 'index')->middleware('auth');
-    Route::delete('/cleansing/sp2d/{spm}', 'delete')->middleware('auth');
-});
+// Route::controller(SP2DController::class)->group(function(){
+//     Route::get('/cleansing/sp2d', 'index')->middleware('auth');
+//     Route::delete('/cleansing/sp2d/{spm}', 'delete')->middleware('auth');
+// });
 
 Route::controller(CleansingSpbyController::class)->group(function(){
     Route::get('/cleansing/spby', 'index')->middleware('auth');
@@ -484,13 +486,20 @@ Route::controller(CleansingKkpController::class)->group(function(){
     Route::post('/cleansing/kkp/import', 'store')->middleware('auth');
 });
 
-Route::controller(CleansingTagihanController::class)->group(function(){
-    Route::get('/cleansing/tagihan', 'index')->middleware('auth');
-    Route::get('/cleansing/tagihan/{jns}/{nomor}', 'detail')->middleware('auth');
+Route::controller(CleansingDuplikatController::class)->group(function(){
+    Route::get('/cleansing/duplikat', 'index')->middleware('auth');
+    Route::get('/cleansing/duplikat/{jns}/{nomor}', 'detail')->middleware('auth');
 });
 
 Route::controller(CleansingSpmController::class)->group(function(){
-    Route::get('/cleansing/spm', 'update')->middleware('auth');
+    Route::get('/cleansing/spm', 'index')->middleware('auth');
+    Route::patch('/cleansing/spm/laod', 'load')->middleware('auth');
+    Route::get('/cleansing/spm/import', 'import')->middleware('auth');
+    Route::post('/cleansing/spm/import', 'importStore')->middleware('auth');
+    Route::get('/cleansing/spm/{spm}/edit', 'edit')->middleware('auth');
+    Route::patch('/cleansing/spm/{spm}', 'update')->middleware('auth');
+    Route::get('/cleansing/spm/{spm}/detail', 'detail')->middleware('auth');
+    Route::delete('/cleansing/spm/{spm}/tagihan/{tagihan}/delete', 'detachSPM')->middleware('auth');
 });
 
 Route::controller(RefPpkController::class)->group(function(){
@@ -513,14 +522,14 @@ Route::controller(VerifikasiKKPController::class)->group(function(){
 
 Route::resource('/verifikasi-kkp', VerifikasiKKPController::class)->middleware('auth')->except('create');
 
-Route::controller(RefStafPpkController::class)->group(function(){
-    Route::get('ref-staf-ppk', 'index')->middleware('auth');
-    Route::get('ref-staf-ppk/create', 'create')->middleware('auth');
-    Route::post('ref-staf-ppk/create', 'store')->middleware('auth');
-    Route::get('ref-staf-ppk/{stafppk}/edit', 'edit')->middleware('auth');
-    Route::patch('ref-staf-ppk/{stafppk}/edit', 'update')->middleware('auth');
-    Route::delete('ref-staf-ppk/{stafppk}', 'destroy')->middleware('auth');
-});
+// Route::controller(RefStafPpkController::class)->group(function(){
+//     Route::get('ref-staf-ppk', 'index')->middleware('auth');
+//     Route::get('ref-staf-ppk/create', 'create')->middleware('auth');
+//     Route::post('ref-staf-ppk/create', 'store')->middleware('auth');
+//     Route::get('ref-staf-ppk/{stafppk}/edit', 'edit')->middleware('auth');
+//     Route::patch('ref-staf-ppk/{stafppk}/edit', 'update')->middleware('auth');
+//     Route::delete('ref-staf-ppk/{stafppk}', 'destroy')->middleware('auth');
+// });
 
 Route::controller(RealisasiBulananController::class)->group(function(){
    Route::get('cleansing/realisasi-bulanan', 'index')->middleware('auth');
@@ -747,3 +756,9 @@ Route::get('/note-attachments/{path}', function (string $path) {
 
     return response()->stream(fn () => fpassthru($stream), 200, $headers);
 })->name('attachments.show')->where('path', '.*');
+
+Route::controller(CleansingTagihanController::class)->group(function(){
+    Route::get('/cleansing/tagihan', 'index')->middleware('auth');
+    Route::get('/cleansing/tagihan/{tagihan}/edit', 'edit')->middleware('auth');
+    Route::patch('/cleansing/tagihan/{tagihan}', 'update')->middleware('auth');
+});

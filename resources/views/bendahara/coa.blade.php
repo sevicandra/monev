@@ -31,64 +31,41 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Program</th>
-                    <th class="border border-base-content">Kegiatan</th>
-                    <th class="border border-base-content">KRO</th>
-                    <th class="border border-base-content">RO</th>
-                    <th class="border border-base-content">Komponen</th>
-                    <th class="border border-base-content">Subkomponen</th>
-                    <th class="border border-base-content">Akun</th>
-                    <th class="border border-base-content">Realisasi</th>
-                    <th class="border border-base-content">Pengembalian</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-coa :anggaran="FALSE" :sisa="FALSE">
+            @foreach ($data as $item)
+                <tr>
+                    <x-table.body.column class="text-center border">{{ $loop->iteration }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->program }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->kegiatan }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->kro }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->ro }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->komponen }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->subkomponen }}</x-table.body.column>
+                    <x-table.body.column class="border text-center">{{ optional($item->pagu)->akun }}</x-table.body.column>
+                    <x-table.body.column class="text-right border">
+                        {{ number_format($item->realisasi, 2, ',', '.') }}</x-table.body.column>
+                    <x-table.body.column class="text-right border">
+                        @if (isset($item->sspb))
+                            {{ number_format($item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
+                        @endif
+                    </x-table.body.column>
+                    <x-table.body.column class="border">
+                        <div class="join">
+                            <a href="/bendahara/{{ $tagihan->id }}/coa/{{ $item->id }}/edit"
+                                class="btn btn-xs btn-outline btn-neutral join-item">Edit</a>
+                            <a href="/bendahara/{{ $tagihan->id }}/realisasi/{{ $item->id }}/sspb"
+                                class="btn btn-xs btn-outline btn-neutral join-item">SSPB</a>
+                            <form action="/bendahara/{{ $tagihan->id }}/coa/{{ $item->id }}" method="post"
+                                onsubmit="return confirm('Apakah Anda yakin akan menghapus data ini?');">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-xs btn-error join-item">Hapus</button>
+                            </form>
+                        </div>
+                    </x-table.body.column>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content">{{ optional($item->pagu)->program }}</td>
-                        <td class="border border-base-content">{{ optional($item->pagu)->kegiatan }}</td>
-                        <td class="border border-base-content">{{ optional($item->pagu)->kro }}</td>
-                        <td class="border border-base-content">{{ optional($item->pagu)->ro }}</td>
-                        <td class="border border-base-content">{{ optional($item->pagu)->komponen }}</td>
-                        <td class="border border-base-content">{{ optional($item->pagu)->subkomponen }}</td>
-                        <td class="border border-base-content">{{ optional($item->pagu)->akun }}</td>
-                        <td class="text-right border border-base-content">
-                            {{ number_format($item->realisasi, 2, ',', '.') }}</td>
-                        <td class="text-right border border-base-content">
-                            @if (isset($item->sspb))
-                                {{ number_format($item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
-                            @endif
-                        </td>
-                        <td class="border border-base-content">
-                            <div class="join">
-                                <a href="/bendahara/{{ $tagihan->id }}/coa/{{ $item->id }}/edit"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">edit</a>
-                                <a href="/bendahara/{{ $tagihan->id }}/realisasi/{{ $item->id }}/sspb"
-                                    class="btn btn-xs btn-outline btn-neutral join-item">SSPB</a>
-                                <form action="/bendahara/{{ $tagihan->id }}/coa/{{ $item->id }}" method="post"
-                                    onsubmit="return confirm('Apakah Anda yakin akan menghapus data ini?');">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-xs btn-error join-item">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-coa>
     </div>
 @endsection
 @section('pagination')

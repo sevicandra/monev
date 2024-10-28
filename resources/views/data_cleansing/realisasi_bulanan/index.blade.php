@@ -47,65 +47,55 @@
                 <div tabindex="0" role="button" class="btn btn-primary btn-sm btn-outline m-1">Download</div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                     <li><a href="/cleansing/realisasi-bulanan/{{ $bulan->kodebulan }}/download">Download</a></li>
-                    <li><a href="/cleansing/realisasi-bulanan/{{ $bulan->kodebulan }}/download-with-sum">Download akumulatif</a></li>
+                    <li><a href="/cleansing/realisasi-bulanan/{{ $bulan->kodebulan }}/download-wix-table.body.column-sum">Download akumulatif</a></li>
                 </ul>
             </div>
         </span>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse min-w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">Nomor</th>
-                    <th class="border border-base-content">POK</th>
-                    <th class="border border-base-content">Pagu</th>
-                    <th class="border border-base-content">Realisasi</th>
-                    <th class="border border-base-content">Pengembalian</th>
+        <x-table class="collapse min-w-full">
+            <x-table.header>
+                <tr class="text-center">
+                    <x-table.header.column class="border-x">Nomor</x-table.header.column>
+                    <x-table.header.column class="border-x">POK</x-table.header.column>
+                    <x-table.header.column class="border-x">Pagu</x-table.header.column>
+                    <x-table.header.column class="border-x">Realisasi</x-table.header.column>
+                    <x-table.header.column class="border-x">Pengembalian</x-table.header.column>
                 </tr>
-            </thead>
-            <tbody>
+            </x-table.header>
+            <x-table.body>
                 @php
-                    $i = 1;
                     $a=0;
                     $b=0;
                 @endphp
                 @foreach ($data as $item)
                     <tr>
-                        <td class="border border-base-content text-center">{{ $i }}</td>
-                        <td class="border border-base-content ">
+                        <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">
                             {{ $item->pok }}
-                        </td>
-                        <td class="border border-base-content text-end">
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-end">
                             {{ number_format($item->anggaran, 2, ',', '.') }}
-                        </td>
-                        <td class="border border-base-content text-end">
-                            {{ number_format($item->realisasi->sum('realisasi'), 2, ',', '.') }}
-                            @php
-                                $a += $item->realisasi->sum('realisasi');
-                            @endphp
-                        </td>
-                        <td class="border border-base-content text-end">
-                            {{ number_format($item->sspb->sum('nominal_sspb'), 2, ',', '.') }}
-                            @php
-                                $b += $item->sspb->sum('nominal_sspb');
-                            @endphp
-                        </td>
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-end">
+                            {{ number_format($item->total_realisasi, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-end">
+                            {{ number_format($item->total_sspb, 2, ',', '.') }}
+                        </x-table.body.column>
                     </tr>
-                    @php
-                        $i++;
-                    @endphp
                 @endforeach
                 <tr>
-                    <th class="border border-base-content "></th>
-                    <th class="border border-base-content "></th>
-                    <th class="border border-base-content text-end">{{ number_format($data->sum('anggaran'), 2, ',', '.') }}
-                    </th>
-                    <th class="border border-base-content text-end">
-                        {{ number_format($a, 2, ',', '.') }}</th>
-                    <th class="border border-base-content text-end">
-                        {{ number_format($b, 2, ',', '.') }}</th>
+                    <x-table.body.column class="border"></x-table.body.column>
+                    <x-table.body.column class="border"></x-table.body.column>
+                    <x-table.body.column class="border text-end">{{ number_format($data->sum('anggaran'), 2, ',', '.') }}
+                    </x-table.body.column>
+                    <x-table.body.column class="border text-end">
+                        {{ number_format($data->sum('total_realisasi'), 2, ',', '.') }}</x-table.body.column>
+                    <x-table.body.column class="border text-end">
+                        {{ number_format($data->sum('total_sspb'), 2, ',', '.') }}</x-table.body.column>
                 </tr>
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection

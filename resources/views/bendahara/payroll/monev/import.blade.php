@@ -23,43 +23,28 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Nama Pemilik Rekening</th>
-                    <th class="border border-base-content">Nomor Rekening</th>
-                    <th class="border border-base-content">Nama Bank</th>
-                    <th class="border border-base-content">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="text-center border border-base-content">{{ $i++ }}</td>
-                        <td class="border border-base-content">
-                            <input id="nama_{{ $item->id }}" type="text" value="{{ $item->nama }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
-                        </td>
-                        <td class="border border-base-content">
-                            <input id="norek_{{ $item->id }}" type="text" value="{{ $item->norek }}" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
-                        </td>
-                        <td class="border border-base-content">
-                            <input id="bank_{{ $item->id }}" type="text" value="@if ($item->bank === 'Other'){{ $item->otherbank }}@else{{ $item->bank }}@endif" class="input input-sm w-min-content input-ghost" readonly="readonly" disabled>
-                        </td>
-                        <td class="border border-base-content text-center">
-                            <div class="join">
-                                <button id="{{ $item->id }}" type="button"
-                                    class="import-btn btn btn-xs btn-outline btn-neutral join-item">Pilih</button>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
+        <x-payroll.import>
+            @foreach ($data as $item)
+            <tr>
+                <x-table.body.column class="text-center border">{{ $loop->iteration }}</x-table.body.column>
+                <x-table.body.column class="border">
+                    <input id="nama_{{ $item->id }}" type="text" value="{{ $item->nama }}" class="input input-sm w-min-content border-0" readonly="readonly" disabled>
+                </x-table.body.column>
+                <x-table.body.column class="border">
+                    <input id="norek_{{ $item->id }}" type="text" value="{{ $item->norek }}" class="input input-sm w-min-content border-0" readonly="readonly" disabled>
+                </x-table.body.column>
+                <x-table.body.column class="border">
+                    <input id="bank_{{ $item->id }}" type="text" value="@if ($item->bank === 'Other'){{ $item->otherbank }}@else{{ $item->bank }}@endif" class="input input-sm w-min-content border-0" readonly="readonly" disabled>
+                </x-table.body.column>
+                <x-table.body.column class="border text-center">
+                    <div class="join">
+                        <button id="{{ $item->id }}" type="button"
+                            class="import-btn btn btn-xs btn-outline btn-neutral join-item">Pilih</button>
+                    </div>
+                </x-table.body.column>
+            </tr>
+        @endforeach
+        </x-payroll.import>
     </div>
 @endsection
 
@@ -234,7 +219,7 @@
                 });
     
                 $("#inputPayroll").submit(function(event) {
-                    event.preventDefault();
+                    event.prevenx-table.body.columnefault();
                     var inputValueBruto = $("#bruto").val();
                     var sanitizedValueBruto = inputValueBruto.replace(/\./g, "");
                     $("#bruto").val(sanitizedValueBruto);

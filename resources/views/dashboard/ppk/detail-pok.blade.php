@@ -12,65 +12,49 @@
                 SP2D</a>
         </div>
         <div class="px-4 gap-2 overflow-y-auto">
-            <table class="table border-collapse min-w-full">
-                <thead class="text-center">
-                    <tr class="align-middle">
-                        <th class="border border-base-content">Nomor</th>
-                        <th class="border border-base-content">POK</th>
-                        <th class="border border-base-content">Pagu</th>
-                        <th class="border border-base-content">Realisasi</th>
-                        <th class="border border-base-content">Pengembalian</th>
-                        <th class="border border-base-content">Sisa Pagu</th>
-                        <th class="border border-base-content">Persentase</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $pagu = 0;
-                        $realisasi = 0;
-                        $pengembalian = 0;
-                        $i = 1;
-                    @endphp
-                    @foreach ($data as $item)
-                        <tr>
-                            <td class="border border-base-content text-center">{{ $i }}</td>
-                            <td class="border border-base-content">
-                                {{ $item->pok }}
-                            </td>
-                            <td class="border border-base-content text-end">
-                                {{ number_format($item->anggaran, 2, ',', '.') }}
-                            </td>
-                            <td class="border border-base-content text-end">
-                                {{ number_format($item->realisasi, 2, ',', '.') }}
-                            </td>
-                            <td class="border border-base-content text-end">
-                                {{ number_format($item->total_sspb, 2, ',', '.') }}
-                            </td>
-                            <td class="border border-base-content text-end">
-                                {{ number_format($item->anggaran - $item->realisasi + $item->total_sspb, 2, ',', '.') }}
-                            </td>
-                            <td class="border border-base-content text-center">
-                                {{ number_format((($item->realisasi - $item->total_sspb) * 100) / $item->anggaran, 2, ',', '.') }}%
-                            </td>
-                        </tr>
-                        @php
-                            $i++;
-                        @endphp
-                    @endforeach
+            <x-realisasi.detail.pok>
+                @foreach ($data as $item)
                     <tr>
-                        <th class="border border-base-content"></th>
-                        <th class="border border-base-content"></th>
-                        <th class="border border-base-content text-end">{{ number_format($data->sum('anggaran'), 2, ',', '.') }}</th>
-                        <th class="border border-base-content text-end">{{ number_format($data->sum('realisasi'), 2, ',', '.') }}</th>
-                        <th class="border border-base-content text-end">{{ number_format($data->sum('total_sspb'), 2, ',', '.') }}</th>
-                        <th class="border border-base-content text-end">
-                            {{ number_format($data->sum('anggaran') - $data->sum('realisasi') + $data->sum('total_sspb'), 2, ',', '.') }}
-                        </th>
-                        <th class="border border-base-content text-center">
-                            {{ number_format((($data->sum('realisasi') - $data->sum('total_sspb')) * 100) / $data->sum('anggaran'), 2, ',', '.') }}%
-                        </th>
+                        <x-table.body.column
+                            class="border text-center">{{ $loop->iteration }}</x-table.body.column>
+                        <x-table.body.column class="border">
+                            {{ $item->pok }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-end">
+                            {{ number_format($item->anggaran, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-end">
+                            {{ number_format($item->total_realisasi, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-end">
+                            {{ number_format($item->total_sspb, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-end">
+                            {{ number_format($item->anggaran - $item->total_realisasi + $item->total_sspb, 2, ',', '.') }}
+                        </x-table.body.column>
+                        <x-table.body.column class="border text-center">
+                            {{ number_format((($item->total_realisasi - $item->total_sspb) * 100) / $item->anggaran, 2, ',', '.') }}%
+                        </x-table.body.column>
                     </tr>
-                </tbody>
-            </table>
+                @endforeach
+                <tr>
+                    <x-table.body.column class="border "></x-table.body.column>
+                    <x-table.body.column class="border "></x-table.body.column>
+                    <x-table.body.column
+                        class="border text-end">{{ number_format($data->sum('anggaran'), 2, ',', '.') }}
+                    </x-table.body.column>
+                    <x-table.body.column class="border text-end">
+                        {{ number_format($data->sum('total_realisasi'), 2, ',', '.') }}</x-table.body.column>
+                    <x-table.body.column
+                        class="border text-end">{{ number_format($data->sum('total_sspb'), 2, ',', '.') }}
+                    </x-table.body.column>
+                    <x-table.body.column class="border text-end">
+                        {{ number_format($data->sum('anggaran') - $data->sum('total_realisasi') + $data->sum('total_sspb'), 2, ',', '.') }}
+                    </x-table.body.column>
+                    <x-table.body.column class="border text-center">
+                        {{ number_format((($data->sum('total_realisasi') - $data->sum('total_sspb')) * 100) / $data->sum('anggaran'), 2, ',', '.') }}%
+                    </x-table.body.column>
+                </tr>
+            </x-realisasi.detail.pok>
         </div>
 @endsection

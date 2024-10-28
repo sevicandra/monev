@@ -13,17 +13,17 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
+        <x-table class="collapse w-full">
+            <x-table.header>
+                <tr class="text-center">
 
                 </tr>
-            </thead>
-            <tbody>
+            </x-table.header>
+            <x-table.body>
                 <tr>
 
                 </tr>
-            </tbody>
-        </table>
+            </x-table.body>
+        </x-table>
     </div>
 @endsection

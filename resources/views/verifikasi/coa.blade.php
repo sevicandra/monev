@@ -35,54 +35,38 @@
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <table class="table border-collapse w-full">
-            <thead class="text-center">
-                <tr class="align-middle">
-                    <th class="border border-base-content">No</th>
-                    <th class="border border-base-content">Program</th>
-                    <th class="border border-base-content">Kegiatan</th>
-                    <th class="border border-base-content">KRO</th>
-                    <th class="border border-base-content">RO</th>
-                    <th class="border border-base-content">Komponen</th>
-                    <th class="border border-base-content">Subkomponen</th>
-                    <th class="border border-base-content">Akun</th>
-                    <th class="border border-base-content">Realisasi</th>
-                    <th class="border border-base-content">Aksi</th>
+        <x-coa
+            :anggaran="false"
+            :pengembalian="false"
+            :sisa="false"
+        >
+            @foreach ($data as $item)
+                <tr>
+                    <td class="text-center border">{{ $loop->iteration }}</td>
+                    <td class="border text-center">{{ optional($item->pagu)->program }}</td>
+                    <td class="border text-center">{{ optional($item->pagu)->kegiatan }}</td>
+                    <td class="border text-center">{{ optional($item->pagu)->kro }}</td>
+                    <td class="border text-center">{{ optional($item->pagu)->ro }}</td>
+                    <td class="border text-center">{{ optional($item->pagu)->komponen }}</td>
+                    <td class="border text-center">{{ optional($item->pagu)->subkomponen }}</td>
+                    <td class="border text-center">{{ optional($item->pagu)->akun }}</td>
+                    <td class="text-right border">{{ number_format($item->realisasi, 2, ',', '.') }}
+                    </td>
+                    <td class="text-center border">
+                        <div class="join">
+                            <a href="/verifikasi/{{ $tagihan->id }}/coa/{{ $item->id }}/edit"
+                                class="btn btn-xs btn-primary join-item">Edit</a>
+                            <form action="/verifikasi/{{ $tagihan->id }}/coa/{{ $item->id }}" method="post"
+                                onsubmit="return confirm('Apakah Anda yakin akan menghapus data ini?');">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-xs btn-error join-item">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($data as $item)
-                    <tr>
-                        <td class="text-center border border-base-content">{{ $i }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->program }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->kegiatan }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->kro }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->ro }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->komponen }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->subkomponen }}</td>
-                        <td class="border border-base-content text-center">{{ optional($item->pagu)->akun }}</td>
-                        <td class="text-right border border-base-content">{{ number_format($item->realisasi, 2, ',', '.') }}</td>
-                        <td class="text-center border border-base-content">
-                            <div class="join">
-                                <a href="/verifikasi/{{ $tagihan->id }}/coa/{{ $item->id }}/edit"
-                                    class="btn btn-xs btn-primary join-item">Edit</a>
-                                <form action="/verifikasi/{{ $tagihan->id }}/coa/{{ $item->id }}" method="post" onsubmit="return confirm('Apakah Anda yakin akan menghapus data ini?');">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit"  class="btn btn-xs btn-error join-item">Hapus</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @php
-                        $i++;
-                    @endphp
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-coa>
     </div>
 @endsection
 

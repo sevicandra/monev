@@ -33,9 +33,9 @@ class BendaharaController extends Controller
         if (! Gate::allows('Bendahara')) {
             abort(403);
         }
-        return view('bendahara.index',[
-           'data'=>tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihansatker()->bendahara()->search()->order()->paginate(15)->withQueryString(),
-           'notifikasi'=>Notification::Notif()
+        return view('bendahara.index', [
+            'data' => tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi', 'spm'])->tagihansatker()->bendahara()->filter()->search()->order()->paginate(15)->withQueryString(),
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -49,16 +49,16 @@ class BendaharaController extends Controller
             abort(403);
         }
 
-        return view('bendahara.coa',[
-            'data'=>$bendahara->realisasi()->with(['pagu', 'sspb']) ->searchprogram()  
-                                            ->searchkegiatan()
-                                            ->searchkro()
-                                            ->searchro()
-                                            ->searchkomponen()
-                                            ->searchsubkomponen()
-                                            ->searchakun()->paginate(15)->withQueryString(),
-            'tagihan'=>$bendahara,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.coa', [
+            'data' => $bendahara->realisasi()->with(['pagu', 'sspb'])->searchprogram()
+                ->searchkegiatan()
+                ->searchkro()
+                ->searchro()
+                ->searchkomponen()
+                ->searchsubkomponen()
+                ->searchakun()->paginate(15)->withQueryString(),
+            'tagihan' => $bendahara,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -75,8 +75,8 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        
-        return view('bendahara.realisasi.tarik_detail_akun',[
+
+        return view('bendahara.realisasi.tarik_detail_akun', [
             'data' => $tagihan,
             'pagu' => pagu::with(['realisasi', 'sspb'])->Pagusatker()->paguppk($tagihan->ppk_id)->PaguUnit($tagihan->kodeunit)->searchprogram()
                 ->searchkegiatan()
@@ -102,7 +102,7 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        
+
         realisasi::create([
             'pagu_id' => $pagu->id,
             'tagihan_id' => $tagihan->id,
@@ -127,7 +127,7 @@ class BendaharaController extends Controller
 
         return view('bendahara.realisasi.update', [
             'data' => $coa,
-            'tagihan'=>$tagihan,
+            'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -188,10 +188,30 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.sp2d',[
-            'data'=>$tagihan,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.sp2d', [
+            'data' => $tagihan,
+            'notifikasi' => Notification::Notif()
         ]);
+    }
+
+    public function deletesp2d(tagihan $tagihan)
+    {
+        if (! Gate::allows('Bendahara')) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        if ($tagihan->status != 4) {
+            abort(403);
+        }
+        $tagihan->update([
+            'spm_id' => null
+        ]);
+
+        return redirect()->back()->with('berhasil', 'SP2D Di Hapus');
     }
 
     public function sspb(tagihan $tagihan, realisasi $realisasi)
@@ -204,11 +224,11 @@ class BendaharaController extends Controller
             abort(403);
         }
 
-        return view('bendahara.sspb.index',[
-            'tagihan'=>$tagihan,
-            'realisasi'=>$realisasi,
-            'data'=>$realisasi->sspb()->paginate(15)->withQueryString(),
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.sspb.index', [
+            'tagihan' => $tagihan,
+            'realisasi' => $realisasi,
+            'data' => $realisasi->sspb()->paginate(15)->withQueryString(),
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -221,10 +241,10 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.sspb.create',[
-            'tagihan'=>$tagihan,
-            'realisasi'=>$realisasi,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.sspb.create', [
+            'tagihan' => $tagihan,
+            'realisasi' => $realisasi,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -243,22 +263,24 @@ class BendaharaController extends Controller
         }
 
         $request->validate([
-            'tanggal_sspb'=>'required',
-            'nominal_sspb'=>'required|numeric'
+            'tanggal_sspb' => 'required',
+            'nominal_sspb' => 'required|numeric',
+            'ntpn' => 'min:16|max:16'
         ]);
 
         if (($realisasi->realisasi - $realisasi->sspb->sum('nominal_sspb')) < $request->nominal_sspb) {
-            return back()->with('gagal','Nilai SSPB Lebih besar dari realisasi'); 
+            return back()->with('gagal', 'Nilai SSPB Lebih besar dari realisasi');
         }
-        
+
         sspb::create([
-            'realisasi_id'=>$realisasi->id,
-            'tagihan_id'=>$tagihan->id,
-            'pagu_id'=>$realisasi->pagu_id,
-            'nominal_sspb'=>$request->nominal_sspb,
-            'tanggal_sspb'=>$request->tanggal_sspb,
+            'realisasi_id' => $realisasi->id,
+            'tagihan_id' => $tagihan->id,
+            'pagu_id' => $realisasi->pagu_id,
+            'nominal_sspb' => $request->nominal_sspb,
+            'tanggal_sspb' => $request->tanggal_sspb,
+            'ntpn' => $request->ntpn
         ]);
-        return redirect('/bendahara/'.$tagihan->id."/realisasi/".$realisasi->id."/sspb")->with('berhasil', 'Data SSPB Berhasi Ditambahkan');
+        return redirect('/bendahara/' . $tagihan->id . "/realisasi/" . $realisasi->id . "/sspb")->with('berhasil', 'Data SSPB Berhasi Ditambahkan');
     }
 
     public function editsspb(tagihan $tagihan, realisasi $realisasi, sspb $sspb)
@@ -270,11 +292,11 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.sspb.update',[
-            'tagihan'=>$tagihan,
-            'data'=>$sspb,
-            'realisasi'=>$realisasi,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.sspb.update', [
+            'tagihan' => $tagihan,
+            'data' => $sspb,
+            'realisasi' => $realisasi,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -291,27 +313,37 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        if($request->nomor_sp2d || $request->tanggal_sp2d)
-        {
+        if ($request->nomor_sp2d || $request->tanggal_sp2d) {
             $request->validate([
-                'tanggal_spm'=>'required',
-                'tanggal_sp2d'=>'required',
-                'nomor_sp2d'=>'required|min_digits:15|max_digits:15',
-                'no_spm'=>'required|min_digits:5|max_digits:5',
+                'tanggal_spm' => 'required',
+                'tanggal_sp2d' => 'required',
+                'nomor_sp2d' => 'required|min_digits:15|max_digits:15',
+                'no_spm' => 'required|min_digits:5|max_digits:5',
             ]);
-        }else{
+        } else {
             $request->validate([
-                'tanggal_spm'=>'required',
+                'tanggal_spm' => 'required',
             ]);
         }
 
-        $tagihan->update([
-            'tanggal_spm'=>$request->tanggal_spm,
-            'tanggal_sp2d'=>$request->tanggal_sp2d,
-            'nomor_sp2d'=>$request->nomor_sp2d,
-            'no_spm'=>$request->no_spm
-        ]);
-        return redirect('/bendahara')->with('berhasil', 'Data SP2D Berhasi Ditambahkan');
+        try {
+            $spm = spm::updateOrCreate([
+                'nomor_spm' => $request->no_spm,
+                'nomor_sp2d' => $request->nomor_sp2d,
+            ], [
+                'tanggal_spm' => $request->tanggal_spm,
+                'tanggal_sp2d' => $request->tanggal_sp2d,
+                'tahun' => $tagihan->tahun,
+                'kd_satker' => $tagihan->kodesatker
+            ]);
+
+            $tagihan->update([
+                'spm_id' => $spm->id
+            ]);
+            return redirect('/bendahara')->with('berhasil', 'Data SP2D Berhasi Ditambahkan');
+        } catch (\Throwable $th) {
+            return back()->with('gagal', $th->getMessage());
+        }
     }
 
     public function updatesspb(Request $request, tagihan $tagihan, realisasi $realisasi, sspb $sspb)
@@ -329,19 +361,21 @@ class BendaharaController extends Controller
         }
 
         $request->validate([
-            'tanggal_sspb'=>'required',
-            'nominal_sspb'=>'required|numeric'
+            'tanggal_sspb' => 'required',
+            'nominal_sspb' => 'required|numeric',
+            'ntpn' => 'min:16|max:16'
         ]);
 
         if (($realisasi->realisasi + $sspb->nominal_sspb - $realisasi->sspb->sum('nominal_sspb')) < $request->nominal_sspb) {
-            return back()->with('gagal','Nilai SSPB Lebih besar dari realisasi'); 
+            return back()->with('gagal', 'Nilai SSPB Lebih besar dari realisasi');
         }
-        
+
         $sspb->update([
-            'tanggal_sspb'=>$request->tanggal_sspb,
-            'nominal_sspb'=>$request->nominal_sspb,
+            'tanggal_sspb' => $request->tanggal_sspb,
+            'nominal_sspb' => $request->nominal_sspb,
+            'ntpn' => $request->ntpn
         ]);
-        return redirect('/bendahara/'.$tagihan->id."/realisasi/".$realisasi->id."/sspb")->with('berhasil', 'Data SSPB Berhasi Diubah');
+        return redirect('/bendahara/' . $tagihan->id . "/realisasi/" . $realisasi->id . "/sspb")->with('berhasil', 'Data SSPB Berhasi Diubah');
     }
 
     public function deletesspb(Request $request, tagihan $tagihan, realisasi $realisasi, sspb $sspb)
@@ -357,12 +391,13 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        
+
         $sspb->delete();
-        return redirect('/bendahara/'.$tagihan->id."/realisasi/".$realisasi->id."/sspb")->with('berhasil', 'Data SSPB Berhasi Dihapus');
+        return redirect('/bendahara/' . $tagihan->id . "/realisasi/" . $realisasi->id . "/sspb")->with('berhasil', 'Data SSPB Berhasi Dihapus');
     }
 
-    public function tolak(tagihan $tagihan){
+    public function tolak(tagihan $tagihan)
+    {
         if (! Gate::allows('Bendahara')) {
             abort(403);
         }
@@ -374,26 +409,22 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        if ($tagihan->spm) {
-            $tagihan->spm->delete();
-        }
+
         $tagihan->update([
-            'status'=>2,
-            'tanggal_spm'=>null,
-            'tanggal_sp2d'=>null,
-            'nomor_sp2d'=>null,
-            'no_spm'=>null
+            'status' => 2,
+            'spm_id' => null
         ]);
         logtagihan::create([
-            'tagihan_id'=>$tagihan->id,
-            'action'=>'Tolak',
-            'user'=>auth()->user()->nama . " / Bendahara",
-            'catatan'=>''
+            'tagihan_id' => $tagihan->id,
+            'action' => 'Tolak',
+            'user' => auth()->user()->nama . " / Bendahara",
+            'catatan' => ''
         ]);
         return redirect('/bendahara')->with('berhasil', 'Tagihan Berhasil Di Tolak');
     }
 
-    public function approve(tagihan $tagihan){
+    public function approve(tagihan $tagihan)
+    {
         if (! Gate::allows('Bendahara')) {
             abort(403);
         }
@@ -407,17 +438,17 @@ class BendaharaController extends Controller
         }
 
         if ($tagihan->tanggal_sp2d === null || $tagihan->tanggal_sp2d === '0000-00-00' || $tagihan->nomor_sp2d === null || $tagihan->nomor_sp2d === '') {
-            return back()->with('gagal','Data tidak dapat dikirim karena SP2D belum di input');
+            return back()->with('gagal', 'Data tidak dapat dikirim karena SP2D belum di input');
         }
 
         if ($tagihan->payroll) {
             if ($tagihan->payroll->min('status') === 0) {
-                return back()->with('gagal','Data tidak dapat dikirim karena Payroll belum di input');
+                return back()->with('gagal', 'Data tidak dapat dikirim karena Payroll belum di input');
             }
         }
 
         $tagihan->update([
-            'status'=>5
+            'status' => 5
         ]);
         return redirect('/bendahara')->with('berhasil', 'Tagihan Berhasil Di Approve');
 
@@ -439,7 +470,7 @@ class BendaharaController extends Controller
         //                 ]);
         //                 return redirect('/bendahara')->with('berhasil', 'Tagihan Berhasil Di Approve');
         //                 break;
-                    
+
         //             default:
         //                 $tagihan->update([
         //                     'status'=>5
@@ -543,7 +574,7 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             return abort(403);
         }
-        
+
         if ($request->_method === 'PATCH') {
             $request->validate([
                 'berkas' => 'required',
@@ -556,14 +587,14 @@ class BendaharaController extends Controller
 
 
             $file = $request->file('fileupload')->store('berkas');
-            
+
             berkasupload::create([
-                'tagihan_id'=>$tagihan->id,
-                'berkas_id'=>$request->berkas,
-                'uraian'=>$request->uraian,
-                'file'=>$file
+                'tagihan_id' => $tagihan->id,
+                'berkas_id' => $request->berkas,
+                'uraian' => $request->uraian,
+                'file' => $file
             ]);
-            return redirect('/bendahara/'.$tagihan->id.'/dokumen')->with('berhasil', 'Dokumen Berhasil Di Upload');
+            return redirect('/bendahara/' . $tagihan->id . '/dokumen')->with('berhasil', 'Dokumen Berhasil Di Upload');
         }
 
         if ($request->_method === 'DELETE') {
@@ -574,18 +605,18 @@ class BendaharaController extends Controller
             if ($berkas->berkas->kodeberkas === '03' || $berkas->berkas->kodeberkas === '04' || $berkas->berkas->kodeberkas === '05') {
                 Storage::delete($berkas->file);
                 $berkas->delete();
-                return redirect('/bendahara/'.$tagihan->id.'/dokumen')->with('berhasil', 'Dokumen Berhasil Di Hapus');
-            }else{
+                return redirect('/bendahara/' . $tagihan->id . '/dokumen')->with('berhasil', 'Dokumen Berhasil Di Hapus');
+            } else {
                 abort(403);
             }
         }
 
-        return view('uploadberkas.upload',[
-            'berkas'=>berkas::bendahara()->orderby('kodeberkas')->get(),
-            'data'=>$tagihan,
-            'back'=>'/bendahara/',
-            'upload'=>'/bendahara/'.$tagihan->id.'/upload',
-            'notifikasi'=>Notification::Notif()
+        return view('uploadberkas.upload', [
+            'berkas' => berkas::bendahara()->orderby('kodeberkas')->get(),
+            'data' => $tagihan,
+            'back' => '/bendahara/',
+            'upload' => '/bendahara/' . $tagihan->id . '/upload',
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -603,14 +634,13 @@ class BendaharaController extends Controller
             abort(403);
         }
 
-        return view('uploadberkas.index',[
-            'data'=>$tagihan->berkasupload()->with('berkas')->get(),
-            'back'=>'/bendahara',
-            'upload'=>'/bendahara/'.$tagihan->id.'/upload',
-            'delete'=>'/bendahara/'.$tagihan->id.'/upload/',
-            'notifikasi'=>Notification::Notif()
+        return view('uploadberkas.index', [
+            'data' => $tagihan->berkasupload()->with('berkas')->get(),
+            'back' => '/bendahara',
+            'upload' => '/bendahara/' . $tagihan->id . '/upload',
+            'delete' => '/bendahara/' . $tagihan->id . '/upload/',
+            'notifikasi' => Notification::Notif()
         ]);
-
     }
 
     public function showrekanan(tagihan $tagihan)
@@ -626,10 +656,10 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.rekanan.index',[
-            'data'=>$tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.rekanan.index', [
+            'data' => $tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
+            'tagihan' => $tagihan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -646,10 +676,10 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.rekanan.create',[
-            'tagihan'=>$tagihan,
-            'data'=>rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString(),
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.rekanan.create', [
+            'tagihan' => $tagihan,
+            'data' => rekanan::rekanansatker()->ofTagihan($tagihan->id)->search()->paginate(15)->withQueryString(),
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -668,7 +698,7 @@ class BendaharaController extends Controller
         }
         $tagihan->rekanan()->attach($rekanan->id);
 
-        return redirect('/bendahara/'.$tagihan->id.'/rekanan')->with('berhasil','Data berhasil Ditambahkan.');
+        return redirect('/bendahara/' . $tagihan->id . '/rekanan')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function deleterekanan(tagihan $tagihan, rekanan $rekanan)
@@ -687,7 +717,7 @@ class BendaharaController extends Controller
         $tagihan->rekanan()->detach($rekanan->id);
         pphrekanan::where('rekanan_id', $rekanan->id)->where('tagihan_id', $tagihan->id)->delete();
         ppnrekanan::where('rekanan_id', $rekanan->id)->where('tagihan_id', $tagihan->id)->delete();
-        return redirect('/bendahara/'.$tagihan->id.'/rekanan')->with('berhasil','Data berhasil di Hapus.');
+        return redirect('/bendahara/' . $tagihan->id . '/rekanan')->with('berhasil', 'Data berhasil di Hapus.');
     }
 
     public function showppnrekanan(tagihan $tagihan, rekanan $rekanan)
@@ -703,11 +733,11 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.rekanan.ppn.index',[
-            'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
-            'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.rekanan.ppn.index', [
+            'data' => ppnrekanan::myppn($tagihan, $rekanan)->get(),
+            'tagihan' => $tagihan,
+            'rekanan' => $rekanan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -724,11 +754,11 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.rekanan.ppn.create',[
-            'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
-            'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.rekanan.ppn.create', [
+            'data' => ppnrekanan::myppn($tagihan, $rekanan)->get(),
+            'tagihan' => $tagihan,
+            'rekanan' => $rekanan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -746,31 +776,31 @@ class BendaharaController extends Controller
             abort(403);
         }
         $request->validate([
-            'nomorfaktur'=>'required',
-            'tanggalfaktur'=>'required',
-            'tarif'=>'required',
-            'ppn'=>'required|numeric'
+            'nomorfaktur' => 'required',
+            'tanggalfaktur' => 'required',
+            'tarif' => 'required',
+            'ppn' => 'required|numeric'
         ]);
 
         if (isset($request->ntpn)) {
             $request->validate([
-                'ntpn'=>'min:16|max:16',
-                'tanggalntpn'=>'required'
+                'ntpn' => 'min:16|max:16',
+                'tanggalntpn' => 'required'
             ]);
         }
 
         ppnrekanan::create([
-            'nomorfaktur'=>$request->nomorfaktur,
-            'tanggalfaktur'=>$request->tanggalfaktur,
-            'tarif'=>$request->tarif,
-            'ppn'=>$request->ppn,
-            'tagihan_id'=>$tagihan->id,
-            'rekanan_id'=>$rekanan->id,
-            'ntpn'=>$request->ntpn,
-            'tanggalntpn'=>$request->tanggalntpn,
+            'nomorfaktur' => $request->nomorfaktur,
+            'tanggalfaktur' => $request->tanggalfaktur,
+            'tarif' => $request->tarif,
+            'ppn' => $request->ppn,
+            'tagihan_id' => $tagihan->id,
+            'rekanan_id' => $rekanan->id,
+            'ntpn' => $request->ntpn,
+            'tanggalntpn' => $request->tanggalntpn,
         ]);
 
-        return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('berhasil','Data berhasil Ditambahkan.');
+        return redirect('/bendahara/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function editppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
@@ -786,11 +816,11 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.rekanan.ppn.update',[
-            'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan,
-            'data'=>$ppn,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.rekanan.ppn.update', [
+            'tagihan' => $tagihan,
+            'rekanan' => $rekanan,
+            'data' => $ppn,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -808,28 +838,28 @@ class BendaharaController extends Controller
             abort(403);
         }
         $request->validate([
-            'nomorfaktur'=>'required',
-            'tanggalfaktur'=>'required',
-            'tarif'=>'required',
-            'ppn'=>'required|numeric'
+            'nomorfaktur' => 'required',
+            'tanggalfaktur' => 'required',
+            'tarif' => 'required',
+            'ppn' => 'required|numeric'
         ]);
 
         if (isset($request->ntpn)) {
             $request->validate([
-                'ntpn'=>'min:16|max:16',
-                'tanggalntpn'=>'required'
+                'ntpn' => 'min:16|max:16',
+                'tanggalntpn' => 'required'
             ]);
         }
 
         $ppn->update([
-            'nomorfaktur'=>$request->nomorfaktur,
-            'tanggalfaktur'=>$request->tanggalfaktur,
-            'tarif'=>$request->tarif,
-            'ppn'=>$request->ppn,
-            'ntpn'=>$request->ntpn,
-            'tanggalntpn'=>$request->tanggalntpn,
+            'nomorfaktur' => $request->nomorfaktur,
+            'tanggalfaktur' => $request->tanggalfaktur,
+            'tarif' => $request->tarif,
+            'ppn' => $request->ppn,
+            'ntpn' => $request->ntpn,
+            'tanggalntpn' => $request->tanggalntpn,
         ]);
-        return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('berhasil','Data berhasil di Ubah.');
+        return redirect('/bendahara/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil di Ubah.');
     }
 
     public function deleteppnrekanan(tagihan $tagihan, rekanan $rekanan, ppnrekanan $ppn)
@@ -847,9 +877,9 @@ class BendaharaController extends Controller
         }
         if ($ppn->rekanan_id === $rekanan->id && $ppn->tagihan_id === $tagihan->id) {
             $ppn->delete();
-            return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('berhasil','Data berhasil di Hapus.');
-        }else{
-            return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/ppn')->with('gagal','Link Error.');
+            return redirect('/bendahara/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('berhasil', 'Data berhasil di Hapus.');
+        } else {
+            return redirect('/bendahara/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/ppn')->with('gagal', 'Link Error.');
         }
     }
 
@@ -866,11 +896,11 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.rekanan.pph.index',[
-            'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
-            'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.rekanan.pph.index', [
+            'data' => pphrekanan::mypph($tagihan, $rekanan)->get(),
+            'tagihan' => $tagihan,
+            'rekanan' => $rekanan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -887,12 +917,12 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.rekanan.pph.create',[
-            'data'=>pphrekanan::mypph($tagihan, $rekanan)->get(),
-            'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan,
-            'objekpajak'=>objekpajak::all(),
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.rekanan.pph.create', [
+            'data' => pphrekanan::mypph($tagihan, $rekanan)->get(),
+            'tagihan' => $tagihan,
+            'rekanan' => $rekanan,
+            'objekpajak' => objekpajak::all(),
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -911,33 +941,33 @@ class BendaharaController extends Controller
         }
 
         $request->validate([
-            'objek'=>'required',
-            'pph'=>'required|numeric',
+            'objek' => 'required',
+            'pph' => 'required|numeric',
         ]);
 
         if (isset($request->ntpn)) {
             $request->validate([
-                'ntpn'=>'min:16|max:16',
-                'tanggalntpn'=>'required'
+                'ntpn' => 'min:16|max:16',
+                'tanggalntpn' => 'required'
             ]);
         }
-        if($rekanan->npwp){
-            $tarif = objekpajak::where('kode',$request->objek)->first()->tarif;
-        }else{
-            $tarif = objekpajak::where('kode',$request->objek)->first()->tarifnonnpwp;
+        if ($rekanan->npwp) {
+            $tarif = objekpajak::where('kode', $request->objek)->first()->tarif;
+        } else {
+            $tarif = objekpajak::where('kode', $request->objek)->first()->tarifnonnpwp;
         }
 
         pphrekanan::create([
-            'objekpajak_id'=>$request->objek,
-            'pph'=>$request->pph,
-            'tagihan_id'=>$tagihan->id,
-            'rekanan_id'=>$rekanan->id,
-            'ntpn'=>$request->ntpn,
-            'tanggalntpn'=>$request->tanggalntpn,
-            'tarif'=>$tarif
+            'objekpajak_id' => $request->objek,
+            'pph' => $request->pph,
+            'tagihan_id' => $tagihan->id,
+            'rekanan_id' => $rekanan->id,
+            'ntpn' => $request->ntpn,
+            'tanggalntpn' => $request->tanggalntpn,
+            'tarif' => $tarif
         ]);
 
-        return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil Ditambahkan.');
+        return redirect('/bendahara/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
 
@@ -954,12 +984,12 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.rekanan.pph.update',[
-            'tagihan'=>$tagihan,
-            'rekanan'=>$rekanan,
-            'data'=>$pph,
-            'objekpajak'=>objekpajak::all(),
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.rekanan.pph.update', [
+            'tagihan' => $tagihan,
+            'rekanan' => $rekanan,
+            'data' => $pph,
+            'objekpajak' => objekpajak::all(),
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -977,29 +1007,29 @@ class BendaharaController extends Controller
             abort(403);
         }
         $request->validate([
-            'objek'=>'required',
-            'pph'=>'required|numeric',
+            'objek' => 'required',
+            'pph' => 'required|numeric',
         ]);
 
         if (isset($request->ntpn)) {
             $request->validate([
-                'ntpn'=>'min:16|max:16',
-                'tanggalntpn'=>'required'
+                'ntpn' => 'min:16|max:16',
+                'tanggalntpn' => 'required'
             ]);
         }
-        if($rekanan->npwp){
-            $tarif = objekpajak::where('kode',$request->objek)->first()->tarif;
-        }else{
-            $tarif = objekpajak::where('kode',$request->objek)->first()->tarifnonnpwp;
+        if ($rekanan->npwp) {
+            $tarif = objekpajak::where('kode', $request->objek)->first()->tarif;
+        } else {
+            $tarif = objekpajak::where('kode', $request->objek)->first()->tarifnonnpwp;
         }
         $pph->update([
-            'objekpajak_id'=>$request->objek,
-            'pph'=>$request->pph,
-            'ntpn'=>$request->ntpn,
-            'tanggalntpn'=>$request->tanggalntpn,
-            'tarif'=>$tarif
+            'objekpajak_id' => $request->objek,
+            'pph' => $request->pph,
+            'ntpn' => $request->ntpn,
+            'tanggalntpn' => $request->tanggalntpn,
+            'tarif' => $tarif
         ]);
-        return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil di Ubah.');
+        return redirect('/bendahara/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil di Ubah.');
     }
 
     public function deletepphrekanan(tagihan $tagihan, rekanan $rekanan, pphrekanan $pph)
@@ -1017,9 +1047,9 @@ class BendaharaController extends Controller
         }
         if ($pph->rekanan_id === $rekanan->id && $pph->tagihan_id === $tagihan->id) {
             $pph->delete();
-            return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('berhasil','Data berhasil di Hapus.');
-        }else{
-            return redirect('/bendahara/'.$tagihan->id.'/rekanan/'. $rekanan->id.'/pph')->with('gagal','Link Error.');
+            return redirect('/bendahara/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('berhasil', 'Data berhasil di Hapus.');
+        } else {
+            return redirect('/bendahara/' . $tagihan->id . '/rekanan/' . $rekanan->id . '/pph')->with('gagal', 'Link Error.');
         }
     }
 
@@ -1036,10 +1066,10 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.payroll.index',[
-           'data'   => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
-           'tagihan' => $tagihan,
-           'notifikasi'=>Notification::Notif()
+        return view('bendahara.payroll.index', [
+            'data'   => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
+            'tagihan' => $tagihan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -1056,9 +1086,9 @@ class BendaharaController extends Controller
         if ($tagihan->status != 4) {
             abort(403);
         }
-        return view('bendahara.payroll.create',[
-            'tagihan'=>$tagihan,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.payroll.create', [
+            'tagihan' => $tagihan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -1077,44 +1107,44 @@ class BendaharaController extends Controller
         }
         if ($request->bank === "Other") {
             $request->validate([
-                'nama'=>'required',
-                'norek'=>'required|numeric',
-                'otherBank'=>'required',
-                'bruto'=>'required|numeric',
-                'pajak'=>'required|numeric',
-                'admin'=>'required|numeric',
+                'nama' => 'required',
+                'norek' => 'required|numeric',
+                'otherBank' => 'required',
+                'bruto' => 'required|numeric',
+                'pajak' => 'required|numeric',
+                'admin' => 'required|numeric',
             ]);
             Payroll::create([
-                'nama'=>$request->nama,
-                'norek'=>$request->norek,
-                'bank'=>$request->otherBank,
-                'bruto'=>$request->bruto,
-                'pajak'=>$request->pajak,
-                'admin'=>$request->admin,
-                'tagihan_id'=>$tagihan->id,
-                'netto'=>$request->bruto-$request->pajak-$request->admin,
+                'nama' => $request->nama,
+                'norek' => $request->norek,
+                'bank' => $request->otherBank,
+                'bruto' => $request->bruto,
+                'pajak' => $request->pajak,
+                'admin' => $request->admin,
+                'tagihan_id' => $tagihan->id,
+                'netto' => $request->bruto - $request->pajak - $request->admin,
             ]);
-        }else{
+        } else {
             $request->validate([
-                'nama'=>'required',
-                'norek'=>'required|numeric',
-                'bank'=>'required',
-                'bruto'=>'required|numeric',
-                'pajak'=>'required|numeric',
-                'admin'=>'required|numeric',
+                'nama' => 'required',
+                'norek' => 'required|numeric',
+                'bank' => 'required',
+                'bruto' => 'required|numeric',
+                'pajak' => 'required|numeric',
+                'admin' => 'required|numeric',
             ]);
             Payroll::create([
-                'nama'=>$request->nama,
-                'norek'=>$request->norek,
-                'bank'=>$request->bank,
-                'bruto'=>$request->bruto,
-                'pajak'=>$request->pajak,
-                'admin'=>$request->admin,
-                'tagihan_id'=>$tagihan->id,
-                'netto'=>$request->bruto-$request->pajak-$request->admin,
+                'nama' => $request->nama,
+                'norek' => $request->norek,
+                'bank' => $request->bank,
+                'bruto' => $request->bruto,
+                'pajak' => $request->pajak,
+                'admin' => $request->admin,
+                'tagihan_id' => $tagihan->id,
+                'netto' => $request->bruto - $request->pajak - $request->admin,
             ]);
         }
-        return redirect('/bendahara/'.$tagihan->id.'/payroll')->with('berhasil','Data berhasil Ditambahkan.');
+        return redirect('/bendahara/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function importHrisPayroll(tagihan $tagihan)
@@ -1132,13 +1162,13 @@ class BendaharaController extends Controller
         }
         if (request('nip')) {
             $data = Hris::getRekening(request('nip'));
-        }else{
+        } else {
             $data = [];
         }
-        return view('bendahara.payroll.hris.import',[
-            'data'=>$data,
-            'tagihan'=>$tagihan,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.payroll.hris.import', [
+            'data' => $data,
+            'tagihan' => $tagihan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -1156,10 +1186,10 @@ class BendaharaController extends Controller
             abort(403);
         }
 
-        return view('bendahara.payroll.monev.import',[
-            'data'=>RefRekening::search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan,
-            'notifikasi'=>Notification::Notif()
+        return view('bendahara.payroll.monev.import', [
+            'data' => RefRekening::search()->paginate(15)->withQueryString(),
+            'tagihan' => $tagihan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -1177,28 +1207,28 @@ class BendaharaController extends Controller
             abort(403);
         }
 
-        $validator = Validator::make($request->all(),[
-            'nama'=>'required',
-            'norek'=>'required|numeric',
-            'bank'=>'required',
-            'bruto'=>'required|numeric',
-            'pajak'=>'required|numeric',
-            'admin'=>'required|numeric',
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'norek' => 'required|numeric',
+            'bank' => 'required',
+            'bruto' => 'required|numeric',
+            'pajak' => 'required|numeric',
+            'admin' => 'required|numeric',
         ]);
-        if ($validator->fails()){
-            return back()->with('gagal','semua data harus diisi');
+        if ($validator->fails()) {
+            return back()->with('gagal', 'semua data harus diisi');
         }
         Payroll::create([
-            'nama'=>$request->nama,
-            'norek'=>$request->norek,
-            'bank'=>$request->bank,
-            'bruto'=>$request->bruto,
-            'pajak'=>$request->pajak,
-            'admin'=>$request->admin,
-            'tagihan_id'=>$tagihan->id,
-            'netto'=>$request->bruto-$request->pajak-$request->admin,
+            'nama' => $request->nama,
+            'norek' => $request->norek,
+            'bank' => $request->bank,
+            'bruto' => $request->bruto,
+            'pajak' => $request->pajak,
+            'admin' => $request->admin,
+            'tagihan_id' => $tagihan->id,
+            'netto' => $request->bruto - $request->pajak - $request->admin,
         ]);
-        return redirect('/bendahara/'.$tagihan->id.'/payroll')->with('berhasil','Data berhasil Ditambahkan.');
+        return redirect('/bendahara/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil Ditambahkan.');
     }
 
     public function deletePayroll(tagihan $tagihan, Payroll $payroll)
@@ -1215,7 +1245,7 @@ class BendaharaController extends Controller
             abort(403);
         }
         $payroll->delete();
-        return redirect('/bendahara/'.$tagihan->id.'/payroll')->with('berhasil','Data berhasil di Hapus.');
+        return redirect('/bendahara/' . $tagihan->id . '/payroll')->with('berhasil', 'Data berhasil di Hapus.');
     }
 
     public function cetakPayroll(tagihan $tagihan)
@@ -1234,13 +1264,13 @@ class BendaharaController extends Controller
 
         switch ($tagihan->jnstagihan) {
             case '0':
-                $type="SPBy";
+                $type = "SPBy";
                 break;
             case '1':
-                $type="SPM";
+                $type = "SPM";
                 break;
             case '2':
-                $type="KKP";
+                $type = "KKP";
         }
         $spreadsheet = new Spreadsheet();
         $styleBorder = [
@@ -1260,107 +1290,107 @@ class BendaharaController extends Controller
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
-        $spreadsheet    ->setActiveSheetIndex(0)
-                        ->setCellValue('B1', 'Payroll '. $type ." ". $tagihan->notagihan)
-                        ->mergeCells('B1:I1')
-                        ->setCellValue('B2', $tagihan->uraian)
-                        ->mergeCells('B2:I2')
-                        ->setCellValue('B4', "BNI")
-                        ->mergeCells('B4:I4')
-                        ;
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('B1', 'Payroll ' . $type . " " . $tagihan->notagihan)
+            ->mergeCells('B1:I1')
+            ->setCellValue('B2', $tagihan->uraian)
+            ->mergeCells('B2:I2')
+            ->setCellValue('B4', "BNI")
+            ->mergeCells('B4:I4')
+        ;
 
-        $spreadsheet    ->getActiveSheet()
-                         ->getStyle('B1:C2')->applyFromArray($textcenter)
+        $spreadsheet->getActiveSheet()
+            ->getStyle('B1:C2')->applyFromArray($textcenter)
         ;
-        $spreadsheet    ->getActiveSheet()
-                        ->setCellValue('B5', "No.")
-                        ->setCellValue('C5', "Nomor Rekening")
-                        ->setCellValue('D5', "Nama Penerima")
-                        ->setCellValue('E5', "Bruto")
-                        ->setCellValue('F5', "Pajak")
-                        ->setCellValue('G5', "Biaya Admin")
-                        ->setCellValue('H5', "Netto")
-                        ->setCellValue('I5', "Bank")
+        $spreadsheet->getActiveSheet()
+            ->setCellValue('B5', "No.")
+            ->setCellValue('C5', "Nomor Rekening")
+            ->setCellValue('D5', "Nama Penerima")
+            ->setCellValue('E5', "Bruto")
+            ->setCellValue('F5', "Pajak")
+            ->setCellValue('G5', "Biaya Admin")
+            ->setCellValue('H5', "Netto")
+            ->setCellValue('I5', "Bank")
         ;
-        $spreadsheet    ->getActiveSheet()
-                        ->getStyle('B5:I5')->applyFromArray($textcenter)
+        $spreadsheet->getActiveSheet()
+            ->getStyle('B5:I5')->applyFromArray($textcenter)
         ;
-        $i=0;
+        $i = 0;
         foreach ($tagihan->payroll as $payroll) {
-            if (Str::upper($payroll->bank) === "BANK NEGARA INDONESIA" || Str::upper($payroll->bank) === "BNI" || Str::upper($payroll->bank) === "BANK NEGARAINDONESIA"|| Str::upper($payroll->bank) === "BANKNEGARA INDONESIA"|| Str::upper($payroll->bank) === "BANKNEGARAINDONESIA") {
+            if (Str::upper($payroll->bank) === "BANK NEGARA INDONESIA" || Str::upper($payroll->bank) === "BNI" || Str::upper($payroll->bank) === "BANK NEGARAINDONESIA" || Str::upper($payroll->bank) === "BANKNEGARA INDONESIA" || Str::upper($payroll->bank) === "BANKNEGARAINDONESIA") {
                 $i++;
-                $spreadsheet    ->getActiveSheet()
-                                ->setCellValue('B'.($i+5), $i)
-                                ->setCellValue('D'.($i+5), $payroll->nama)
-                                ->setCellValue('E'.($i+5), $payroll->bruto)
-                                ->setCellValue('F'.($i+5), $payroll->pajak)
-                                ->setCellValue('G'.($i+5), $payroll->admin)
-                                ->setCellValue('H'.($i+5), $payroll->netto)
-                                ->setCellValue('I'.($i+5), $payroll->bank)
+                $spreadsheet->getActiveSheet()
+                    ->setCellValue('B' . ($i + 5), $i)
+                    ->setCellValue('D' . ($i + 5), $payroll->nama)
+                    ->setCellValue('E' . ($i + 5), $payroll->bruto)
+                    ->setCellValue('F' . ($i + 5), $payroll->pajak)
+                    ->setCellValue('G' . ($i + 5), $payroll->admin)
+                    ->setCellValue('H' . ($i + 5), $payroll->netto)
+                    ->setCellValue('I' . ($i + 5), $payroll->bank)
                 ;
-                $spreadsheet    ->getActiveSheet()->getCell('C'.($i+5))->setValueExplicit($payroll->norek, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                $spreadsheet->getActiveSheet()->getCell('C' . ($i + 5))->setValueExplicit($payroll->norek, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             }
         }
-        $spreadsheet    ->getActiveSheet()
-                        ->setCellValue('B'.($i+7), "Jumlah")
-                        ->setCellValue('E'.($i+7), "=SUM(E5:E".($i+5).")")
-                        ->setCellValue('F'.($i+7), "=SUM(F5:F".($i+5).")")
-                        ->setCellValue('G'.($i+7), "=SUM(G5:G".($i+5).")")
-                        ->setCellValue('H'.($i+7), "=SUM(H5:H".($i+5).")")
-                        ->mergeCells('B'.($i+7).':D'.($i+7))
+        $spreadsheet->getActiveSheet()
+            ->setCellValue('B' . ($i + 7), "Jumlah")
+            ->setCellValue('E' . ($i + 7), "=SUM(E5:E" . ($i + 5) . ")")
+            ->setCellValue('F' . ($i + 7), "=SUM(F5:F" . ($i + 5) . ")")
+            ->setCellValue('G' . ($i + 7), "=SUM(G5:G" . ($i + 5) . ")")
+            ->setCellValue('H' . ($i + 7), "=SUM(H5:H" . ($i + 5) . ")")
+            ->mergeCells('B' . ($i + 7) . ':D' . ($i + 7))
         ;
-        $spreadsheet    ->getActiveSheet()
-                        ->getStyle('E5:H'.($i+7))->getNumberFormat()->setFormatCode('#,##0.00')
+        $spreadsheet->getActiveSheet()
+            ->getStyle('E5:H' . ($i + 7))->getNumberFormat()->setFormatCode('#,##0.00')
         ;
-        $spreadsheet    ->getActiveSheet()->getStyle('B5:I'.($i+7))->applyFromArray($styleBorder);
+        $spreadsheet->getActiveSheet()->getStyle('B5:I' . ($i + 7))->applyFromArray($styleBorder);
 
-        $nonBNIcol = $i+9;
-        $spreadsheet    ->getActiveSheet()
-                        ->setCellValue('B'. $nonBNIcol, "NON BNI")
-                        ->mergeCells('B'. $nonBNIcol.':I'. $nonBNIcol)
+        $nonBNIcol = $i + 9;
+        $spreadsheet->getActiveSheet()
+            ->setCellValue('B' . $nonBNIcol, "NON BNI")
+            ->mergeCells('B' . $nonBNIcol . ':I' . $nonBNIcol)
         ;
-        $spreadsheet    ->getActiveSheet()
-                        ->setCellValue('B'. $nonBNIcol+1, "No.")
-                        ->setCellValue('C'. $nonBNIcol+1, "Nomor Rekening")
-                        ->setCellValue('D'. $nonBNIcol+1, "Nama Penerima")
-                        ->setCellValue('E'. $nonBNIcol+1, "Bruto")
-                        ->setCellValue('F'. $nonBNIcol+1, "Pajak")
-                        ->setCellValue('G'. $nonBNIcol+1, "Biaya Admin")
-                        ->setCellValue('H'. $nonBNIcol+1, "Netto")
-                        ->setCellValue('I'. $nonBNIcol+1, "Bank")
+        $spreadsheet->getActiveSheet()
+            ->setCellValue('B' . $nonBNIcol + 1, "No.")
+            ->setCellValue('C' . $nonBNIcol + 1, "Nomor Rekening")
+            ->setCellValue('D' . $nonBNIcol + 1, "Nama Penerima")
+            ->setCellValue('E' . $nonBNIcol + 1, "Bruto")
+            ->setCellValue('F' . $nonBNIcol + 1, "Pajak")
+            ->setCellValue('G' . $nonBNIcol + 1, "Biaya Admin")
+            ->setCellValue('H' . $nonBNIcol + 1, "Netto")
+            ->setCellValue('I' . $nonBNIcol + 1, "Bank")
         ;
-        $spreadsheet    ->getActiveSheet()
-                        ->getStyle('B'.$nonBNIcol+1 .':I'. $nonBNIcol+1)->applyFromArray($textcenter)
+        $spreadsheet->getActiveSheet()
+            ->getStyle('B' . $nonBNIcol + 1 . ':I' . $nonBNIcol + 1)->applyFromArray($textcenter)
         ;
-        $j= 0;
+        $j = 0;
         foreach ($tagihan->payroll as $payroll) {
-            if (!(Str::upper($payroll->bank) === "BANK NEGARA INDONESIA" || Str::upper($payroll->bank) === "BNI" || Str::upper($payroll->bank) === "BANK NEGARAINDONESIA"|| Str::upper($payroll->bank) === "BANKNEGARA INDONESIA"|| Str::upper($payroll->bank) === "BANKNEGARAINDONESIA")) {
+            if (!(Str::upper($payroll->bank) === "BANK NEGARA INDONESIA" || Str::upper($payroll->bank) === "BNI" || Str::upper($payroll->bank) === "BANK NEGARAINDONESIA" || Str::upper($payroll->bank) === "BANKNEGARA INDONESIA" || Str::upper($payroll->bank) === "BANKNEGARAINDONESIA")) {
                 $j++;
-                $spreadsheet    ->getActiveSheet()
-                                ->setCellValue('B'.$nonBNIcol+1+$j, $j)
-                                ->setCellValue('D'.$nonBNIcol+1+$j, $payroll->nama)
+                $spreadsheet->getActiveSheet()
+                    ->setCellValue('B' . $nonBNIcol + 1 + $j, $j)
+                    ->setCellValue('D' . $nonBNIcol + 1 + $j, $payroll->nama)
 
-                                ->setCellValue('E'.$nonBNIcol+1+$j, $payroll->bruto)
-                                ->setCellValue('F'.$nonBNIcol+1+$j, $payroll->pajak)
-                                ->setCellValue('G'.$nonBNIcol+1+$j, $payroll->admin)
-                                ->setCellValue('H'.$nonBNIcol+1+$j, $payroll->netto)
-                                ->setCellValue('I'.$nonBNIcol+1+$j, $payroll->bank)
+                    ->setCellValue('E' . $nonBNIcol + 1 + $j, $payroll->bruto)
+                    ->setCellValue('F' . $nonBNIcol + 1 + $j, $payroll->pajak)
+                    ->setCellValue('G' . $nonBNIcol + 1 + $j, $payroll->admin)
+                    ->setCellValue('H' . $nonBNIcol + 1 + $j, $payroll->netto)
+                    ->setCellValue('I' . $nonBNIcol + 1 + $j, $payroll->bank)
                 ;
-                $spreadsheet    ->getActiveSheet()->getCell('C'.$nonBNIcol+1+$j)->setValueExplicit($payroll->norek, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                $spreadsheet->getActiveSheet()->getCell('C' . $nonBNIcol + 1 + $j)->setValueExplicit($payroll->norek, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             }
         }
-        $spreadsheet    ->getActiveSheet()
-                        ->setCellValue('B'.$nonBNIcol+3+$j, "Jumlah")
-                        ->setCellValue('E'.$nonBNIcol+3+$j, "=SUM(E".$nonBNIcol+2 .":E".$nonBNIcol+2+$j.")")
-                        ->setCellValue('F'.$nonBNIcol+3+$j, "=SUM(F".$nonBNIcol+2 .":F".$nonBNIcol+2+$j.")")
-                        ->setCellValue('G'.$nonBNIcol+3+$j, "=SUM(G".$nonBNIcol+2 .":G".$nonBNIcol+2+$j.")")
-                        ->setCellValue('H'.$nonBNIcol+3+$j, "=SUM(H".$nonBNIcol+2 .":H".$nonBNIcol+2+$j.")")
-                        ->mergeCells('B'.$nonBNIcol+3+$j.':D'.$nonBNIcol+3+$j)
+        $spreadsheet->getActiveSheet()
+            ->setCellValue('B' . $nonBNIcol + 3 + $j, "Jumlah")
+            ->setCellValue('E' . $nonBNIcol + 3 + $j, "=SUM(E" . $nonBNIcol + 2 . ":E" . $nonBNIcol + 2 + $j . ")")
+            ->setCellValue('F' . $nonBNIcol + 3 + $j, "=SUM(F" . $nonBNIcol + 2 . ":F" . $nonBNIcol + 2 + $j . ")")
+            ->setCellValue('G' . $nonBNIcol + 3 + $j, "=SUM(G" . $nonBNIcol + 2 . ":G" . $nonBNIcol + 2 + $j . ")")
+            ->setCellValue('H' . $nonBNIcol + 3 + $j, "=SUM(H" . $nonBNIcol + 2 . ":H" . $nonBNIcol + 2 + $j . ")")
+            ->mergeCells('B' . $nonBNIcol + 3 + $j . ':D' . $nonBNIcol + 3 + $j)
         ;
-        $spreadsheet    ->getActiveSheet()
-                        ->getStyle("E".$nonBNIcol+2 .":H".$nonBNIcol+3+$j)->getNumberFormat()->setFormatCode('#,##0.00')
+        $spreadsheet->getActiveSheet()
+            ->getStyle("E" . $nonBNIcol + 2 . ":H" . $nonBNIcol + 3 + $j)->getNumberFormat()->setFormatCode('#,##0.00')
         ;
-        $spreadsheet    ->getActiveSheet()->getStyle('B'.$nonBNIcol+1 .":I".$nonBNIcol+3+$j)->applyFromArray($styleBorder);
+        $spreadsheet->getActiveSheet()->getStyle('B' . $nonBNIcol + 1 . ":I" . $nonBNIcol + 3 + $j)->applyFromArray($styleBorder);
         foreach ($spreadsheet->getActiveSheet()->getColumnIterator() as $column) {
             $spreadsheet->getActiveSheet()->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
@@ -1372,10 +1402,10 @@ class BendaharaController extends Controller
             ->setCellValue('G' . $totalCol, "=G" . $nonBNIcol + 3 + $j . "+" . 'G' . ($i + 7))
             ->setCellValue('H' . $totalCol, "=H" . $nonBNIcol + 3 + $j . "+" . 'H' . ($i + 7));
         $spreadsheet->getActiveSheet()
-            ->getStyle("E" . $totalCol . ":H" . $totalCol )->getNumberFormat()->setFormatCode('#,##0.00');
+            ->getStyle("E" . $totalCol . ":H" . $totalCol)->getNumberFormat()->setFormatCode('#,##0.00');
         // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Payroll '.$type.' '.$tagihan->notagihan.'-'.date('D, d M Y H:i:s').'.xlsx"');
+        header('Content-Disposition: attachment;filename="Payroll ' . $type . ' ' . $tagihan->notagihan . '-' . date('D, d M Y H:i:s') . '.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

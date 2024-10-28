@@ -16,7 +16,7 @@
                 <select type="text" name="tahun"
                     class="select select-sm select-bordered w-full max-w-xs @error('tahun') select-error @enderror">
                     @foreach ($tahun as $item)
-                        <option value="{{ $item->tahun }}" @if (old('tahun') === $item->tahun) selected @endif>
+                        <option value="{{ $item->tahun }}" @if (session('tahun') === $item->tahun) selected @endif>
                             {{ $item->tahun }}</option>
                     @endforeach
                 </select>
@@ -29,7 +29,7 @@
                 </label>
             </div>
             <div>
-                <a href="/" class="btn btn-sm btn-accent">Batal</a>
+                <a href="{{ url()->current() === Str::before(url()->previous(), '?') ? '/' : url()->previous() }}" class="btn btn-sm btn-accent">Batal</a>
                 <button type="submit" class="btn btn-sm btn-accent">Simpan</button>
             </div>
         </form>
