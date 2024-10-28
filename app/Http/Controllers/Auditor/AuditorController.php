@@ -86,10 +86,6 @@ class AuditorController extends Controller
         if (!Gate::any(['auditor'])) {
             abort(403);
         }
-
-        if (!Gate::any(['auditor'])) {
-            abort(403);
-        }
         
         if ($tagihan->spm == null || $tagihan->tahun != session()->get('tahun')) {
             abort(404);
