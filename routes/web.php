@@ -493,7 +493,7 @@ Route::controller(CleansingDuplikatController::class)->group(function(){
 
 Route::controller(CleansingSpmController::class)->group(function(){
     Route::get('/cleansing/spm', 'index')->middleware('auth');
-    Route::patch('/cleansing/spm/laod', 'load')->middleware('auth');
+    Route::patch('/cleansing/spm/load', 'load')->middleware('auth');
     Route::get('/cleansing/spm/import', 'import')->middleware('auth');
     Route::post('/cleansing/spm/import', 'importStore')->middleware('auth');
     Route::get('/cleansing/spm/{spm}/edit', 'edit')->middleware('auth');
