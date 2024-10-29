@@ -26,9 +26,9 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('PPK')) {
-            $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihanppk()->where('tahun', session()->get('tahun'))->filter()->search()->order()->paginate(15)->withQueryString();
+            $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihanppk()->where('tahun', session()->get('tahun'))->filter()->search()->order()->paginate(request('count')? request('count') : 15)->withQueryString();
         } else {
-            $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihanStafPPK()->where('tahun', session()->get('tahun'))->filter()->search()->order()->paginate(15)->withQueryString();
+            $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi'])->tagihanStafPPK()->where('tahun', session()->get('tahun'))->filter()->search()->order()->paginate(request('count')? request('count') : 15)->withQueryString();
         }
         return view('monitoring_tagihan.index', [
             'data' => $data,
@@ -618,5 +618,28 @@ class MonitoringTagihanController extends Controller
             'data' => $tagihan->dnpHonor()->get()
         ]));
         $html2pdf->output('DNP Perjadin.pdf', 'I');
+    }
+
+    public function cetakRekapTagihan()
+    {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
+            abort(403);
+        }
+
+        if (Gate::allows('PPK')) {
+            $data = tagihan::with(['unit', 'ppk', 'berkasupload.berkas', 'realisasi'])->tagihanppk()->where('tahun', session()->get('tahun'))->filter()->search()->paginate(request('count')? request('count') : 15)->withQueryString();
+        } else {
+            $data = tagihan::with(['unit', 'ppk', 'berkasupload.berkas', 'realisasi'])->tagihanStafPPK()->where('tahun', session()->get('tahun'))->filter()->search()->paginate(request('count')? request('count') : 15)->withQueryString();
+        }
+
+        ob_start();
+        $html2pdf = ob_get_clean();
+        $html2pdf = new Html2Pdf('L', 'F4', 'en', false, 'UTF-8', array(0, 0, 0, 0), true);
+        $html2pdf->addFont('Arial');
+        $html2pdf->pdf->SetTitle('Rekap Tagihan');
+        $html2pdf->writeHTML(view('monitoring_tagihan.cetak.rekap_tagihan', [
+            'data' => $data
+        ]));
+        $html2pdf->output('Rekap Tagihan.pdf', 'I');
     }
 }

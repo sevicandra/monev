@@ -22,7 +22,7 @@
     <x-table.header>
         <tr class="text-center">
             @if ($no)
-                <x-table.header.column class="border-x">No{{ $status }}</x-table.header.column>
+                <x-table.header.column class="border-x">No</x-table.header.column>
             @endif
             @if ($jenis)
                 <x-table.header.column class="border-x">Jenis Tagihan</x-table.header.column>

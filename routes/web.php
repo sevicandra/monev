@@ -239,6 +239,7 @@ Route::controller(RegisterTagihanController::class)->group(function(){
 });
 
 Route::controller(MonitoringTagihanController::class)->group(function(){
+    Route::get('/monitoring-tagihan/download', 'cetakRekapTagihan')->middleware('auth')->name('monitoring-tagihan.download');
     Route::get('/monitoring-tagihan/{tagihan}/coa', 'showcoa')->middleware('auth');
     // Route::get('/monitoring-tagihan/{tagihan}/dnp', 'showdnp')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/tolak', 'tolak')->middleware('auth');
@@ -256,6 +257,8 @@ Route::controller(MonitoringTagihanController::class)->group(function(){
     Route::get('/monitoring-tagihan/{tagihan}/dnp-perjadin/cetak', 'cetakDnpPerjadin')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/dnp-perjadin/{dnp}', 'detailDnpPerjadin')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/dnp-perjadin/{dnp}/cetak', 'cetakKuitansiPerjadin')->middleware('auth');
+
+
 });
 
 Route::resource('/monitoring-tagihan', MonitoringTagihanController::class)->middleware('auth');
