@@ -7,30 +7,38 @@
     <div class="">
         @include('layout.flashmessage')
     </div>
-    <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
-        <div>
-            <div class="flex gap-1">
-                <a href="{{ request()->fullUrlWithQuery(['jns' => '']) }}"
-                    class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'ALL' ? 'btn-active' : '' }}">ALL</a>
-                <a href="{{ request()->fullUrlWithQuery(['jns' => 'SPBY']) }}"
-                    class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'SPBY' ? 'btn-active' : '' }}">SPBY</a>
-                <a href="{{ request()->fullUrlWithQuery(['jns' => 'SPP']) }}"
-                    class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'SPP' ? 'btn-active' : '' }}">SPP</a>
-                <a href="{{ request()->fullUrlWithQuery(['jns' => 'KKP']) }}"
-                    class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'KKP' ? 'btn-active' : '' }}">KKP</a>
+    <div class="flex gap-2 flex-col">
+        <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+            <div>
+                <div class="flex gap-1">
+                    <a href="{{ request()->fullUrlWithQuery(['jns' => '']) }}"
+                        class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'ALL' ? 'btn-active' : '' }}">ALL</a>
+                    <a href="{{ request()->fullUrlWithQuery(['jns' => 'SPBY']) }}"
+                        class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'SPBY' ? 'btn-active' : '' }}">SPBY</a>
+                    <a href="{{ request()->fullUrlWithQuery(['jns' => 'SPP']) }}"
+                        class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'SPP' ? 'btn-active' : '' }}">SPP</a>
+                    <a href="{{ request()->fullUrlWithQuery(['jns' => 'KKP']) }}"
+                        class="btn btn-sm btn-neutral btn-outline {{ request('jns', 'ALL') === 'KKP' ? 'btn-active' : '' }}">KKP</a>
+                </div>
+            </div>
+            <div>
+                <form action="" method="get" autocomplete="off">
+                    <input type="hidden" name="jns" value="{{ request('jns', 'ALL') }}">
+                    <input type="hidden" name="sb" value="{{ request('sb', 'nomor_tagihan') }}">
+                    <input type="hidden" name="sd" value="{{ request('sd', 'desc') }}">
+                    <div class="join">
+                        <input type="text" name="search" class="input input-sm input-bordered join-item"
+                            placeholder="Nomor Tagihan/Uraian">
+                        <button class="btn join-item btn-sm btn-neutral" type="submit">Cari</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <div>
-            <form action="" method="get" autocomplete="off">
-                <input type="hidden" name="jns" value="{{ request('jns', 'ALL') }}">
-                <input type="hidden" name="sb" value="{{ request('sb', 'nomor_tagihan') }}">
-                <input type="hidden" name="sd" value="{{ request('sd', 'desc') }}">
-                <div class="join">
-                    <input type="text" name="search" class="input input-sm input-bordered join-item"
-                        placeholder="Nomor Tagihan/Uraian">
-                    <button class="btn join-item btn-sm btn-neutral" type="submit">Cari</button>
-                </div>
-            </form>
+        <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
+            <div>
+                <a class="btn btn-sm btn-neutral" href="{{ route('arsip-tagihan.download', request()->all()) }}">Download
+                    Rekap</a>
+            </div>
         </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">

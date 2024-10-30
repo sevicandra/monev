@@ -33,7 +33,8 @@
         </div>
         <div class="flex flex-col md:flex-row px-4 gap-2 justify-between">
             <div>
-                <a class="btn btn-sm btn-neutral" href="{{ route('monitoring-tagihan.download',request()->all()) }}">Download Rekap</a>
+                <a class="btn btn-sm btn-neutral"
+                    href="{{ route('monitoring-tagihan.download', request()->all()) }}">Download Rekap</a>
             </div>
         </div>
     </div>
@@ -144,21 +145,5 @@
 @endsection
 
 @section('pagination')
-    <div class="flex flex-col gap-2">
-        <div class="flex justify-center">
-            <div class="dropdown dropdown-top">
-                <div tabindex="0" role="button" class="btn btn-xs m-1">
-                    {{ request('count', 100) }} per Page
-                </div>
-                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-xs p-2 shadow">
-                    <li><a href="{{ request()->fullUrlWithQuery(['count' => '100']) }}">100</a></li>
-                    <li><a href="{{ request()->fullUrlWithQuery(['count' => '50']) }}">50</a></li>
-                    <li><a href="{{ request()->fullUrlWithQuery(['count' => '30']) }}">30</a></li>
-                    <li><a href="{{ request()->fullUrlWithQuery(['count' => '15']) }}">15</a></li>
-                </ul>
-            </div>
-        </div>
-        {{ $data->links() }}
-
-    </div>
+    {{ $data->links() }}
 @endsection

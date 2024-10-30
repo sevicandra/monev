@@ -80,7 +80,7 @@ class ArsipController extends Controller
 
         return view('arsip.dnp', [
             'data' => $tagihan->dnp()->search()->paginate(15)->withQueryString(),
-            'notifikasi'=>Notification::Notif()
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -116,7 +116,7 @@ class ArsipController extends Controller
         return view('arsip.rekanan.index', [
             'data' => $tagihan->rekanan()->rekanansatker()->search()->paginate(15)->withQueryString(),
             'tagihan' => $tagihan,
-            'notifikasi'=>Notification::Notif()
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -134,7 +134,7 @@ class ArsipController extends Controller
             'data' => ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
-            'notifikasi'=>Notification::Notif()
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -152,7 +152,7 @@ class ArsipController extends Controller
             'data' => pphrekanan::mypph($tagihan, $rekanan)->get(),
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
-            'notifikasi'=>Notification::Notif()
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -168,7 +168,7 @@ class ArsipController extends Controller
 
         return view('arsip.detail', [
             'data' => $tagihan->log()->orderby('created_at', 'DESC')->get(),
-            'notifikasi'=>Notification::Notif()
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -182,10 +182,10 @@ class ArsipController extends Controller
             abort(403);
         }
 
-        return view('arsip.payroll',[
+        return view('arsip.payroll', [
             'data' => $tagihan->payroll()->search()->paginate(15)->withQueryString(),
-            'tagihan'=>$tagihan,
-            'notifikasi'=>Notification::Notif()
+            'tagihan' => $tagihan,
+            'notifikasi' => Notification::Notif()
         ]);
     }
 
@@ -374,7 +374,7 @@ class ArsipController extends Controller
         if ($tagihan->kodesatker != auth()->user()->satker) {
             abort(403);
         }
-        
+
         $currentPath = $request->path();
         $parts = explode('/', $currentPath);
         $base_url = '/' . $parts[0];
@@ -401,10 +401,10 @@ class ArsipController extends Controller
         $html2pdf = new Html2Pdf('L', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Perjadin');
-        $html2pdf->writeHTML(view('arsip.dnp_perjadin.cetak.dnp',[
-            'uraian'=>$tagihan->uraian,
-            'ppk'=>$tagihan->ppk->nama,
-            'data'=>$tagihan->dnpperjadin()->get()
+        $html2pdf->writeHTML(view('arsip.dnp_perjadin.cetak.dnp', [
+            'uraian' => $tagihan->uraian,
+            'ppk' => $tagihan->ppk->nama,
+            'data' => $tagihan->dnpperjadin()->get()
         ]));
         $html2pdf->output('DNP Perjadin.pdf', 'I');
     }
@@ -428,7 +428,7 @@ class ArsipController extends Controller
         return view('arsip.dnp_perjadin.detail.index', [
             'dnp' => $dnp,
             'tagihan' => $tagihan,
-            'notifikasi'=>Notification::Notif(),
+            'notifikasi' => Notification::Notif(),
             'base_url' => $base_url
         ]);
     }
@@ -452,9 +452,9 @@ class ArsipController extends Controller
         $html2pdf = new Html2Pdf('P', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Perjadin');
-        $html2pdf->writeHTML(view('arsip.dnp_perjadin.cetak.kuitansi',[
-            'ppk'=>$tagihan->ppk,
-            'dnp'=>$dnp,
+        $html2pdf->writeHTML(view('arsip.dnp_perjadin.cetak.kuitansi', [
+            'ppk' => $tagihan->ppk,
+            'dnp' => $dnp,
             // 'data'=>$tagihan->dnpperjadin()->get()
         ]));
         $html2pdf->output('DNP Perjadin.pdf', 'I');
@@ -496,11 +496,140 @@ class ArsipController extends Controller
         $html2pdf = new Html2Pdf('L', 'F4', 'en', false, 'UTF-8', array(10, 10, 10, 10));
         $html2pdf->addFont('Arial');
         $html2pdf->pdf->SetTitle('DNP Honorarium');
-        $html2pdf->writeHTML(view('arsip.dnp_honor.cetak',[
-            'uraian'=>$tagihan->uraian,
-            'ppk'=>$tagihan->ppk->nama,
-            'data'=>$tagihan->dnpHonor()->get()
+        $html2pdf->writeHTML(view('arsip.dnp_honor.cetak', [
+            'uraian' => $tagihan->uraian,
+            'ppk' => $tagihan->ppk->nama,
+            'data' => $tagihan->dnpHonor()->get()
         ]));
         $html2pdf->output('DNP Perjadin.pdf', 'I');
+    }
+
+    public function cetakRekapTagihan()
+    {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
+            abort(403);
+        }
+        $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi', 'spm'])->tagihansatker()->filter()->search()->order()->get();
+
+        $textcenter = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $styleBorder = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+                'inside' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0);
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Rekap Tagihan');
+        $sheet->mergeCells('A1:K1');
+        $sheet->getStyle('A1')->applyFromArray($textcenter);
+        $sheet->getStyle('A1:K1')->applyFromArray($styleBorder);
+        $sheet->setCellValue('A2', 'No');
+        $sheet->setCellValue('B2', 'Jenis Tagihan');
+        $sheet->setCellValue('C2', 'Nomor Tagihan');
+        $sheet->setCellValue('D2', 'Tahun');
+        $sheet->setCellValue('E2', 'PPK');
+        $sheet->setCellValue('F2', 'Unit');
+        $sheet->setCellValue('G2', 'Uraian');
+        $sheet->setCellValue('H2', 'Bruto');
+        $sheet->setCellValue('I2', 'Dokumen');
+        $sheet->mergeCells('A2:A3');
+        $sheet->mergeCells('B2:B3');
+        $sheet->mergeCells('C2:C3');
+        $sheet->mergeCells('D2:D3');
+        $sheet->mergeCells('E2:E3');
+        $sheet->mergeCells('F2:F3');
+        $sheet->mergeCells('G2:G3');
+        $sheet->mergeCells('H2:H3');
+        $sheet->mergeCells('I2:K2');
+        $sheet->setCellValue('I3', 'Jenis Dokumen');
+        $sheet->setCellValue('J3', 'Keterangan');
+        $sheet->setCellValue('K3', 'Link');
+        $num_row = 4;
+        $num = 1;
+        foreach ($data as $item) {
+            switch ($item->jnstagihan) {
+                case '0':
+                    $type = 'SPBy';
+                    break;
+                case '1':
+                    $type = 'SPP';
+                    break;
+                case '2':
+                    $type = 'KKP';
+                    break;
+                default:
+                    $type = '';
+            }
+            $sheet->setCellValue('A' . $num_row, $num++);
+            $sheet->setCellValue('B' . $num_row, $type);
+            $sheet->setCellValue('C' . $num_row, $item->notagihan);
+            $sheet->setCellValue('D' . $num_row, $item->tahun);
+            $sheet->setCellValue('E' . $num_row, optional($item->ppk)->nama);
+            $sheet->setCellValue('F' . $num_row, optional($item->unit)->namaunit);
+            $sheet->setCellValue('G' . $num_row, $item->uraian);
+            $sheet->setCellValue('H' . $num_row, number_format($item->realisasi->sum('realisasi'), 2, ',', '.'));
+            $row = 1;
+            $row_count = $item->berkasupload->count();
+            foreach ($item->berkasupload as $berkas) {
+                if (($row_count) == $row) {
+                    $sheet->mergeCells('A' . $num_row . ':A' . $num_row + $row - 1);
+                    $sheet->mergeCells('B' . $num_row . ':B' . $num_row + $row - 1);
+                    $sheet->mergeCells('C' . $num_row . ':C' . $num_row + $row - 1);
+                    $sheet->mergeCells('D' . $num_row . ':D' . $num_row + $row - 1);
+                    $sheet->mergeCells('E' . $num_row . ':E' . $num_row + $row - 1);
+                    $sheet->mergeCells('F' . $num_row . ':F' . $num_row + $row - 1);
+                    $sheet->mergeCells('G' . $num_row . ':G' . $num_row + $row - 1);
+                    $sheet->mergeCells('H' . $num_row . ':H' . $num_row + $row - 1);
+                }
+
+                $sheet->setCellValue('I' . $num_row + $row - 1, optional($berkas->berkas)->namaberkas);
+                $sheet->setCellValue('J' . $num_row + $row - 1, $berkas->uraian);
+                $sheet->setCellValue('K' . $num_row + $row - 1, "download");
+                $sheet->getCell('K' . $num_row + $row - 1)->getHyperlink()->setUrl(env('APP_URL') . "/" . $berkas->file); // URL tujuan
+                $sheet->getStyle('K' . $num_row + $row - 1)->getFont()->getColor()->setARGB('FF0000FF'); // Warna teks biru untuk hyperlink
+                $sheet->getStyle('K' . $num_row + $row - 1)->getFont()->setUnderline(true);
+                $row++;
+            }
+            if ($row_count > 0) {
+                $num_row += $row_count;
+            } else {
+                $num_row++;
+            }
+        }
+
+        $spreadsheet->setActiveSheetIndex(0)->getStyle('A2:K3')->applyFromArray($textcenter);
+        $spreadsheet->setActiveSheetIndex(0)->getStyle('A2:K' . ($num_row - 1))->applyFromArray($styleBorder);
+
+
+        foreach ($spreadsheet->setActiveSheetIndex(0)->getColumnIterator() as $column) {
+            $spreadsheet->setActiveSheetIndex(0)->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        }
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Rekap Tagihan - ' . date('D, d M Y H:i:s') . '.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit;
     }
 }

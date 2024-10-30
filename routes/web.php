@@ -373,6 +373,7 @@ Route::resource('/bendahara', BendaharaController::class)->middleware('auth');
 
 Route::controller(ArsipController::class)->group(function(){
     Route::get('/arsip/{tagihan}/dokumen', 'dokumen')->middleware('auth');
+    Route::get('/arsip/download', 'cetakRekapTagihan')->middleware('auth')->name('arsip-tagihan.download');
     Route::get('/arsip/{tagihan}/coa', 'coa')->middleware('auth');
     // Route::get('/arsip/{tagihan}/dnp', 'dnp')->middleware('auth');
     Route::get('/arsip/{tagihan}/riwayat', 'showriwayat')->middleware('auth');
