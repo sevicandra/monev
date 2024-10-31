@@ -253,11 +253,11 @@ class TagihanController extends Controller
                 [
                     'berkas' => 'required',
                     'uraian' => 'required',
-                    'fileupload' => 'required|mimes:pdf,xlsx,xls,zip,rar',
+                    'fileupload' => 'required|mimes:pdf,xlsx,xls',
                 ],
                 [
                     'fileupload.required' => 'File Tidak Boleh Kosong',
-                    'fileupload.mimes' => 'File Harus Berupa PDF, Excel, ZIP, RAR',
+                    'fileupload.mimes' => 'File Harus Berupa PDF, Excel',
                 ],
             );
 

@@ -15,6 +15,8 @@ use Spipu\Html2Pdf\Html2Pdf;
 use Illuminate\Support\Facades\Gate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use ZipArchive;
+use Illuminate\Support\Facades\Storage;
 
 class ArsipController extends Controller
 {
@@ -42,6 +44,7 @@ class ArsipController extends Controller
 
         return view('arsip.dokumen', [
             'data' => berkasupload::with('berkas')->orderBy('berkas_id', 'asc')->where('tagihan_id', $tagihan->id)->get(),
+            'tagihan' => $tagihan,
             'notifikasi' => Notification::Notif()
         ]);
     }
@@ -509,7 +512,7 @@ class ArsipController extends Controller
         if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
             abort(403);
         }
-        $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi', 'spm'])->tagihansatker()->filter()->search()->order()->get();
+        $data = tagihan::with(['unit', 'ppk', 'dokumen', 'realisasi', 'spm'])->tagihansatker()->filter()->search()->order()->paginate(15)->withQueryString();
 
         $textcenter = [
             'alignment' => [
@@ -598,7 +601,7 @@ class ArsipController extends Controller
                 $sheet->setCellValue('I' . $num_row + $row - 1, optional($berkas->berkas)->namaberkas);
                 $sheet->setCellValue('J' . $num_row + $row - 1, $berkas->uraian);
                 $sheet->setCellValue('K' . $num_row + $row - 1, "download");
-                $sheet->getCell('K' . $num_row + $row - 1)->getHyperlink()->setUrl(env('APP_URL') . "/" . $berkas->file); // URL tujuan
+                $sheet->getCell('K' . $num_row + $row - 1)->getHyperlink()->setUrl(env('APP_URL') . "/file-view/" . $berkas->file); // URL tujuan
                 $sheet->getStyle('K' . $num_row + $row - 1)->getFont()->getColor()->setARGB('FF0000FF'); // Warna teks biru untuk hyperlink
                 $sheet->getStyle('K' . $num_row + $row - 1)->getFont()->setUnderline(true);
                 $row++;
@@ -631,5 +634,61 @@ class ArsipController extends Controller
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
         exit;
+    }
+
+    public function downloadAll(tagihan $tagihan)
+    {
+        if (!Gate::any(['Bendahara', 'PPSPM', 'Validator'])) {
+            abort(403);
+        }
+
+        if ($tagihan->kodesatker != auth()->user()->satker) {
+            abort(403);
+        }
+
+        $fileUpload = $tagihan->berkasupload()->get();
+
+        $files = [];
+
+        foreach ($fileUpload as $file) {
+            $files[] = $file->file;
+        }
+
+        switch ($tagihan->jnstagihan) {
+            case '0':
+                $jenis = "SPBY";
+                break;
+
+            case '1':
+                $jenis = "SPP";
+                break;
+
+            case '2':
+                $jenis = "KKP";
+                break;
+
+            default:
+                $jenis = "";
+                break;
+        }
+
+        $zipFileName = $jenis . '-' . $tagihan->notagihan . '.zip';
+        $zip = new ZipArchive;
+
+        // Membuat file ZIP di dalam storage sementara Laravel
+        $zipPath = storage_path($zipFileName);
+
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+            // Menambahkan file ke dalam ZIP
+            foreach ($files as $file) {
+                if (Storage::exists($file)) {
+                    $zip->addFile(Storage::path($file), basename($file));
+                }
+            }
+            $zip->close();
+        }
+
+        // Kirim file ZIP sebagai respons untuk diunduh
+        return response()->download($zipPath)->deleteFileAfterSend(true);
     }
 }

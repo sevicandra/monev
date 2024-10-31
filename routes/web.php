@@ -241,6 +241,7 @@ Route::controller(RegisterTagihanController::class)->group(function(){
 Route::controller(MonitoringTagihanController::class)->group(function(){
     Route::get('/monitoring-tagihan/download', 'cetakRekapTagihan')->middleware('auth')->name('monitoring-tagihan.download');
     Route::get('/monitoring-tagihan/{tagihan}/coa', 'showcoa')->middleware('auth');
+    Route::patch('/monitoring-tagihan/{tagihan}/download-all', 'downloadAll')->middleware('auth');
     // Route::get('/monitoring-tagihan/{tagihan}/dnp', 'showdnp')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/tolak', 'tolak')->middleware('auth');
     Route::get('/monitoring-tagihan/{tagihan}/rekanan', 'showrekanan')->middleware('auth');
@@ -373,6 +374,7 @@ Route::resource('/bendahara', BendaharaController::class)->middleware('auth');
 
 Route::controller(ArsipController::class)->group(function(){
     Route::get('/arsip/{tagihan}/dokumen', 'dokumen')->middleware('auth');
+    Route::patch('/arsip/{tagihan}/download-all', 'downloadAll')->middleware('auth');
     Route::get('/arsip/download', 'cetakRekapTagihan')->middleware('auth')->name('arsip-tagihan.download');
     Route::get('/arsip/{tagihan}/coa', 'coa')->middleware('auth');
     // Route::get('/arsip/{tagihan}/dnp', 'dnp')->middleware('auth');

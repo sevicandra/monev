@@ -92,7 +92,7 @@ class AuditorController extends Controller
         }
 
         return view('audit.dokumen', [
-            'data' => $tagihan->berkasupload()->get(),
+            'data' => $tagihan->berkasupload()->whereNot('berkas_id', '05')->get(),
             'tagihan' => $tagihan,
             'spm' => $tagihan->spm
         ]);

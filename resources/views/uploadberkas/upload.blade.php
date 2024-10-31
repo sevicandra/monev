@@ -56,7 +56,7 @@
                         </span>
                     @else
                         <span class="label-text-alt text-primary">
-                            File pdf, xls, xlsx, zip, rar
+                            File pdf, xls, xlsx
                         </span> 
                     @enderror
                 </label>

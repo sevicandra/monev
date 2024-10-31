@@ -58,7 +58,7 @@
                 </x-table.header.column>
             @endif
             @if ($uraian)
-                <x-table.header.column class="border-x">
+                <x-table.header.column class="border-x min-w-[300px]">
                     Uraian
                 </x-table.header.column>
             @endif

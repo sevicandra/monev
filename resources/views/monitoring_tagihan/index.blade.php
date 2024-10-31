@@ -61,7 +61,7 @@
                     </x-table.body.column>
                     <x-table.body.column class="border">{{ $item->notagihan }}</x-table.body.column>
                     <x-table.body.column class="border">{{ indonesiaDate($item->tgltagihan) }}</x-table.body.column>
-                    <x-table.body.column class="border" style="white-space:normal; min-width:300px">
+                    <x-table.body.column class="border whitespace-normal text-justify">
                         {{ $item->uraian }}</x-table.body.column>
                     <x-table.body.column class="border">
                         {{ optional($item->spm)->nomor_spm }}

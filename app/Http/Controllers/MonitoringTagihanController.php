@@ -16,6 +16,8 @@ use App\Models\register_tagihan;
 use Illuminate\Support\Facades\Gate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use ZipArchive;
+use Illuminate\Support\Facades\Storage;
 
 class MonitoringTagihanController extends Controller
 {
@@ -56,6 +58,7 @@ class MonitoringTagihanController extends Controller
             case 'dokumen':
                 return view('monitoring_tagihan.dokumen', [
                     'data' => berkasupload::with('berkas')->where('tagihan_id', $monitoring_tagihan->id)->get(),
+                    'tagihan' => $monitoring_tagihan,
                     'notifikasi' => Notification::Notif()
                 ]);
                 break;
@@ -626,9 +629,9 @@ class MonitoringTagihanController extends Controller
         }
 
         if (Gate::allows('PPK')) {
-            $data = tagihan::with(['unit', 'ppk', 'berkasupload.berkas', 'realisasi'])->tagihanppk()->where('tahun', session()->get('tahun'))->filter()->search()->order()->get();
+            $data = tagihan::with(['unit', 'ppk', 'berkasupload.berkas', 'realisasi'])->tagihanppk()->where('tahun', session()->get('tahun'))->filter()->search()->order()->paginate(15)->withQueryString();
         } else {
-            $data = tagihan::with(['unit', 'ppk', 'berkasupload.berkas', 'realisasi'])->tagihanStafPPK()->where('tahun', session()->get('tahun'))->filter()->search()->order()->get();
+            $data = tagihan::with(['unit', 'ppk', 'berkasupload.berkas', 'realisasi'])->tagihanStafPPK()->where('tahun', session()->get('tahun'))->filter()->search()->order()->paginate(15)->withQueryString();
         }
         $textcenter = [
             'alignment' => [
@@ -717,7 +720,7 @@ class MonitoringTagihanController extends Controller
                 $sheet->setCellValue('I' . $num_row + $row - 1, optional($berkas->berkas)->namaberkas);
                 $sheet->setCellValue('J' . $num_row + $row - 1, $berkas->uraian);
                 $sheet->setCellValue('K' . $num_row + $row - 1, "download");
-                $sheet->getCell('K' . $num_row + $row - 1)->getHyperlink()->setUrl(env('APP_URL') . "/" . $berkas->file); // URL tujuan
+                $sheet->getCell('K' . $num_row + $row - 1)->getHyperlink()->setUrl(env('APP_URL') . "/file-view/" . $berkas->file); // URL tujuan
                 $sheet->getStyle('K' . $num_row + $row - 1)->getFont()->getColor()->setARGB('FF0000FF'); // Warna teks biru untuk hyperlink
                 $sheet->getStyle('K' . $num_row + $row - 1)->getFont()->setUnderline(true);
                 $row++;
@@ -750,5 +753,69 @@ class MonitoringTagihanController extends Controller
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
         exit;
+    }
+
+    public function downloadAll(tagihan $tagihan)
+    {
+        if (!Gate::allows('PPK') && !Gate::allows('Staf_PPK')) {
+            abort(403);
+        }
+
+        if (Gate::allows('PPK')) {
+            if ($tagihan->ppk_id != auth()->user()->nip) {
+                abort(403);
+            }
+        }
+
+        if (Gate::allows('Staf_PPK')) {
+            if (!in_array($tagihan->ppk_id, session()->get('ppk')) || !in_array($tagihan->kodeunit, session()->get('unit')) || $tagihan->kodesatker != auth()->user()->satker) {
+                abort(403);
+            }
+        }
+
+        $fileUpload = $tagihan->berkasupload()->get();
+
+        $files = [];
+
+        foreach ($fileUpload as $file) {
+            $files[] = $file->file;
+        }
+
+        switch ($tagihan->jnstagihan) {
+            case '0':
+                $jenis = "SPBY";
+                break;
+
+            case '1':
+                $jenis = "SPP";
+                break;
+
+            case '2':
+                $jenis = "KKP";
+                break;
+
+            default:
+                $jenis = "";
+                break;
+        }
+
+        $zipFileName = $jenis . '-' . $tagihan->notagihan . '.zip';
+        $zip = new ZipArchive;
+
+        // Membuat file ZIP di dalam storage sementara Laravel
+        $zipPath = storage_path($zipFileName);
+
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+            // Menambahkan file ke dalam ZIP
+            foreach ($files as $file) {
+                if (Storage::exists($file)) {
+                    $zip->addFile(Storage::path($file), basename($file));
+                }
+            }
+            $zip->close();
+        }
+
+        // Kirim file ZIP sebagai respons untuk diunduh
+        return response()->download($zipPath)->deleteFileAfterSend(true);
     }
 }

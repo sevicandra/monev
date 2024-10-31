@@ -32,8 +32,8 @@
                     <x-table.body.column class="border text-center">{{ $loop->iteration }}</x-table.body.column>
                     <x-table.body.column class="border">{{ $item->notagihan }}</x-table.body.column>
                     <x-table.body.column class="border">{{ indonesiaDate($item->tgltagihan) }}</x-table.body.column>
-                    <x-table.body.column class="border"
-                        style="white-space:normal; min-width:300px">{{ $item->uraian }}</x-table.body.column>
+                    <x-table.body.column class="border whitespace-normal text-justify">
+                        {{ $item->uraian }}</x-table.body.column>
                     <x-table.body.column class="border">{{ optional($item->unit)->namaunit }}</x-table.body.column>
                     <x-table.body.column class="border">{{ optional($item->ppk)->nama }}</x-table.body.column>
                     <x-table.body.column class="border">{{ optional($item->dokumen)->namadokumen }}</x-table.body.column>

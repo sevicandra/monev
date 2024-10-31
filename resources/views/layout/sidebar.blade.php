@@ -249,7 +249,7 @@
             </li>
             {{--  Akhir Admin  --}}
         @endcanany
-        <li class="">Version : 2.9</li>
+        <li class="">Version : 2.9.1</li>
     </menu>
 </div>
 {{--  Halaman Utama  --}}

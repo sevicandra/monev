@@ -8,6 +8,13 @@
         <div class="">
             <a href="/monitoring-tagihan" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
+        <div class="">
+            <form action="/monitoring-tagihan/{{ $tagihan->id }}/download-all" method="post">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-sm btn-accent">Download All</button>
+            </form>
+        </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
         <x-dokumen :aksi="FALSE">

@@ -8,9 +8,16 @@
         <div class="">
             <a href="/arsip" class="btn btn-sm btn-neutral">Sebelumnya</a>
         </div>
+        <div class="">
+            <form action="/arsip/{{ $tagihan->id }}/download-all" method="post">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-sm btn-accent">Download All</button>
+            </form>
+        </div>
     </div>
     <div class="px-4 gap-2 overflow-y-auto">
-        <x-dokumen :aksi="FALSE">
+        <x-dokumen :aksi="false">
             @foreach ($data as $item)
                 <tr>
                     <x-table.body.column class="text-center border">{{ $loop->iteration }}</x-table.body.column>

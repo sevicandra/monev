@@ -223,7 +223,7 @@
             });
 
             $("#inputPayroll").submit(function(event) {
-                event.prevenx-table.body.columnefault();
+                event.preventDefault();
                 var inputValueBruto = $("#bruto").val();
                 var sanitizedValueBruto = inputValueBruto.replace(/\./g, "");
                 $("#bruto").val(sanitizedValueBruto);
