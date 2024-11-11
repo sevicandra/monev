@@ -251,7 +251,7 @@ class tagihan extends Model
     {
         if (request('sp2d') === 'ya') {
             $data->where('ppk_id', $nip)
-                ->where('tahun', session()->get('tahun'))
+                ->where('tagihans.tahun', session()->get('tahun'))
                 ->leftJoin('spms', 'spms.id', '=', 'tagihans.spm_id')
                 ->leftJoin('bulans', function ($join) {
                     $join->on('bulans.kodebulan', '=', DB::raw('LPAD(MONTH(spms.tanggal_sp2d), 2, "0")'));

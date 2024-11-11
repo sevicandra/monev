@@ -528,14 +528,14 @@ Route::controller(VerifikasiKKPController::class)->group(function(){
 
 Route::resource('/verifikasi-kkp', VerifikasiKKPController::class)->middleware('auth')->except('create');
 
-// Route::controller(RefStafPpkController::class)->group(function(){
-//     Route::get('ref-staf-ppk', 'index')->middleware('auth');
-//     Route::get('ref-staf-ppk/create', 'create')->middleware('auth');
-//     Route::post('ref-staf-ppk/create', 'store')->middleware('auth');
-//     Route::get('ref-staf-ppk/{stafppk}/edit', 'edit')->middleware('auth');
-//     Route::patch('ref-staf-ppk/{stafppk}/edit', 'update')->middleware('auth');
-//     Route::delete('ref-staf-ppk/{stafppk}', 'destroy')->middleware('auth');
-// });
+Route::controller(RefStafPpkController::class)->group(function(){
+    Route::get('ref-staf-ppk', 'index')->middleware('auth');
+    Route::get('ref-staf-ppk/create', 'create')->middleware('auth');
+    Route::post('ref-staf-ppk/create', 'store')->middleware('auth');
+    Route::get('ref-staf-ppk/{stafppk}/edit', 'edit')->middleware('auth');
+    Route::patch('ref-staf-ppk/{stafppk}/edit', 'update')->middleware('auth');
+    Route::delete('ref-staf-ppk/{stafppk}', 'destroy')->middleware('auth');
+});
 
 Route::controller(RealisasiBulananController::class)->group(function(){
    Route::get('cleansing/realisasi-bulanan', 'index')->middleware('auth');

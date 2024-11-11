@@ -47,7 +47,7 @@
                 <div tabindex="0" role="button" class="btn btn-primary btn-sm btn-outline m-1">Download</div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                     <li><a href="/cleansing/realisasi-bulanan/{{ $bulan->kodebulan }}/download">Download</a></li>
-                    <li><a href="/cleansing/realisasi-bulanan/{{ $bulan->kodebulan }}/download-wix-table.body.column-sum">Download akumulatif</a></li>
+                    <li><a href="/cleansing/realisasi-bulanan/{{ $bulan->kodebulan }}/download-with-sum">Download akumulatif</a></li>
                 </ul>
             </div>
         </span>
