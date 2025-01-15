@@ -10,6 +10,7 @@ use App\Models\dokumen;
 use App\Models\Payroll;
 use App\Models\rekanan;
 use App\Models\tagihan;
+use App\Models\tarifPpn;
 use App\Models\logtagihan;
 use App\Models\objekpajak;
 use App\Models\pphrekanan;
@@ -461,6 +462,7 @@ class TagihanController extends Controller
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
             'notifikasi' => Notification::Notif(),
+            'tarif' => tarifPpn::orderBy('tarif')->get(),
         ]);
     }
 
@@ -512,6 +514,7 @@ class TagihanController extends Controller
             'rekanan' => $rekanan,
             'data' => $ppn,
             'notifikasi' => Notification::Notif(),
+            'tarif' => tarifPpn::orderBy('tarif')->get(),
         ]);
     }
 

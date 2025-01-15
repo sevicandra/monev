@@ -44,8 +44,9 @@
                     </label>
                     <select type="text" name="tarif"
                         class="select select-sm select-bordered w-full max-w-xs @error('tarif') select-error @enderror">
-                        <option value="0.11" @if ($data->tarif == 0.11) selected @endif>11%</option>
-                        <option value="0.011" @if ($data->tarif == 0.011) selected @endif>1.1%</option>
+                        @foreach ($tarif as $item)
+                        <option value="{{ $item->tarif/100 }}" @if ($data->tarif == $item->tarif/100) selected @endif>{{ $item->tarif }}%</option>
+                        @endforeach
                     </select>
                     <label class="label">
                         @error('tarif')

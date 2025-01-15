@@ -221,6 +221,7 @@
                             <li><a href="/bulan">Bulan</a></li>
                             <li><a href="/role">Role</a></li>
                             <li><a href="/referensi/objek-pajak">Objek Pajak</a></li>
+                            <li><a href="/referensi/tarif-ppn">Tarif PPN</a></li>
                         @endcan
                     </ul>
                 </details>

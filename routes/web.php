@@ -59,6 +59,7 @@ use App\Http\Controllers\CleansingDuplikatController;
 use App\Http\Controllers\CleansingTagihanController;
 use App\Http\Controllers\RealisasiBulananController;
 use App\Http\Controllers\MonitoringTagihanController;
+use App\Http\Controllers\ReferensiTarifPpnController;
 
 /*
 |--------------------------------------------------------------------------
@@ -767,4 +768,14 @@ Route::controller(CleansingTagihanController::class)->group(function(){
     Route::get('/cleansing/tagihan', 'index')->middleware('auth');
     Route::get('/cleansing/tagihan/{tagihan}/edit', 'edit')->middleware('auth');
     Route::patch('/cleansing/tagihan/{tagihan}', 'update')->middleware('auth');
+});
+
+
+Route::controller(ReferensiTarifPpnController::class)->group(function(){
+    Route::get('/referensi/tarif-ppn', 'index')->middleware('auth');
+    Route::get('/referensi/tarif-ppn/create', 'create')->middleware('auth');
+    Route::post('/referensi/tarif-ppn/create', 'store')->middleware('auth');
+    Route::get('/referensi/tarif-ppn/{ppn}/edit', 'edit')->middleware('auth');
+    Route::patch('/referensi/tarif-ppn/{ppn}/edit', 'update')->middleware('auth');
+    Route::delete('/referensi/tarif-ppn/{ppn}', 'destroy')->middleware('auth');
 });

@@ -18,6 +18,7 @@ use App\Models\RefRekening;
 use Illuminate\Support\Str;
 use App\Helper\Notification;
 use App\Models\berkasupload;
+use App\Models\tarifPpn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -454,6 +455,7 @@ class TagihanBLBIController extends Controller
             'tagihan' => $tagihan,
             'rekanan' => $rekanan,
             'notifikasi' => Notification::Notif(),
+            'tarif' => tarifPpn::orderBy('tarif')->get(),
         ]);
     }
 
@@ -505,6 +507,7 @@ class TagihanBLBIController extends Controller
             'rekanan' => $rekanan,
             'data' => $ppn,
             'notifikasi' => Notification::Notif(),
+            'tarif' => tarifPpn::orderBy('tarif')->get(),
         ]);
     }
 

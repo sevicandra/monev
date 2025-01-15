@@ -8,6 +8,7 @@ use App\Models\berkas;
 use App\Models\Payroll;
 use App\Models\rekanan;
 use App\Models\tagihan;
+use App\Models\tarifPpn;
 use App\Models\realisasi;
 use App\Models\logtagihan;
 use App\Models\objekpajak;
@@ -364,7 +365,8 @@ class VerifikasiController extends Controller
             'data'=>ppnrekanan::myppn($tagihan, $rekanan)->get(),
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
-            'notifikasi'=>Notification::Notif()
+            'notifikasi'=>Notification::Notif(),
+            'tarif' => tarifPpn::orderBy('tarif')->get(),
         ]);
     }
 
@@ -417,7 +419,8 @@ class VerifikasiController extends Controller
             'tagihan'=>$tagihan,
             'rekanan'=>$rekanan,
             'data'=>$ppn,
-            'notifikasi'=>Notification::Notif()
+            'notifikasi'=>Notification::Notif(),
+            'tarif' => tarifPpn::orderBy('tarif')->get(),
         ]);
     }
 

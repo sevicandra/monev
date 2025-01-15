@@ -138,9 +138,7 @@ class PpspmController extends Controller
         if ($tagihan->status != 3) {
             abort(403);
         }
-        if ($tagihan->tanggal_spm == null || $tagihan->tanggal_spm == '0000-00-00') {
-            return back()->with('gagal', 'Data tidak dapat dikirim karena tanggal SPM belum di input');
-        }
+        
         $tagihan->update([
             'status' => 4
         ]);
