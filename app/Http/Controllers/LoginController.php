@@ -33,6 +33,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $id_token = session()->get('id_token');
         Auth::logout();
     
         $request->session()->invalidate();
@@ -40,7 +41,6 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
     
         $uri = config('sso.base_uri') . config('sso.endsession.endpoint');
-        $id_token = session()->get('id_token');
         $post_logout_redirect_uri = config('sso.authorize.redirect_uri');
         $state = config('sso.authorize.state');
         $endsession_url = $uri . '?id_token_hint=' . $id_token . '&post_logout_redirect_uri=' . $post_logout_redirect_uri . '&state=' . $state;
