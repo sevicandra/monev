@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\pagu;
 use App\Models\unit;
+use App\Models\RefPPK;
+use App\Models\mapingpaguppk;
 use App\Helper\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Illuminate\Support\Facades\DB;
 
 class PaguController extends Controller
 {
@@ -55,7 +58,7 @@ class PaguController extends Controller
             'kro' => 'required|min:3|max:3',
             'ro' => 'required|min:3|max:3',
             'komponen' => 'required|min:3|max:3',
-            'subkomponen' => 'required|min:1|max:1',
+            'subkomponen' => 'required|min:2|max:2',
             'akun' => 'required|min:6|max:6',
             'anggaran' => 'required|numeric',
         ]);
@@ -108,7 +111,7 @@ class PaguController extends Controller
             'kro' => 'required|min:3|max:3',
             'ro' => 'required|min:3|max:3',
             'komponen' => 'required|min:3|max:3',
-            'subkomponen' => 'required|min:1|max:1',
+            'subkomponen' => 'required|min:2|max:2',
             'akun' => 'required|min:6|max:6',
             'anggaran' => 'required|numeric',
         ]);
@@ -214,7 +217,7 @@ class PaguController extends Controller
         ];
 
         $spreadsheet = new Spreadsheet();
-
+        // Ref unit
         $spreadsheet->createSheet();
         $spreadsheet->setActiveSheetIndex(1)
             ->setTitle('ref_unit')
@@ -231,8 +234,31 @@ class PaguController extends Controller
         $spreadsheet->setActiveSheetIndex(1)->getProtection()->setSheet(true);
         $spreadsheet->setActiveSheetIndex(1)->getProtection()->setPassword('your_password');
 
+        // Ref PPK
         $spreadsheet->createSheet();
         $spreadsheet->setActiveSheetIndex(2)
+            ->setTitle('ref_ppk')
+            ->setCellValue('B1', 'Nip')
+            ->setCellValue('A1', 'Nama');
+        $no2 = 2;
+        foreach (RefPPK::PPKsatker()->orderby('nip')->get() as $item) {
+
+            $spreadsheet
+                ->setActiveSheetIndex(2)
+                ->setCellValue('B' . $no2, $item->nip)
+                ->setCellValue('A' . $no2, $item->nama)
+            ;
+            $spreadsheet->getActiveSheet()->getCell('B' . $no2)->setValueExplicit($item->nip, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
+
+            $no2++;
+        }
+        $spreadsheet->setActiveSheetIndex(2)->getProtection()->setSheet(true);
+        $spreadsheet->setActiveSheetIndex(2)->getProtection()->setPassword('your_password');
+        $spreadsheet->setActiveSheetIndex(2)->getStyle('A:B')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+
+        // Pagu
+        $spreadsheet->createSheet();
+        $spreadsheet->setActiveSheetIndex(3)
             ->setTitle('Pagu')
             ->setCellValue('A1', 'ID')
             ->setCellValue('B1', 'Program')
@@ -245,11 +271,13 @@ class PaguController extends Controller
             ->setCellValue('I1', 'Anggaran')
             ->setCellValue('J1', 'Kode Satker')
             ->setCellValue('K1', 'Nama Unit')
-            ->setCellValue('L1', 'Kode Unit');;
+            ->setCellValue('L1', 'Kode Unit')
+            ->setCellValue('M1', 'PPK')
+            ->setCellValue('N1', 'NIP_PPK');
         $row = 2;
-        foreach (pagu::where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->Order()->get() as $item) {
+        foreach (pagu::with(["mapingppk.ppk"])->where('kodesatker', auth()->user()->satker)->where('tahun', session()->get('tahun'))->Order()->get() as $item) {
             $spreadsheet
-                ->setActiveSheetIndex(2)
+                ->setActiveSheetIndex(3)
                 ->setCellValue('A' . $row, $item->id)
                 ->setCellValue('B' . $row, $item->program)
                 ->setCellValue('C' . $row, $item->kegiatan)
@@ -261,15 +289,26 @@ class PaguController extends Controller
                 ->setCellValue('I' . $row, $item->anggaran)
                 ->setCellValue('J' . $row, $item->kodesatker)
                 ->setCellValue('K' . $row, optional($item->unit)->namaunit)
-                ->setCellValue('L' . $row, "=VLOOKUP(K{$row},'ref_unit'!A:B ,2, FALSE)");
-            $row++;
-            $spreadsheet->setActiveSheetIndex(2);
+                ->setCellValue('L' . $row, "=VLOOKUP(K{$row},'ref_unit'!A:B ,2, FALSE)")
+                ->setCellValue('M' . $row, optional(optional($item->mapingppk)->ppk)->nama)
+                ->setCellValue('N' . $row, "=VLOOKUP(M{$row},'ref_ppk'!A:B ,2, FALSE)")
+            ;
+            $spreadsheet->setActiveSheetIndex(3);
             $validation = $spreadsheet->getActiveSheet()->getCell('K' . $row)
                 ->getDataValidation();
             $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
             $validation->setAllowBlank(true);
             $validation->setShowDropDown(true);
             $validation->setFormula1('\'ref_unit\'!$A$2:$A$' . ($no - 1));
+
+
+            $validation = $spreadsheet->getActiveSheet()->getCell('M' . $row)
+                ->getDataValidation();
+            $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
+            $validation->setAllowBlank(true);
+            $validation->setShowDropDown(true);
+            $validation->setFormula1('\'ref_ppk\'!$A$2:$A$' . ($no2 - 1));
+            $row++;
         }
 
         $spreadsheet->setActiveSheetIndex(0)
@@ -277,18 +316,18 @@ class PaguController extends Controller
             ->setCellValue('A1', 'num_row')
             ->setCellValue('B1', $row - 1)
             ->getProtection()->setSheet(true);
-        $spreadsheet->setActiveSheetIndex(2)->getProtection()->setPassword('your_password');
-        $spreadsheet->setActiveSheetIndex(2)->getStyle('A:K')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
-        $spreadsheet->setActiveSheetIndex(2)->getStyle('I:I')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-        $spreadsheet->setActiveSheetIndex(2)->getStyle('I1:I1')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
-        $spreadsheet->setActiveSheetIndex(2)->getStyle('A1:L1')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $spreadsheet->setActiveSheetIndex(3)->getProtection()->setPassword('your_password');
+        $spreadsheet->setActiveSheetIndex(3)->getStyle('A:K')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $spreadsheet->setActiveSheetIndex(3)->getStyle('I:I')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+        $spreadsheet->setActiveSheetIndex(3)->getStyle('I1:I1')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $spreadsheet->setActiveSheetIndex(3)->getStyle('A1:N1')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
-        $spreadsheet->setActiveSheetIndex(2)->getStyle('A1:L1')->applyFromArray($textcenter);
-        $spreadsheet->setActiveSheetIndex(2)->getStyle('A1:L' . ($row - 1))->applyFromArray($styleBorder);
+        $spreadsheet->setActiveSheetIndex(3)->getStyle('A1:N1')->applyFromArray($textcenter);
+        $spreadsheet->setActiveSheetIndex(3)->getStyle('A1:N' . ($row - 1))->applyFromArray($styleBorder);
 
 
-        foreach ($spreadsheet->setActiveSheetIndex(2)->getColumnIterator() as $column) {
-            $spreadsheet->setActiveSheetIndex(2)->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+        foreach ($spreadsheet->setActiveSheetIndex(3)->getColumnIterator() as $column) {
+            $spreadsheet->setActiveSheetIndex(3)->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
         }
         // ->getProtection()->setSheet(true);
         // $spreadsheet->setActiveSheetIndex(2)->getProtection()->setPassword('your_password');
@@ -329,7 +368,7 @@ class PaguController extends Controller
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load($file);
         $row = $spreadsheet->getSheetByName('row')->getCell('B1')->getValue();
-        $sheet = collect($spreadsheet->getSheetByName('Pagu')->rangeToArray('A2:L' . $row));
+        $sheet = collect($spreadsheet->getSheetByName('Pagu')->rangeToArray('A2:N' . $row));
         $Errors = collect();
         foreach ($sheet as $item) {
             $row = collect([
@@ -343,20 +382,22 @@ class PaguController extends Controller
                 "akun" => $item[7],
                 "anggaran" => $item[8],
                 "kodeunit" => $item[11],
+                "nip" => $item[13],
             ]);
             $validator = Validator::make(
                 $row->all(),
                 [
                     'id' => 'required',
                     'program' => 'required|min:2|max:2',
-                    'kegiatan' => 'required|min_digits:4|max_digits:4',
+                    'kegiatan' => 'required|min:4|max:4',
                     'kro' => 'required|min:3|max:3',
-                    'ro' => 'required|min_digits:3|max_digits:3',
-                    'komponen' => 'required|min_digits:3|max_digits:3',
+                    'ro' => 'required|min:3|max:3',
+                    'komponen' => 'required|min:3|max:3',
                     'subkomponen' => 'required|min:1|max:2',
-                    'akun' => 'required|min_digits:6|max_digits:6',
+                    'akun' => 'required|min:6|max:6',
                     'anggaran' => ['required', 'regex:/^((\d*)|(\d{1,3}(,\d{3})+))(\.\d+)?$/'],
-                    'kodeunit' => 'max_digits:2',
+                    'kodeunit' => 'max:2',
+                    'nip' => 'max:18',
                 ],
                 [
                     'anggaran.regex' => 'Anggaran harus berupa angka',
@@ -386,6 +427,8 @@ class PaguController extends Controller
                     'akun.max' => 'Anggaran minimal 6 karakter',
                     'kodeunit.min' => 'Anggaran minimal 2 karakter',
                     'kodeunit.max' => 'Anggaran minimal 2 karakter',
+                    'nip.min' => 'NIP harus 18 digit',
+                    'nip.max' => 'NIP harus 18 digit',
                 ]
             );
 
@@ -394,9 +437,9 @@ class PaguController extends Controller
                 $detail->errors = (object) [];
                 $errorMessage = json_decode($validator->errors()->toJson());
                 if (isset($errorMessage->id)) {
-                    $detail->errors->id =$item[0]." ". $errorMessage->id[0];
+                    $detail->errors->id = $item[0] . " " . $errorMessage->id[0];
                 } else {
-                    $detail->errors->id = $item[0] ." ok";
+                    $detail->errors->id = $item[0] . " ok";
                 }
                 if (isset($errorMessage->program)) {
                     $detail->errors->program = $errorMessage->program[0];
@@ -448,23 +491,44 @@ class PaguController extends Controller
                 $Errors->push($detail);
             }
         }
-
         if ($Errors->count() == 0) {
-            foreach ($sheet as $item) {
-                pagu::find($item[0])->update([
-                    "program" => $item[1],
-                    "kegiatan" => $item[2],
-                    "kro" => $item[3],
-                    "ro" => $item[4],
-                    "komponen" => $item[5],
-                    "subkomponen" => $item[6],
-                    "akun" => $item[7],
-                    "anggaran" => floatval(str_replace(',', '', $item[8])),
-                    "kodeunit" => $item[11],
-                ]);
+            try {
+                DB::transaction(function () use ($sheet) {
+                    foreach ($sheet as $item) {
+                        pagu::find($item[0])->update([
+                            "program" => $item[1],
+                            "kegiatan" => $item[2],
+                            "kro" => $item[3],
+                            "ro" => $item[4],
+                            "komponen" => $item[5],
+                            "subkomponen" => $item[6],
+                            "akun" => $item[7],
+                            "anggaran" => floatval(str_replace(',', '', $item[8])),
+                            "kodeunit" => $item[11],
+                        ]);
+                        if ($item[13]) {
+                            if (mapingpaguppk::where('pagu_id', $item[0])->first()) {
+                                mapingpaguppk::where('pagu_id', $item[0])->update([
+                                    'user_id' => $item[13],
+                                ]);
+                            } else {
+                                mapingpaguppk::create([
+                                    'pagu_id' => $item[0],
+                                    'user_id' => $item[13],
+                                ]);
+                            }
+                        } else {
+                            mapingpaguppk::where('pagu_id', $item[0])->delete();
+                        }
+                    }
+                });
+            } catch (\Throwable $th) {
+                var_dump($th);
+                return redirect('/pagu/mass-update')->with('gagal', $th->getMessage());
             }
+
             return redirect('/pagu')->with('berhasil', 'Data Berhasil Diubah');
-        }else{
+        } else {
             return redirect('/pagu/mass-update')->with('Errors', $Errors);
         }
     }

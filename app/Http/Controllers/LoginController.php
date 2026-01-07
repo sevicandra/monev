@@ -18,7 +18,10 @@ class LoginController extends Controller
 
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
+            $request->session()->put('kdsatker', auth()->user()->satker);
             $request->session()->put('tahun', date('Y'));
+            $role = User::GetRole();
+            $request->session()->put('role', $role);
             if (Gate::allows('Staf_PPK', auth()->user()->id)) {
                 $ppk = RefStafPPK::getPPK();
                 $request->session()->put('ppk', $ppk);

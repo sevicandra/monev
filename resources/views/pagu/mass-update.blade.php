@@ -45,6 +45,7 @@
                             <th class="border border-base-content">akun</th>
                             <th class="border border-base-content">anggaran</th>
                             <th class="border border-base-content">kodeunit</th>
+                            <th class="border border-base-content">nip</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,7 @@
                                 <td class="border border-base-content text-center">{{ $item->errors->akun }}</td>
                                 <td class="border border-base-content text-center">{{ $item->errors->anggaran }}</td>
                                 <td class="border border-base-content text-center">{{ $item->errors->kodeunit }}</td>
+                                <td class="border border-base-content text-center">{{ $item->errors->nip }}</td>
                             </tr>
                         @endforeach
                     </tbody>
