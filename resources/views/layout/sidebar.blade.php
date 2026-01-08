@@ -250,7 +250,7 @@
             </li>
             {{--  Akhir Admin  --}}
         @endcanany
-        <li class="">Version : 2.9.2</li>
+        <li class="">Version : 2.9.3</li>
     </menu>
 </div>
 {{--  Halaman Utama  --}}
