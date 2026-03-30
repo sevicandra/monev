@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\RefStafPPK;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,14 +10,15 @@ use Illuminate\Support\Facades\Gate;
 
 class LoginController extends Controller
 {
-    public function login(Request $request){
-        $credentials =$request->validate([
-            'nip'=>'required|min:18|max:18',
-            'nip'=>'numeric',
-            'password'=>'required',
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'nip' => 'required|min:18|max:18',
+            'nip' => 'numeric',
+            'password' => 'required',
         ]);
 
-        if(Auth::attempt($credentials)){
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $request->session()->put('kdsatker', auth()->user()->satker);
             $request->session()->put('tahun', date('Y'));
@@ -27,22 +29,23 @@ class LoginController extends Controller
                 $request->session()->put('ppk', $ppk);
                 $unit = RefStafPPK::getUnit();
                 $request->session()->put('unit', $unit);
+                $request->session()->put('staf_ppk_blbi', auth()->user()->stafppk->first()->satgasBLBI);
             }
             return redirect()->intended('/dashboard');
         }
 
-        return back()->with('gagal','LoginFailed');
+        return back()->with('gagal', 'LoginFailed');
     }
 
     public function logout(Request $request)
     {
         $id_token = session()->get('id_token');
         Auth::logout();
-    
+
         $request->session()->invalidate();
-    
+
         $request->session()->regenerateToken();
-    
+
         $uri = config('sso.base_uri') . config('sso.endsession.endpoint');
         $post_logout_redirect_uri = config('sso.authorize.redirect_uri');
         $state = config('sso.authorize.state');

@@ -13,15 +13,17 @@ class SsoController extends Controller
 {
     public function sso()
     {
-        return redirect(config('sso.base_uri').config('sso.authorize')['endpoint'].'?grant_type='.config('sso.authorize')['grant_type'].'&response_type='.config('sso.authorize')['response_type'].'&client_id='.config('sso.authorize')['client_id'].'&scope='.config('sso.authorize')['scope'].'&nonce='.  config('sso.authorize')['nonce'].'state='.config('sso.authorize')['state'].'&redirect_uri='.config('sso.authorize')['redirect_uri']);
+        return redirect(config('sso.base_uri') . config('sso.authorize')['endpoint'] . '?grant_type=' . config('sso.authorize')['grant_type'] . '&response_type=' . config('sso.authorize')['response_type'] . '&client_id=' . config('sso.authorize')['client_id'] . '&scope=' . config('sso.authorize')['scope'] . '&nonce=' .  config('sso.authorize')['nonce'] . 'state=' . config('sso.authorize')['state'] . '&redirect_uri=' . config('sso.authorize')['redirect_uri']);
     }
     public function sign_in(Request $request)
     {
         session()->regenerate();
         if ($request->code) {
-            // Get Token
-
-            $response = Http::asForm()->post(config('sso.base_uri').config('sso.token')['endpoint'],[
+            $response = Http::withOptions(
+                [
+                    'verify' => false,
+                ]
+            )->asForm()->post(config('sso.base_uri') . config('sso.token')['endpoint'], [
                 'client_id' => config('sso.authorize')['client_id'],
                 'grant_type' => config('sso.authorize')['grant_type'],
                 'client_secret' => config('sso.token')['client_secret'],
@@ -30,12 +32,16 @@ class SsoController extends Controller
             ]);
 
             $token =  json_decode($response->getBody()->getContents(), true);
-            if(!isset($token['access_token'])){
+            if (!isset($token['access_token'])) {
                 return redirect('/sso');
             }
             $access_token = $token['access_token'];
             if ($access_token) {
-                $response2 = Http::asForm()->post(config('sso.base_uri').config('sso.userinfo')['endpoint'],[
+                $response2 = Http::withOptions(
+                    [
+                        'verify' => false,
+                    ]
+                )->asForm()->post(config('sso.base_uri') . config('sso.userinfo')['endpoint'], [
                     'access_token' => $access_token
                 ]);
 
@@ -50,7 +56,7 @@ class SsoController extends Controller
                         'nama' => $nama,
                         'satker' => $kode_satker,
                     ]);
-                 
+
                     Auth::login($user);
                     $request->session()->regenerate();
                     $request->session()->put('kdsatker', auth()->user()->satker);
@@ -70,13 +76,13 @@ class SsoController extends Controller
                     }
                     return redirect()->intended('/dashboard');
                 } else {
-                    redirect('/')->with('gagal','Request Error');
+                    redirect('/')->with('gagal', 'Request Error');
                 }
-            }else{
-                redirect('/')->with('gagal','Request Error');
+            } else {
+                redirect('/')->with('gagal', 'Request Error');
             }
-        }else{
-            redirect('/')->with('gagal','Request Error');
+        } else {
+            redirect('/')->with('gagal', 'Request Error');
         }
     }
 }
