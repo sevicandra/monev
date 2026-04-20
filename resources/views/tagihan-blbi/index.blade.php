@@ -159,7 +159,7 @@
                             @enderror
                         </label>
                     </div>
-                    <button type="button" id="trix-submit-btn" class="btn btn-sm btn-accent">Submit</button>
+                    <button type="submit" id="trix-submit-btn" class="btn btn-sm btn-accent">Submit</button>
                 </form>
             </div>
         </div>
