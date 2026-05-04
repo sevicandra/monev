@@ -64,9 +64,6 @@ class PaguController extends Controller
         ]);
 
         $request->validate([
-            'kegiatan' => 'numeric',
-            'ro' => 'numeric',
-            'komponen' => 'numeric',
             'akun' => 'numeric',
         ]);
 
@@ -117,9 +114,6 @@ class PaguController extends Controller
         ]);
 
         $request->validate([
-            'kegiatan' => 'numeric',
-            'ro' => 'numeric',
-            'komponen' => 'numeric',
             'akun' => 'numeric',
         ]);
 

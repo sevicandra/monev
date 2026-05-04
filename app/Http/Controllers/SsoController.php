@@ -19,11 +19,7 @@ class SsoController extends Controller
     {
         session()->regenerate();
         if ($request->code) {
-            $response = Http::withOptions(
-                [
-                    'verify' => false,
-                ]
-            )->asForm()->post(config('sso.base_uri') . config('sso.token')['endpoint'], [
+            $response = Http::asForm()->post(config('sso.base_uri') . config('sso.token')['endpoint'], [
                 'client_id' => config('sso.authorize')['client_id'],
                 'grant_type' => config('sso.authorize')['grant_type'],
                 'client_secret' => config('sso.token')['client_secret'],
@@ -37,11 +33,7 @@ class SsoController extends Controller
             }
             $access_token = $token['access_token'];
             if ($access_token) {
-                $response2 = Http::withOptions(
-                    [
-                        'verify' => false,
-                    ]
-                )->asForm()->post(config('sso.base_uri') . config('sso.userinfo')['endpoint'], [
+                $response2 = Http::asForm()->post(config('sso.base_uri') . config('sso.userinfo')['endpoint'], [
                     'access_token' => $access_token
                 ]);
 
